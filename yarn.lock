@@ -5437,6 +5437,7 @@ __metadata:
     "@types/react-test-renderer": ^18.0.0
     "@walletconnect/react-native-compat": ^2.11.1
     "@web3modal/wagmi-react-native": ^1.2.0
+    abitype: ^1.0.0
     babel-jest: ^29.6.3
     eslint: ^8.19.0
     jest: ^29.6.3
@@ -5450,6 +5451,7 @@ __metadata:
     react-native-screens: ^3.29.0
     react-native-svg: 12.1.1
     react-test-renderer: 18.2.0
+    type-fest: ^4.10.2
     typescript: 5.0.4
     viem: ^2.7.8
     wagmi: 1.4.13
@@ -7788,7 +7790,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"abitype@npm:1.0.0":
+"abitype@npm:1.0.0, abitype@npm:^1.0.0":
   version: 1.0.0
   resolution: "abitype@npm:1.0.0"
   peerDependencies:
@@ -20717,6 +20719,13 @@ __metadata:
   version: 1.4.0
   resolution: "type-fest@npm:1.4.0"
   checksum: b011c3388665b097ae6a109a437a04d6f61d81b7357f74cbcb02246f2f5bd72b888ae33631b99871388122ba0a87f4ff1c94078e7119ff22c70e52c0ff828201
+  languageName: node
+  linkType: hard
+
+"type-fest@npm:^4.10.2":
+  version: 4.10.2
+  resolution: "type-fest@npm:4.10.2"
+  checksum: ef75736d51c10a885f955c07aed8f46103a8c9ae93742a75fbbdf023dd0e7169c524ebef292f37de19806051fb1bdd96c4098a0101c5f869f80db73bcb484bb1
   languageName: node
   linkType: hard
 
