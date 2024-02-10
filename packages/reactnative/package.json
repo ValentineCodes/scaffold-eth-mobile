@@ -27,6 +27,7 @@
     "react-native-screens": "^3.29.0",
     "react-native-svg": "12.1.1",
     "react-native-toast-notifications": "^3.4.0",
+    "react-native-webview": "^13.7.1",
     "type-fest": "^4.10.2",
     "viem": "1.21.4",
     "wagmi": "1.4.13"

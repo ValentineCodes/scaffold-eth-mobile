@@ -27,7 +27,7 @@ const metadata = {
     }
 }
 
-const chains = [mainnet, sepolia]
+const chains = [sepolia]
 
 const wagmiConfig = defaultWagmiConfig({ chains, projectId, metadata })
 
@@ -41,15 +41,15 @@ createWeb3Modal({
 export default function Providers({ children }: Props) {
     return (
         <WagmiConfig config={wagmiConfig}>
-            <ToastProvider>
-                <MenuProvider>
-                    <SafeAreaProvider>
-                        <NativeBaseProvider>
+            <NativeBaseProvider>
+                <ToastProvider>
+                    <MenuProvider>
+                        <SafeAreaProvider>
                             {children}
-                        </NativeBaseProvider>
-                    </SafeAreaProvider>
-                </MenuProvider>
-            </ToastProvider>
+                        </SafeAreaProvider>
+                    </MenuProvider>
+                </ToastProvider>
+            </NativeBaseProvider>
             <Web3Modal />
         </WagmiConfig>
     )
