@@ -14,11 +14,21 @@ export interface Network {
 
 const initialState: Network[] = [
   {
+    name: 'Local Network',
+    provider: `http://192.168.246.72:7545`,
+    chainId: 1337,
+    currencySymbol: 'ETH',
+    isConnected: true,
+    blockExplorer: null,
+    txApiDomain: null,
+    txApiKey: null
+  },
+  {
     name: 'Ethereum',
     provider: `https://eth-mainnet.alchemyapi.io/v2/${ALCHEMY_KEY}`,
     chainId: 1,
     currencySymbol: 'ETH',
-    isConnected: true,
+    isConnected: false,
     blockExplorer: "https://etherscan.io",
     txApiDomain: "https://api.etherscan.io",
     txApiKey: "HY44G42FN4UN1DEYSAN3SAVG639ZYXDJDT"
