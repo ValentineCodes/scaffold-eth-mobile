@@ -4,6 +4,7 @@ import { useWeb3Modal } from '@web3modal/wagmi-react-native'
 import { useAccount } from 'wagmi'
 import AccountDetails from '../../components/AccountDetails'
 
+
 type Props = {}
 
 export default function Home({ }: Props) {
