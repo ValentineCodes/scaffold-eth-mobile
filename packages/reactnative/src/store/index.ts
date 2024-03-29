@@ -11,8 +11,14 @@ import {
 } from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import Auth from './reducers/Auth';
 import Networks from './reducers/Networks';
 import Accounts from './reducers/Accounts';
+import Transactions from './reducers/Transactions';
+import Balance from './reducers/Balance';
+import ConnectedSites from './reducers/ConnectedSites';
+import ActiveSessions from './reducers/ActiveSessions';
+import Recipients from './reducers/Recipients';
 
 const persistConfig = {
   key: 'root',
@@ -22,8 +28,14 @@ const persistConfig = {
 };
 
 const reducers = combineReducers({
+  auth: Auth,
   networks: Networks,
-  accounts: Accounts
+  accounts: Accounts,
+  transactions: Transactions,
+  balance: Balance,
+  connectedSites: ConnectedSites,
+  activeSessions: ActiveSessions,
+  recipients: Recipients
 });
 
 const persistedReducer = persistReducer(persistConfig, reducers);

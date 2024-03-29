@@ -4,9 +4,8 @@
  *
  * @format
  */
-const {getDefaultConfig, mergeConfig} = require('@react-native/metro-config');
 
-const config = {
+module.exports = {
   resolver: {
     extraNodeModules: {
       crypto: require.resolve('crypto-browserify'),
@@ -22,6 +21,3 @@ const config = {
     }),
   },
 };
-
-module.exports = mergeConfig(getDefaultConfig(__dirname), config);
-  
