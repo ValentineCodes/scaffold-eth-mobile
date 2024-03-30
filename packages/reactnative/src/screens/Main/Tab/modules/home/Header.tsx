@@ -1,13 +1,13 @@
 import { Text, Select, CheckIcon, HStack, Icon, Image } from 'native-base'
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Network, switchNetwork } from '../../../store/reducers/Networks'
-import { Account } from '../../../store/reducers/Accounts'
+import { Network, switchNetwork } from '../../../../../store/reducers/Networks'
+import { Account } from '../../../../../store/reducers/Accounts'
 import { Linking, StyleSheet } from 'react-native'
 import { useToast } from 'react-native-toast-notifications'
 import Ionicons from "react-native-vector-icons/dist/Ionicons"
 import Share from 'react-native-share';
-import Blockie from '../../../components/Blockie'
+import Blockie from '../../../../../components/Blockie'
 
 import {
     Menu,
@@ -15,15 +15,15 @@ import {
     MenuOption,
     MenuTrigger,
 } from 'react-native-popup-menu';
-import AccountDetailsModal from '../../../components/modals/AccountDetailsModal'
-import ConnectedSitesModal from '../../../components/modals/ConnectedSitesModal'
-import AccountSelectionModal from '../../../components/modals/AccountSelectionModal'
-import { ActiveSession } from '../../../store/reducers/ActiveSessions'
-import SwitchAccountModal from '../../../components/modals/SwitchAccountModal'
-import { FONT_SIZE } from '../../../utils/styles'
-import { COLORS } from '../../../utils/constants'
-import AccountsModal from '../../../components/modals/AccountsModal'
-import SeedPhraseModal from '../../../components/modals/SeedPhraseModal'
+import AccountDetailsModal from '../../../../../components/modals/AccountDetailsModal'
+import ConnectedSitesModal from '../../../../../components/modals/ConnectedSitesModal'
+import AccountSelectionModal from '../../../../../components/modals/AccountSelectionModal'
+import { ActiveSession } from '../../../../../store/reducers/ActiveSessions'
+import SwitchAccountModal from '../../../../../components/modals/SwitchAccountModal'
+import { FONT_SIZE } from '../../../../../utils/styles'
+import { COLORS } from '../../../../../utils/constants'
+import AccountsModal from '../../../../../components/modals/AccountsModal'
+import SeedPhraseModal from '../../../../../components/modals/SeedPhraseModal'
 
 type Props = {}
 

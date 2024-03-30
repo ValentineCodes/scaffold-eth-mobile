@@ -1,10 +1,10 @@
 import React from 'react'
 import { View, Text, FlatList, VStack, Icon, Image, Divider } from 'native-base'
-import Transaction from '../../../components/Transaction'
+import Transaction from '../../../../../components/Transaction'
 import { ActivityIndicator, RefreshControl, StyleSheet } from 'react-native'
 import Ionicons from "react-native-vector-icons/dist/Ionicons"
-import { COLORS } from '../../../utils/constants'
-import { FONT_SIZE } from '../../../utils/styles'
+import { COLORS } from '../../../../../utils/constants'
+import { FONT_SIZE } from '../../../../../utils/styles'
 
 export type LoadingTxStatusProps = 'loading' | 'success' | 'error';
 
@@ -27,7 +27,7 @@ export default function Transactions({ transactions, loadingStatus, isLoadingMor
         </View>
       ) : loadingStatus === 'error' ? (
         <VStack flex="1" justifyContent="center" alignItems="center" space="4">
-          <Image source={require("../../../assets/icons/failed_icon.png")} alt="Retry" style={styles.failedIcon} />
+          <Image source={require("../../../../../assets/icons/failed_icon.png")} alt="Retry" style={styles.failedIcon} />
           <Text fontSize={1.1 * FONT_SIZE['lg']}>Failed to load transactions. <Text onPress={get} color={COLORS.primary} bold>Retry</Text></Text>
         </VStack>
       ) : transactions.length > 0 ? (

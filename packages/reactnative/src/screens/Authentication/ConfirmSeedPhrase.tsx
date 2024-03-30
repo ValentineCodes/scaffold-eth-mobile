@@ -130,7 +130,7 @@ export default function ConfirmSeedPhrase({ }: Props) {
     const handleSuccess = () => {
         setShowSuccessModal(false)
         dispatch(loginUser())
-        navigation.navigate("Home")
+        navigation.navigate("Main")
     }
 
     useEffect(() => {

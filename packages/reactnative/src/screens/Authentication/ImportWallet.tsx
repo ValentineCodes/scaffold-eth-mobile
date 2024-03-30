@@ -144,7 +144,7 @@ function ImportWallet({ }: Props) {
       dispatch(initAccounts(wallets.map(wallet => ({ ...wallet, isImported: false }))))
       dispatch(loginUser())
 
-      navigation.navigate("Home")
+      navigation.navigate("Main")
     } catch (error) {
       toast.show("Failed to import wallet. Please ensure you have a stable network connection and try again", {
         type: "danger"

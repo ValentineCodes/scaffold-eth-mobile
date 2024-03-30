@@ -5,13 +5,13 @@ import { useSelector } from 'react-redux'
 import Ionicons from "react-native-vector-icons/dist/Ionicons"
 import { useNavigation } from '@react-navigation/native'
 
-import { Account } from '../../../store/reducers/Accounts'
-import { Network } from '../../../store/reducers/Networks'
-import CopyableText from '../../../components/CopyableText'
-import { truncateAddress } from '../../../utils/helperFunctions'
-import { FONT_SIZE } from '../../../utils/styles'
-import { COLORS } from '../../../utils/constants'
-import ReceiveModal from '../../../components/modals/ReceiveModal'
+import { Account } from '../../../../../store/reducers/Accounts'
+import { Network } from '../../../../../store/reducers/Networks'
+import CopyableText from '../../../../../components/CopyableText'
+import { truncateAddress } from '../../../../../utils/helperFunctions'
+import { FONT_SIZE } from '../../../../../utils/styles'
+import { COLORS } from '../../../../../utils/constants'
+import ReceiveModal from '../../../../../components/modals/ReceiveModal'
 
 type Props = {
   balance: string;
@@ -30,14 +30,14 @@ function MainBalance({ balance, dollarValue, isRefreshing, refresh, backHandler 
   const navigation = useNavigation()
 
   const logo = useMemo(() => {
-    let _logo = require("../../../images/eth-icon.png");
+    let _logo = require("../../../../../images/eth-icon.png");
 
     if (["Polygon", "Mumbai"].includes(connectedNetwork.name)) {
-      _logo = require("../../../images/polygon-icon.png")
+      _logo = require("../../../../../images/polygon-icon.png")
     } else if (["Arbitrum", "Arbitrum Goerli"].includes(connectedNetwork.name)) {
-      _logo = require("../../../images/arbitrum-icon.png")
+      _logo = require("../../../../../images/arbitrum-icon.png")
     } else if (["Optimism", "Optimism Goerli"].includes(connectedNetwork.name)) {
-      _logo = require("../../../images/optimism-icon.png")
+      _logo = require("../../../../../images/optimism-icon.png")
     }
 
     return <Image key={`${_logo}`} source={_logo} alt={connectedNetwork.name} style={styles.networkLogo} />
