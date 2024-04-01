@@ -1,9 +1,9 @@
 import * as chains from "viem/chains";
 
 export interface Localhost {
+    id: number;
     name: string;
     provider: string;
-    chainId: number;
     currencySymbol: string;
   }
 
@@ -14,9 +14,9 @@ export type ScaffoldConfig = {
 };
 
 const localhost = {
+    id: 1337,
     name: 'Localhost',
     provider: `https://192.168.48.72:7545`,
-    chainId: 1337,
     currencySymbol: 'ETH',
 }
 

@@ -18,7 +18,7 @@ export default function SwitchNetwork({ }: Props) {
     const dispatch = useDispatch()
     const toast = useToast()
 
-    if (scaffoldConfig.targetNetworks.map(network => network.chainId || network.id).includes(connectedNetwork.chainId)) return
+    if (scaffoldConfig.targetNetworks.map(network => network.id).includes(connectedNetwork.chainId)) return
 
     const closeModal = () => {
         setShowNetworkSwitchModal(false)
@@ -26,7 +26,7 @@ export default function SwitchNetwork({ }: Props) {
 
     const handleNetworkSelecttion = (network: chains.Chain | Localhost) => {
         closeModal()
-        dispatch(switchNetwork((network.chainId || network.id).toString()))
+        dispatch(switchNetwork(network.id.toString()))
         toast.show(`Switched to ${network.name}`)
     }
 
@@ -52,7 +52,7 @@ export default function SwitchNetwork({ }: Props) {
 
                     <ScrollView>
                         {scaffoldConfig.targetNetworks.map(network => (
-                            <Pressable key={network.chainId} py={"4"} onPress={() => handleNetworkSelecttion(network)}>
+                            <Pressable key={network.id} py={"4"} onPress={() => handleNetworkSelecttion(network)}>
                                 <Text fontSize={"md"}>{network.name}</Text>
                             </Pressable>
                         ))}
