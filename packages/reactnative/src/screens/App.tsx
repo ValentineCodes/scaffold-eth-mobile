@@ -9,6 +9,7 @@ import {
 import changeNavigationBarColor from 'react-native-navigation-bar-color';
 import Providers from './Providers';
 import Navigation from './Navigation';
+import SwitchNetwork from '../components/SwitchNetwork';
 
 function App(): JSX.Element {
 
@@ -28,6 +29,7 @@ function App(): JSX.Element {
       <SafeAreaView style={styles.container}>
         <StatusBar barStyle="dark-content" backgroundColor="white" />
         <Navigation />
+        <SwitchNetwork />
       </SafeAreaView>
     </Providers>
   );

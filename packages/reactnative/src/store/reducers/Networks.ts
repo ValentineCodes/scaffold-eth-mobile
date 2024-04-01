@@ -44,16 +44,6 @@ const initialState: Network[] = [
     txApiKey: "HY44G42FN4UN1DEYSAN3SAVG639ZYXDJDT"
   },
   {
-    name: 'Goerli',
-    provider: `https://eth-goerli.alchemyapi.io/v2/${ALCHEMY_KEY}`,
-    chainId: 5,
-    currencySymbol: 'GoerliETH',
-    isConnected: false,
-    blockExplorer: "https://goerli.etherscan.io",
-    txApiDomain: "https://api-goerli.etherscan.io",
-    txApiKey: "HY44G42FN4UN1DEYSAN3SAVG639ZYXDJDT"
-  },
-  {
     name: 'Arbitrum',
     provider: `https://arb-mainnet.g.alchemy.com/v2/${ALCHEMY_KEY}`,
     chainId: 42161,
