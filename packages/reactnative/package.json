@@ -19,6 +19,7 @@
     "@react-navigation/native": "^6.1.17",
     "@react-navigation/native-stack": "^6.9.26",
     "@reduxjs/toolkit": "^2.2.2",
+    "abitype": "^1.0.2",
     "ethers": "5.7.2",
     "fast-text-encoding": "^1.0.6",
     "native-base": "^3.4.28",
@@ -51,7 +52,8 @@
     "react-native-webview": "^13.8.2",
     "react-redux": "^9.1.0",
     "redstone-api": "^0.4.11",
-    "redux-persist": "^6.0.0"
+    "redux-persist": "^6.0.0",
+    "viem": "^2.9.6"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

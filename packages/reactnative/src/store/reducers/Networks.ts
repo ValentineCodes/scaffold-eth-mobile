@@ -14,11 +14,21 @@ export interface Network {
 
 const initialState: Network[] = [
   {
+    name: 'Localhost',
+    provider: `https://192.168.48.72:7545`,
+    chainId: 1337,
+    currencySymbol: 'ETH',
+    isConnected: true,
+    blockExplorer: null,
+    txApiDomain: null,
+    txApiKey: null
+  },
+  {
     name: 'Ethereum',
     provider: `https://eth-mainnet.alchemyapi.io/v2/${ALCHEMY_KEY}`,
     chainId: 1,
     currencySymbol: 'ETH',
-    isConnected: true,
+    isConnected: false,
     blockExplorer: "https://etherscan.io",
     txApiDomain: "https://api.etherscan.io",
     txApiKey: "HY44G42FN4UN1DEYSAN3SAVG639ZYXDJDT"
@@ -102,7 +112,7 @@ const initialState: Network[] = [
     blockExplorer: "https://mumbai.polygonscan.com",
     txApiDomain: "https://api-mumbai.polygonscan.com",
     txApiKey: "IH9BAQZH4SA5HQ5RVQA3JKPRF32GV11GIE"
-  },
+  }
 ];
 
 export const networksSlice = createSlice({
