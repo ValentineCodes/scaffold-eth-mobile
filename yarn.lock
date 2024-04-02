@@ -14719,7 +14719,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hoist-non-react-statics@npm:^3.3.0, hoist-non-react-statics@npm:^3.3.1":
+"hoist-non-react-statics@npm:^3.3.0, hoist-non-react-statics@npm:^3.3.1, hoist-non-react-statics@npm:^3.3.2":
   version: 3.3.2
   resolution: "hoist-non-react-statics@npm:3.3.2"
   dependencies:
@@ -20089,7 +20089,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-is@npm:^17.0.1":
+"react-is@npm:^17.0.1, react-is@npm:^17.0.2":
   version: 17.0.2
   resolution: "react-is@npm:17.0.2"
   checksum: 9d6d111d8990dc98bc5402c1266a808b0459b5d54830bbea24c12d908b536df7883f268a7868cfaedde3dd9d4e0d574db456f84d2e6df9c4526f99bb4b5344d8
@@ -20180,7 +20180,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-gesture-handler@npm:^2.15.0":
+"react-native-gesture-handler@npm:^2.16.0":
   version: 2.16.0
   resolution: "react-native-gesture-handler@npm:2.16.0"
   dependencies:
@@ -20224,6 +20224,21 @@ __metadata:
     react: "*"
     react-native: ">=0.65.0"
   checksum: 15985fd6aaae7a2134ec1003c63abd384f4a17beabd0a80b74033c98eccee29161aa07150f479373fb43106cfb33b5837b7a4f1d2b721ff03b3727490c830a07
+  languageName: node
+  linkType: hard
+
+"react-native-modalfy@npm:^3.5.3":
+  version: 3.5.3
+  resolution: "react-native-modalfy@npm:3.5.3"
+  dependencies:
+    hoist-non-react-statics: ^3.3.2
+    react-is: ^17.0.2
+    use-memo-one: ^1.1.2
+  peerDependencies:
+    react: ">=16.8.3"
+    react-native: ">=0.59.0"
+    react-native-gesture-handler: ">=1.9.0"
+  checksum: 6cb0949c681ee3cdbbe3cb958821871c31c53bf400c530ffb86e35a4a0f567198cd75d0ae421b033c78c2e81e1967a3d5d1e4d67face3ba16a5cabf5bd763c3e
   languageName: node
   linkType: hard
 
@@ -20636,9 +20651,10 @@ __metadata:
     react-native-bootsplash: ^5.4.1
     react-native-bouncy-checkbox: ^3.0.7
     react-native-camera-kit: ^13.0.0
-    react-native-gesture-handler: ^2.15.0
+    react-native-gesture-handler: ^2.16.0
     react-native-get-random-values: ^1.11.0
     react-native-modal: ^13.0.1
+    react-native-modalfy: ^3.5.3
     react-native-navigation-bar-color: ^2.0.2
     react-native-pager-view: ^6.2.3
     react-native-popup-menu: ^0.16.1
@@ -23745,6 +23761,15 @@ __metadata:
   peerDependencies:
     react: ">=16.8"
   checksum: 620969d85763b65aca5f9b601c31eb476a8f7602cfccfb3c0f9dc60ff3b863e04dd64360ada255e15606771513de33b25e4631607d702605b26630f61381b3d4
+  languageName: node
+  linkType: hard
+
+"use-memo-one@npm:^1.1.2":
+  version: 1.1.3
+  resolution: "use-memo-one@npm:1.1.3"
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+  checksum: 8f08eba26d69406b61bb4b8dacdd5a92bd6aef5b53d346dfe87954f7330ee10ecabc937cc7854635155d46053828e85c10b5a5aff7a04720e6a97b9f42999bac
   languageName: node
   linkType: hard
 
