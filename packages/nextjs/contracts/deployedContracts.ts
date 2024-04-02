@@ -7,7 +7,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   1337: {
     YourContract: {
-      address: "0x3B63e0a7948693feC2225a63AAaFF1b3Ce1BD858",
+      address: "0xecc0A1dC7278fd6688fE8aCa9260b8C8713100b4",
       abi: [
         {
           inputs: [
@@ -50,6 +50,25 @@ const deployedContracts = {
           ],
           name: "GreetingChange",
           type: "event",
+        },
+        {
+          inputs: [
+            {
+              internalType: "string",
+              name: "rubbish",
+              type: "string",
+            },
+          ],
+          name: "getRubbish",
+          outputs: [
+            {
+              internalType: "string",
+              name: "",
+              type: "string",
+            },
+          ],
+          stateMutability: "pure",
+          type: "function",
         },
         {
           inputs: [],
