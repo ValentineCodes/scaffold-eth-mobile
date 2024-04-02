@@ -16,7 +16,7 @@ export type ScaffoldConfig = {
 const localhost = {
     id: 1337,
     name: 'Localhost',
-    provider: `https://192.168.48.72:7545`,
+    provider: `http://192.168.48.72:7545`,
     currencySymbol: 'ETH',
 }
 

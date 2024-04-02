@@ -15,7 +15,7 @@ export interface Network {
 const initialState: Network[] = [
   {
     name: 'Localhost',
-    provider: `https://192.168.48.72:7545`,
+    provider: `http://192.168.48.72:7545`,
     chainId: 1337,
     currencySymbol: 'ETH',
     isConnected: true,

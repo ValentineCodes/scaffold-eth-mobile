@@ -48,7 +48,7 @@ const config: HardhatUserConfig = {
     },
     ganache : {
       url: "http://192.168.48.72:7545",
-      accounts: ["0x6cdeb3738ae61deb41366259a84c38886dcffbadbfbf4e633172e01f6f4ab8a7"],
+      accounts: ["0x8ae52b9034159e1abc21267849702d1e5b65a15cf869a62a069850e30e5bc243"],
     },
     mainnet: {
       url: `https://eth-mainnet.alchemyapi.io/v2/${providerApiKey}`,
