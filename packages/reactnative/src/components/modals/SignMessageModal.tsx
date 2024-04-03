@@ -5,6 +5,7 @@ import useNetwork from '../../hooks/scaffold-eth/useNetwork'
 import useAccount from '../../hooks/scaffold-eth/useAccount'
 import Blockie from '../Blockie'
 import Button from '../Button'
+import useBalance from '../../hooks/scaffold-eth/useBalance'
 
 type Props = {
     modal: {
@@ -19,10 +20,13 @@ type Props = {
 export default function SignMessageModal({ modal: { closeModal, params } }: Props) {
     const account = useAccount()
     const network = useNetwork()
+    const { balance, isLoading: isLoadingBalance } = useBalance()
 
     const sign = () => {
         closeModal("SignMessageModal", params.onConfirm)
     }
+
+    console.log(balance)
 
     return (
         <VStack bgColor="white" borderRadius="30" p="5" space={4} w={WINDOW_WIDTH * 0.9}>
@@ -38,7 +42,7 @@ export default function SignMessageModal({ modal: { closeModal, params } }: Prop
 
                 <VStack alignItems={"flex-end"}>
                     <Text fontSize={"md"}>Balance</Text>
-                    <Text fontSize={"sm"} fontWeight={"medium"}>0 {network.currencySymbol}</Text>
+                    <Text fontSize={"sm"} fontWeight={"medium"}>{balance && `${balance} ${network.currencySymbol}`}</Text>
                 </VStack>
             </HStack>
 

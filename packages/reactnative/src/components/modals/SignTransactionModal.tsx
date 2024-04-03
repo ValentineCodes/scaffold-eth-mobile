@@ -10,6 +10,7 @@ import Button from '../Button'
 import "react-native-get-random-values"
 import "@ethersproject/shims"
 import { BigNumber, Contract, ethers } from "ethers";
+import useBalance from '../../hooks/scaffold-eth/useBalance'
 
 type Props = {
     modal: {
@@ -33,6 +34,8 @@ interface GasCost {
 export default function SignTransactionModal({ modal: { closeModal, params } }: Props) {
     const account = useAccount()
     const network = useNetwork()
+    const { balance, isLoading: isLoadingBalance } = useBalance()
+
     const [estimatedGasCost, setEstimatedGasCost] = useState<GasCost>({
         min: null,
         max: null
@@ -98,7 +101,7 @@ export default function SignTransactionModal({ modal: { closeModal, params } }: 
 
                         <VStack w="75%">
                             <Text fontSize={FONT_SIZE['xl']} fontWeight="medium">{account.name}</Text>
-                            <Text fontSize={FONT_SIZE['md']}>Balance: </Text>
+                            <Text fontSize={FONT_SIZE['md']}>Balance: {balance && `${balance} ${network.currencySymbol}`}</Text>
                         </VStack>
                     </HStack>
                 </HStack>

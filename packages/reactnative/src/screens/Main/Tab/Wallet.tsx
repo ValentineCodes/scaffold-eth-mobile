@@ -40,7 +40,6 @@ function Wallet({ }: Props) {
 
     const getBalance = async () => {
         if (isLoadingBalance) return
-
         setIsLoadingBalance(true)
 
         try {
