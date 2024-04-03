@@ -4,13 +4,18 @@ import useNetwork from './useNetwork'
 
 import "react-native-get-random-values"
 import "@ethersproject/shims"
-import { Wallet, ethers } from "ethers";
+import { Wallet, ContractInterface, ethers } from "ethers";
 import useAccount from './useAccount'
 import SInfo from "react-native-sensitive-info"
 
+interface Props {
+    abi: ContractInterface
+    address: string
+    functionName: string
+    args: any[]
+}
 
-export default function useScaffoldContractRead(contractName: string, functionName: string, args: any[]) {
-    const { data: deployedContractData, isLoading: isLoadingDeployedContractData } = useDeployedContractInfo(contractName)
+export default function useScaffoldContractRead({abi, address, functionName, args}: Props) {
     const network = useNetwork()
     const connectedAccount = useAccount()
 
@@ -19,8 +24,6 @@ export default function useScaffoldContractRead(contractName: string, functionNa
     const [error, setError] = useState<any>(null)
 
     async function fetchData(){
-        if (!deployedContractData) return
-
         try {
             setIsLoading(true)
             const provider = new ethers.providers.JsonRpcProvider(network.provider)
@@ -33,8 +36,8 @@ export default function useScaffoldContractRead(contractName: string, functionNa
             const activeAccount: Wallet = Array.from(JSON.parse(accounts)).find(account => account.address.toLowerCase() == connectedAccount.address.toLowerCase())
     
             const wallet = new ethers.Wallet(activeAccount.privateKey).connect(provider)
-            
-            const contract = new ethers.Contract(deployedContractData.address, deployedContractData.abi, wallet)
+
+            const contract = new ethers.Contract(address, abi, wallet)
 
             const result = await contract.functions[functionName](...args)
             
@@ -51,7 +54,7 @@ export default function useScaffoldContractRead(contractName: string, functionNa
 
     useEffect(() => {
         fetchData()
-    }, [isLoadingDeployedContractData])
+    }, [isLoading])
     
 
     return {
