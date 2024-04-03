@@ -26,8 +26,6 @@ export default function SignMessageModal({ modal: { closeModal, params } }: Prop
         closeModal("SignMessageModal", params.onConfirm)
     }
 
-    console.log(balance)
-
     return (
         <VStack bgColor="white" borderRadius="30" p="5" space={4} w={WINDOW_WIDTH * 0.9}>
             <HStack alignItems="center" justifyContent="space-between" pb={4} borderBottomWidth={1} borderBottomColor={"muted.200"}>
