@@ -4,16 +4,17 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ToastProvider } from 'react-native-toast-notifications';
 import { MenuProvider } from 'react-native-popup-menu';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { ModalProvider, createModalStack } from 'react-native-modalfy';
+import { ModalOptions, ModalProvider, createModalStack } from 'react-native-modalfy';
 
 import SignTransactionModal from '../components/modals/SignTransactionModal';
+import SignMessageModal from '../components/modals/SignMessageModal';
 
 type Props = {
   children: JSX.Element
 }
 
-const modalConfig = { SignTransactionModal }
-const defaultOptions = { backdropOpacity: 0.6 }
+const modalConfig = { SignTransactionModal, SignMessageModal }
+const defaultOptions: ModalOptions = { backdropOpacity: 0.6, disableFlingGesture: true }
 
 const modalStack = createModalStack(modalConfig, defaultOptions)
 
