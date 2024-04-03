@@ -1,18 +1,18 @@
 import { useModal } from 'react-native-modalfy'
 import useNetwork from './useNetwork';
-import { useDeployedContractInfo } from './useDeployedContractInfo';
 import { useToast } from 'react-native-toast-notifications';
 import useTargetNetwork from './useTargetNetwork';
 
 import "react-native-get-random-values"
 import "@ethersproject/shims"
-import { BigNumber, Transaction, Wallet, ethers } from "ethers";
+import { BigNumber, ContractInterface, Transaction, Wallet, ethers } from "ethers";
 
 import SInfo from "react-native-sensitive-info"
 import useAccount from './useAccount';
 
-interface UseScaffoldWriteConfig {
-    contractName: string;
+interface UseWriteConfig {
+    abi: ContractInterface
+    address: string
     functionName: string;
     blockConfirmations?: number;
 }
@@ -22,13 +22,13 @@ interface SendTxConfig {
     value?: BigNumber | undefined;
 }
 
-export default function useScaffoldContractWrite({
-    contractName, 
+export default function useContractWrite({
+    abi,
+    address, 
     functionName,
     blockConfirmations
-}: UseScaffoldWriteConfig) {
+}: UseWriteConfig) {
     const {openModal} = useModal()
-    const { data: deployedContractData, isLoading } = useDeployedContractInfo(contractName)
     const network = useNetwork()
     const toast = useToast()
     const targetNetwork = useTargetNetwork()
@@ -42,9 +42,6 @@ export default function useScaffoldContractWrite({
         const _args = args || []
         const _value = value || BigNumber.from(0)
 
-        if(!deployedContractData){
-            throw new Error("Target Contract is not deployed, did you forget to run `yarn deploy`?")
-        }
         if(network.chainId !== targetNetwork.id) {
             throw new Error("You are on the wrong network")
         }
@@ -53,9 +50,9 @@ export default function useScaffoldContractWrite({
             try {
                 const provider = new ethers.providers.JsonRpcProvider(network.provider)
     
-                const contract = new ethers.Contract(deployedContractData.address, deployedContractData.abi, provider)
+                const contract = new ethers.Contract(address, abi, provider)
 
-                openModal("SignTransactionModal", {contract, contractAddress: deployedContractData.address, functionName, args: _args, value: _value, onConfirm})
+                openModal("SignTransactionModal", {contract, contractAddress: address, functionName, args: _args, value: _value, onConfirm})
                 
             } catch(error) {
                 reject(error)
@@ -74,7 +71,7 @@ export default function useScaffoldContractWrite({
             
                     const wallet = new ethers.Wallet(activeAccount.privateKey).connect(provider)
         
-                    const contract = new ethers.Contract(deployedContractData!.address, deployedContractData!.abi, wallet)
+                    const contract = new ethers.Contract(address, abi, wallet)
         
                     const tx = await contract.functions[functionName](..._args, {
                         value: _value
