@@ -20,7 +20,7 @@ type Props = {
 export default function SignMessageModal({ modal: { closeModal, params } }: Props) {
     const account = useAccount()
     const network = useNetwork()
-    const { balance, isLoading: isLoadingBalance } = useBalance()
+    const { balance, isLoading: isLoadingBalance } = useBalance({ address: account.address })
 
     const sign = () => {
         closeModal("SignMessageModal", params.onConfirm)

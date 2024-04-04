@@ -34,7 +34,7 @@ interface GasCost {
 export default function SignTransactionModal({ modal: { closeModal, params } }: Props) {
     const account = useAccount()
     const network = useNetwork()
-    const { balance, isLoading: isLoadingBalance } = useBalance()
+    const { balance, isLoading: isLoadingBalance } = useBalance({ address: account.address })
 
     const [estimatedGasCost, setEstimatedGasCost] = useState<GasCost>({
         min: null,

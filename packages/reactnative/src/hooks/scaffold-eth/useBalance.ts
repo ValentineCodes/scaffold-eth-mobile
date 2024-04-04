@@ -8,9 +8,11 @@ import { ethers } from "ethers";
 
 import { parseFloat } from "../../utils/helperFunctions"
 
-export default function useBalance() {
+interface Props {
+    address: string
+}
+export default function useBalance({address}: Props) {
     const network = useNetwork()
-    const connectedAccount = useAccount()
 
     const [balance, setBalance] = useState("")
     const [isLoading, setIsLoading] = useState(true)
@@ -21,7 +23,7 @@ export default function useBalance() {
 
         try {
             const provider = new ethers.providers.JsonRpcProvider(network.provider)
-            const balance = await provider.getBalance(connectedAccount.address)
+            const balance = await provider.getBalance(address)
             const _balance = Number(ethers.utils.formatEther(balance)) ? parseFloat(Number(ethers.utils.formatEther(balance)).toString(), 4) : 0
 
             setBalance(_balance.toString())
