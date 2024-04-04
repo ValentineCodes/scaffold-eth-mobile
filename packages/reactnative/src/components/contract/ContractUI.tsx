@@ -8,6 +8,7 @@ import Address from '../scaffold-eth/Address'
 import Balance from '../scaffold-eth/Balance'
 import ContractReadMethods from './ContractReadMethods'
 import ContractVariables from './ContractVariables'
+import ContractWriteMethods from './ContractWriteMethods'
 
 type Props = {
     contractName: string
@@ -79,7 +80,7 @@ export default function ContractUI({ contractName }: Props) {
                 <Text fontSize={"lg"} fontWeight={"semibold"}>Write</Text>
             </View>
             <VStack bgColor={"white"} zIndex={10} mt={-8} mb={"6"} space={1} p={"4"} rounded={"2xl"} borderWidth={"1"} borderColor={"muted.300"}>
-
+                <ContractWriteMethods deployedContractData={deployedContractData} />
             </VStack>
         </ScrollView>
     )

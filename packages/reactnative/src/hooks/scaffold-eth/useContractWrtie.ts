@@ -5,15 +5,19 @@ import useTargetNetwork from './useTargetNetwork';
 
 import "react-native-get-random-values"
 import "@ethersproject/shims"
-import { BigNumber, ContractInterface, Transaction, Wallet, ethers } from "ethers";
+import { BigNumber, ContractInterface, Wallet, ethers } from "ethers";
 
 import SInfo from "react-native-sensitive-info"
 import useAccount from './useAccount';
+import { Abi } from 'abitype';
+import { useState } from 'react';
+import { TransactionReceipt } from 'viem';
 
 interface UseWriteConfig {
-    abi: ContractInterface
+    abi: ContractInterface | Abi
     address: string
     functionName: string;
+    args: any[]
     blockConfirmations?: number;
 }
 
@@ -26,20 +30,23 @@ export default function useContractWrite({
     abi,
     address, 
     functionName,
+    args,
     blockConfirmations
 }: UseWriteConfig) {
+    const writeArgs = args
     const {openModal} = useModal()
     const network = useNetwork()
     const toast = useToast()
     const targetNetwork = useTargetNetwork()
     const connectedAccount = useAccount()
+    const [isLoading, setIsLoading] = useState(false)
 
     const sendTransaction = async (params: SendTxConfig = {
         args: [],
         value: BigNumber.from(0),
-    }): Promise<Transaction> => {
+    }): Promise<TransactionReceipt> => {
         const {args, value} = params
-        const _args = args || []
+        const _args = args || writeArgs || []
         const _value = value || BigNumber.from(0)
 
         if(network.chainId !== targetNetwork.id) {
@@ -59,6 +66,7 @@ export default function useContractWrite({
             }
     
             async function onConfirm(){
+                setIsLoading(true)
                 try {
                     const provider = new ethers.providers.JsonRpcProvider(network.provider)
     
@@ -76,19 +84,22 @@ export default function useContractWrite({
                     const tx = await contract.functions[functionName](..._args, {
                         value: _value
                     })
-                    await tx.wait(blockConfirmations || 1)
+                    const receipt = await tx.wait(blockConfirmations || 1)
                     toast.show("Transaction Successful!", {
                         type: "success"
                     })
-                    resolve(tx)
+                    resolve(receipt)
                 } catch(error) {
                     reject(error)
+                } finally {
+                    setIsLoading(false)
                 }
             }
         })
     }
 
     return {
+        isLoading,
         write: sendTransaction
     }
 }

@@ -3,7 +3,7 @@ import React from 'react'
 import Ionicons from "react-native-vector-icons/dist/Ionicons"
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useToast } from 'react-native-toast-notifications';
-import { ViewStyle, TextStyle, StyleSheet } from 'react-native';
+import { ViewStyle, TextStyle } from 'react-native';
 import Blockie from '../Blockie';
 import { truncateAddress } from '../../utils/helperFunctions';
 import { FONT_SIZE } from '../../utils/styles';

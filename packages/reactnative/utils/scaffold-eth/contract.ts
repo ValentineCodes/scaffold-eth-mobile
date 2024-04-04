@@ -67,3 +67,5 @@ const contractsData = deepMergeContracts(deployedContractsData, externalContract
 export const contracts = contractsData as GenericContractsDeclaration | null;
 
 export type ContractName = keyof Contracts;
+
+export type Contract<TContractName extends ContractName> = Contracts[TContractName];

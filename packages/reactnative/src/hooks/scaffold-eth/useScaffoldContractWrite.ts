@@ -6,10 +6,11 @@ import useTargetNetwork from './useTargetNetwork';
 
 import "react-native-get-random-values"
 import "@ethersproject/shims"
-import { BigNumber, Transaction, Wallet, ethers } from "ethers";
+import { BigNumber, Wallet, ethers } from "ethers";
 
 import SInfo from "react-native-sensitive-info"
 import useAccount from './useAccount';
+import { TransactionReceipt } from 'viem';
 
 interface UseScaffoldWriteConfig {
     contractName: string;
@@ -37,7 +38,7 @@ export default function useScaffoldContractWrite({
     const sendTransaction = async (params: SendTxConfig = {
         args: [],
         value: BigNumber.from(0),
-    }): Promise<Transaction> => {
+    }): Promise<TransactionReceipt> => {
         const {args, value} = params
         const _args = args || []
         const _value = value || BigNumber.from(0)
@@ -79,11 +80,11 @@ export default function useScaffoldContractWrite({
                     const tx = await contract.functions[functionName](..._args, {
                         value: _value
                     })
-                    await tx.wait(blockConfirmations || 1)
+                    const receipt = await tx.wait(blockConfirmations || 1)
                     toast.show("Transaction Successful!", {
                         type: "success"
                     })
-                    resolve(tx)
+                    resolve(receipt)
                 } catch(error) {
                     reject(error)
                 }

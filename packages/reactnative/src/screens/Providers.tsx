@@ -8,12 +8,13 @@ import { ModalOptions, ModalProvider, createModalStack } from 'react-native-moda
 
 import SignTransactionModal from '../components/modals/SignTransactionModal';
 import SignMessageModal from '../components/modals/SignMessageModal';
+import TxReceiptModal from '../components/modals/TxReceiptModal';
 
 type Props = {
   children: JSX.Element
 }
 
-const modalConfig = { SignTransactionModal, SignMessageModal }
+const modalConfig = { SignTransactionModal, SignMessageModal, TxReceiptModal }
 const defaultOptions: ModalOptions = { backdropOpacity: 0.6, disableFlingGesture: true }
 
 const modalStack = createModalStack(modalConfig, defaultOptions)
