@@ -4,11 +4,11 @@ import { ContractName, GenericContract, InheritedFunctions } from "../../../util
 import { Text } from "native-base";
 import DisplayVariable from "./DisplayVariable";
 
-export const ContractVariables = ({
+export default function ContractVariables({
     deployedContractData,
 }: {
     deployedContractData: Contract<ContractName>;
-}) => {
+}) {
     if (!deployedContractData) {
         return null;
     }

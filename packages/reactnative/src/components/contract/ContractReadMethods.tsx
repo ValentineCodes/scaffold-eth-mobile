@@ -1,9 +1,8 @@
-import { Text, View } from 'native-base'
+import { Text } from 'native-base'
 import React from 'react'
 import { GenericContract, InheritedFunctions } from '../../../utils/scaffold-eth/contract';
 import { Abi, AbiFunction } from "abitype";
 import ReadOnlyFunctionForm from './ReadOnlyFunctionForm';
-import { COLORS } from '../../utils/constants';
 
 type Props = {
     deployedContractData: any
@@ -35,15 +34,6 @@ export default function ContractReadMethods({ deployedContractData }: Props) {
     }
     return (
         <>
-            <View
-                bgColor={COLORS.primaryLight}
-                alignSelf={"flex-start"}
-                px={"4"}
-                py={"1"}
-                rounded={"2xl"}
-            >
-                <Text fontSize={"lg"} fontWeight={"semibold"}>Read</Text>
-            </View>
             {functionsToDisplay.map(({ fn, inheritedFrom }) => (
                 <ReadOnlyFunctionForm
                     key={fn.name}

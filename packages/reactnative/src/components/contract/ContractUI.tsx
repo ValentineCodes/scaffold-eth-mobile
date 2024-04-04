@@ -7,7 +7,7 @@ import { COLORS } from '../../utils/constants'
 import Address from '../scaffold-eth/Address'
 import Balance from '../scaffold-eth/Balance'
 import ContractReadMethods from './ContractReadMethods'
-import { ContractVariables } from './ContractVariables'
+import ContractVariables from './ContractVariables'
 
 type Props = {
     contractName: string
@@ -35,7 +35,7 @@ export default function ContractUI({ contractName }: Props) {
 
     return (
         <ScrollView p={"4"} flex={1}>
-            <VStack space={1} p={"4"} mb={"6"} rounded={"2xl"} borderWidth={"1"} borderColor={"muted.300"}>
+            <VStack space={1} p={"4"} mb={"6"} rounded={"2xl"} borderWidth={"1"} borderColor={"muted.300"} bgColor={"white"}>
                 <Text fontSize={"lg"} fontWeight={"semibold"}>{contractName}</Text>
                 <Address address={deployedContractData.address} />
                 <HStack space={1} alignItems={"center"}>
@@ -54,11 +54,31 @@ export default function ContractUI({ contractName }: Props) {
                 <ContractVariables deployedContractData={deployedContractData} />
             </VStack>
 
-            <VStack mb={"6"} space={1} p={"4"} rounded={"2xl"} borderWidth={"1"} borderColor={"muted.300"}>
+            <View
+                bgColor={COLORS.primaryLight}
+                alignSelf={"flex-start"}
+                px={"4"}
+                py={"1"}
+                rounded={"2xl"}
+                h={"16"}
+            >
+                <Text fontSize={"lg"} fontWeight={"semibold"}>Read</Text>
+            </View>
+            <VStack mb={"6"} zIndex={10} mt={-8} space={1} p={"4"} rounded={"2xl"} borderWidth={"1"} borderColor={"muted.300"} bgColor={"white"}>
                 <ContractReadMethods deployedContractData={deployedContractData} />
             </VStack>
 
-            <VStack mb={"6"} space={1} p={"4"} rounded={"2xl"} borderWidth={"1"} borderColor={"muted.300"}>
+            <View
+                bgColor={COLORS.primaryLight}
+                alignSelf={"flex-start"}
+                px={"4"}
+                py={"1"}
+                rounded={"2xl"}
+                h={"16"}
+            >
+                <Text fontSize={"lg"} fontWeight={"semibold"}>Write</Text>
+            </View>
+            <VStack bgColor={"white"} zIndex={10} mt={-8} mb={"6"} space={1} p={"4"} rounded={"2xl"} borderWidth={"1"} borderColor={"muted.300"}>
 
             </VStack>
         </ScrollView>
