@@ -2,11 +2,12 @@ import { Abi, AbiFunction } from 'abitype';
 import { HStack, Pressable, Spinner, Text, VStack } from 'native-base'
 import React, { useEffect } from 'react'
 import { useToast } from 'react-native-toast-notifications';
-import { Address } from 'viem';
+import { Address, isAddress } from 'viem';
 import useContractRead from '../../hooks/scaffold-eth/useContractRead';
 import { COLORS } from '../../utils/constants';
 import { FONT_SIZE } from '../../utils/styles';
 import MaterialIcons from "react-native-vector-icons/dist/MaterialIcons"
+import AddressComp from '../scaffold-eth/Address';
 
 
 type Props = {
@@ -57,9 +58,18 @@ export default function DisplayVariable({
                     )}
                 </Pressable>
             </HStack>
-            {result !== null && result !== undefined && result.map(data => (
-                <Text key={Math.random().toString()} fontSize={"sm"}>{typeof data == "object" && isNaN(data) ? JSON.stringify(data) : data.toString()}</Text>
-            ))}
+            {result !== null && result !== undefined && result.map(data => {
+
+                if (typeof data == "object" && isNaN(data)) {
+                    return <Text key={Math.random().toString()} fontSize={"sm"}>{JSON.stringify(data)}</Text>
+                }
+
+                if (isAddress(data.toString())) {
+                    return <AddressComp key={Math.random().toString()} address={data.toString()} />
+                }
+
+                return <Text key={Math.random().toString()} fontSize={"sm"}>{data.toString()}</Text>
+            })}
         </VStack>
     )
 }

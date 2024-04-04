@@ -57,6 +57,10 @@ export default function ContractUI({ contractName }: Props) {
             <VStack mb={"6"} space={1} p={"4"} rounded={"2xl"} borderWidth={"1"} borderColor={"muted.300"}>
                 <ContractReadMethods deployedContractData={deployedContractData} />
             </VStack>
+
+            <VStack mb={"6"} space={1} p={"4"} rounded={"2xl"} borderWidth={"1"} borderColor={"muted.300"}>
+
+            </VStack>
         </ScrollView>
     )
 }
