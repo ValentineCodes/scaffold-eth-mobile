@@ -7,6 +7,7 @@ import { COLORS } from '../../utils/constants'
 import Address from '../scaffold-eth/Address'
 import Balance from '../scaffold-eth/Balance'
 import ContractReadMethods from './ContractReadMethods'
+import { ContractVariables } from './ContractVariables'
 
 type Props = {
     contractName: string
@@ -47,6 +48,10 @@ export default function ContractUI({ contractName }: Props) {
                         <Text color={"blue.400"} fontWeight={"medium"}>{targetNetwork.name}</Text>
                     </HStack>
                 )}
+            </VStack>
+
+            <VStack bgColor={COLORS.primaryLight} mb={"6"} space={1} p={"4"} rounded={"2xl"} borderWidth={"1"} borderColor={"muted.300"}>
+                <ContractVariables deployedContractData={deployedContractData} />
             </VStack>
 
             <VStack mb={"6"} space={1} p={"4"} rounded={"2xl"} borderWidth={"1"} borderColor={"muted.300"}>

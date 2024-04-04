@@ -275,6 +275,63 @@ const deployedContracts = {
         {
           inputs: [
             {
+              internalType: "address",
+              name: "_address",
+              type: "address",
+            },
+          ],
+          name: "getAddress",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "pure",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "data",
+              type: "bytes32",
+            },
+          ],
+          name: "getBytes",
+          outputs: [
+            {
+              internalType: "bytes32",
+              name: "",
+              type: "bytes32",
+            },
+          ],
+          stateMutability: "pure",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "int256",
+              name: "data",
+              type: "int256",
+            },
+          ],
+          name: "getInteger",
+          outputs: [
+            {
+              internalType: "int256",
+              name: "",
+              type: "int256",
+            },
+          ],
+          stateMutability: "pure",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
               internalType: "string",
               name: "rubbish",
               type: "string",

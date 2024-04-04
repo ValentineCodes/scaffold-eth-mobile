@@ -7,6 +7,7 @@ import {
 
 import deployedContractsData from "../../contracts/deployedContracts";
 import externalContractsData from "../../contracts/externalContracts";
+import scaffoldConfig from "../../scaffold.config";
 
 export enum ContractCodeStatus {
   "LOADING",
@@ -28,6 +29,16 @@ export type GenericContractsDeclaration = {
     [contractName: string]: GenericContract;
   };
 };
+
+type ConfiguredChainId = (typeof scaffoldConfig)["targetNetworks"][0]["id"];
+
+type IsContractDeclarationMissing<TYes, TNo> = typeof contractsData extends { [key in ConfiguredChainId]: any }
+  ? TNo
+  : TYes;
+
+type ContractsDeclaration = IsContractDeclarationMissing<GenericContractsDeclaration, typeof contractsData>;
+
+type Contracts = ContractsDeclaration[ConfiguredChainId];
 
 const deepMergeContracts = (
   local,
@@ -54,3 +65,5 @@ const deepMergeContracts = (
 const contractsData = deepMergeContracts(deployedContractsData, externalContractsData);
 
 export const contracts = contractsData as GenericContractsDeclaration | null;
+
+export type ContractName = keyof Contracts;

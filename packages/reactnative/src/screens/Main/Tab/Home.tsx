@@ -34,7 +34,7 @@ export default function Home({ }: Props) {
     }
     return (
         <View>
-            <Button onPress={sign}>Press me</Button>
+            <Button onPress={setGreeting}>Press me</Button>
             <Text>{greeting}</Text>
             <Text>{premium?.toString()}</Text>
         </View>

@@ -63,10 +63,10 @@ export default function useContractRead({abi, address, functionName, args, enabl
     }
 
     useEffect(() => {
-        if(enabled) {
+        if(enabled !== false) {
             fetchData()
         }
-    }, [isLoading, enabled])
+    }, [enabled])
     
 
     return {
