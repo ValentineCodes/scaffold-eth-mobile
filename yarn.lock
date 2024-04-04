@@ -9733,7 +9733,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"blo@npm:^1.0.1":
+"blo@npm:^1.0.1, blo@npm:^1.1.1":
   version: 1.1.1
   resolution: "blo@npm:1.1.1"
   checksum: 896183e4ff43e8ebfc89153f6772e510d8f4566ef25e6bebb7e31531e1059c0517bc23d2d605758c9e5ea0c62c21203172575625a53748d013ed78ace08f30f4
@@ -20636,6 +20636,7 @@ __metadata:
     abitype: ^1.0.2
     babel-jest: ^29.2.1
     babel-plugin-module-resolver: ^5.0.0
+    blo: ^1.1.1
     eslint: ^8.19.0
     ethers: 5.7.2
     fast-text-encoding: ^1.0.6

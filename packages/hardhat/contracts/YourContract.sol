@@ -77,6 +77,18 @@ contract YourContract {
 		return rubbish;
 	}
 
+	function getAddress(address _address) external pure returns (address) {
+		return _address;
+	}
+
+	function getBytes(bytes32 data) external pure returns (bytes32) {
+		return data;
+	}
+
+	function getInteger(int data) external pure returns (int) {
+		return data;
+	}
+
 	/**
 	 * Function that allows the owner to withdraw all the Ether in the contract
 	 * The function can only be called by the owner of the contract as defined by the isOwner modifier

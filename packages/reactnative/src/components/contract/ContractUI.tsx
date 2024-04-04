@@ -33,8 +33,8 @@ export default function ContractUI({ contractName }: Props) {
     }
 
     return (
-        <ScrollView p={"4"}>
-            <VStack space={1} p={"4"} rounded={"2xl"} borderWidth={"1"} borderColor={"muted.300"}>
+        <ScrollView p={"4"} flex={1}>
+            <VStack space={1} p={"4"} mb={"6"} rounded={"2xl"} borderWidth={"1"} borderColor={"muted.300"}>
                 <Text fontSize={"lg"} fontWeight={"semibold"}>{contractName}</Text>
                 <Address address={deployedContractData.address} />
                 <HStack space={1} alignItems={"center"}>
@@ -49,7 +49,7 @@ export default function ContractUI({ contractName }: Props) {
                 )}
             </VStack>
 
-            <VStack mt={"6"} space={1} p={"4"} rounded={"2xl"} borderWidth={"1"} borderColor={"muted.300"}>
+            <VStack mb={"6"} space={1} p={"4"} rounded={"2xl"} borderWidth={"1"} borderColor={"muted.300"}>
                 <ContractReadMethods deployedContractData={deployedContractData} />
             </VStack>
         </ScrollView>

@@ -51,8 +51,9 @@ export default function IntegerInput({
                         onPress={multiplyBy1e18}
                         isDisabled={disabled}
                         px={"4"}
+                        mt={"1"}
                     >
-                        <Text fontSize={"md"} fontWeight={"semibold"}>*</Text>
+                        <Text fontSize={"xl"} fontWeight={"semibold"}>*</Text>
                     </Pressable>
                 )
             }

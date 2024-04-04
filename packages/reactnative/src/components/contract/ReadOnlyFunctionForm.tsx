@@ -55,6 +55,7 @@ export default function ReadOnlyFunctionForm({
     });
 
 
+
     return (
         <View>
             <Text fontSize={"md"} fontWeight={"medium"} my={"2"}>{abiFunction.name}</Text>
@@ -68,7 +69,7 @@ export default function ReadOnlyFunctionForm({
                 >
                     <Text fontSize={"md"} fontWeight={"semibold"}>Result:</Text>
                     {result.map(data => (
-                        <Text fontSize={"sm"}>{JSON.stringify(data)}</Text>
+                        <Text key={Math.random().toString()} fontSize={"sm"}>{typeof data == "object" && isNaN(data) ? JSON.stringify(data) : data.toString()}</Text>
                     ))}
                 </VStack>
             )}

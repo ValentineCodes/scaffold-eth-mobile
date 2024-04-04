@@ -28,7 +28,6 @@ export default function InputBase<T extends { toString: () => string } | undefin
 
     return (
         <View>
-            {prefix}
             <Input
                 value={value?.toString()}
                 borderRadius={"3xl"}
@@ -39,8 +38,9 @@ export default function InputBase<T extends { toString: () => string } | undefin
                 isDisabled={disabled}
                 placeholder={placeholder}
                 onChangeText={handleChange}
+                InputLeftElement={prefix}
+                InputRightElement={suffix}
             />
-            {suffix}
         </View>
     )
 }
