@@ -46,7 +46,7 @@ export default function useBalance({address}: Props) {
       return () => {
           provider.off("block")
       };
-    }, [connectedAccount, network])
+    }, [address, network])
 
     return {
         balance,
