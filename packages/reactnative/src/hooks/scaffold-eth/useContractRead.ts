@@ -4,23 +4,26 @@ import useNetwork from './useNetwork'
 
 import "react-native-get-random-values"
 import "@ethersproject/shims"
-import { Wallet, ContractInterface, ethers } from "ethers";
+import { ContractInterface, Wallet, ethers } from "ethers";
 import useAccount from './useAccount'
 import SInfo from "react-native-sensitive-info"
+import { Abi } from 'abitype'
 
 interface Props {
-    abi: ContractInterface
+    abi: Abi | ContractInterface
     address: string
     functionName: string
-    args: any[]
+    args?: any[]
+    enabled?: boolean
+    onError?: (error: any) => void
 }
 
-export default function useScaffoldContractRead({abi, address, functionName, args}: Props) {
+export default function useContractRead({abi, address, functionName, args, enabled, onError}: Props) {
     const network = useNetwork()
     const connectedAccount = useAccount()
 
     const [data, setData] = useState<any[] | null>(null)
-    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(enabled || false)
     const [error, setError] = useState<any>(null)
 
     async function fetchData(){
@@ -39,22 +42,31 @@ export default function useScaffoldContractRead({abi, address, functionName, arg
 
             const contract = new ethers.Contract(address, abi, wallet)
 
-            const result = await contract.functions[functionName](...args)
+
+            const result = await contract.functions[functionName](...(args || []))
             
             if(error) {
                 setError(null)
             }
             setData(result)
+
+            return result
         } catch(error) {
             setError(error)
+            
+            if(onError) {
+                onError(error)
+            }
         } finally {
             setIsLoading(false)
         }
     }
 
     useEffect(() => {
-        fetchData()
-    }, [isLoading])
+        if(enabled) {
+            fetchData()
+        }
+    }, [isLoading, enabled])
     
 
     return {
