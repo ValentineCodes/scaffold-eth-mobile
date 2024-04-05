@@ -1,4 +1,4 @@
-import { HStack, Icon, Pressable, ScrollView, Text } from 'native-base'
+import { HStack, Icon, Pressable, ScrollView, Text, View } from 'native-base'
 import React from 'react'
 import { WINDOW_HEIGHT, WINDOW_WIDTH } from '../../utils/styles'
 import { TransactionReceipt } from 'viem'
@@ -9,31 +9,45 @@ import { COLORS } from '../../utils/constants'
 import { displayTxResult } from '../contract/utilsDisplay'
 
 type Props = {
-    txReceipt: string | number | bigint | Record<string, any> | TransactionReceipt | undefined
+    modal: {
+        closeModal: (modal?: string, callback?: () => void) => void
+        params: {
+            txReceipt: string | number | bigint | Record<string, any> | TransactionReceipt | undefined
+        }
+    }
 }
 
-export default function TxReceiptModal({ txReceipt }: Props) {
+export default function TxReceiptModal({ modal: { closeModal, params } }: Props) {
     const toast = useToast()
 
     const copy = () => {
-        Clipboard.setString(JSON.stringify(txReceipt))
+        Clipboard.setString(JSON.stringify(params.txReceipt))
         toast.show("Copied to clipboard", {
             type: "success"
         })
     }
 
     return (
-        <ScrollView bgColor="white" borderRadius="30" p="5" w={WINDOW_WIDTH * 0.9} maxHeight={WINDOW_HEIGHT * 0.5}>
-            <HStack>
-                <Pressable onPress={copy}>
-                    <Icon as={<Ionicons name="copy-outline" />} size={5} color={COLORS.primary} />
-                </Pressable>
+        <View bgColor="white" borderRadius="30" p="5" w={WINDOW_WIDTH * 0.9} h={WINDOW_HEIGHT * 0.5}>
+            <HStack alignItems={"center"} justifyContent={"space-between"}>
+                <HStack alignItems={"center"} space={"1"}>
+                    <Pressable onPress={copy}>
+                        <Icon as={<Ionicons name="copy-outline" />} size={5} color={COLORS.primary} />
+                    </Pressable>
 
-                <Text fontSize={"md"} fontWeight={"medium"}>Transaction Receipt</Text>
+                    <Text fontSize={"md"} fontWeight={"medium"}>Transaction Receipt</Text>
+                </HStack>
+
+                <Pressable onPress={() => closeModal()}>
+                    <Icon as={<Ionicons name="close-outline" />} size={"xl"} color={"muted.400"} />
+                </Pressable>
             </HStack>
-            <Text mb={"4"}>
-                {displayTxResult(txReceipt)}
-            </Text>
-        </ScrollView>
+
+            <ScrollView flex={1}>
+                <Text my={"4"}>
+                    {displayTxResult(params.txReceipt)}
+                </Text>
+            </ScrollView>
+        </View>
     )
 }

@@ -31,7 +31,7 @@ export default function WriteOnlyFunctionForm({
     const network = useNetwork()
     const targetNetwork = useTargetNetwork()
     const toast = useToast()
-    const [txReceipt, setTxReceipt] = useState<TransactionReceipt | undefined>(undefined);
+    const [txReceipt, setTxReceipt] = useState<TransactionReceipt | undefined>();
     const { openModal } = useModal()
     const writeDisabled = !network || network?.chainId !== targetNetwork.id;
 
@@ -67,7 +67,11 @@ export default function WriteOnlyFunctionForm({
             />
         );
     });
-    // const zeroInputs = inputElements.length === 0 && abiFunction.stateMutability !== "payable";
+    const zeroInputs = inputElements.length === 0 && abiFunction.stateMutability !== "payable";
+
+    const showReceipt = () => {
+        openModal("TxReceiptModal", { txReceipt })
+    }
     return (
         <View>
             <Text fontSize={"md"} fontWeight={"medium"} my={"2"}>{abiFunction.name}</Text>
@@ -93,9 +97,7 @@ export default function WriteOnlyFunctionForm({
                         borderRadius={"3xl"}
                         bgColor={"blue.300"}
                         _pressed={{ backgroundColor: 'rgba(39, 184, 88, 0.5)' }}
-                        onPress={() => {
-                            openModal("TxReceiptModal", { txReceipt })
-                        }}
+                        onPress={showReceipt}
                     >
                         <Text fontSize={"md"} fontWeight={"medium"} color={"white"}>Show Receipt</Text>
                     </Button>

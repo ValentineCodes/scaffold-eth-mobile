@@ -17,7 +17,7 @@ export default function Home({ }: Props) {
     const setGreeting = async () => {
         try {
             const tx = await write({ args: ["Hello, Ugo"], value: ethers.utils.parseEther("0.01") })
-            console.log(tx.hash)
+            console.log(tx)
         } catch (error) {
             console.error(error)
         }
@@ -34,7 +34,7 @@ export default function Home({ }: Props) {
     }
     return (
         <View>
-            <Button onPress={setGreeting}>Press me</Button>
+            <Button onPress={sign}>Press me</Button>
             <Text>{greeting}</Text>
             <Text>{premium?.toString()}</Text>
         </View>
