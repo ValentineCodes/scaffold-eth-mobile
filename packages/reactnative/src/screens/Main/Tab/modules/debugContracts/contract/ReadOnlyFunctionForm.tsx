@@ -1,12 +1,12 @@
 import { AbiFunction, Abi } from 'abitype';
 import { Address } from 'viem';
 import React, { useState } from 'react'
-import useContractRead from '../../hooks/scaffold-eth/useContractRead';
+import useContractRead from '../../../../../../hooks/scaffold-eth/useContractRead';
 import { useToast } from 'react-native-toast-notifications';
 import { getFunctionInputKey, getInitialFormState, getParsedContractFunctionArgs } from './utilsContract';
 import ContractInput from './ContractInput';
 import { Button, HStack, Text, VStack, View } from 'native-base';
-import { COLORS } from '../../utils/constants';
+import { COLORS } from '../../../../../../utils/constants';
 
 type Props = {
     contractAddress: Address;

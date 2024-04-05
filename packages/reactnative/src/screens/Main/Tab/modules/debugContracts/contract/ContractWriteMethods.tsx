@@ -1,6 +1,6 @@
 import { Abi, AbiFunction } from "abitype";
 import { Text } from "native-base";
-import { Contract, ContractName, GenericContract, InheritedFunctions } from "../../../utils/scaffold-eth/contract";
+import { Contract, ContractName, GenericContract, InheritedFunctions } from "../../../../../../../utils/scaffold-eth/contract";
 import WriteOnlyFunctionForm from "./WriteOnlyFunctionForm";
 
 export default function ContractWriteMethods({

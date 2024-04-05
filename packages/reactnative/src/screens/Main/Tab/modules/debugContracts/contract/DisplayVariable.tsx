@@ -3,11 +3,11 @@ import { HStack, Pressable, Spinner, Text, VStack } from 'native-base'
 import React, { useEffect } from 'react'
 import { useToast } from 'react-native-toast-notifications';
 import { Address, isAddress } from 'viem';
-import useContractRead from '../../hooks/scaffold-eth/useContractRead';
-import { COLORS } from '../../utils/constants';
-import { FONT_SIZE } from '../../utils/styles';
+import useContractRead from '../../../../../../hooks/scaffold-eth/useContractRead';
+import { COLORS } from '../../../../../../utils/constants';
+import { FONT_SIZE } from '../../../../../../utils/styles';
 import MaterialIcons from "react-native-vector-icons/dist/MaterialIcons"
-import AddressComp from '../scaffold-eth/Address';
+import AddressComp from '../../../../../../components/scaffold-eth/Address';
 
 
 type Props = {

@@ -1,7 +1,7 @@
 import { View } from 'native-base'
 import React from 'react'
 
-import ContractUI from "../../../components/contract/ContractUI"
+import ContractUI from "./modules/debugContracts/contract/ContractUI"
 import { getAllContracts } from '../../../../utils/scaffold-eth/contractsData'
 
 const contractsData = getAllContracts();

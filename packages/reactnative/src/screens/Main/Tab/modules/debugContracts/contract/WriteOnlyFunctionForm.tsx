@@ -1,16 +1,16 @@
 import { Abi, AbiFunction, Address } from 'abitype';
 import React, { useState } from 'react'
 import { getFunctionInputKey, getInitialFormState, getParsedContractFunctionArgs } from './utilsContract';
-import useNetwork from '../../hooks/scaffold-eth/useNetwork';
-import useTargetNetwork from '../../hooks/scaffold-eth/useTargetNetwork';
-import useContractWrite from '../../hooks/scaffold-eth/useContractWrtie';
+import useNetwork from '../../../../../../hooks/scaffold-eth/useNetwork';
+import useTargetNetwork from '../../../../../../hooks/scaffold-eth/useTargetNetwork';
+import useContractWrite from '../../../../../../hooks/scaffold-eth/useContractWrtie';
 import { BigNumber } from 'ethers';
 import { useToast } from 'react-native-toast-notifications';
 import { TransactionReceipt } from 'viem';
 import ContractInput from './ContractInput';
 import { Button, HStack, Text, View } from 'native-base';
-import IntegerInput from '../scaffold-eth/input/IntegerInput';
-import { COLORS } from '../../utils/constants';
+import IntegerInput from '../../../../../../components/scaffold-eth/input/IntegerInput';
+import { COLORS } from '../../../../../../utils/constants';
 import { useModal } from 'react-native-modalfy';
 
 type Props = {

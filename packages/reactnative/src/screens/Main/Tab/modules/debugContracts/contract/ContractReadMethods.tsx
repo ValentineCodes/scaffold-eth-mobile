@@ -1,6 +1,6 @@
 import { Text } from 'native-base'
 import React from 'react'
-import { GenericContract, InheritedFunctions } from '../../../utils/scaffold-eth/contract';
+import { GenericContract, InheritedFunctions } from '../../../../../../../utils/scaffold-eth/contract';
 import { Abi, AbiFunction } from "abitype";
 import ReadOnlyFunctionForm from './ReadOnlyFunctionForm';
 

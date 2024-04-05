@@ -6,7 +6,7 @@ import Ionicons from "react-native-vector-icons/dist/Ionicons"
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useToast } from 'react-native-toast-notifications'
 import { COLORS } from '../../utils/constants'
-import { displayTxResult } from '../contract/utilsDisplay'
+import { displayTxResult } from '../../screens/Main/Tab/modules/debugContracts/contract/utilsDisplay'
 
 type Props = {
     modal: {

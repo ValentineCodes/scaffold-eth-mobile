@@ -1,6 +1,6 @@
 import { Abi, AbiFunction } from "abitype";
 import { Contract } from "ethers";
-import { ContractName, GenericContract, InheritedFunctions } from "../../../utils/scaffold-eth/contract";
+import { ContractName, GenericContract, InheritedFunctions } from "../../../../../../../utils/scaffold-eth/contract";
 import { Text } from "native-base";
 import DisplayVariable from "./DisplayVariable";
 
