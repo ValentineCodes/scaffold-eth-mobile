@@ -4,8 +4,10 @@ import { Contract, ContractName, GenericContract, InheritedFunctions } from "../
 import WriteOnlyFunctionForm from "./WriteOnlyFunctionForm";
 
 export default function ContractWriteMethods({
+    onChange,
     deployedContractData,
 }: {
+    onChange: () => void;
     deployedContractData: Contract<ContractName>;
 }) {
     if (!deployedContractData) {
@@ -39,7 +41,7 @@ export default function ContractWriteMethods({
                     key={`${fn.name}-${idx}}`}
                     abiFunction={fn}
                     contractAddress={deployedContractData.address}
-                    onChange={() => null}
+                    onChange={onChange}
                 />
             ))}
         </>

@@ -5,8 +5,10 @@ import { Text } from "native-base";
 import DisplayVariable from "./DisplayVariable";
 
 export default function ContractVariables({
+    refreshDisplayVariables,
     deployedContractData,
 }: {
+    refreshDisplayVariables: boolean;
     deployedContractData: Contract<ContractName>;
 }) {
     if (!deployedContractData) {
@@ -41,6 +43,7 @@ export default function ContractVariables({
                     abiFunction={fn}
                     contractAddress={deployedContractData.address}
                     key={fn.name}
+                    refreshDisplayVariables={refreshDisplayVariables}
                 />
             ))}
         </>

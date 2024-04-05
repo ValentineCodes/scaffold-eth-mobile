@@ -1,5 +1,5 @@
 import { HStack, ScrollView, Spinner, Text, VStack, View } from 'native-base'
-import React from 'react'
+import React, { useReducer } from 'react'
 
 import { useDeployedContractInfo } from '../../hooks/scaffold-eth/useDeployedContractInfo'
 import useTargetNetwork from '../../hooks/scaffold-eth/useTargetNetwork'
@@ -15,6 +15,7 @@ type Props = {
 }
 
 export default function ContractUI({ contractName }: Props) {
+    const [refreshDisplayVariables, triggerRefreshDisplayVariables] = useReducer(value => !value, false);
     const targetNetwork = useTargetNetwork()
     const { data: deployedContractData, isLoading: isDeployedContractLoading } = useDeployedContractInfo(contractName);
 
@@ -52,7 +53,10 @@ export default function ContractUI({ contractName }: Props) {
             </VStack>
 
             <VStack bgColor={COLORS.primaryLight} mb={"6"} space={1} p={"4"} rounded={"2xl"} borderWidth={"1"} borderColor={"muted.300"}>
-                <ContractVariables deployedContractData={deployedContractData} />
+                <ContractVariables
+                    refreshDisplayVariables={refreshDisplayVariables}
+                    deployedContractData={deployedContractData}
+                />
             </VStack>
 
             <View
@@ -80,7 +84,10 @@ export default function ContractUI({ contractName }: Props) {
                 <Text fontSize={"lg"} fontWeight={"semibold"}>Write</Text>
             </View>
             <VStack bgColor={"white"} zIndex={10} mt={-8} mb={"6"} space={1} p={"4"} rounded={"2xl"} borderWidth={"1"} borderColor={"muted.300"}>
-                <ContractWriteMethods deployedContractData={deployedContractData} />
+                <ContractWriteMethods
+                    deployedContractData={deployedContractData}
+                    onChange={triggerRefreshDisplayVariables}
+                />
             </VStack>
         </ScrollView>
     )

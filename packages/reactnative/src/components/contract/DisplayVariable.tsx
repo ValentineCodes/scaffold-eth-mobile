@@ -14,12 +14,14 @@ type Props = {
     contractAddress: Address;
     abiFunction: AbiFunction;
     abi: Abi;
+    refreshDisplayVariables: boolean;
 }
 
 export default function DisplayVariable({
     contractAddress,
     abiFunction,
-    abi
+    abi,
+    refreshDisplayVariables
 }: Props) {
     const toast = useToast()
 
@@ -40,7 +42,7 @@ export default function DisplayVariable({
 
     useEffect(() => {
         refetch();
-    }, []);
+    }, [refreshDisplayVariables]);
 
     return (
         <VStack space={1} mb={"4"}>
