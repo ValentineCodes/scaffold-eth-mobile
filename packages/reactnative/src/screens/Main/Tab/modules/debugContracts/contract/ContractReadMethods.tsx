@@ -30,7 +30,7 @@ export default function ContractReadMethods({ deployedContractData }: Props) {
         .sort((a, b) => (b.inheritedFrom ? b.inheritedFrom.localeCompare(a.inheritedFrom) : 1));
 
     if (!functionsToDisplay.length) {
-        return <Text fontSize={"xl"} fontWeight={"semibold"}>No read methods</Text>;
+        return <Text fontSize={"xl"} fontWeight={"light"}>No read methods</Text>;
     }
     return (
         <>

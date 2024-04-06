@@ -28,7 +28,7 @@ export default function ContractUI() {
 
     if (!deployedContractData) {
         return (
-            <Text fontSize={"xl"} mt={"12"}>
+            <Text fontSize={"xl"} fontWeight={"light"} mt={"12"}>
                 {`No contract found by the name of "${contractName}" on chain "${targetNetwork.name}"!`}
             </Text>
         )

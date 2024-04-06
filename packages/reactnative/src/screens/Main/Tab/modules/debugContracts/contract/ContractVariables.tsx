@@ -32,7 +32,7 @@ export default function ContractVariables({
         .sort((a, b) => (b.inheritedFrom ? b.inheritedFrom.localeCompare(a.inheritedFrom) : 1));
 
     if (!functionsToDisplay.length) {
-        return <Text fontSize={"xl"} fontWeight={"semibold"}>No contract variables</Text>;
+        return <Text fontSize={"xl"} fontWeight={"light"}>No contract variables</Text>;
     }
 
     return (
