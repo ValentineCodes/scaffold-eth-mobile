@@ -3,9 +3,9 @@ import React, { useState, useEffect } from 'react'
 import { useToast } from 'react-native-toast-notifications'
 import { useNavigation } from '@react-navigation/native'
 import SInfo from "react-native-sensitive-info";
-import { createWeb3Wallet } from '../../utils/Web3WalletClient'
+// import { createWeb3Wallet } from '../../utils/Web3WalletClient'
 import { StyleSheet } from 'react-native'
-import { FONT_SIZE } from '../../utils/styles'
+import { FONT_SIZE, WINDOW_WIDTH } from '../../utils/styles'
 import { COLORS } from '../../utils/constants'
 import MaterialIcons from "react-native-vector-icons/dist/MaterialIcons"
 import Button from '../../components/Button'
@@ -34,7 +34,7 @@ export default function Login({ }: Props) {
     const initWallet = async () => {
         try {
             setIsInitializing(true)
-            await createWeb3Wallet()
+            // await createWeb3Wallet()
 
             if (!auth.isLoggedIn) {
                 dispatch(loginUser())
@@ -44,7 +44,7 @@ export default function Login({ }: Props) {
                 setPassword("")
             }
 
-            navigation.navigate("Home")
+            navigation.navigate("Main")
         } catch (error) {
             toast.show("Failed to initialize wallet", {
                 type: "danger"
@@ -63,8 +63,8 @@ export default function Login({ }: Props) {
         }
 
         const _security = await SInfo.getItem("security", {
-            sharedPreferencesName: "pocket.android.storage",
-            keychainService: "pocket.ios.storage",
+            sharedPreferencesName: "sern.android.storage",
+            keychainService: "sern.ios.storage",
         });
         const security = JSON.parse(_security!)
 
@@ -123,18 +123,18 @@ export default function Login({ }: Props) {
     const resetWallet = async () => {
         // remove mnemonic
         await SInfo.deleteItem("mnemonic", {
-            sharedPreferencesName: "pocket.android.storage",
-            keychainService: "pocket.ios.storage",
+            sharedPreferencesName: "sern.android.storage",
+            keychainService: "sern.ios.storage",
         });
         // remove accounts
         await SInfo.deleteItem("accounts", {
-            sharedPreferencesName: "pocket.android.storage",
-            keychainService: "pocket.ios.storage",
+            sharedPreferencesName: "sern.android.storage",
+            keychainService: "sern.ios.storage",
         })
         // remove password
         await SInfo.deleteItem("security", {
-            sharedPreferencesName: "pocket.android.storage",
-            keychainService: "pocket.ios.storage",
+            sharedPreferencesName: "sern.android.storage",
+            keychainService: "sern.ios.storage",
         });
         // clear active sessions
         dispatch(clearSessions())
@@ -154,8 +154,8 @@ export default function Login({ }: Props) {
     useEffect(() => {
         (async () => {
             const _security = await SInfo.getItem("security", {
-                sharedPreferencesName: "pocket.android.storage",
-                keychainService: "pocket.ios.storage",
+                sharedPreferencesName: "sern.android.storage",
+                keychainService: "sern.ios.storage",
             });
             const security = JSON.parse(_security!)
 
@@ -167,8 +167,7 @@ export default function Login({ }: Props) {
     }, [])
     return (
         <ScrollView contentContainerStyle={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} style={styles.container}>
-            {/* <Image source={require("../../assets/images/pocket.jpg")} alt='Paux' style={{ width: Dimensions.get("window").height * 0.2, height: Dimensions.get("window").height * 0.2 }} /> */}
-            <Text fontWeight={"semibold"} fontSize={"4xl"}>SERN</Text>
+            <Image source={require("../../assets/images/logo.png")} alt='Scaffold-ETH' width={WINDOW_WIDTH * 0.5} height={WINDOW_WIDTH * 0.5} mb={"10"} />
             <Text fontSize={2 * FONT_SIZE['xl']} color={COLORS.primary} bold>Welcome Back!</Text>
 
             <VStack mt="5" space={2} w="full">

@@ -105,7 +105,7 @@ function CreatePassword({ }: Props) {
 
             <ScrollView flex="1">
                 <Text textAlign="center" color={COLORS.primary} fontSize={1.7 * FONT_SIZE["xl"]} bold>Create Password</Text>
-                <Text textAlign="center" fontSize={FONT_SIZE['lg']} my="2">This password will unlock your Paux wallet only on this device</Text>
+                <Text textAlign="center" fontSize={FONT_SIZE['lg']} my="2">This password will unlock Scaffold-ETH only on this device</Text>
 
                 <VStack space={6} mb="50" mt="4">
                     <PasswordInput label="New Password" value={password} suggestion={suggestion} infoText={password.length < 8 && 'Must be at least 8 characters'} onChange={setPassword} />

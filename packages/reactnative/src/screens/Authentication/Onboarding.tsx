@@ -4,7 +4,7 @@ import { ScrollView, Image, Text, VStack } from 'native-base'
 
 import Button from '../../components/Button'
 import { COLORS } from '../../utils/constants'
-import { FONT_SIZE } from '../../utils/styles'
+import { FONT_SIZE, WINDOW_WIDTH } from '../../utils/styles'
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
 
 let backHandler: NativeEventSubscription;
@@ -39,10 +39,10 @@ export default function Onboarding({ }: Props) {
             justifyContent: "center",
             alignItems: "center"
         }} style={styles.container}>
-            <Image source={require("../../assets/images/pocket.jpg")} alt='Paux' style={{ width: Dimensions.get("window").height * 0.3, height: Dimensions.get("window").height * 0.3 }} />
+            <Image source={require("../../assets/images/logo.png")} alt='Scaffold-ETH' width={WINDOW_WIDTH * 0.5} height={WINDOW_WIDTH * 0.5} />
             <VStack w="full" mt="10">
-                <Text textAlign="center" color={COLORS.primary} fontSize={2 * FONT_SIZE["xl"]} bold>Welcome to Paux</Text>
-                <Text textAlign="center" fontSize={FONT_SIZE["lg"]} my="4">A safe and secure crypto wallet to manage funds, interact with Dapps, sign transactions and more</Text>
+                <Text textAlign="center" color={COLORS.primary} fontSize={2 * FONT_SIZE["xl"]} bold>Welcome to Scaffold-ETH</Text>
+                <Text textAlign="center" fontSize={FONT_SIZE["lg"]} my="4">First, we'll need to setup a wallet. This will be unique to you and will be used to sign transactions, messages, and manage funds</Text>
 
                 <Button text="Get Started" onPress={handleNav} style={{ marginTop: 40, marginBottom: 50 }} />
             </VStack>

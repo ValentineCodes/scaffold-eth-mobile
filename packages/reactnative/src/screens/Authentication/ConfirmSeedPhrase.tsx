@@ -207,7 +207,7 @@ export default function ConfirmSeedPhrase({ }: Props) {
                         <Image source={require("../../assets/images/success_icon.png")} alt="Success!" style={{ width: Dimensions.get("window").height * 0.25, height: Dimensions.get("window").height * 0.25 }} />
                         <Text color={COLORS.primary} bold fontSize={1.5 * FONT_SIZE['xl']}>Successful!</Text>
                         <Text fontSize={FONT_SIZE['xl']} textAlign="center">You've successfully protected your wallet. Remember to keep your seed phrase safe. It's your responsibility!</Text>
-                        <Text fontSize={FONT_SIZE['xl']} textAlign="center">Paux cannot recover your wallet should you lose it.</Text>
+                        <Text fontSize={FONT_SIZE['xl']} textAlign="center">Scaffold-ETH cannot recover your wallet should you lose it.</Text>
                         <Button text="Ok" onPress={handleSuccess} />
                     </VStack>
                 </Modal>

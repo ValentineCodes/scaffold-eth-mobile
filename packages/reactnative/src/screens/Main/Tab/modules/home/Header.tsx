@@ -20,7 +20,7 @@ import ConnectedSitesModal from '../../../../../components/modals/ConnectedSites
 import AccountSelectionModal from '../../../../../components/modals/AccountSelectionModal'
 import { ActiveSession } from '../../../../../store/reducers/ActiveSessions'
 import SwitchAccountModal from '../../../../../components/modals/SwitchAccountModal'
-import { FONT_SIZE } from '../../../../../utils/styles'
+import { FONT_SIZE, WINDOW_WIDTH } from '../../../../../utils/styles'
 import { COLORS } from '../../../../../utils/constants'
 import AccountsModal from '../../../../../components/modals/AccountsModal'
 import SeedPhraseModal from '../../../../../components/modals/SeedPhraseModal'
@@ -76,7 +76,7 @@ export default function Header({ }: Props) {
 
     return (
         <HStack alignItems="center" justifyContent="space-between" py="4" borderBottomColor="#ccc">
-            <Text fontWeight={"semibold"} fontSize={"2xl"}>SERN</Text>
+            <Image source={require("../../../../../assets/images/logo.png")} alt='Paux' width={WINDOW_WIDTH * 0.08} height={WINDOW_WIDTH * 0.08} />
 
             <Select
                 selectedValue={connectedNetwork.chainId.toString()}

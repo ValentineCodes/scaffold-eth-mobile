@@ -9,7 +9,7 @@ import ConfirmSeedPhrase from './Authentication/ConfirmSeedPhrase';
 import ImportWallet from './Authentication/ImportWallet'
 import SecureWallet from './Authentication/SecureWallet'
 import CreatePassword from './Authentication/CreatePassword';
-// import Login from './Authentication/Login'
+import Login from './Authentication/Login'
 import Main from "./Main"
 import Transfer from './Transfer'
 import { useSelector } from 'react-redux';
@@ -53,7 +53,7 @@ export default function Navigation({ }: Props) {
                         </>
                     )
                 }
-                {/* <AppStack.Screen name="Login" component={Login} /> */}
+                <AppStack.Screen name="Login" component={Login} />
                 <AppStack.Screen name="Main" component={Main} />
                 <AppStack.Screen name="Transfer" component={Transfer} />
             </AppStack.Navigator>
