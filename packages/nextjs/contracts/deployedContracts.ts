@@ -6,8 +6,54 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 
 const deployedContracts = {
   1337: {
+    Counter: {
+      address: "0x414bCB4bCaf8ffe97CdBC714657628Cac074e568",
+      abi: [
+        {
+          inputs: [],
+          name: "count",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "dec",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "get",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "inc",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+      ],
+      inheritedFunctions: {},
+    },
     YourContract: {
-      address: "0x94968B8114dcd1ac2DE27453b7158C1CED0F8909",
+      address: "0x43Aa8B427861047fD1484bB1E8A173608d3B620B",
       abi: [
         {
           inputs: [
