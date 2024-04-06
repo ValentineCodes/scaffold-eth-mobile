@@ -24,12 +24,8 @@ function Wallet({ }: Props) {
     const connectedNetwork: Network = useSelector(state => state.networks.find((network: Network) => network.isConnected))
     const connectedAccount: Account = useSelector(state => state.accounts.find((account: Account) => account.isConnected))
 
-    const [balance, setBalance] = useState("")
-    const [dollarValue, setDollarValue] = useState<string | null>(null)
     const [transactions, setTransactions] = useState([])
 
-    const [isLoadingBalance, setIsLoadingBalance] = useState(false)
-    const [isRefreshingBalance, setIsRefreshingBalance] = useState(false)
     const [loadingTxStatus, setLoadingTxStatus] =
         useState<LoadingTxStatusProps>('loading');
     const [isLoadingMoreTx, setIsLoadingMoreTx] = useState(false)
@@ -37,39 +33,6 @@ function Wallet({ }: Props) {
     const [currentTxPage, setCurrentTxPage] = useState(1)
 
     const toast = useToast()
-
-    const getBalance = async () => {
-        if (isLoadingBalance) return
-        setIsLoadingBalance(true)
-
-        try {
-            const provider = new ethers.providers.JsonRpcProvider(connectedNetwork.provider)
-            const balance = await provider.getBalance(connectedAccount.address)
-            const _balance = Number(ethers.utils.formatEther(balance)) ? parseFloat(Number(ethers.utils.formatEther(balance)).toString(), 4) : 0
-
-            // try {
-            //   const price = await redstone.getPrice(connectedNetwork.currencySymbol);
-            //   const dollarValue = Number(_balance) * price.value
-            //   setDollarValue(dollarValue ? parseFloat(dollarValue.toString(), 2).toString() : "0")
-            // } catch (error) {
-            //   setDollarValue(null)
-            //   return
-            // } finally {
-            setBalance(_balance.toString())
-            // }
-
-        } catch (error) {
-            return
-        } finally {
-            setIsLoadingBalance(false)
-        }
-    }
-
-    const refreshBalance = async () => {
-        setIsRefreshingBalance(true)
-        await getBalance()
-        setIsRefreshingBalance(false)
-    }
 
     const removeDuplicateTx = (txResults: any[]): any[] => {
         const newTransactions = txResults.filter((result: any) => !transactions.some((transaction: any) => transaction.hash === result.hash))
@@ -166,7 +129,6 @@ function Wallet({ }: Props) {
         provider.off('block')
 
         provider.on('block', blockNumber => {
-            getBalance()
             getTransactions()
         })
 
@@ -180,10 +142,6 @@ function Wallet({ }: Props) {
         <View style={styles.container}>
             <Header />
             <MainBalance
-                balance={balance}
-                dollarValue={dollarValue}
-                isRefreshing={isRefreshingBalance}
-                refresh={refreshBalance}
                 backHandler={backHandler}
             />
             <Transactions

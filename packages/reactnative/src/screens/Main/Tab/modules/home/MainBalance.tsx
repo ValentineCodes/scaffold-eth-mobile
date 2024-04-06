@@ -1,29 +1,26 @@
 import { Image, Text, VStack, Divider, Pressable, Icon, View, HStack } from 'native-base'
 import React, { useState, useMemo } from 'react'
 import { StyleSheet, ScrollView, RefreshControl } from 'react-native'
-import { useSelector } from 'react-redux'
 import Ionicons from "react-native-vector-icons/dist/Ionicons"
 import { useNavigation } from '@react-navigation/native'
 
-import { Account } from '../../../../../store/reducers/Accounts'
-import { Network } from '../../../../../store/reducers/Networks'
 import CopyableText from '../../../../../components/CopyableText'
 import { truncateAddress } from '../../../../../utils/helperFunctions'
 import { FONT_SIZE } from '../../../../../utils/styles'
 import { COLORS } from '../../../../../utils/constants'
 import ReceiveModal from '../../../../../components/modals/ReceiveModal'
+import useBalance from '../../../../../hooks/scaffold-eth/useBalance'
+import useAccount from '../../../../../hooks/scaffold-eth/useAccount'
+import useNetwork from '../../../../../hooks/scaffold-eth/useNetwork'
 
 type Props = {
-  balance: string;
-  dollarValue: string | null;
-  isRefreshing: boolean;
-  refresh: () => void;
   backHandler: any;
 }
 
-function MainBalance({ balance, dollarValue, isRefreshing, refresh, backHandler }: Props) {
-  const connectedNetwork: Network = useSelector(state => state.networks.find((network: Network) => network.isConnected))
-  const connectedAccount: Account = useSelector(state => state.accounts.find((account: Account) => account.isConnected))
+function MainBalance({ backHandler }: Props) {
+  const network = useNetwork()
+  const account = useAccount()
+  const { balance, isLoading, refetch } = useBalance({ address: account.address })
 
   const [showReceiveModal, setShowReceiveModal] = useState(false)
 
@@ -32,16 +29,16 @@ function MainBalance({ balance, dollarValue, isRefreshing, refresh, backHandler 
   const logo = useMemo(() => {
     let _logo = require("../../../../../images/eth-icon.png");
 
-    if (["Polygon", "Mumbai"].includes(connectedNetwork.name)) {
+    if (["Polygon", "Mumbai"].includes(network.name)) {
       _logo = require("../../../../../images/polygon-icon.png")
-    } else if (["Arbitrum", "Arbitrum Goerli"].includes(connectedNetwork.name)) {
+    } else if (["Arbitrum", "Arbitrum Goerli"].includes(network.name)) {
       _logo = require("../../../../../images/arbitrum-icon.png")
-    } else if (["Optimism", "Optimism Goerli"].includes(connectedNetwork.name)) {
+    } else if (["Optimism", "Optimism Goerli"].includes(network.name)) {
       _logo = require("../../../../../images/optimism-icon.png")
     }
 
-    return <Image key={`${_logo}`} source={_logo} alt={connectedNetwork.name} style={styles.networkLogo} />
-  }, [connectedNetwork])
+    return <Image key={`${_logo}`} source={_logo} alt={network.name} style={styles.networkLogo} />
+  }, [network])
 
   const handleNav = () => {
     navigation.navigate("Transfer")
@@ -49,14 +46,14 @@ function MainBalance({ balance, dollarValue, isRefreshing, refresh, backHandler 
   }
 
   return (
-    <ScrollView style={{ flexGrow: 0 }} refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refresh} colors={[COLORS.primary]} tintColor={COLORS.primary} />}>
+    <ScrollView style={{ flexGrow: 0 }} refreshControl={<RefreshControl refreshing={isLoading} onRefresh={refetch} colors={[COLORS.primary]} tintColor={COLORS.primary} />}>
       <VStack alignItems="center" space={2} paddingTop={5}>
-        <Text fontSize={FONT_SIZE["xl"]} bold textAlign="center">{connectedAccount.name}</Text>
-        <CopyableText displayText={truncateAddress(connectedAccount.address)} value={connectedAccount.address} containerStyle={styles.addressContainer} textStyle={styles.addressText} iconStyle={{ color: COLORS.primary }} />
+        <Text fontSize={FONT_SIZE["xl"]} bold textAlign="center">{account.name}</Text>
+        <CopyableText displayText={truncateAddress(account.address)} value={account.address} containerStyle={styles.addressContainer} textStyle={styles.addressText} iconStyle={{ color: COLORS.primary }} />
         {logo}
         <VStack alignItems="center">
-          <Text fontSize={2 * FONT_SIZE["xl"]} bold textAlign="center">{balance !== '' && `${balance} ${connectedNetwork.currencySymbol}`}</Text>
-          {dollarValue !== null && <Text fontSize={FONT_SIZE['lg']} bold textAlign="center" mt="2">${dollarValue}</Text>}
+          <Text fontSize={2 * FONT_SIZE["xl"]} bold textAlign="center">{balance !== '' && `${balance} ${network.currencySymbol}`}</Text>
+          {/* {dollarValue !== null && <Text fontSize={FONT_SIZE['lg']} bold textAlign="center" mt="2">${dollarValue}</Text>} */}
         </VStack>
 
         <Divider bgColor="muted.100" my="2" />
