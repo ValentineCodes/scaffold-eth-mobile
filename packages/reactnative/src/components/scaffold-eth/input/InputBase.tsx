@@ -34,6 +34,10 @@ export default function InputBase<T extends { toString: () => string } | undefin
                 variant="filled"
                 fontSize="md"
                 focusOutlineColor={COLORS.primary}
+                _input={{
+                    selectionColor: COLORS.primary,
+                    cursorColor: COLORS.primary,
+                }}
                 cursorColor={COLORS.primary}
                 isDisabled={disabled}
                 placeholder={placeholder}
