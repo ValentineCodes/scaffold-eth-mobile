@@ -9,12 +9,11 @@ import Balance from '../../../../../../components/scaffold-eth/Balance'
 import ContractReadMethods from './ContractReadMethods'
 import ContractVariables from './ContractVariables'
 import ContractWriteMethods from './ContractWriteMethods'
+import { useRoute } from '@react-navigation/native'
 
-type Props = {
-    contractName: string
-}
-
-export default function ContractUI({ contractName }: Props) {
+export default function ContractUI() {
+    const route = useRoute()
+    const contractName = route.name
     const [refreshDisplayVariables, triggerRefreshDisplayVariables] = useReducer(value => !value, false);
     const targetNetwork = useTargetNetwork()
     const { data: deployedContractData, isLoading: isDeployedContractLoading } = useDeployedContractInfo(contractName);
@@ -36,7 +35,7 @@ export default function ContractUI({ contractName }: Props) {
     }
 
     return (
-        <ScrollView p={"4"} flex={1}>
+        <ScrollView p={"4"} flex={1} bgColor={"white"}>
             <VStack space={1} p={"4"} mb={"6"} rounded={"2xl"} borderWidth={"1"} borderColor={"muted.300"} bgColor={"white"}>
                 <Text fontSize={"lg"} fontWeight={"semibold"}>{contractName}</Text>
                 <Address address={deployedContractData.address} />
