@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native'
 import { HStack, VStack, Icon, Text, Input, Divider, View, FlatList, Image, Pressable } from 'native-base'
 import React, { useEffect, useState, useCallback, useMemo } from 'react'
 import { FONT_SIZE } from '../../utils/styles'
-import { COLORS } from '../../utils/constants'
+import { ALCHEMY_KEY, COLORS } from '../../utils/constants'
 import { useDispatch, useSelector } from 'react-redux'
 import { Account } from '../../store/reducers/Accounts'
 import { Network } from '../../store/reducers/Networks'
@@ -21,7 +21,6 @@ import AccountsModal from './modules/AccountsModal'
 import redstone from 'redstone-api';
 import ConfirmationModal from './modules/ConfirmationModal'
 import { useToast } from "react-native-toast-notifications"
-import { Providers, getProviderWithName } from '../../utils/providers'
 import { isENS, parseFloat } from '../../utils/helperFunctions'
 import ConsentModal from '../../components/modals/ConsentModal'
 import { clearRecipients } from '../../store/reducers/Recipients'
@@ -152,7 +151,7 @@ export default function Transfer({ }: Props) {
 
         if (isENS(value)) {
             try {
-                const provider = getProviderWithName(connectedNetwork.name.toLowerCase() as keyof Providers)
+                const provider = new ethers.providers.JsonRpcProvider(`https://eth-mainnet.alchemyapi.io/v2/${ALCHEMY_KEY}`)
 
                 const address = await provider.resolveName(value)
 
@@ -256,11 +255,13 @@ export default function Transfer({ }: Props) {
     });
 
     useEffect(() => {
-        const provider = getProviderWithName(connectedNetwork.name.toLowerCase() as keyof Providers)
+        const provider = new ethers.providers.JsonRpcProvider(connectedNetwork.provider)
 
         provider.off('block')
 
-        provider.on('block', blockNumber => getBalance())
+        provider.on('block', blockNumber => {
+            getBalance()
+        })
 
         return () => {
             provider.off("block")
@@ -422,17 +423,19 @@ export default function Transfer({ }: Props) {
                 }}
             />
 
-            <ConfirmationModal
-                isVisible={showConfirmationModal}
-                onClose={() => setShowConfirmationModal(false)}
-                txData={{
-                    from,
-                    to: toAddress,
-                    amount: !isAmountInCrypto && dollarRate ? parseFloat((Number(amount) / dollarRate).toString(), 8) : parseFloat(amount, 8),
-                    fromBalance: balance
-                }}
-                estimateGasCost={gasCost}
-            />
+            {showConfirmationModal && (
+                <ConfirmationModal
+                    isVisible={showConfirmationModal}
+                    onClose={() => setShowConfirmationModal(false)}
+                    txData={{
+                        from,
+                        to: toAddress,
+                        amount: !isAmountInCrypto && dollarRate ? parseFloat((Number(amount) / dollarRate).toString(), 8) : parseFloat(amount, 8),
+                        fromBalance: balance
+                    }}
+                    estimateGasCost={gasCost}
+                />
+            )}
 
             <AccountsModal
                 isVisible={showFromAccountsModal || showToAccountsModal}

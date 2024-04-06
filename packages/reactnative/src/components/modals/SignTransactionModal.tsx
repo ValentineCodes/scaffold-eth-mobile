@@ -154,7 +154,7 @@ export default function SignTransactionModal({ modal: { closeModal, params } }: 
             </VStack>
 
             <HStack w="full" alignItems="center" justifyContent="space-between">
-                <RNButton py="4" bgColor="red.100" w="50%" onPress={closeModal} _pressed={{ background: 'red.200' }}><Text color="red.400" bold fontSize="md">Cancel</Text></RNButton>
+                <RNButton py="4" bgColor="red.100" w="50%" onPress={closeModal} _pressed={{ background: 'red.200' }}><Text color="red.400" bold fontSize="md">Reject</Text></RNButton>
                 <Button text="Confirm" onPress={confirm} style={{ width: "50%", borderRadius: 0 }} />
             </HStack>
         </VStack>

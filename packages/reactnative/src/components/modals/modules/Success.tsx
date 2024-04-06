@@ -4,7 +4,7 @@ import Modal from "react-native-modal"
 import { FONT_SIZE } from '../../../utils/styles';
 import { VStack, Text, Image } from 'native-base';
 import { COLORS } from '../../../utils/constants';
-import Button from '../../../components/Button';
+import Button from '../../Button';
 
 type Props = {
     isVisible: boolean;

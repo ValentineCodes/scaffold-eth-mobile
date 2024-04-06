@@ -18,10 +18,9 @@ import { BigNumber, Wallet, ethers } from "ethers";
 import Button from '../../../components/Button';
 
 import SInfo from "react-native-sensitive-info"
-import { getProviderWithName, Providers } from '../../../utils/providers';
 
-import Success from './Success'
-import Fail from './Fail'
+import Success from '../../../components/modals/modules/Success'
+import Fail from '../../../components/modals/modules/Fail'
 import { Linking } from 'react-native';
 import { useToast } from 'react-native-toast-notifications';
 import { addRecipient } from '../../../store/reducers/Recipients';
@@ -67,7 +66,7 @@ export default function ConfirmationModal({ isVisible, onClose, txData, estimate
 
         const activeAccount: Wallet = Array.from(JSON.parse(accounts)).find(account => account.address.toLowerCase() == txData.from.address.toLowerCase())
 
-        const provider = getProviderWithName(connectedNetwork.name.toLowerCase() as keyof Providers)
+        const provider = new ethers.providers.JsonRpcProvider(connectedNetwork.provider)
         const wallet = new ethers.Wallet(activeAccount.privateKey).connect(provider)
 
         try {
