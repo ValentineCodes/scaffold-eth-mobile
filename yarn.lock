@@ -6136,6 +6136,83 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@se-2/reactnative@workspace:packages/reactnative":
+  version: 0.0.0-use.local
+  resolution: "@se-2/reactnative@workspace:packages/reactnative"
+  dependencies:
+    "@babel/core": ^7.20.0
+    "@babel/preset-env": ^7.20.0
+    "@babel/runtime": ^7.20.0
+    "@ethersproject/shims": ^5.7.0
+    "@react-native-async-storage/async-storage": ^1.23.1
+    "@react-native-clipboard/clipboard": ^1.13.2
+    "@react-native-community/blur": ^4.4.0
+    "@react-native-community/eslint-config": ^3.2.0
+    "@react-navigation/bottom-tabs": ^6.5.20
+    "@react-navigation/material-top-tabs": ^6.6.13
+    "@react-navigation/native": ^6.1.17
+    "@react-navigation/native-stack": ^6.9.26
+    "@reduxjs/toolkit": ^2.2.2
+    "@tanstack/react-query": ^5.28.9
+    "@tsconfig/react-native": ^2.0.2
+    "@types/fast-text-encoding": ^1
+    "@types/jest": ^29.2.1
+    "@types/react": ^18.0.24
+    "@types/react-native-get-random-values": ^1
+    "@types/react-test-renderer": ^18.0.0
+    abitype: ^1.0.2
+    babel-jest: ^29.2.1
+    babel-plugin-module-resolver: ^5.0.0
+    blo: ^1.1.1
+    eslint: ^8.19.0
+    ethers: 5.7.2
+    fast-text-encoding: ^1.0.6
+    jest: ^29.2.1
+    metro-react-native-babel-preset: 0.73.10
+    native-base: ^3.4.28
+    prettier: ^2.4.1
+    random-words: ^2.0.1
+    react: 18.2.0
+    react-native: 0.71.11
+    react-native-aes-crypto: 3.0.1
+    react-native-biometrics: ^3.0.1
+    react-native-bootsplash: ^5.4.1
+    react-native-bouncy-checkbox: ^3.0.7
+    react-native-camera-kit: ^13.0.0
+    react-native-gesture-handler: ^2.16.0
+    react-native-get-random-values: ^1.11.0
+    react-native-modal: ^13.0.1
+    react-native-modalfy: ^3.5.3
+    react-native-navigation-bar-color: ^2.0.2
+    react-native-pager-view: ^6.3.0
+    react-native-popup-menu: ^0.16.1
+    react-native-qrcode-svg: ^6.3.0
+    react-native-quick-base64: 2.0.6
+    react-native-quick-crypto: ^0.6.1
+    react-native-safe-area-context: ^4.9.0
+    react-native-screens: ^3.30.1
+    react-native-scrypt: 1.2.1
+    react-native-sensitive-info: ^5.5.8
+    react-native-share: ^10.1.0
+    react-native-svg: ^15.1.0
+    react-native-tab-view: ^3.5.2
+    react-native-toast-notifications: ^3.4.0
+    react-native-url-polyfill: ^2.0.0
+    react-native-vector-icons: ^10.0.3
+    react-native-vision-camera: ^3.9.2
+    react-native-web3-wallet: "github:heroims/react-native-web3-wallet"
+    react-native-webview: ^13.8.2
+    react-redux: ^9.1.0
+    react-test-renderer: 18.2.0
+    redstone-api: ^0.4.11
+    redux-persist: ^6.0.0
+    typescript: 4.8.4
+    usehooks-ts: ^3.0.2
+    viem: 2.x
+    wagmi: ^2.5.17
+  languageName: unknown
+  linkType: soft
+
 "@sentry/core@npm:5.30.0":
   version: 5.30.0
   resolution: "@sentry/core@npm:5.30.0"
@@ -20638,83 +20715,6 @@ __metadata:
   checksum: 88e38092da8839b830cda6feef2e8505dec8ace60579e46aa5490fc3dc9bba0bd50336507dc166f43e3afc1c42939c09fe33b25fae889d6f402721dcd78fca1b
   languageName: node
   linkType: hard
-
-"reactnative@workspace:packages/reactnative":
-  version: 0.0.0-use.local
-  resolution: "reactnative@workspace:packages/reactnative"
-  dependencies:
-    "@babel/core": ^7.20.0
-    "@babel/preset-env": ^7.20.0
-    "@babel/runtime": ^7.20.0
-    "@ethersproject/shims": ^5.7.0
-    "@react-native-async-storage/async-storage": ^1.23.1
-    "@react-native-clipboard/clipboard": ^1.13.2
-    "@react-native-community/blur": ^4.4.0
-    "@react-native-community/eslint-config": ^3.2.0
-    "@react-navigation/bottom-tabs": ^6.5.20
-    "@react-navigation/material-top-tabs": ^6.6.13
-    "@react-navigation/native": ^6.1.17
-    "@react-navigation/native-stack": ^6.9.26
-    "@reduxjs/toolkit": ^2.2.2
-    "@tanstack/react-query": ^5.28.9
-    "@tsconfig/react-native": ^2.0.2
-    "@types/fast-text-encoding": ^1
-    "@types/jest": ^29.2.1
-    "@types/react": ^18.0.24
-    "@types/react-native-get-random-values": ^1
-    "@types/react-test-renderer": ^18.0.0
-    abitype: ^1.0.2
-    babel-jest: ^29.2.1
-    babel-plugin-module-resolver: ^5.0.0
-    blo: ^1.1.1
-    eslint: ^8.19.0
-    ethers: 5.7.2
-    fast-text-encoding: ^1.0.6
-    jest: ^29.2.1
-    metro-react-native-babel-preset: 0.73.10
-    native-base: ^3.4.28
-    prettier: ^2.4.1
-    random-words: ^2.0.1
-    react: 18.2.0
-    react-native: 0.71.11
-    react-native-aes-crypto: 3.0.1
-    react-native-biometrics: ^3.0.1
-    react-native-bootsplash: ^5.4.1
-    react-native-bouncy-checkbox: ^3.0.7
-    react-native-camera-kit: ^13.0.0
-    react-native-gesture-handler: ^2.16.0
-    react-native-get-random-values: ^1.11.0
-    react-native-modal: ^13.0.1
-    react-native-modalfy: ^3.5.3
-    react-native-navigation-bar-color: ^2.0.2
-    react-native-pager-view: ^6.3.0
-    react-native-popup-menu: ^0.16.1
-    react-native-qrcode-svg: ^6.3.0
-    react-native-quick-base64: 2.0.6
-    react-native-quick-crypto: ^0.6.1
-    react-native-safe-area-context: ^4.9.0
-    react-native-screens: ^3.30.1
-    react-native-scrypt: 1.2.1
-    react-native-sensitive-info: ^5.5.8
-    react-native-share: ^10.1.0
-    react-native-svg: ^15.1.0
-    react-native-tab-view: ^3.5.2
-    react-native-toast-notifications: ^3.4.0
-    react-native-url-polyfill: ^2.0.0
-    react-native-vector-icons: ^10.0.3
-    react-native-vision-camera: ^3.9.2
-    react-native-web3-wallet: "github:heroims/react-native-web3-wallet"
-    react-native-webview: ^13.8.2
-    react-redux: ^9.1.0
-    react-test-renderer: 18.2.0
-    redstone-api: ^0.4.11
-    redux-persist: ^6.0.0
-    typescript: 4.8.4
-    usehooks-ts: ^3.0.2
-    viem: 2.x
-    wagmi: ^2.5.17
-  languageName: unknown
-  linkType: soft
 
 "read-cache@npm:^1.0.0":
   version: 1.0.0
