@@ -15,6 +15,7 @@ import { useToast } from 'react-native-toast-notifications'
 import { shuffleArray } from '../../utils/helperFunctions'
 import AccountsCountModal from '../../components/modals/AccountsCountModal'
 import { initAccounts } from '../../store/reducers/Accounts'
+import { importMnemonic } from 'react-native-web3-wallet'
 
 type Props = {}
 
@@ -100,15 +101,15 @@ export default function ConfirmSeedPhrase({ }: Props) {
                 keychainService: "sern.ios.storage",
             });
 
-            let wallets = [{
-                address: "0x048A183f11FB76dd44261CDa94F14f6059F81372",
-                privateKey: "0xb64fd579ef49e7ee389abe8e5dbc6d97913039240b9de90abd30298c50de4910"
-            }]
+            let wallets = []
 
-            // for (let i = 0; i < accountsCount; i++) {
-            //     const newWallet = await createWalletWithSeedPhrase(seedPhrase, i)
-            //     wallets.push(newWallet)
-            // }
+            for (let i = 0; i < accountsCount; i++) {
+                const newWallet = await importMnemonic(seedPhrase, "", `m/44'/60'/0'/0/${i}`, true)
+                wallets.push({
+                    address: newWallet.address,
+                    privateKey: newWallet.privateKey
+                })
+            }
 
             await SInfo.setItem("accounts", JSON.stringify(wallets), {
                 sharedPreferencesName: "sern.android.storage",

@@ -10,11 +10,11 @@ import Clipboard from '@react-native-clipboard/clipboard';
 
 import "react-native-get-random-values"
 import "@ethersproject/shims"
-import { ethers } from "ethers";
 import Button from '../../components/Button'
 import { useNavigation } from '@react-navigation/native'
 import SInfo from "react-native-sensitive-info";
 import { useToast } from 'react-native-toast-notifications'
+import { createWallet } from 'react-native-web3-wallet'
 
 interface Wallet {
     mnemonic: string;
@@ -65,10 +65,10 @@ export default function GenerateSeedPhrase({ }: Props) {
     }
 
     const generateNewWallet = () => {
-        setTimeout(() => {
-            const newWallet = ethers.Wallet.createRandom();
+        setTimeout(async () => {
+            const newWallet = await createWallet("")
             const wallet = {
-                mnemonic: newWallet.mnemonic.phrase,
+                mnemonic: newWallet.mnemonic.join(" "),
             }
             setWallet(wallet)
             setIsLoading(false)

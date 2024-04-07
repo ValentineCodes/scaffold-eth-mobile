@@ -14,6 +14,8 @@ import { Dimensions } from 'react-native';
 
 import { COLORS } from '../../utils/constants';
 import ImportAccountModal from './ImportAccountModal';
+import { importMnemonic } from 'react-native-web3-wallet';
+import { useToast } from 'react-native-toast-notifications';
 
 
 type Props = {
@@ -25,6 +27,7 @@ type Props = {
 
 export default function AccountsModal({ isVisible, setVisibility, onClose, onSelect }: Props) {
     const dispatch = useDispatch()
+    const toast = useToast()
 
     const accounts: Account[] = useSelector(state => state.accounts)
     const connectedAccount: Account = useSelector(state => state.accounts.find((account: Account) => account.isConnected))
@@ -41,19 +44,29 @@ export default function AccountsModal({ isVisible, setVisibility, onClose, onSel
     }
 
     const createAccount = async () => {
-        let newAccount = {
-            address: "0x048A183f11FB76dd44261CDa94F14f6059F81372",
-            privateKey: "0xb64fd579ef49e7ee389abe8e5dbc6d97913039240b9de90abd30298c50de4910"
-        };
+        const mnemonic = await SInfo.getItem("mnemonic", {
+            sharedPreferencesName: "sern.android.storage",
+            keychainService: "sern.ios.storage",
+        })
 
-        // for (let i = 0; i < Infinity; i++) {
-        //     const wallet = await createWallet(i)
+        let newAccount
 
-        //     if (accounts.find(account => account.address == wallet.address) == undefined) {
-        //         newAccount = wallet
-        //         break
-        //     }
-        // }
+        for (let i = 0; i < Infinity; i++) {
+            const wallet = await importMnemonic(mnemonic, "", `m/44'/60'/0'/0/${i}`, true)
+
+            if (accounts.find(account => account.address == wallet.address) == undefined) {
+                newAccount = {
+                    address: wallet.address,
+                    privateKey: wallet.privateKey
+                }
+                break
+            }
+        }
+
+        if (!newAccount) {
+            toast.show("Failed to create account!", { type: "error" })
+            return
+        }
 
         const createdAccounts = await SInfo.getItem("accounts", {
             sharedPreferencesName: "sern.android.storage",

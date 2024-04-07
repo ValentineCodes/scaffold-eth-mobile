@@ -24,37 +24,14 @@ import { generate } from "random-words";
 import AccountsCountModal from '../../components/modals/AccountsCountModal'
 import ReactNativeBiometrics from 'react-native-biometrics'
 import { TouchableOpacity } from 'react-native'
+import { importMnemonic } from 'react-native-web3-wallet'
 
-type Props = {}
-
-// const initWallet = async () => {
-//   const MNEMONIC = "supreme fetch kidney satisfy tower donate denial middle legal shrug galaxy ostrich"
-//   const wallets = [{
-//     address: "0x048A183f11FB76dd44261CDa94F14f6059F81372",
-//     privateKey: "0xb64fd579ef49e7ee389abe8e5dbc6d97913039240b9de90abd30298c50de4910"
-//   }]
-//   try {
-//     // Save wallet
-//     await SInfo.setItem("mnemonic", MNEMONIC, {
-//       sharedPreferencesName: "sern.android.storage",
-//       keychainService: "sern.ios.storage",
-//     });
-//     await SInfo.setItem("accounts", JSON.stringify(wallets), {
-//       sharedPreferencesName: "sern.android.storage",
-//       keychainService: "sern.ios.storage",
-//     })
-
-//     dispatch(initAccounts(wallets.map(wallet => ({ ...wallet, isImported: false }))))
-//   } catch () {
-//     toast.show("Failed initialize wallet", { type: "danger" })
-//   }
-
-function ImportWallet({ }: Props) {
+function ImportWallet() {
   const navigation = useNavigation()
   const dispatch = useDispatch()
   const toast = useToast()
 
-  const [seedPhrase, setSeedPhrase] = useState("supreme fetch kidney satisfy tower donate denial middle legal shrug galaxy ostrich")
+  const [seedPhrase, setSeedPhrase] = useState("")
   const [suggestion, setSuggestion] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
@@ -107,15 +84,16 @@ function ImportWallet({ }: Props) {
   }
 
   const importWallet = async (accountsCount: number) => {
-    let wallets = [{
-      address: "0x048A183f11FB76dd44261CDa94F14f6059F81372",
-      privateKey: "0xb64fd579ef49e7ee389abe8e5dbc6d97913039240b9de90abd30298c50de4910"
-    }]
+    let wallets = []
 
-    // for (let i = 0; i < accountsCount; i++) {
-    //   const newWallet = await createWalletWithSeedPhrase(seedPhrase, i)
-    //   wallets.push(newWallet)
-    // }
+    for (let i = 0; i < accountsCount; i++) {
+      const newWallet = await importMnemonic(seedPhrase, "", `m/44'/60'/0'/0/${i}`, true)
+
+      wallets.push({
+        address: newWallet.address,
+        privateKey: newWallet.privateKey
+      })
+    }
 
     const security = {
       password,
