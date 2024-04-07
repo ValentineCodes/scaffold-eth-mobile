@@ -167,7 +167,7 @@ export default function Login({ }: Props) {
     }, [])
     return (
         <ScrollView contentContainerStyle={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} style={styles.container}>
-            <Image source={require("../../assets/images/logo.png")} alt='Scaffold-ETH' width={WINDOW_WIDTH * 0.5} height={WINDOW_WIDTH * 0.5} mb={"10"} />
+            <Image source={require("../../assets/images/logo.png")} alt='Scaffold-ETH' width={WINDOW_WIDTH * 0.3} height={WINDOW_WIDTH * 0.3} mb={"10"} />
             <Text fontSize={2 * FONT_SIZE['xl']} color={COLORS.primary} bold>Welcome Back!</Text>
 
             <VStack mt="5" space={2} w="full">
