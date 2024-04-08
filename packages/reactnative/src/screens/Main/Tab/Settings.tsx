@@ -1,15 +1,17 @@
-import { HStack, Switch, Text, VStack } from 'native-base'
+import { HStack, Pressable, Switch, Text, VStack } from 'native-base'
 import React, { useLayoutEffect, useState } from 'react'
 import { FONT_SIZE } from '../../../utils/styles'
 import { COLORS } from '../../../utils/constants'
 import SInfo from "react-native-sensitive-info"
 import ReactNativeBiometrics from 'react-native-biometrics'
 import { useToast } from 'react-native-toast-notifications'
+import { useModal } from 'react-native-modalfy'
 
 type Props = {}
 
 export default function Settings({ }: Props) {
     const toast = useToast()
+    const { openModal } = useModal()
 
     const [isBiometricsAvailable, setIsBiometricsAvailable] = useState(false)
     const [isBiometricsEnabled, setIsBiometricsEnabled] = useState(false)
@@ -95,6 +97,10 @@ export default function Settings({ }: Props) {
                     <Switch size="md" trackColor={{ true: COLORS.primary, false: "#E5E5E5" }} isChecked={isBiometricsEnabled} onToggle={toggleBiometrics} />
                 </HStack>
             )}
+
+            <Pressable onPress={() => openModal("ChangePasswordModal")} py={"4"}>
+                <Text fontSize={FONT_SIZE["xl"]}>Change Password</Text>
+            </Pressable>
         </VStack>
     )
 }

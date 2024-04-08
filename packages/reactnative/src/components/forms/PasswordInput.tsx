@@ -8,7 +8,7 @@ import { TouchableOpacity } from 'react-native';
 type Props = {
   label: string;
   value?: string;
-  suggestion: string;
+  suggestion?: string;
   defaultValue?: string;
   infoText?: string | boolean | null;
   errorText?: string | boolean | null;
@@ -36,7 +36,7 @@ function PasswordInput({ label, value, suggestion, defaultValue, infoText, error
           <Icon as={<MaterialIcons name="lock" />} size={5} ml="4" color="muted.400" />
         }
         InputRightElement={
-          value ? (
+          value || !suggestion ? (
             <HStack space={1}>
               {value && (
                 <TouchableOpacity activeOpacity={0.4} onPress={() => onChange("")}>
@@ -54,7 +54,7 @@ function PasswordInput({ label, value, suggestion, defaultValue, infoText, error
           )
         }
         secureTextEntry={!show}
-        placeholder={`Suggestion: ${suggestion}`}
+        placeholder={suggestion ? `Suggestion: ${suggestion}` : "Password"}
         onChangeText={onChange}
       />
       {infoText ? <Text fontSize="sm" color="muted.400">{infoText}</Text> : null}
