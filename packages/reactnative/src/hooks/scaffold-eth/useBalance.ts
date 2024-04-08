@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react"
-import useAccount from "./useAccount"
 import useNetwork from "./useNetwork"
 
 import "react-native-get-random-values"
@@ -16,6 +15,7 @@ export default function useBalance({address}: Props) {
 
     const [balance, setBalance] = useState("")
     const [isLoading, setIsLoading] = useState(true)
+    const [isRefetching, setIsRefetching] = useState(false)
     const [error, setError] = useState<any>(null)
 
     async function getBalance(){
@@ -27,11 +27,21 @@ export default function useBalance({address}: Props) {
             const _balance = Number(ethers.utils.formatEther(balance)) ? parseFloat(Number(ethers.utils.formatEther(balance)).toString(), 4) : 0
 
             setBalance(_balance.toString())
+
+            if(error){
+                setError(null)
+            }
         } catch(error) {
             setError(error)
         } finally {
             setIsLoading(false)
         }
+    }
+
+    async function refetch(){
+        setIsRefetching(true)
+        await getBalance()
+        setIsRefetching(false)
     }
 
     useEffect(() => {
@@ -50,8 +60,9 @@ export default function useBalance({address}: Props) {
 
     return {
         balance,
+        refetch,
         isLoading,
+        isRefetching,
         error,
-        refetch: getBalance
     }
 }

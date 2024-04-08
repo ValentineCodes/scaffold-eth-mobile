@@ -20,7 +20,7 @@ type Props = {
 function MainBalance({ backHandler }: Props) {
   const network = useNetwork()
   const account = useAccount()
-  const { balance, isLoading, refetch } = useBalance({ address: account.address })
+  const { balance, isRefetching, refetch } = useBalance({ address: account.address })
 
   const [showReceiveModal, setShowReceiveModal] = useState(false)
 
@@ -46,7 +46,7 @@ function MainBalance({ backHandler }: Props) {
   }
 
   return (
-    <ScrollView style={{ flexGrow: 0 }} refreshControl={<RefreshControl refreshing={isLoading} onRefresh={refetch} colors={[COLORS.primary]} tintColor={COLORS.primary} />}>
+    <ScrollView style={{ flexGrow: 0 }} refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={refetch} colors={[COLORS.primary]} tintColor={COLORS.primary} />}>
       <VStack alignItems="center" space={2} paddingTop={5}>
         <Text fontSize={FONT_SIZE["xl"]} bold textAlign="center">{account.name}</Text>
         <CopyableText displayText={truncateAddress(account.address)} value={account.address} containerStyle={styles.addressContainer} textStyle={styles.addressText} iconStyle={{ color: COLORS.primary }} />
