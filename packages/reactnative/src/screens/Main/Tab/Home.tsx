@@ -1,42 +1,54 @@
-import { Button, Pressable, Text, View } from 'native-base'
-import React, { useEffect } from 'react'
-import useScaffoldContractWrite from '../../../hooks/scaffold-eth/useScaffoldContractWrite'
-import useScaffoldContractRead from '../../../hooks/scaffold-eth/useScaffoldContractRead'
-
-import { ethers } from 'ethers'
-import useSignMessage from '../../../hooks/scaffold-eth/useSignMessage'
+import { HStack, ScrollView, Text, VStack, View } from 'native-base'
+import React from 'react'
+import Ionicons from "react-native-vector-icons/dist/Ionicons"
+import { WINDOW_WIDTH } from '../../../utils/styles'
+import { COLORS } from '../../../utils/constants'
+import { useNavigation } from '@react-navigation/native'
 
 type Props = {}
 
-export default function Home({ }: Props) {
-    const { write } = useScaffoldContractWrite({ contractName: "YourContract", functionName: "setGreeting" })
-    const { data: greeting, isLoading: isLoadingGreeting } = useScaffoldContractRead("YourContract", "greeting", [])
-    const { data: premium, isLoading: isLoadingPremium } = useScaffoldContractRead("YourContract", "premium", [])
-    const { signMessage } = useSignMessage()
-
-    const setGreeting = async () => {
-        try {
-            const tx = await write({ args: ["Hello, Ugo"], value: ethers.utils.parseEther("0.01") })
-            console.log(tx)
-        } catch (error) {
-            console.error(error)
-        }
-    }
-
-    const sign = async () => {
-        try {
-            const signature = await signMessage({ message: "Mollit id cillum deserunt pariatur aliquip do pariatur est exercitation ut ut eiusmod consequat eu. Ad nulla consectetur ut elit quis ad fugiat proident incididunt mollit incididunt esse veniam id. Ad irure velit laboris dolore est laborum laborum amet officia duis excepteur. Duis Lorem voluptate adipisicing ea. Anim cillum cupidatat voluptate cillum cillum proident commodo et cupidatat. Lorem sunt proident officia ullamco irure laboris exercitation velit eu culpa pariatur. Mollit deserunt culpa incididunt ex labore elit occaecat dolore aliquip non aute." })
-
-            console.log(signature)
-        } catch (error) {
-            console.error(error)
-        }
-    }
+function HighlightedText({ children }: { children: string }) {
     return (
-        <View>
-            <Button onPress={setGreeting}>Press me</Button>
-            <Text>{greeting}</Text>
-            <Text>{premium?.toString()}</Text>
+        <View bgColor={COLORS.primaryLight} px={"1"}>
+            <Text fontSize={"md"} textAlign={"center"}>{children}</Text>
         </View>
+    )
+}
+
+export default function Home({ }: Props) {
+    const navigation = useNavigation()
+
+    return (
+        <ScrollView flex={"1"} bgColor={"white"}>
+            <VStack px={"2"} py={"8"} alignItems={"center"}>
+                <Text fontSize={"2xl"} fontWeight={"light"}>Welcome to</Text>
+                <Text fontSize={"4xl"} fontWeight={"bold"}>Scaffold-ETH</Text>
+
+                <Text fontSize={"lg"} mt={"4"} mb={"1"}>Get started by editing</Text>
+                <HighlightedText>packages/reactnative/src/screens/Main/Tab/Home.tsx</HighlightedText>
+
+                <HStack mt={"4"} mb={"1"} space={"1"} maxW={"full"}>
+                    <Text fontSize={"lg"}>Edit your smart contract</Text>
+                    <HighlightedText>YourContract.sol</HighlightedText>
+                    <Text fontSize={"lg"}>in</Text>
+                </HStack>
+                <HighlightedText>packages/hardhat/contracts</HighlightedText>
+            </VStack>
+
+            <View p={"4"} justifyContent={"center"} alignItems={"center"}>
+                <VStack px={"4"} py={"8"} w={"80%"} borderWidth={"1"} borderColor={"muted.200"} rounded={"3xl"} alignItems={"center"} space={"6"}>
+                    <Ionicons
+                        name="bug-outline"
+                        color={"grey"}
+                        size={WINDOW_WIDTH * 0.08}
+                    />
+
+                    <Text textAlign={"center"} fontSize={"lg"}>
+                        Tinker with your smart contracts using the
+                        <Text underline fontWeight={"medium"} onPress={() => navigation.navigate("DebugContracts")}> DebugContracts </Text>
+                        tab</Text>
+                </VStack>
+            </View>
+        </ScrollView>
     )
 }
