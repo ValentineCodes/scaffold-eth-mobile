@@ -8,8 +8,13 @@ import { Wallet, ethers } from "ethers";
 import useAccount from './useAccount'
 import SInfo from "react-native-sensitive-info"
 
+type Props = {
+    contractName: string
+    functionName: string
+    args: any[]
+}
 
-export default function useScaffoldContractRead(contractName: string, functionName: string, args: any[]) {
+export default function useScaffoldContractRead({contractName, functionName, args}: Props) {
     const { data: deployedContractData, isLoading: isLoadingDeployedContractData } = useDeployedContractInfo(contractName)
     const network = useNetwork()
     const connectedAccount = useAccount()

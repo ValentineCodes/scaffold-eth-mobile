@@ -1,6 +1,6 @@
 import { View } from 'native-base'
 import React, { useEffect } from 'react'
-import { BackHandler, NativeEventSubscription, StyleSheet } from 'react-native'
+import { BackHandler, NativeEventSubscription } from 'react-native'
 import Header from './modules/wallet/Header'
 import MainBalance from './modules/wallet/MainBalance'
 import Transactions from './modules/wallet/Transactions'
@@ -26,7 +26,7 @@ function Wallet({ }: Props) {
     }, [])
 
     return (
-        <View style={styles.container}>
+        <View flex={"1"} bgColor={"white"} px={"4"} py={"1"}>
             <Header />
             <MainBalance
                 backHandler={backHandler}
@@ -36,12 +36,4 @@ function Wallet({ }: Props) {
     )
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        paddingVertical: 5,
-        backgroundColor: 'white',
-        paddingHorizontal: 10,
-    }
-})
 export default Wallet

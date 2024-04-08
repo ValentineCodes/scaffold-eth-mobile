@@ -27,14 +27,14 @@ function MainBalance({ backHandler }: Props) {
   const navigation = useNavigation()
 
   const logo = useMemo(() => {
-    let _logo = require("../../../../../images/eth-icon.png");
+    let _logo = require("../../../../../assets/images/eth-icon.png");
 
     if (["Polygon", "Mumbai"].includes(network.name)) {
-      _logo = require("../../../../../images/polygon-icon.png")
+      _logo = require("../../../../../assets/images/polygon-icon.png")
     } else if (["Arbitrum", "Arbitrum Goerli"].includes(network.name)) {
-      _logo = require("../../../../../images/arbitrum-icon.png")
+      _logo = require("../../../../../assets/images/arbitrum-icon.png")
     } else if (["Optimism", "Optimism Goerli"].includes(network.name)) {
-      _logo = require("../../../../../images/optimism-icon.png")
+      _logo = require("../../../../../assets/images/optimism-icon.png")
     }
 
     return <Image key={`${_logo}`} source={_logo} alt={network.name} style={styles.networkLogo} />
@@ -53,7 +53,6 @@ function MainBalance({ backHandler }: Props) {
         {logo}
         <VStack alignItems="center">
           <Text fontSize={2 * FONT_SIZE["xl"]} bold textAlign="center">{balance !== '' && `${balance} ${network.currencySymbol}`}</Text>
-          {/* {dollarValue !== null && <Text fontSize={FONT_SIZE['lg']} bold textAlign="center" mt="2">${dollarValue}</Text>} */}
         </VStack>
 
         <Divider bgColor="muted.100" my="2" />

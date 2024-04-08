@@ -235,14 +235,14 @@ export default function Transfer({ }: Props) {
     }
 
     const logo = useMemo(() => {
-        let _logo = require("../../images/eth-icon.png");
+        let _logo = require("../../assets/images/eth-icon.png");
 
         if (["Polygon", "Mumbai"].includes(connectedNetwork.name)) {
-            _logo = require("../../images/polygon-icon.png")
+            _logo = require("../../assets/images/polygon-icon.png")
         } else if (["Arbitrum", "Arbitrum Goerli"].includes(connectedNetwork.name)) {
-            _logo = require("../../images/arbitrum-icon.png")
+            _logo = require("../../assets/images/arbitrum-icon.png")
         } else if (["Optimism", "Optimism Goerli"].includes(connectedNetwork.name)) {
-            _logo = require("../../images/optimism-icon.png")
+            _logo = require("../../assets/images/optimism-icon.png")
         }
 
         return <Image key={`${_logo}`} source={_logo} alt={connectedNetwork.name} style={styles.networkLogo} />
