@@ -98,6 +98,8 @@ export default function Transactions() {
   }
 
   useEffect(() => {
+    setLoadingStatus("loading")
+
     if (transactions.length > 0) {
       setTransactions([])
     }
