@@ -11,10 +11,21 @@ import SInfo from "react-native-sensitive-info"
 type Props = {
     contractName: string
     functionName: string
-    args: any[]
+    args?: any[]
 }
 
-export default function useScaffoldContractRead({contractName, functionName, args}: Props) {
+/**
+ * This automatically loads (by name) the contract ABI and address from
+ * the contracts present in deployedContracts.ts & externalContracts.ts corresponding to targetNetworks configured in scaffold.config.ts
+ * @param config - The config settings
+ * @param config.contractName - deployed contract name
+ * @param config.functionName - name of the function to be called
+ * @param config.args - args to be passed to the function call (Optional)
+ */
+
+export default function useScaffoldContractRead({contractName, functionName, args: _args}: Props) {
+    const args = _args || []
+
     const { data: deployedContractData, isLoading: isLoadingDeployedContractData } = useDeployedContractInfo(contractName)
     const network = useNetwork()
     const connectedAccount = useAccount()

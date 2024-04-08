@@ -1,4 +1,3 @@
-import React from 'react'
 import { useModal } from 'react-native-modalfy'
 import useNetwork from './useNetwork'
 
@@ -9,18 +8,30 @@ import { Wallet, ethers } from 'ethers'
 import SInfo from "react-native-sensitive-info"
 import useAccount from './useAccount'
 
-interface SignMessageProps {
-    message: any
+interface UseSignMessageConfig {
+    message?: string
 }
 
-export default function useSignMessage() {
+/**
+ * 
+ * @param config - The config settings 
+ * @param config.message - The message to sign
+ */
+export default function useSignMessage({message}: UseSignMessageConfig) {
+    const messageToSign = message
+    
     const {openModal} = useModal()
     const network = useNetwork()
     const connectedAccount = useAccount()
 
-    const signMessage = async ({message}: SignMessageProps): Promise<string> => {
+    const signMessage = async (config: UseSignMessageConfig = {
+        message: undefined
+    }): Promise<string> => {
+        const {message} = config
+        const _message = message || messageToSign
+
         return new Promise((resolve, reject) => {
-            openModal("SignMessageModal", {message, onConfirm})
+            openModal("SignMessageModal", {message: _message, onConfirm})
 
             async function onConfirm() {
                 try {
@@ -35,7 +46,9 @@ export default function useSignMessage() {
             
                     const wallet = new ethers.Wallet(activeAccount.privateKey).connect(provider)
 
-                    const signature = await wallet.signMessage(message)
+                    const signature = await wallet.signMessage(_message)
+
+                    console.log(signature)
 
                     resolve(signature)
                 } catch(error) {

@@ -17,7 +17,8 @@ interface UseWriteConfig {
     abi: ContractInterface | Abi
     address: string
     functionName: string;
-    args: any[]
+    args?: any[]
+    value?: BigNumber | undefined
     blockConfirmations?: number;
 }
 
@@ -26,14 +27,27 @@ interface SendTxConfig {
     value?: BigNumber | undefined;
 }
 
+/**
+ * This sends a transaction to the contract and returns the transaction receipt
+ * @param config - The config settings
+ * @param config.abi - contract abi
+ * @param config.address - contract address
+ * @param config.functionName - name of the function to be called
+ * @param config.args - arguments for the function
+ * @param config.value - value in ETH that will be sent with transaction
+ * @param config.blockConfirmations - number of block confirmations to wait for (default: 1)
+ */
 export default function useContractWrite({
     abi,
     address, 
     functionName,
     args,
+    value,
     blockConfirmations
 }: UseWriteConfig) {
     const writeArgs = args
+    const writeValue = value
+
     const {openModal} = useModal()
     const network = useNetwork()
     const toast = useToast()
@@ -41,13 +55,21 @@ export default function useContractWrite({
     const connectedAccount = useAccount()
     const [isLoading, setIsLoading] = useState(false)
 
-    const sendTransaction = async (params: SendTxConfig = {
-        args: [],
-        value: BigNumber.from(0),
+    /**
+     * 
+     * @param config Optional param settings
+     * @param config.args - arguments for the function
+     * @param config.value - value in ETH that will be sent with transaction
+     * @returns The transacction receipt
+     */
+
+    const sendTransaction = async (config: SendTxConfig = {
+        args: undefined,
+        value: undefined,
     }): Promise<TransactionReceipt> => {
-        const {args, value} = params
+        const {args, value} = config
         const _args = args || writeArgs || []
-        const _value = value || BigNumber.from(0)
+        const _value = value || writeValue || BigNumber.from(0)
 
         if(network.chainId !== targetNetwork.id) {
             throw new Error("You are on the wrong network")

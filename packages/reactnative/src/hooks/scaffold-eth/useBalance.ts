@@ -7,10 +7,16 @@ import { ethers } from "ethers";
 
 import { parseFloat } from "../../utils/helperFunctions"
 
-interface Props {
+interface UseBalanceConfig {
     address: string
 }
-export default function useBalance({address}: Props) {
+
+/**
+ * 
+ * @param config - The config settings
+ * @param config.address - account address
+ */
+export default function useBalance({address}: UseBalanceConfig) {
     const network = useNetwork()
 
     const [balance, setBalance] = useState("")

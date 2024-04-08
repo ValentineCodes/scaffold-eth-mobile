@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react'
-import { useDeployedContractInfo } from './useDeployedContractInfo'
+import { useEffect, useState } from 'react'
 import useNetwork from './useNetwork'
 
 import "react-native-get-random-values"
@@ -9,7 +8,7 @@ import useAccount from './useAccount'
 import SInfo from "react-native-sensitive-info"
 import { Abi } from 'abitype'
 
-interface Props {
+interface UseContractReadConfig {
     abi: Abi | ContractInterface
     address: string
     functionName: string
@@ -18,7 +17,25 @@ interface Props {
     onError?: (error: any) => void
 }
 
-export default function useContractRead({abi, address, functionName, args, enabled, onError}: Props) {
+/**
+ * This makes a call to the contract and returns the data
+ * @param config - The config settings
+ * @param config.abi - contract abi
+ * @param config.address - contract address
+ * @param config.functionName - name of the function to be called
+ * @param config.args - args to be passed to the function call (Optional)
+ * @param config.enabled - if true, data is fetched automatically
+ * @param config.onError - error handler function
+ */
+
+export default function useContractRead({
+    abi, 
+    address, 
+    functionName, 
+    args, 
+    enabled, 
+    onError
+}: UseContractReadConfig) {
     const network = useNetwork()
     const connectedAccount = useAccount()
 
