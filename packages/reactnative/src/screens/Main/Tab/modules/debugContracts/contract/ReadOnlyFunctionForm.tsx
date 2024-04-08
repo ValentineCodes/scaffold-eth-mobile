@@ -33,7 +33,7 @@ export default function ReadOnlyFunctionForm({
         enabled: false,
         onError: (error: any) => {
             toast.show(JSON.stringify(error), {
-                type: "error"
+                type: "danger"
             })
         }
     })

@@ -64,7 +64,7 @@ export default function AccountsModal({ isVisible, setVisibility, onClose, onSel
         }
 
         if (!newAccount) {
-            toast.show("Failed to create account!", { type: "error" })
+            toast.show("Failed to create account!", { type: "danger" })
             return
         }
 
