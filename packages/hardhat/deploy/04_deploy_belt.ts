@@ -1,14 +1,13 @@
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
-import { Contract } from "ethers";
 
 /**
- * Deploys a contract named "Counter" using the deployer account and
+ * Deploys a contract named "Belt" using the deployer account and
  * constructor arguments set to the deployer address
  *
  * @param hre HardhatRuntimeEnvironment object.
  */
-const deployCounter: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
+const deployBelt: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   /*
     On localhost, the deployer account is the one that comes with Hardhat, which is already funded.
 
@@ -22,17 +21,37 @@ const deployCounter: DeployFunction = async function (hre: HardhatRuntimeEnviron
   const { deployer } = await hre.getNamedAccounts();
   const { deploy } = hre.deployments;
 
-  await deploy("Counter", {
+  // Deploy libraries
+  const TokenURIGen = await deploy("TokenURIGen", {
     from: deployer,
+  });
+
+  const beltMetadata = await deploy("BeltMetadata", {
+    from: deployer,
+    libraries: {
+      TokenURIGen: TokenURIGen.address,
+    },
+  });
+
+  // Deploy accessories
+  await deploy("Belt", {
+    from: deployer,
+    args: [deployer],
     log: true,
+    libraries: {
+      BeltMetadata: beltMetadata.address,
+    },
     // autoMine: can be passed to the deploy function to make the deployment process faster on local networks by
     // automatically mining the contract deployment transaction. There is no effect on live networks.
     autoMine: true,
   });
+
+  // Get the deployed contract
+  // const Belt = await hre.ethers.getContract("Belt", deployer);
 };
 
-export default deployCounter;
+export default deployBelt;
 
 // Tags are useful if you have multiple deploy files and only want to run one of them.
-// e.g. yarn deploy --tags Counter
-deployCounter.tags = ["Counter"];
+// e.g. yarn deploy --tags Belt
+deployBelt.tags = ["Belt"];

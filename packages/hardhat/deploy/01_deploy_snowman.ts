@@ -1,14 +1,13 @@
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
-import { Contract } from "ethers";
 
 /**
- * Deploys a contract named "YourContract" using the deployer account and
+ * Deploys a contract named "Snowman" using the deployer account and
  * constructor arguments set to the deployer address
  *
  * @param hre HardhatRuntimeEnvironment object.
  */
-const deployYourContract: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
+const deploySnowman: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   /*
     On localhost, the deployer account is the one that comes with Hardhat, which is already funded.
 
@@ -22,23 +21,48 @@ const deployYourContract: DeployFunction = async function (hre: HardhatRuntimeEn
   const { deployer } = await hre.getNamedAccounts();
   const { deploy } = hre.deployments;
 
-  await deploy("YourContract", {
+  // Deploy libraries
+  const TokenURIGen = await deploy("TokenURIGen", {
     from: deployer,
-    // Contract constructor arguments
+  });
+
+  const snowmanMetadata = await deploy("SnowmanMetadata", {
+    from: deployer,
+    libraries: {
+      TokenURIGen: TokenURIGen.address,
+    },
+  });
+
+  const accessoryManager = await deploy("AccessoryManager", {
+    from: deployer,
+    libraries: {
+      TokenURIGen: TokenURIGen.address,
+    },
+  });
+  const attributesGen = await deploy("AttributesGen", {
+    from: deployer,
+  });
+
+  await deploy("Snowman", {
+    from: deployer,
     args: [deployer],
     log: true,
+    libraries: {
+      AttributesGen: attributesGen.address,
+      SnowmanMetadata: snowmanMetadata.address,
+      AccessoryManager: accessoryManager.address,
+    },
     // autoMine: can be passed to the deploy function to make the deployment process faster on local networks by
     // automatically mining the contract deployment transaction. There is no effect on live networks.
     autoMine: true,
   });
 
-  // Get the deployed contract to interact with it after deploying.
-  const yourContract = await hre.ethers.getContract<Contract>("YourContract", deployer);
-  console.log("👋 Initial greeting:", await yourContract.greeting());
+  // Get the deployed contract
+  // const Snowman = await hre.ethers.getContract("Snowman", deployer);
 };
 
-export default deployYourContract;
+export default deploySnowman;
 
 // Tags are useful if you have multiple deploy files and only want to run one of them.
-// e.g. yarn deploy --tags YourContract
-deployYourContract.tags = ["YourContract"];
+// e.g. yarn deploy --tags Snowman
+deploySnowman.tags = ["Snowman"];
