@@ -116,7 +116,7 @@ yarn install && yarn install-patch
 <img src="packages/reactnative/ganache-server-config.png" alt="Ganache Server Config" width="100%">
 </p>
 
-4. Update the `deployerPrivateKey` in `packages/hardhat/hardhat.config.ts` to one of the accounts in your ganache workspace
+4. Update the `deployerPrivateKey` in `packages/hardhat/hardhat.config.ts` to one of the accounts in your ganache workspace and the ganache network url to the local IP address
 
 5. Deploy the test contract:
 
