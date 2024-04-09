@@ -25,12 +25,13 @@ export default function ({ }: Props) {
             ) : (
                 <>
                     <Tab.Navigator screenOptions={{
+                        tabBarScrollEnabled: true,
                         tabBarIndicatorStyle: {
                             backgroundColor: COLORS.primary,
                         },
                         tabBarLabelStyle: {
                             textTransform: 'none',
-                            fontSize: FONT_SIZE["xl"]
+                            fontSize: FONT_SIZE["lg"]
                         },
                         tabBarActiveTintColor: COLORS.primary,
                         tabBarInactiveTintColor: '#C7C6C7',

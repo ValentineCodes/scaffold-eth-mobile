@@ -40,7 +40,6 @@ export default function ContractReadMethods({ deployedContractData }: Props) {
                     abi={deployedContractData.abi as Abi}
                     contractAddress={deployedContractData.address}
                     abiFunction={fn}
-                    inheritedFrom={inheritedFrom}
                 />
             ))}
         </>

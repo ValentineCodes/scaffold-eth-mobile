@@ -33,6 +33,7 @@ export default function InputBase<T extends { toString: () => string } | undefin
                 borderRadius={"3xl"}
                 variant="filled"
                 fontSize="md"
+                mt={"1"}
                 focusOutlineColor={COLORS.primary}
                 _input={{
                     selectionColor: COLORS.primary,

@@ -11,14 +11,12 @@ import { COLORS } from '../../../../../../utils/constants';
 type Props = {
     contractAddress: Address;
     abiFunction: AbiFunction;
-    inheritedFrom?: string;
     abi: Abi;
 }
 
 export default function ReadOnlyFunctionForm({
     contractAddress,
     abiFunction,
-    inheritedFrom,
     abi,
 }: Props) {
     const [form, setForm] = useState<Record<string, any>>(() => getInitialFormState(abiFunction));
