@@ -70,7 +70,7 @@ export default function useScaffoldContractWrite({
         if(!deployedContractData){
             throw new Error("Target Contract is not deployed, did you forget to run `yarn deploy`?")
         }
-        if(network.chainId !== targetNetwork.id) {
+        if(network.id !== targetNetwork.id) {
             throw new Error("You are on the wrong network")
         }
 

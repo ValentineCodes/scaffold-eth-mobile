@@ -45,8 +45,8 @@ export default function Header({ }: Props) {
 
     const toast = useToast()
 
-    const handleNetworkSelecttion = (chainId: string) => {
-        dispatch(switchNetwork(chainId))
+    const handleNetworkSelecttion = (id: string) => {
+        dispatch(switchNetwork(id))
     }
 
     const shareAddress = async () => {
@@ -79,7 +79,7 @@ export default function Header({ }: Props) {
             <Image source={require("../../../../../assets/images/logo.png")} alt='Paux' width={WINDOW_WIDTH * 0.08} height={WINDOW_WIDTH * 0.08} />
 
             <Select
-                selectedValue={connectedNetwork.chainId.toString()}
+                selectedValue={connectedNetwork.id.toString()}
                 flex="1"
                 borderRadius={25}
                 mx="10"
@@ -93,7 +93,7 @@ export default function Header({ }: Props) {
                 fontSize={FONT_SIZE['md']}
                 onValueChange={handleNetworkSelecttion}
             >
-                {networks.map((network: Network) => <Select.Item key={network.chainId} label={network.name} value={network.chainId.toString()} />)}
+                {networks.map((network: Network) => <Select.Item key={network.id} label={network.name} value={network.id.toString()} />)}
             </Select>
 
             <Menu>

@@ -2,23 +2,24 @@ import { Pressable, ScrollView, Text, VStack } from 'native-base'
 import React, { useState } from 'react'
 import Ionicons from "react-native-vector-icons/dist/Ionicons"
 import { WINDOW_WIDTH } from '../utils/styles'
-import { useDispatch, useSelector } from 'react-redux'
-import { Network, switchNetwork } from '../store/reducers/Networks'
+import { useDispatch } from 'react-redux'
+import { switchNetwork } from '../store/reducers/Networks'
 
 import scaffoldConfig, { Localhost } from '../../scaffold.config'
 import Modal from 'react-native-modal'
 import { useToast } from 'react-native-toast-notifications'
 import * as chains from "viem/chains";
+import useNetwork from '../hooks/scaffold-eth/useNetwork'
 
 type Props = {}
 
 export default function SwitchNetwork({ }: Props) {
-    const connectedNetwork: Network = useSelector((state: any) => state.networks.find((network: Network) => network.isConnected))
+    const connectedNetwork = useNetwork()
     const [showNetworkSwitchModal, setShowNetworkSwitchModal] = useState(false)
     const dispatch = useDispatch()
     const toast = useToast()
 
-    if (scaffoldConfig.targetNetworks.map(network => network.id).includes(connectedNetwork.chainId)) return
+    if (scaffoldConfig.targetNetworks.map(network => network.id).includes(connectedNetwork.id)) return
 
     const closeModal = () => {
         setShowNetworkSwitchModal(false)

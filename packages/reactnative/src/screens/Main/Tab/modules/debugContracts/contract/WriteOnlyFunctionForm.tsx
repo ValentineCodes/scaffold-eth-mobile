@@ -33,7 +33,7 @@ export default function WriteOnlyFunctionForm({
     const toast = useToast()
     const [txReceipt, setTxReceipt] = useState<TransactionReceipt | undefined>();
     const { openModal } = useModal()
-    const writeDisabled = !network || network?.chainId !== targetNetwork.id;
+    const writeDisabled = !network || network?.id !== targetNetwork.id;
 
     const { isLoading, write } = useContractWrite({
         address: contractAddress,

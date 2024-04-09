@@ -9,7 +9,7 @@ export default function useTargetNetwork() {
     const { targetNetworks } = scaffoldConfig;
     const network = useNetwork()
 
-    const selectedNetwork = targetNetworks.find(targetNetwork => targetNetwork.id === network.chainId)
+    const selectedNetwork = targetNetworks.find(targetNetwork => targetNetwork.id === network.id)
 
     if(selectedNetwork){
         return selectedNetwork

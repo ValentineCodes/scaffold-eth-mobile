@@ -71,7 +71,7 @@ export default function useContractWrite({
         const _args = args || writeArgs || []
         const _value = value || writeValue || BigNumber.from(0)
 
-        if(network.chainId !== targetNetwork.id) {
+        if(network.id !== targetNetwork.id) {
             throw new Error("You are on the wrong network")
         }
 

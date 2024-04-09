@@ -1,10 +1,10 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {ALCHEMY_KEY} from '../../utils/constants';
+import {ALCHEMY_KEY, LOCAL_PROVIDER} from '../../utils/constants';
 
 export interface Network {
   name: string;
   provider: string;
-  chainId: number;
+  id: number;
   currencySymbol: string;
   isConnected: boolean;
   blockExplorer: string | null;
@@ -12,11 +12,11 @@ export interface Network {
   txApiKey: string | null
 }
 
-const initialState: Network[] = [
+export const networks: Network[] = [
   {
     name: 'Localhost',
-    provider: `http://192.168.48.72:7545`,
-    chainId: 1337,
+    provider: LOCAL_PROVIDER,
+    id: 1337,
     currencySymbol: 'ETH',
     isConnected: true,
     blockExplorer: null,
@@ -26,7 +26,7 @@ const initialState: Network[] = [
   {
     name: 'Ethereum',
     provider: `https://eth-mainnet.alchemyapi.io/v2/${ALCHEMY_KEY}`,
-    chainId: 1,
+    id: 1,
     currencySymbol: 'ETH',
     isConnected: false,
     blockExplorer: "https://etherscan.io",
@@ -36,7 +36,7 @@ const initialState: Network[] = [
   {
     name: 'Sepolia',
     provider: `https://eth-sepolia.g.alchemy.com/v2/${ALCHEMY_KEY}`,
-    chainId: 11155111,
+    id: 11155111,
     currencySymbol: 'SepoliaETH',
     isConnected: false,
     blockExplorer: "https://sepolia.etherscan.io",
@@ -46,7 +46,7 @@ const initialState: Network[] = [
   {
     name: 'Arbitrum',
     provider: `https://arb-mainnet.g.alchemy.com/v2/${ALCHEMY_KEY}`,
-    chainId: 42161,
+    id: 42161,
     currencySymbol: 'ARB',
     isConnected: false,
     blockExplorer: "https://arbiscan.io",
@@ -56,7 +56,7 @@ const initialState: Network[] = [
   {
     name: 'Arbitrum Goerli',
     provider: `https://arb-goerli.g.alchemy.com/v2/${ALCHEMY_KEY}`,
-    chainId: 421613,
+    id: 421613,
     currencySymbol: 'AGOR',
     isConnected: false,
     blockExplorer: "https://goerli.arbiscan.io",
@@ -66,7 +66,7 @@ const initialState: Network[] = [
   {
     name: 'Optimism',
     provider: `https://opt-mainnet.g.alchemy.com/v2/${ALCHEMY_KEY}`,
-    chainId: 10,
+    id: 10,
     currencySymbol: 'OP',
     isConnected: false,
     blockExplorer: "https://optimistic.etherscan.io",
@@ -76,7 +76,7 @@ const initialState: Network[] = [
   {
     name: 'Optimism Goerli',
     provider: `https://opt-goerli.g.alchemy.com/v2/${ALCHEMY_KEY}`,
-    chainId: 420,
+    id: 420,
     currencySymbol: 'ETH',
     isConnected: false,
     blockExplorer: "https://goerli-optimism.etherscan.io",
@@ -86,7 +86,7 @@ const initialState: Network[] = [
   {
     name: 'Polygon',
     provider: `https://polygon-mainnet.g.alchemy.com/v2/${ALCHEMY_KEY}`,
-    chainId: 137,
+    id: 137,
     currencySymbol: 'MATIC',
     isConnected: false,
     blockExplorer: "https://polygonscan.com",
@@ -96,7 +96,7 @@ const initialState: Network[] = [
   {
     name: 'Mumbai',
     provider: `https://polygon-mainnet.g.alchemy.com/v2/${ALCHEMY_KEY}`,
-    chainId: 80001,
+    id: 80001,
     currencySymbol: 'MATIC',
     isConnected: false,
     blockExplorer: "https://mumbai.polygonscan.com",
@@ -107,15 +107,15 @@ const initialState: Network[] = [
 
 export const networksSlice = createSlice({
   name: 'NETWORKS',
-  initialState,
+  initialState: networks,
   reducers: {
     addNetwork: (state, action) => {
       return [...state, action.payload];
     },
     switchNetwork: (state, action) => {
-      // action.payload => network chainId
+      // action.payload => network id
       return state.map(network => {
-        if (network.chainId === Number(action.payload)) {
+        if (network.id === Number(action.payload)) {
           return {...network, isConnected: true};
         } else {
           return {...network, isConnected: false};

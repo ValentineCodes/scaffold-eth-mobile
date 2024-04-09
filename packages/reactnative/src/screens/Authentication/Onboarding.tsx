@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { StyleSheet, Dimensions, BackHandler, NativeEventSubscription } from 'react-native'
+import { StyleSheet, BackHandler, NativeEventSubscription } from 'react-native'
 import { ScrollView, Image, Text, VStack } from 'native-base'
 
 import Button from '../../components/Button'
@@ -39,7 +39,7 @@ export default function Onboarding({ }: Props) {
             justifyContent: "center",
             alignItems: "center"
         }} style={styles.container}>
-            <Image source={require("../../assets/images/logo.png")} alt='Scaffold-ETH' width={WINDOW_WIDTH * 0.5} height={WINDOW_WIDTH * 0.5} />
+            <Image source={require("../../assets/images/logo.png")} alt='Scaffold-ETH' width={WINDOW_WIDTH * 0.3} height={WINDOW_WIDTH * 0.3} />
             <VStack w="full" mt="10">
                 <Text textAlign="center" color={COLORS.primary} fontSize={2 * FONT_SIZE["xl"]} bold>Welcome to Scaffold-ETH</Text>
                 <Text textAlign="center" fontSize={FONT_SIZE["lg"]} my="4">First, we'll need to setup a wallet. This will be unique to you and will be used to sign transactions, messages, and manage funds</Text>
