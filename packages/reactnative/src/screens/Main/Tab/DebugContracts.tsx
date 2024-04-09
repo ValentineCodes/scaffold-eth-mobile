@@ -7,6 +7,7 @@ import { getAllContracts } from '../../../../utils/scaffold-eth/contractsData'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { COLORS } from '../../../utils/constants';
 import { FONT_SIZE } from '../../../utils/styles';
+import { useIsFocused } from '@react-navigation/native';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -16,6 +17,9 @@ const contractNames = Object.keys(contractsData);
 type Props = {}
 
 export default function ({ }: Props) {
+    const isFocused = useIsFocused()
+
+    if (!isFocused) return
     return (
         <View flex={1} bgColor={"white"}>
             {contractNames.length === 0 ? (

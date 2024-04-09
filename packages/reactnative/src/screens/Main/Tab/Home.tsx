@@ -1,26 +1,24 @@
 import { ScrollView, Spinner, Text, VStack } from 'native-base'
 import React, { useEffect, useState } from 'react'
-import { useNavigation } from '@react-navigation/native'
 import Button from '../../../components/Button'
 import useScaffoldContractWrite from '../../../hooks/scaffold-eth/useScaffoldContractWrite'
 import { ethers } from 'ethers'
 import { useToast } from 'react-native-toast-notifications'
 import useAccount from '../../../hooks/scaffold-eth/useAccount'
-import useScaffoldContractRead from '../../../hooks/scaffold-eth/useScaffoldContractRead'
 import { COLORS } from '../../../utils/constants'
 import { RefreshControl } from 'react-native'
 import useNetwork from '../../../hooks/scaffold-eth/useNetwork'
 import { useDeployedContractInfo } from '../../../hooks/scaffold-eth/useDeployedContractInfo'
 import SnowmanList from '../../../components/SnowmanList'
-import { SvgXml } from 'react-native-svg'
+import { useIsFocused } from '@react-navigation/native'
 
 type Props = {}
 
 export default function Home({ }: Props) {
-    const navigation = useNavigation()
     const toast = useToast()
     const account = useAccount()
     const network = useNetwork()
+    const isFocused = useIsFocused()
     const { data: snowmanContract, isLoading: isLoadingSnowmanContract } = useDeployedContractInfo("Snowman")
 
     const { write: mintSnowman } = useScaffoldContractWrite({
@@ -75,9 +73,11 @@ export default function Home({ }: Props) {
     }
 
     useEffect(() => {
+        if (!isFocused) return
         getSnowmanBalance()
-    }, [account, isLoadingSnowmanContract])
+    }, [account, isLoadingSnowmanContract, isFocused])
 
+    if (!isFocused) return
     return (
         <ScrollView
             flex={"1"}

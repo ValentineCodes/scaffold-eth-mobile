@@ -6,12 +6,14 @@ import SInfo from "react-native-sensitive-info"
 import ReactNativeBiometrics from 'react-native-biometrics'
 import { useToast } from 'react-native-toast-notifications'
 import { useModal } from 'react-native-modalfy'
+import { useIsFocused } from '@react-navigation/native'
 
 type Props = {}
 
 export default function Settings({ }: Props) {
     const toast = useToast()
     const { openModal } = useModal()
+    const isFocused = useIsFocused()
 
     const [isBiometricsAvailable, setIsBiometricsAvailable] = useState(false)
     const [isBiometricsEnabled, setIsBiometricsEnabled] = useState(false)
@@ -89,6 +91,8 @@ export default function Settings({ }: Props) {
 
         })()
     }, [])
+
+    if (!isFocused) return
     return (
         <VStack flex={1} bgColor={"white"} p={"4"}>
             {isBiometricsAvailable && (

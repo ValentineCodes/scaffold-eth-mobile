@@ -9,16 +9,17 @@ import Balance from '../../../../../../components/scaffold-eth/Balance'
 import ContractReadMethods from './ContractReadMethods'
 import ContractVariables from './ContractVariables'
 import ContractWriteMethods from './ContractWriteMethods'
-import { useRoute } from '@react-navigation/native'
+import { useIsFocused, useRoute } from '@react-navigation/native'
 
 export default function ContractUI() {
     const route = useRoute()
+    const isFocused = useIsFocused()
     const contractName = route.name
     const [refreshDisplayVariables, triggerRefreshDisplayVariables] = useReducer(value => !value, false);
     const targetNetwork = useTargetNetwork()
     const { data: deployedContractData, isLoading: isDeployedContractLoading } = useDeployedContractInfo(contractName);
 
-    if (isDeployedContractLoading) {
+    if (isDeployedContractLoading || !isFocused) {
         return (
             <View mt={"12"}>
                 <Spinner color={COLORS.primary} size={"lg"} />

@@ -1,4 +1,4 @@
-import { useNavigation } from '@react-navigation/native'
+import { useIsFocused, useNavigation } from '@react-navigation/native'
 import { HStack, VStack, Icon, Text, Input, Divider, View, FlatList, Image, Pressable } from 'native-base'
 import React, { useEffect, useState, useCallback, useMemo } from 'react'
 import { FONT_SIZE } from '../../utils/styles'
@@ -29,6 +29,7 @@ type Props = {}
 
 export default function Transfer({ }: Props) {
     const navigation = useNavigation()
+    const isFocused = useIsFocused()
 
     const dispatch = useDispatch()
 
@@ -255,6 +256,7 @@ export default function Transfer({ }: Props) {
     });
 
     useEffect(() => {
+        if (!isFocused) return
         const provider = new ethers.providers.JsonRpcProvider(connectedNetwork.provider)
 
         provider.off('block')
@@ -268,6 +270,8 @@ export default function Transfer({ }: Props) {
             backHandler.remove();
         }
     }, [from])
+
+    if (!isFocused) return
 
     return (
         <VStack flex="1" bgColor="white" p="15" space="6">
