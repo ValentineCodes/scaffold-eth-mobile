@@ -2211,7 +2211,7 @@ const deployedContracts = {
       inheritedFunctions: {},
     },
     Snowman: {
-      address: "0xFDdFfaD1f8f4c6D3F71541d16A5F873B6682fC4B",
+      address: "0x058eb23cd2349837b529A0b95DB8a8EC3560Ff02",
       abi: [
         {
           inputs: [
@@ -3188,7 +3188,7 @@ const deployedContracts = {
       },
     },
     SnowmanMetadata: {
-      address: "0xe170bD83f6912845aF51898D2f9003bF531b9F32",
+      address: "0x66E036baC753A1EFa8186c9c8c0608cB8D521EB0",
       abi: [],
       inheritedFunctions: {},
     },

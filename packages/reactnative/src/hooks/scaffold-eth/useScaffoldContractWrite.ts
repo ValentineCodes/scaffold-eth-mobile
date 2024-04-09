@@ -17,7 +17,8 @@ interface UseScaffoldWriteConfig {
     functionName: string
     args?: any[]
     value?: BigNumber | undefined
-    blockConfirmations?: number
+    blockConfirmations?: number | undefined
+    gasLimit?: BigNumber | undefined
 }
 
 interface SendTxConfig {
@@ -33,6 +34,7 @@ interface SendTxConfig {
  * @param config.args - arguments for the function
  * @param config.value - value in ETH that will be sent with transaction
  * @param config.blockConfirmations - number of block confirmations to wait for (default: 1)
+ * @param config.gasLimit - transaction gas limit
  */
 
 export default function useScaffoldContractWrite({
@@ -40,7 +42,8 @@ export default function useScaffoldContractWrite({
     functionName,
     args,
     value,
-    blockConfirmations
+    blockConfirmations,
+    gasLimit
 }: UseScaffoldWriteConfig) {
     const writeArgs = args
     const writeValue = value
@@ -57,7 +60,7 @@ export default function useScaffoldContractWrite({
      * @param config Optional param settings
      * @param config.args - arguments for the function
      * @param config.value - value in ETH that will be sent with transaction
-     * @returns The transacction receipt
+     * @returns The transaction receipt
      */
     const sendTransaction = async (config: SendTxConfig = {
         args: undefined,
@@ -66,6 +69,7 @@ export default function useScaffoldContractWrite({
         const {args, value} = config
         const _args = args || writeArgs || []
         const _value = value || writeValue || BigNumber.from(0)
+        const _gasLimit = gasLimit || 21000
 
         if(!deployedContractData){
             throw new Error("Target Contract is not deployed, did you forget to run `yarn deploy`?")
@@ -102,7 +106,8 @@ export default function useScaffoldContractWrite({
                     const contract = new ethers.Contract(deployedContractData!.address, deployedContractData!.abi, wallet)
         
                     const tx = await contract.functions[functionName](..._args, {
-                        value: _value
+                        value: _value,
+                        gasLimit: _gasLimit
                     })
                     const receipt = await tx.wait(blockConfirmations || 1)
                     toast.show("Transaction Successful!", {

@@ -6156,6 +6156,7 @@ __metadata:
     "@reduxjs/toolkit": ^2.2.2
     "@tanstack/react-query": ^5.28.9
     "@tsconfig/react-native": ^2.0.2
+    "@types/base-64": ^1
     "@types/fast-text-encoding": ^1
     "@types/jest": ^29.2.1
     "@types/react": ^18.0.24
@@ -6164,6 +6165,7 @@ __metadata:
     abitype: ^1.0.2
     babel-jest: ^29.2.1
     babel-plugin-module-resolver: ^5.0.0
+    base-64: ^1.0.0
     blo: ^1.1.1
     eslint: ^8.19.0
     ethers: 5.7.2
@@ -6825,6 +6827,13 @@ __metadata:
   dependencies:
     "@babel/types": ^7.20.7
   checksum: 608e0ab4fc31cd47011d98942e6241b34d461608c0c0e153377c5fd822c436c475f1ded76a56bfa76a1adf8d9266b727bbf9bfac90c4cb152c97f30dadc5b7e8
+  languageName: node
+  linkType: hard
+
+"@types/base-64@npm:^1":
+  version: 1.0.2
+  resolution: "@types/base-64@npm:1.0.2"
+  checksum: bb7593c6de16c88a1bfed73a37c3be2e940921261bb7a160ab6d671f66d976b5426334ae9ce59553a10086db11e52af348813271a8b636e4f88e4cab8f27a3e4
   languageName: node
   linkType: hard
 
@@ -9694,6 +9703,13 @@ __metadata:
   dependencies:
     bare-os: ^2.1.0
   checksum: 03f260e72bd0ae0df4cd712322a2d3c8c16701ffaa55cf2d517ae62b7f78c64b7ec5bba81ec579367f966472481f5160db282e6663bd0fc8cfb09ebe272d8bba
+  languageName: node
+  linkType: hard
+
+"base-64@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "base-64@npm:1.0.0"
+  checksum: d10b64a1fc9b2c5a5f39f1ce1e6c9d1c5b249222bbfa3a0604c592d90623caf74419983feadd8a170f27dc0c3389704f72faafa3e645aeb56bfc030c93ff074a
   languageName: node
   linkType: hard
 
