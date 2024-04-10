@@ -33,8 +33,10 @@ git clone https://github.com/ValentineCodes/scaffold-eth-react-native.git
 
 cd scaffold-eth-react-native
 
-yarn i
+yarn install && yarn patch-ethers
 ```
+
+Remember to run `yarn patch-ethers` to patch ethers after installing any package
 
 2. Connect your device to your computer via WIFI-HOTSPOT
 
@@ -66,8 +68,6 @@ yarn android
 ```
 
 9. Import one of the accounts in your ganache workspace into your wallet to have funds for testing
-
-**Note:** Remember to run `yarn patch-ethers` to patch ethers after installing any package
 
 You can interact with your smart contract using the `Debug Contracts` tab. You can tweak the app config in `packages/reactnative/scaffold.config.ts`.
 

@@ -26,7 +26,6 @@
     "android": "yarn workspace @se-2/reactnative android",
     "ios": "yarn workspace @se-2/reactnative ios",
     "start": "yarn workspace @se-2/reactnative start",
-    "i": "yarn && yarn workspace @se-2/reactnative patch-ethers",
     "patch-ethers": "yarn workspace @se-2/reactnative patch-ethers"
   },
   "packageManager": "yarn@3.2.3",
