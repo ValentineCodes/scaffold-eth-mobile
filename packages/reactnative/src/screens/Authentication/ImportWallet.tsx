@@ -86,6 +86,7 @@ function ImportWallet() {
   const importWallet = async (accountsCount: number) => {
     let wallets = []
 
+    setIsImporting(true)
     for (let i = 0; i < accountsCount; i++) {
       const newWallet = await importMnemonic(seedPhrase, "", `m/44'/60'/0'/0/${i}`, true)
 
@@ -101,8 +102,6 @@ function ImportWallet() {
     }
 
     try {
-      setIsImporting(true)
-
       // Save wallet
       await SInfo.setItem("mnemonic", seedPhrase, {
         sharedPreferencesName: "sern.android.storage",
