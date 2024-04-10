@@ -60,7 +60,7 @@ yarn deploy
 
 6. Set the `ALCHEMY_KEY` and `LOCAL_PROVIDER` variables in `packages/reactnative/src/utils/constants.ts`
 
-7. [Connect your device](https://reactnative.dev/docs/running-on-device) to your computer via USB
+7. Ensure you have a device connected or you are running a simulator
 
 8. Run android(`IOS support coming soon...`):
 ```
