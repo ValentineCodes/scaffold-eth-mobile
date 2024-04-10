@@ -84,10 +84,14 @@ export default function useScaffoldContractWrite({
     
                 const contract = new ethers.Contract(deployedContractData.address, deployedContractData.abi, provider)
 
-                openModal("SignTransactionModal", {contract, contractAddress: deployedContractData.address, functionName, args: _args, value: _value, onConfirm})
+                openModal("SignTransactionModal", {contract, contractAddress: deployedContractData.address, functionName, args: _args, value: _value, gasLimit: _gasLimit, onConfirm, onReject})
                 
             } catch(error) {
                 reject(error)
+            }
+
+            function onReject(){
+                reject("Transaction Rejected!")
             }
     
             async function onConfirm(){

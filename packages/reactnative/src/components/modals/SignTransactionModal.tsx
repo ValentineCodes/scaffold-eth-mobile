@@ -21,7 +21,9 @@ type Props = {
             functionName: string
             args: any[]
             value: BigNumber
+            gasLimit: BigNumber | number
             onConfirm: () => void
+            onReject: () => void
         }
     }
 }
@@ -44,7 +46,10 @@ export default function SignTransactionModal({ modal: { closeModal, params } }: 
     const estimateGasCost = async () => {
         const provider = new ethers.providers.JsonRpcProvider(network.provider)
 
-        const gasEstimate = await params.contract.estimateGas[params.functionName](...params.args)
+        const gasEstimate = await params.contract.estimateGas[params.functionName](...params.args, {
+            value: params.value,
+            gasLimit: params.gasLimit
+        })
         const feeData = await provider.getFeeData()
 
         const gasCost: GasCost = {
@@ -87,6 +92,11 @@ export default function SignTransactionModal({ modal: { closeModal, params } }: 
     function confirm() {
         closeModal()
         params.onConfirm()
+    }
+
+    function reject() {
+        closeModal()
+        params.onReject()
     }
 
     return (
@@ -154,7 +164,7 @@ export default function SignTransactionModal({ modal: { closeModal, params } }: 
             </VStack>
 
             <HStack w="full" alignItems="center" justifyContent="space-between">
-                <RNButton py="4" bgColor="red.100" w="50%" onPress={closeModal} _pressed={{ background: 'red.200' }}><Text color="red.400" bold fontSize="md">Reject</Text></RNButton>
+                <RNButton py="4" bgColor="red.100" w="50%" onPress={reject} _pressed={{ background: 'red.200' }}><Text color="red.400" bold fontSize="md">Reject</Text></RNButton>
                 <Button text="Confirm" onPress={confirm} style={{ width: "50%", borderRadius: 0 }} />
             </HStack>
         </VStack>
