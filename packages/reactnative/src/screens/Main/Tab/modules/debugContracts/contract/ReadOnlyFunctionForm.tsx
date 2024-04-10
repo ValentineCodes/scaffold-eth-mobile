@@ -77,7 +77,7 @@ export default function ReadOnlyFunctionForm({
                 w={"20"}
                 py={"2"}
                 borderRadius={"3xl"}
-                bgColor={COLORS.primary}
+                bgColor={COLORS.primaryLight}
                 isLoading={isFetching}
                 isLoadingText='Read'
                 _pressed={{ backgroundColor: 'rgba(39, 184, 88, 0.5)' }}
@@ -86,7 +86,7 @@ export default function ReadOnlyFunctionForm({
                     setResult(data);
                 }}
             >
-                <Text fontSize={"md"} fontWeight={"medium"} color={"white"}>Read</Text>
+                <Text fontSize={"md"} fontWeight={"medium"} color={COLORS.primary}>Read</Text>
             </Button>
         </View>
     )
