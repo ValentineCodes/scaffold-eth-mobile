@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { getFunctionInputKey, getInitialFormState, getParsedContractFunctionArgs } from './utilsContract';
 import useNetwork from '../../../../../../hooks/scaffold-eth/useNetwork';
 import useTargetNetwork from '../../../../../../hooks/scaffold-eth/useTargetNetwork';
-import useContractWrite from '../../../../../../hooks/scaffold-eth/useContractWrtie';
+import useContractWrite from '../../../../../../hooks/scaffold-eth/useContractWrite';
 import { BigNumber } from 'ethers';
 import { useToast } from 'react-native-toast-notifications';
 import { TransactionReceipt } from 'viem';
