@@ -79,7 +79,7 @@ export default function Home({ }: Props) {
     useEffect(() => {
         if (!isFocused) return
         getSnowmanBalance()
-    }, [account, isLoadingSnowmanContract, isFocused])
+    }, [account, network, isLoadingSnowmanContract, isFocused])
 
     if (!isFocused) return
     return (
