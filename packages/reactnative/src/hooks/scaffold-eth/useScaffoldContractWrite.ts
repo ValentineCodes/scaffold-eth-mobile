@@ -78,11 +78,20 @@ export default function useScaffoldContractWrite({
             throw new Error("You are on the wrong network")
         }
 
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             try {
                 const provider = new ethers.providers.JsonRpcProvider(network.provider)
     
-                const contract = new ethers.Contract(deployedContractData.address, deployedContractData.abi, provider)
+                const accounts = await SInfo.getItem("accounts", {
+                    sharedPreferencesName: "sern.android.storage",
+                    keychainService: "sern.ios.storage",
+                })
+        
+                const activeAccount: Wallet = Array.from(JSON.parse(accounts)).find(account => account.address.toLowerCase() == connectedAccount.address.toLowerCase())
+        
+                const wallet = new ethers.Wallet(activeAccount.privateKey).connect(provider)
+    
+                const contract = new ethers.Contract(deployedContractData.address, deployedContractData.abi, wallet)
 
                 openModal("SignTransactionModal", {contract, contractAddress: deployedContractData.address, functionName, args: _args, value: _value, gasLimit: _gasLimit, onConfirm, onReject})
                 
