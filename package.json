@@ -5,7 +5,6 @@
   "workspaces": {
     "packages": [
       "packages/hardhat",
-      "packages/nextjs",
       "packages/reactnative"
     ]
   },
@@ -14,7 +13,6 @@
     "chain": "yarn workspace @se-2/hardhat chain",
     "fork": "yarn workspace @se-2/hardhat fork",
     "deploy": "yarn workspace @se-2/hardhat deploy",
-    "deploy:ganache": "yarn workspace @se-2/hardhat deploy:ganache",
     "verify": "yarn workspace @se-2/hardhat verify",
     "hardhat-verify": "yarn workspace @se-2/hardhat hardhat-verify",
     "compile": "yarn workspace @se-2/hardhat compile",
@@ -23,18 +21,13 @@
     "hardhat:lint-staged": "yarn workspace @se-2/hardhat lint-staged",
     "hardhat:test": "yarn workspace @se-2/hardhat test",
     "test": "yarn hardhat:test",
-    "start": "yarn workspace @se-2/nextjs dev",
-    "next:lint": "yarn workspace @se-2/nextjs lint",
-    "next:format": "yarn workspace @se-2/nextjs format",
-    "next:check-types": "yarn workspace @se-2/nextjs check-types",
     "postinstall": "husky install",
     "precommit": "lint-staged",
-    "vercel": "yarn workspace @se-2/nextjs vercel",
-    "vercel:yolo": "yarn workspace @se-2/nextjs vercel:yolo",
     "android": "yarn workspace @se-2/reactnative android",
     "ios": "yarn workspace @se-2/reactnative ios",
-    "rn:start": "yarn workspace @se-2/reactnative start",
-    "install-patch": "yarn && yarn workspace @se-2/reactnative patch-ethers"
+    "start": "yarn workspace @se-2/reactnative start",
+    "i": "yarn && yarn workspace @se-2/reactnative patch-ethers",
+    "patch-ethers": "yarn workspace @se-2/reactnative patch-ethers"
   },
   "packageManager": "yarn@3.2.3",
   "devDependencies": {

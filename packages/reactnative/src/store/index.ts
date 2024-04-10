@@ -16,15 +16,13 @@ import Networks from './reducers/Networks';
 import Accounts from './reducers/Accounts';
 import Transactions from './reducers/Transactions';
 import Balance from './reducers/Balance';
-import ConnectedSites from './reducers/ConnectedSites';
-import ActiveSessions from './reducers/ActiveSessions';
 import Recipients from './reducers/Recipients';
 
 const persistConfig = {
   key: 'root',
   version: 1,
   storage: AsyncStorage,
-  blacklist: ["balance", "activeSessions"]
+  blacklist: ["balance", "activeSessions", "networks"]
 };
 
 const reducers = combineReducers({
@@ -33,8 +31,6 @@ const reducers = combineReducers({
   accounts: Accounts,
   transactions: Transactions,
   balance: Balance,
-  connectedSites: ConnectedSites,
-  activeSessions: ActiveSessions,
   recipients: Recipients
 });
 

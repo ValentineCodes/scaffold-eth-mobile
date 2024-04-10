@@ -16,10 +16,6 @@ import {
     MenuTrigger,
 } from 'react-native-popup-menu';
 import AccountDetailsModal from '../../../../../components/modals/AccountDetailsModal'
-import ConnectedSitesModal from '../../../../../components/modals/ConnectedSitesModal'
-import AccountSelectionModal from '../../../../../components/modals/AccountSelectionModal'
-import { ActiveSession } from '../../../../../store/reducers/ActiveSessions'
-import SwitchAccountModal from '../../../../../components/modals/SwitchAccountModal'
 import { FONT_SIZE, WINDOW_WIDTH } from '../../../../../utils/styles'
 import { COLORS } from '../../../../../utils/constants'
 import AccountsModal from '../../../../../components/modals/AccountsModal'
@@ -32,16 +28,11 @@ export default function Header({ }: Props) {
     const [isAccountModalVisible, setIsAccountModalVisible] = useState(false)
     const [showAccountDetailsModal, setShowAccountDetailsModal] = useState(false)
     const [showSeedPhraseModal, setShowSeedPhraseModal] = useState(false)
-    const [showConnectedSites, setShowConnectedSites] = useState(false)
-    const [showAccountSelectionModal, setShowAccountSelectionModal] = useState(false)
-    const [showSwitchAccountModal, setShowSwitchAccountModal] = useState(false)
 
     const networks: Network[] = useSelector(state => state.networks)
     const connectedNetwork: Network = useSelector(state => state.networks.find((network: Network) => network.isConnected))
 
     const connectedAccount: Account = useSelector(state => state.accounts.find((account: Account) => account.isConnected))
-
-    const activeSessions: ActiveSession[] = useSelector(state => state.activeSessions)
 
     const toast = useToast()
 
@@ -67,10 +58,6 @@ export default function Header({ }: Props) {
                 type: "danger"
             })
         }
-    }
-
-    const handleAccountsSelection = (selectedAccount: string) => {
-        setShowAccountSelectionModal(false)
     }
 
 
@@ -122,19 +109,10 @@ export default function Header({ }: Props) {
                 </MenuOptions>
             </Menu>
 
-            <AccountsModal isVisible={isAccountModalVisible} setVisibility={setIsAccountModalVisible} onClose={() => setIsAccountModalVisible(false)} onSelect={(account) => {
-                const canSwitchSessionAccount = activeSessions.some(session => session.account !== account)
-
-                if (canSwitchSessionAccount) {
-                    setShowSwitchAccountModal(true)
-                }
-            }} />
+            <AccountsModal isVisible={isAccountModalVisible} setVisibility={setIsAccountModalVisible} onClose={() => setIsAccountModalVisible(false)} />
 
             {showSeedPhraseModal && <SeedPhraseModal isVisible={showSeedPhraseModal} onClose={() => setShowSeedPhraseModal(false)} />}
-            {showSwitchAccountModal && <SwitchAccountModal isVisible={showSwitchAccountModal} onClose={() => setShowSwitchAccountModal(false)} />}
-            {showAccountSelectionModal && <AccountSelectionModal isVisible={showAccountSelectionModal} onClose={() => setShowAccountSelectionModal(false)} onSelect={handleAccountsSelection} />}
             {showAccountDetailsModal && <AccountDetailsModal isVisible={showAccountDetailsModal} onClose={() => setShowAccountDetailsModal(false)} />}
-            {showConnectedSites && <ConnectedSitesModal isVisible={showConnectedSites} onClose={() => setShowConnectedSites(false)} />}
         </HStack>
     )
 }

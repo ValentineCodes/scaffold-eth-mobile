@@ -22,10 +22,9 @@ type Props = {
     isVisible: boolean;
     setVisibility: (isVisible: boolean) => void;
     onClose: () => void;
-    onSelect: (account: string) => void;
 }
 
-export default function AccountsModal({ isVisible, setVisibility, onClose, onSelect }: Props) {
+export default function AccountsModal({ isVisible, setVisibility, onClose }: Props) {
     const dispatch = useDispatch()
     const toast = useToast()
 
@@ -38,8 +37,6 @@ export default function AccountsModal({ isVisible, setVisibility, onClose, onSel
         if (account !== connectedAccount.address) {
             dispatch(switchAccount(account))
             setVisibility(false)
-
-            onSelect(account)
         }
     }
 

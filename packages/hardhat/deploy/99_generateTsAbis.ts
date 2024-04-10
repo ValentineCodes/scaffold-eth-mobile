@@ -100,7 +100,6 @@ function getContractDataFromDeployments() {
  * This script should be run last.
  */
 const generateTsAbis: DeployFunction = async function () {
-  const NEXTJS_TARGET_DIR = "../nextjs/contracts/";
   const REACTNATIVE_TARGET_DIR = "../reactnative/contracts/"
 
   const allContractsData = getContractDataFromDeployments();
@@ -109,23 +108,10 @@ const generateTsAbis: DeployFunction = async function () {
     return `${content}${parseInt(chainId).toFixed(0)}:${JSON.stringify(chainConfig, null, 2)},`;
   }, "");
 
-  if (!fs.existsSync(NEXTJS_TARGET_DIR)) {
-    fs.mkdirSync(NEXTJS_TARGET_DIR);
-  }
   if (!fs.existsSync(REACTNATIVE_TARGET_DIR)) {
     fs.mkdirSync(REACTNATIVE_TARGET_DIR);
   }
 
-  fs.writeFileSync(
-    `${NEXTJS_TARGET_DIR}deployedContracts.ts`,
-    prettier.format(
-      `${generatedContractComment} import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract"; \n\n
- const deployedContracts = {${fileContent}} as const; \n\n export default deployedContracts satisfies GenericContractsDeclaration`,
-      {
-        parser: "typescript",
-      },
-    ),
-  );
   fs.writeFileSync(
     `${REACTNATIVE_TARGET_DIR}deployedContracts.ts`,
     prettier.format(
@@ -137,7 +123,6 @@ const generateTsAbis: DeployFunction = async function () {
     ),
   );
 
-  console.log(`📝 Updated TypeScript contract definition file on ${NEXTJS_TARGET_DIR}deployedContracts.ts`);
   console.log(`📝 Updated TypeScript contract definition file on ${REACTNATIVE_TARGET_DIR}deployedContracts.ts`);
 };
 

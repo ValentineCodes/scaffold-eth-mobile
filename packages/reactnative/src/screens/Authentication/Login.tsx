@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react'
 import { useToast } from 'react-native-toast-notifications'
 import { useNavigation } from '@react-navigation/native'
 import SInfo from "react-native-sensitive-info";
-// import { createWeb3Wallet } from '../../utils/Web3WalletClient'
 import { StyleSheet } from 'react-native'
 import { FONT_SIZE, WINDOW_WIDTH } from '../../utils/styles'
 import { COLORS } from '../../utils/constants'
@@ -12,8 +11,6 @@ import Button from '../../components/Button'
 import { useDispatch, useSelector } from 'react-redux'
 import { loginUser, logoutUser } from '../../store/reducers/Auth'
 import ConsentModal from '../../components/modals/ConsentModal'
-import { clearSessions } from '../../store/reducers/ActiveSessions'
-import { clearConnectedSites } from '../../store/reducers/ConnectedSites'
 import { clearRecipients } from '../../store/reducers/Recipients'
 import ReactNativeBiometrics from 'react-native-biometrics';
 
@@ -136,10 +133,6 @@ export default function Login({ }: Props) {
             sharedPreferencesName: "sern.android.storage",
             keychainService: "sern.ios.storage",
         });
-        // clear active sessions
-        dispatch(clearSessions())
-        // clear connected sites
-        dispatch(clearConnectedSites())
         // clear recipients
         dispatch(clearRecipients())
         // logout user

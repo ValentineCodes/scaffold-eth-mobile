@@ -48,7 +48,7 @@ const config: HardhatUserConfig = {
       },
     },
     ganache : {
-      url: "http://192.168.48.72:7545",
+      url: "http://192.168.181.72:7545",
       accounts: [deployerPrivateKey],
     },
     mainnet: {

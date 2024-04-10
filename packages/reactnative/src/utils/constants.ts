@@ -8,4 +8,4 @@ export const COLORS = {
 }
 
 // The local IP address via WIFI-HOTSPOT
-export const LOCAL_PROVIDER = "http://192.168.48.72:7545"
+export const LOCAL_PROVIDER = "http://192.168.181.72:7545"
