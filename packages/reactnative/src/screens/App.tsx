@@ -5,7 +5,7 @@ import {
   StatusBar
 } from 'react-native';
 
-// import BootSplash from "react-native-bootsplash";
+import BootSplash from "react-native-bootsplash";
 import changeNavigationBarColor from 'react-native-navigation-bar-color';
 import Providers from './Providers';
 import Navigation from './Navigation';
@@ -17,7 +17,7 @@ function App(): JSX.Element {
     (async () => {
       try {
         changeNavigationBarColor('#ffffff')
-        // await BootSplash.hide({ fade: true });
+        await BootSplash.hide({ fade: true });
       } catch (error) {
         return
       }
