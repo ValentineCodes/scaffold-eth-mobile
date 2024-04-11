@@ -31,7 +31,11 @@ export default function useSignMessage({message}: UseSignMessageConfig) {
         const _message = message || messageToSign
 
         return new Promise((resolve, reject) => {
-            openModal("SignMessageModal", {message: _message, onConfirm})
+            openModal("SignMessageModal", {message: _message, onReject, onConfirm})
+
+            function onReject(){
+                reject("Transaction Rejected!")
+            }
 
             async function onConfirm() {
                 try {
@@ -47,8 +51,6 @@ export default function useSignMessage({message}: UseSignMessageConfig) {
                     const wallet = new ethers.Wallet(activeAccount.privateKey).connect(provider)
 
                     const signature = await wallet.signMessage(_message)
-
-                    console.log(signature)
 
                     resolve(signature)
                 } catch(error) {

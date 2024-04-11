@@ -12,6 +12,7 @@ type Props = {
         closeModal: (modal?: string, callback?: () => void) => void
         params: {
             message: any
+            onReject: () => void
             onConfirm: () => void
         }
     }
@@ -24,6 +25,11 @@ export default function SignMessageModal({ modal: { closeModal, params } }: Prop
 
     const sign = () => {
         closeModal("SignMessageModal", params.onConfirm)
+    }
+
+    const reject = () => {
+        closeModal()
+        params.onReject()
     }
 
     return (
@@ -62,7 +68,7 @@ export default function SignMessageModal({ modal: { closeModal, params } }: Prop
             </ScrollView>
 
             <HStack w="full" alignItems="center" justifyContent="space-between">
-                <RNButton py="4" bgColor="red.100" w="50%" onPress={() => closeModal()} _pressed={{ background: 'red.200' }}><Text color="red.400" bold fontSize="md">Reject</Text></RNButton>
+                <RNButton py="4" bgColor="red.100" w="50%" onPress={reject} _pressed={{ background: 'red.200' }}><Text color="red.400" bold fontSize="md">Reject</Text></RNButton>
                 <Button text="Sign" onPress={sign} style={{ width: "50%", borderRadius: 0 }} />
             </HStack>
         </VStack>
