@@ -33,7 +33,11 @@ git clone https://github.com/ValentineCodes/scaffold-eth-react-native.git
 
 cd scaffold-eth-react-native
 
-yarn install && yarn patch-ethers && npx pod-install
+yarn install && yarn patch-ethers
+
+cd packages/reactnative
+
+npx pod-install
 ```
 
 Remember to run `yarn patch-ethers` to patch ethers after installing any package
