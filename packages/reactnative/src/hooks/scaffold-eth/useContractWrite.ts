@@ -50,7 +50,7 @@ export default function useContractWrite({
 }: UseWriteConfig) {
     const writeArgs = args
     const writeValue = value
-    const _gasLimit = gasLimit || 21000
+    const _gasLimit = gasLimit || 1000000
 
     const {openModal} = useModal()
     const network = useNetwork()

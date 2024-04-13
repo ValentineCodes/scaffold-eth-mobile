@@ -69,7 +69,7 @@ export default function useScaffoldContractWrite({
         const {args, value} = config
         const _args = args || writeArgs || []
         const _value = value || writeValue || BigNumber.from(0)
-        const _gasLimit = gasLimit || 21000
+        const _gasLimit = gasLimit || 1000000
 
         if(!deployedContractData){
             throw new Error("Target Contract is not deployed, did you forget to run `yarn deploy`?")

@@ -34,7 +34,7 @@ export default function useSignMessage({message}: UseSignMessageConfig) {
             openModal("SignMessageModal", {message: _message, onReject, onConfirm})
 
             function onReject(){
-                reject("Message Sign Rejected!")
+                reject("Signing Rejected!")
             }
 
             async function onConfirm() {
