@@ -80,6 +80,7 @@ export default function ReadOnlyFunctionForm({
                 bgColor={COLORS.primaryLight}
                 isLoading={isFetching}
                 isLoadingText='Read'
+                _loading={{ bgColor: COLORS.primary }}
                 _pressed={{ backgroundColor: 'rgba(39, 184, 88, 0.5)' }}
                 onPress={async () => {
                     const data = await refetch();

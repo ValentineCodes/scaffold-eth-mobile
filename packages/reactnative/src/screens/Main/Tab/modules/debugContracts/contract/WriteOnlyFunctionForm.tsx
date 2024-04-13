@@ -112,6 +112,7 @@ export default function WriteOnlyFunctionForm({
                     bgColor={COLORS.primaryLight}
                     isLoading={isLoading}
                     isLoadingText='Send'
+                    _loading={{ bgColor: COLORS.primary }}
                     isDisabled={writeDisabled || isLoading}
                     _pressed={{ backgroundColor: 'rgba(39, 184, 88, 0.5)' }}
                     onPress={handleWrite}
