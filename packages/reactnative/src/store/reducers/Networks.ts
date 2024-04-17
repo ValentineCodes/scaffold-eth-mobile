@@ -16,7 +16,7 @@ export const networks: Network[] = [
   {
     name: 'Localhost',
     provider: LOCAL_PROVIDER,
-    id: 1337,
+    id: 31337,
     currencySymbol: 'ETH',
     isConnected: true,
     blockExplorer: null,

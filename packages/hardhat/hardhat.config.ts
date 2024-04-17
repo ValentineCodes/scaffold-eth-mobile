@@ -31,7 +31,7 @@ const config: HardhatUserConfig = {
       viaIR: true,
     },
   },
-  defaultNetwork: "ganache",
+  defaultNetwork: "localhost",
   namedAccounts: {
     deployer: {
       // By default, it will take the first Hardhat account as the deployer
@@ -41,9 +41,8 @@ const config: HardhatUserConfig = {
   networks: {
     // View the networks that are pre-configured.
     // If the network you are looking for is not here you can add new network settings
-    ganache : {
-      url: "http://192.168.181.72:7545",
-      accounts: [deployerPrivateKey],
+    localhost: {
+      url: "http://0.0.0.0:8545"
     },
     mainnet: {
       url: `https://eth-mainnet.alchemyapi.io/v2/${providerApiKey}`,
