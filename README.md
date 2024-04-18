@@ -20,7 +20,6 @@ Before you begin, you need to install the following tools:
 - Yarn ([v1](https://classic.yarnpkg.com/en/docs/install/) or [v2+](https://yarnpkg.com/getting-started/install))
 - [Git](https://git-scm.com/downloads)
 - [React Native](https://reactnative.dev/docs/environment-setup?guide=native&platform=android)
-- [Ganache](https://archive.trufflesuite.com/ganache/)
 
 ## Quickstart
 
@@ -44,35 +43,39 @@ Remember to run `yarn patch-ethers` to patch ethers after installing any package
 
 2. Connect your device to your computer via WIFI-HOTSPOT
 
-3. Open Ganache and create a new workspace with the following server configurations:
+3. Run a local network in the first terminal
+```
+yarn chain
+```
 
-- HOSTNAME - your local IP address
-- PORT NUMBER - 7545
-- NETWORK ID - 1337
+This command starts a local Ethereum network hosted on your local IP address. The network runs on your local machine and can be used for testing and development. You can customize the network configuration in `hardhat.config.ts`.
 
-<p align="center">
-<img src="packages/reactnative/ganache-server-config.png" alt="Ganache Server Config" width="100%">
-</p>
-
-4. Update the `deployerPrivateKey` in `packages/hardhat/hardhat.config.ts` to one of the accounts in your ganache workspace and the ganache network url to the local IP address
-
-5. Deploy the test contract:
+4. On a second terminal, deploy the test contract:
 
 ```
 yarn deploy
 ```
 
-6. Set the `ALCHEMY_KEY` and `LOCAL_PROVIDER` variables in `packages/reactnative/src/utils/constants.ts`
+This command deploys a test smart contract to the local network. The contract is located in `packages/hardhat/contracts` and can be modified to suit your needs. The `yarn deploy` command uses the deploy script located in `packages/hardhat/deploy` to deploy the contract to the network. You can also customize the deploy script.
 
-7. Connect your device via USB or Run an emulator
+5. Set the `ALCHEMY_KEY` and `LOCAL_PROVIDER`(port **8545**) variables in `packages/reactnative/src/utils/constants.ts`
 
-8. Run server:
+#### To determine your local IP address:
 
+#### Mac:
 ```
-yarn start
+ipconfig getifaddr en0
 ```
 
-9. Run on device:
+#### Windows: 
+```
+ipconfig
+```
+
+
+6. Connect your device via USB or Run an emulator
+
+7. Run on device:
 
 #### Android
 ```
@@ -84,7 +87,7 @@ yarn android
 yarn ios
 ```
 
-10. Import one of the accounts in your ganache workspace into your wallet to have funds for testing
+8. Import one of the funded accounts in your local blockchain into your wallet to have funds for testing
 
 You can interact with your smart contract using the `Debug Contracts` tab. You can tweak the app config in `packages/reactnative/scaffold.config.ts`.
 
