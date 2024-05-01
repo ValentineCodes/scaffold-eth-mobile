@@ -6,7 +6,6 @@ import {
 } from "viem";
 
 import deployedContractsData from "../../contracts/deployedContracts";
-import externalContractsData from "../../contracts/externalContracts";
 import scaffoldConfig from "../../scaffold.config";
 
 export enum ContractCodeStatus {
@@ -41,28 +40,20 @@ type ContractsDeclaration = IsContractDeclarationMissing<GenericContractsDeclara
 type Contracts = ContractsDeclaration[ConfiguredChainId];
 
 const deepMergeContracts = (
-  local,
-  external,
+  local
 ) => {
   const result = {};
-  const allKeys = Array.from(new Set([...Object.keys(external), ...Object.keys(local)]));
+  const allKeys = Array.from(new Set(Object.keys(local)));
   for (const key of allKeys) {
-    if (!external[key]) {
       result[key] = local[key];
-      continue;
-    }
-    const amendedExternal = Object.fromEntries(
-      Object.entries(external[key]).map(([contractName, declaration]) => [
-        contractName,
-        { ...declaration, external: true },
-      ]),
-    );
-    result[key] = { ...local[key], ...amendedExternal };
   }
+
+  result[key] = local[key];
+
   return result;
 };
 
-const contractsData = deepMergeContracts(deployedContractsData, externalContractsData);
+const contractsData = deepMergeContracts(deployedContractsData);
 
 export const contracts = contractsData as GenericContractsDeclaration | null;
 

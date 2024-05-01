@@ -34,6 +34,8 @@ cd scaffold-eth-react-native
 
 yarn install && yarn patch-ethers
 
+foundryup
+
 cd packages/reactnative
 
 npx pod-install
