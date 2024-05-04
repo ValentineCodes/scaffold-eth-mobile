@@ -48,8 +48,6 @@ const deepMergeContracts = (
       result[key] = local[key];
   }
 
-  result[key] = local[key];
-
   return result;
 };
 
