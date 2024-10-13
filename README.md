@@ -9,9 +9,7 @@
 - 🪝 **Custom hooks**: Collection of React hooks to simplify interactions with smart contracts with typescript autocompletion.
 - 🧱 **Components**: Collection of common web3 components to quickly build your frontend.
 
-<p align="center">
-<img src="packages/reactnative/sern.jpg" alt="Debug Contracts" width="300">
-</p>
+![Contract Debugger](./assets/debugger.png)
 
 ## Requirements
 
@@ -44,6 +42,7 @@ Remember to run `yarn patch-ethers` to patch ethers after installing any package
 2. Connect your device to your computer via WIFI-HOTSPOT
 
 3. Run a local network in the first terminal
+
 ```
 yarn chain
 ```
@@ -63,26 +62,29 @@ This command deploys a test smart contract to the local network. The contract is
 #### To determine your local IP address:
 
 #### Mac:
+
 ```
 ipconfig getifaddr en0
 ```
 
-#### Windows: 
+#### Windows:
+
 ```
 ipconfig
 ```
-
 
 6. Connect your device via USB or Run an emulator
 
 7. Run on device:
 
 #### Android
+
 ```
 yarn android
 ```
 
 #### IOS
+
 ```
 yarn ios
 ```
