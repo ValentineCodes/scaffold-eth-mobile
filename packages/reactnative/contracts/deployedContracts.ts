@@ -5,9 +5,9 @@
 import { GenericContractsDeclaration } from "../utils/scaffold-eth/contract";
 
 const deployedContracts = {
-  31337: {
+  1337: {
     YourContract: {
-      address: "0x6A59CC73e334b018C9922793d96Df84B538E6fD5",
+      address: "0x3FB4D81BbbD33158385F32f0aBDbBe56EeD2F203",
       abi: [
         {
           inputs: [

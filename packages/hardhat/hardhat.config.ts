@@ -41,6 +41,11 @@ const config: HardhatUserConfig = {
   networks: {
     // View the networks that are pre-configured.
     // If the network you are looking for is not here you can add new network settings
+    ganache: {
+      url: `http://192.168.0.112:8545`,
+      accounts: [deployerPrivateKey],
+      chainId: 1337,
+    },
     mainnet: {
       url: `https://eth-mainnet.alchemyapi.io/v2/${providerApiKey}`,
       accounts: [deployerPrivateKey],
