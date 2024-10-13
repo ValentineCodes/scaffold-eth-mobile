@@ -2,6 +2,8 @@
 
 🧪 **Scaffold-ETH-Mobile** is an open-source toolkit for building decentralized applications (dApps) on Ethereum and EVM-compatible blockchains. It simplifies the mobile dApp development process by providing tools to create, deploy, and interact with smart contracts.
 
+[Watch me mint a Snowman NFT!☃️](https://youtu.be/CaJTnRtLOK8)
+
 ⚙️ **Tech Stack**: Built with React Native, Hardhat, Wagmi, Viem, and TypeScript to streamline mobile dApp development.
 
 ### Key Features
