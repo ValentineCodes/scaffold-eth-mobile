@@ -9,19 +9,19 @@ export interface Network {
   isConnected: boolean;
   blockExplorer: string | null;
   txApiDomain: string | null;
-  txApiKey: string | null
+  txApiKey: string | null;
 }
 
 export const networks: Network[] = [
   {
     name: 'Localhost',
     provider: LOCAL_PROVIDER,
-    id: 31337,
+    id: 1337,
     currencySymbol: 'ETH',
     isConnected: true,
     blockExplorer: null,
     txApiDomain: null,
-    txApiKey: null
+    txApiKey: null,
   },
   {
     name: 'Ethereum',
@@ -29,9 +29,9 @@ export const networks: Network[] = [
     id: 1,
     currencySymbol: 'ETH',
     isConnected: false,
-    blockExplorer: "https://etherscan.io",
-    txApiDomain: "https://api.etherscan.io",
-    txApiKey: "HY44G42FN4UN1DEYSAN3SAVG639ZYXDJDT"
+    blockExplorer: 'https://etherscan.io',
+    txApiDomain: 'https://api.etherscan.io',
+    txApiKey: 'HY44G42FN4UN1DEYSAN3SAVG639ZYXDJDT',
   },
   {
     name: 'Sepolia',
@@ -39,9 +39,9 @@ export const networks: Network[] = [
     id: 11155111,
     currencySymbol: 'SepoliaETH',
     isConnected: false,
-    blockExplorer: "https://sepolia.etherscan.io",
-    txApiDomain: "https://api-sepolia.etherscan.io",
-    txApiKey: "HY44G42FN4UN1DEYSAN3SAVG639ZYXDJDT"
+    blockExplorer: 'https://sepolia.etherscan.io',
+    txApiDomain: 'https://api-sepolia.etherscan.io',
+    txApiKey: 'HY44G42FN4UN1DEYSAN3SAVG639ZYXDJDT',
   },
   {
     name: 'Arbitrum',
@@ -49,9 +49,9 @@ export const networks: Network[] = [
     id: 42161,
     currencySymbol: 'ARB',
     isConnected: false,
-    blockExplorer: "https://arbiscan.io",
-    txApiDomain: "https://api.arbiscan.io",
-    txApiKey: "39B4H6472J8D1VVCNTHRQJ44SNYYUN4XSK"
+    blockExplorer: 'https://arbiscan.io',
+    txApiDomain: 'https://api.arbiscan.io',
+    txApiKey: '39B4H6472J8D1VVCNTHRQJ44SNYYUN4XSK',
   },
   {
     name: 'Arbitrum Goerli',
@@ -59,9 +59,9 @@ export const networks: Network[] = [
     id: 421613,
     currencySymbol: 'AGOR',
     isConnected: false,
-    blockExplorer: "https://goerli.arbiscan.io",
-    txApiDomain: "https://api-goerli.arbiscan.io",
-    txApiKey: "39B4H6472J8D1VVCNTHRQJ44SNYYUN4XSK"
+    blockExplorer: 'https://goerli.arbiscan.io',
+    txApiDomain: 'https://api-goerli.arbiscan.io',
+    txApiKey: '39B4H6472J8D1VVCNTHRQJ44SNYYUN4XSK',
   },
   {
     name: 'Optimism',
@@ -69,9 +69,9 @@ export const networks: Network[] = [
     id: 10,
     currencySymbol: 'OP',
     isConnected: false,
-    blockExplorer: "https://optimistic.etherscan.io",
+    blockExplorer: 'https://optimistic.etherscan.io',
     txApiDomain: null,
-    txApiKey: null
+    txApiKey: null,
   },
   {
     name: 'Optimism Goerli',
@@ -79,9 +79,9 @@ export const networks: Network[] = [
     id: 420,
     currencySymbol: 'ETH',
     isConnected: false,
-    blockExplorer: "https://goerli-optimism.etherscan.io",
+    blockExplorer: 'https://goerli-optimism.etherscan.io',
     txApiDomain: null,
-    txApiKey: null
+    txApiKey: null,
   },
   {
     name: 'Polygon',
@@ -89,9 +89,9 @@ export const networks: Network[] = [
     id: 137,
     currencySymbol: 'MATIC',
     isConnected: false,
-    blockExplorer: "https://polygonscan.com",
-    txApiDomain: "https://api.polygonscan.com",
-    txApiKey: "IH9BAQZH4SA5HQ5RVQA3JKPRF32GV11GIE"
+    blockExplorer: 'https://polygonscan.com',
+    txApiDomain: 'https://api.polygonscan.com',
+    txApiKey: 'IH9BAQZH4SA5HQ5RVQA3JKPRF32GV11GIE',
   },
   {
     name: 'Mumbai',
@@ -99,10 +99,10 @@ export const networks: Network[] = [
     id: 80001,
     currencySymbol: 'MATIC',
     isConnected: false,
-    blockExplorer: "https://mumbai.polygonscan.com",
-    txApiDomain: "https://api-mumbai.polygonscan.com",
-    txApiKey: "IH9BAQZH4SA5HQ5RVQA3JKPRF32GV11GIE"
-  }
+    blockExplorer: 'https://mumbai.polygonscan.com',
+    txApiDomain: 'https://api-mumbai.polygonscan.com',
+    txApiKey: 'IH9BAQZH4SA5HQ5RVQA3JKPRF32GV11GIE',
+  },
 ];
 
 export const networksSlice = createSlice({
