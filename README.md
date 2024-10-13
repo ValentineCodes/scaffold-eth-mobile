@@ -1,15 +1,22 @@
-# 🏗 Scaffold-ETH
+# 🏗 Scaffold-ETH-Mobile
 
-🧪 An open-source, up-to-date toolkit for building decentralized applications (dapps) on the Ethereum blockchain. It's designed to make it easier for developers to create and deploy smart contracts and build user interfaces that interact with those contracts.
+🧪 **Scaffold-ETH-Mobile** is an open-source toolkit for building decentralized applications (dApps) on Ethereum and EVM-compatible blockchains. It simplifies the mobile dApp development process by providing tools to create, deploy, and interact with smart contracts.
 
-⚙️ Built using React Native, Hardhat, Wagmi, Viem, and Typescript.
+⚙️ **Tech Stack**: Built with React Native, Hardhat, Wagmi, Viem, and TypeScript to streamline mobile dApp development.
 
-- 💳 **In-Built Wallet**: A safe and secure crypto wallet to manage funds, sign transactions and messages on multiple EVM compatible chains.
-- ✅ **Contract Hot Reload**: Your frontend auto-adapts to your smart contract as you edit it.
-- 🪝 **Custom hooks**: Collection of React hooks to simplify interactions with smart contracts with typescript autocompletion.
-- 🧱 **Components**: Collection of common web3 components to quickly build your frontend.
+### Key Features
+
+- 🧑‍💻 **Contract Debugger**: Inspect smart contract details such as address, balance, variables, and functions. It also allows real-time interaction with contracts, making development more efficient.
 
 ![Contract Debugger](./assets/debugger.png)
+
+- 💳 **In-Built Wallet**: A secure mobile crypto wallet for managing funds, signing transactions, and interacting with multiple EVM-compatible chains.
+
+![Wallet](./assets/wallet.png)
+
+- ✅ **Contract Hot Reload**: Automatically updates the mobile frontend to reflect changes made to smart contracts during development.
+- 🪝 **Custom Hooks**: A collection of React hooks with TypeScript autocompletion, simplifying contract interaction in your mobile app.
+- 🧱 **Web3 Components**: Pre-built components for quickly building mobile dApp frontends.
 
 ## Requirements
 
