@@ -33,9 +33,9 @@ To get started with Scaffold-ETH 2, follow the steps below:
 1. Clone this repo & install dependencies
 
 ```
-git clone https://github.com/ValentineCodes/scaffold-eth-react-native.git
+git clone https://github.com/ValentineCodes/scaffold-eth-mobile.git
 
-cd scaffold-eth-react-native
+cd scaffold-eth-mobile
 
 yarn install && yarn patch-ethers
 
@@ -110,4 +110,4 @@ Run smart contract test with `yarn hardhat:test`
 
 We welcome contributions to Scaffold-ETH!
 
-Please see [CONTRIBUTING.MD](https://github.com/ValentineCodes/scaffold-eth-react-native/blob/main/CONTRIBUTING.md) for more information and guidelines for contributing to Scaffold-ETH.
+Please see [CONTRIBUTING.MD](https://github.com/ValentineCodes/scaffold-eth-mobile/blob/main/CONTRIBUTING.md) for more information and guidelines for contributing to Scaffold-ETH.
