@@ -1,0 +1,18 @@
+# Ignore node_modules
+node_modules/
+
+# Ignore build artifacts
+artifacts/
+cache/
+
+# Ignore hardhat-specific files and directories
+coverage/
+typechain/
+typechain-types/
+
+# Ignore environment and config files
+.env
+.env.*
+
+# Ignore deployment files (if using a deployment system)
+deployments/
