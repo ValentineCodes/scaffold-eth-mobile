@@ -9,19 +9,19 @@ import Button from "../Button";
 
 import "react-native-get-random-values";
 import "@ethersproject/shims";
-import { BigNumber, Contract, ethers } from "ethers";
+import { ethers } from "ethers";
 import useBalance from "../../hooks/scaffold-eth/useBalance";
 
 type Props = {
   modal: {
     closeModal: () => void;
     params: {
-      contract: Contract;
+      contract: ethers.Contract;
       contractAddress: string;
       functionName: string;
       args: any[];
-      value: BigNumber;
-      gasLimit: BigNumber | number;
+      value: bigint;
+      gasLimit: bigint | number;
       onConfirm: () => void;
       onReject: () => void;
     };
@@ -29,8 +29,8 @@ type Props = {
 };
 
 interface GasCost {
-  min: BigNumber | null;
-  max: BigNumber | null;
+  min: bigint | null;
+  max: bigint | null;
 }
 
 export default function SignTransactionModal({
@@ -48,9 +48,9 @@ export default function SignTransactionModal({
   });
 
   const estimateGasCost = async () => {
-    const provider = new ethers.providers.JsonRpcProvider(network.provider);
+    const provider = new ethers.JsonRpcProvider(network.provider);
 
-    const gasEstimate = await params.contract.estimateGas[params.functionName](
+    const gasEstimate = await params.contract.getFunction(params.functionName).estimateGas(
       ...params.args,
       {
         value: params.value,
@@ -65,11 +65,11 @@ export default function SignTransactionModal({
     };
 
     if (feeData.gasPrice) {
-      gasCost.min = gasEstimate.mul(feeData.gasPrice);
+      gasCost.min = gasEstimate * feeData.gasPrice;
     }
 
     if (feeData.maxFeePerGas) {
-      gasCost.max = gasEstimate.mul(feeData.maxFeePerGas);
+      gasCost.max = gasEstimate * feeData.maxFeePerGas;
     }
 
     setEstimatedGasCost(gasCost);
@@ -79,13 +79,13 @@ export default function SignTransactionModal({
     const minAmount =
       estimatedGasCost.min &&
       parseFloat(
-        ethers.utils.formatEther(params.value.add(estimatedGasCost.min)),
+        ethers.formatEther(params.value + estimatedGasCost.min),
         8,
       ).toString();
     const maxAmount =
       estimatedGasCost.max &&
       parseFloat(
-        ethers.utils.formatEther(params.value.add(estimatedGasCost.max)),
+        ethers.formatEther(params.value + estimatedGasCost.max),
         8,
       ).toString();
     return {
@@ -95,14 +95,14 @@ export default function SignTransactionModal({
   };
 
   useEffect(() => {
-    const provider = new ethers.providers.JsonRpcProvider(network.provider);
+    const provider = new ethers.JsonRpcProvider(network.provider);
 
-    provider.off("block");
+    provider.removeAllListeners("block");
 
-    provider.on("block", (blockNumber) => estimateGasCost());
+    provider.on("block", (blockNumber: number) => estimateGasCost());
 
     return () => {
-      provider.off("block");
+      provider.removeAllListeners("block");
     };
   }, []);
 
@@ -194,7 +194,7 @@ export default function SignTransactionModal({
       </HStack>
 
       <Text fontSize={2 * FONT_SIZE["xl"]} bold textAlign="center">
-        {ethers.utils.formatEther(params.value)} {network.currencySymbol}
+        {ethers.formatEther(params.value)} {network.currencySymbol}
       </Text>
 
       <VStack borderWidth="1" borderColor="muted.300" borderRadius="10">
@@ -216,7 +216,7 @@ export default function SignTransactionModal({
             >
               {estimatedGasCost.min &&
                 parseFloat(
-                  ethers.utils.formatEther(estimatedGasCost.min),
+                  ethers.formatEther(estimatedGasCost.min),
                   8,
                 )}{" "}
               {network.currencySymbol}
@@ -232,7 +232,7 @@ export default function SignTransactionModal({
             <Text fontSize={FONT_SIZE["md"]} textAlign="right">
               {estimatedGasCost.max &&
                 parseFloat(
-                  ethers.utils.formatEther(estimatedGasCost.max),
+                  ethers.formatEther(estimatedGasCost.max),
                   8,
                 )}{" "}
               {network.currencySymbol}

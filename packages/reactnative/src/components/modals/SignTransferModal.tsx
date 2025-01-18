@@ -8,7 +8,7 @@ import Blockie from "../../components/Blockie";
 
 import "react-native-get-random-values";
 import "@ethersproject/shims";
-import { BigNumber, Wallet, ethers } from "ethers";
+import { Wallet, JsonRpcProvider, formatEther, parseEther } from "ethers";
 
 import Button from "../../components/Button";
 
@@ -23,7 +23,6 @@ import useNetwork from "../../hooks/scaffold-eth/useNetwork";
 import { Address } from "viem";
 import useBalance from "../../hooks/scaffold-eth/useBalance";
 import useAccount from "../../hooks/scaffold-eth/useAccount";
-import { JsonRpcProvider, formatEther, parseEther } from "ethers";
 import { useSecureStorage } from "../../hooks/useSecureStorage";
 
 type Props = {
@@ -32,14 +31,14 @@ type Props = {
     params: {
       from: Account;
       to: Address;
-      value: BigNumber;
+      value: bigint;
     };
   };
 };
 
 interface GasCost {
-  min: BigNumber | null;
-  max: BigNumber | null;
+  min: bigint | null;
+  max: bigint | null;
 }
 
 export default function SignTransferModal({
@@ -59,8 +58,7 @@ export default function SignTransferModal({
   const [isTransferring, setIsTransferring] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showFailModal, setShowFailModal] = useState(false);
-  const [txReceipt, setTxReceipt] =
-    useState<ethers.providers.TransactionReceipt | null>(null);
+  const [txReceipt, setTxReceipt] = useState<any | null>(null);
   const [estimatedGasCost, setEstimatedGasCost] = useState<GasCost>({
     min: null,
     max: null,
@@ -120,7 +118,7 @@ export default function SignTransferModal({
 
     try {
       await Linking.openURL(
-        `${network.blockExplorer}/tx/${txReceipt.transactionHash}`,
+        `${network.blockExplorer}/tx/${txReceipt.hash}`,
       );
     } catch (error) {
       toast.show("Cannot open url", {
@@ -132,21 +130,21 @@ export default function SignTransferModal({
   const estimateGasCost = async () => {
     const provider = new JsonRpcProvider(network.provider);
 
-    const gasPrice = await provider.getFeeData();
+    const feeData = await provider.getFeeData();
 
-    const gasEstimate = gasPrice.gasPrice * BigInt(21000);
+    const gasEstimate = feeData.gasPrice * BigInt(21000);
 
     const gasCost: GasCost = {
       min: null,
       max: null,
     };
 
-    if (gasPrice.gasPrice) {
+    if (feeData.gasPrice) {
       gasCost.min = gasEstimate;
     }
 
-    if (gasPrice.maxFeePerGas) {
-      gasCost.max = (gasEstimate * gasPrice.maxFeePerGas) / gasPrice.gasPrice;
+    if (feeData.maxFeePerGas) {
+      gasCost.max = (gasEstimate * feeData.maxFeePerGas) / feeData.gasPrice;
     }
 
     setEstimatedGasCost(gasCost);
@@ -223,7 +221,7 @@ export default function SignTransferModal({
         </VStack>
 
         <Text fontSize={2 * FONT_SIZE["xl"]} bold textAlign="center">
-          {ethers.utils.formatEther(value)} {network.currencySymbol}
+          {formatEther(value)} {network.currencySymbol}
         </Text>
 
         <VStack borderWidth="1" borderColor="muted.300" borderRadius="10">
@@ -245,7 +243,7 @@ export default function SignTransferModal({
               >
                 {estimatedGasCost.min &&
                   parseFloat(
-                    ethers.utils.formatEther(estimatedGasCost.min),
+                    formatEther(estimatedGasCost.min),
                     8,
                   )}{" "}
                 {network.currencySymbol}
@@ -261,7 +259,7 @@ export default function SignTransferModal({
               <Text fontSize={FONT_SIZE["md"]} textAlign="right">
                 {estimatedGasCost.max &&
                   parseFloat(
-                    ethers.utils.formatEther(estimatedGasCost.max),
+                    formatEther(estimatedGasCost.max),
                     8,
                   )}{" "}
                 {network.currencySymbol}

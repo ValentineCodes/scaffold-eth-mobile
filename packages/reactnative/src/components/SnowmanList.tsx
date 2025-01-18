@@ -27,7 +27,7 @@ export default function SnowmanList({ balance }: Props) {
       setIsLoading(true);
       setSnowmanBalance(balance);
 
-      const provider = new ethers.providers.JsonRpcProvider(network.provider);
+      const provider = new ethers.JsonRpcProvider(network.provider);
 
       const snowman = new ethers.Contract(
         snowmanContract?.address,

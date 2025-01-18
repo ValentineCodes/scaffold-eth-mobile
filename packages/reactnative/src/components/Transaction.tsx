@@ -6,8 +6,9 @@ import { Network } from "../store/reducers/Networks";
 
 import "react-native-get-random-values";
 import "@ethersproject/shims";
-import { BigNumber, ethers } from "ethers";
+import { ethers } from "ethers";
 import TransactionDetails from "./modals/TransactionDetails";
+// @ts-ignore
 import Ionicons from "react-native-vector-icons/dist/Ionicons";
 import { COLORS } from "../utils/constants";
 import { FONT_SIZE } from "../utils/styles";
@@ -91,10 +92,10 @@ export default function Transaction({ tx }: Props) {
         </HStack>
 
         <Text fontSize={FONT_SIZE["lg"]} bold>
-          {Number(ethers.utils.formatEther(BigNumber.from(tx.value)))
+          {Number(ethers.formatEther(BigInt(tx.value)))
             ? parseFloat(
                 Number(
-                  ethers.utils.formatEther(BigNumber.from(tx.value)),
+                  ethers.formatEther(BigInt(tx.value)),
                 ).toString(),
                 4,
               )

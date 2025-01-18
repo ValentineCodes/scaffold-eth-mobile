@@ -68,7 +68,7 @@ export default function useContractWrite({
     config: SendTxConfig = {
       args: undefined,
       value: undefined,
-    },
+    }
   ): Promise<TransactionReceipt> => {
     const { args, value } = config;
     const _args = args || writeArgs || [];
@@ -86,7 +86,7 @@ export default function useContractWrite({
         const activeAccount = Array.from(accounts).find(
           (account) =>
             account.address.toLowerCase() ===
-            connectedAccount.address.toLowerCase(),
+            connectedAccount.address.toLowerCase()
         );
 
         const wallet = new Wallet(activeAccount.privateKey, provider);
@@ -114,7 +114,7 @@ export default function useContractWrite({
           const activeAccount = Array.from(accounts).find(
             (account) =>
               account.address.toLowerCase() ===
-              connectedAccount.address.toLowerCase(),
+              connectedAccount.address.toLowerCase()
           );
 
           const wallet = new Wallet(activeAccount.privateKey, provider);

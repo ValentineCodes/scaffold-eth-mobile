@@ -10,6 +10,7 @@ import {
 } from "native-base";
 import Transaction from "../../../../../components/Transaction";
 import { ActivityIndicator, RefreshControl, StyleSheet } from "react-native";
+// @ts-ignore
 import Ionicons from "react-native-vector-icons/dist/Ionicons";
 import { COLORS } from "../../../../../utils/constants";
 import { FONT_SIZE } from "../../../../../utils/styles";
@@ -149,7 +150,7 @@ export default function Transactions() {
       return;
     }
 
-    const provider = new ethers.providers.JsonRpcProvider(network.provider);
+    const provider = new ethers.JsonRpcProvider(network.provider);
 
     provider.off("block");
 

@@ -6,10 +6,11 @@ import { Network } from "../../store/reducers/Networks";
 
 import "react-native-get-random-values";
 import "@ethersproject/shims";
-import { BigNumber, ethers } from "ethers";
+import { ethers } from "ethers";
 import { Linking } from "react-native";
 import { useToast } from "react-native-toast-notifications";
 import Modal from "react-native-modal";
+// @ts-ignore
 import Ionicons from "react-native-vector-icons/dist/Ionicons";
 import { FONT_SIZE } from "../../utils/styles";
 import { parseFloat, truncateAddress } from "../../utils/helperFunctions";
@@ -74,24 +75,19 @@ export default function TransactionDetails({ isVisible, onClose, tx }: Props) {
   };
 
   const calcGasFee = () => {
-    const estimatedGasFee = BigNumber.from(tx.gasUsed).mul(
-      BigNumber.from(tx.gasPrice),
-    );
+    const estimatedGasFee = ethers.getBigInt(tx.gasUsed) * ethers.getBigInt(tx.gasPrice);
     return parseFloat(
-      Number(ethers.utils.formatEther(estimatedGasFee)).toString(),
+      ethers.formatEther(estimatedGasFee).toString(),
       5,
     );
   };
 
   const calcTotalAmount = () => {
-    const estimatedGasFee = BigNumber.from(tx.gasUsed).mul(
-      BigNumber.from(tx.gasPrice),
-    );
+    const estimatedGasFee = ethers.getBigInt(tx.gasUsed) * ethers.getBigInt(tx.gasPrice);
+    const totalAmount = estimatedGasFee + ethers.getBigInt(tx.value);
 
     return parseFloat(
-      Number(
-        ethers.utils.formatEther(estimatedGasFee.add(tx.value)),
-      ).toString(),
+      ethers.formatEther(totalAmount).toString(),
       5,
     );
   };
@@ -170,7 +166,7 @@ export default function TransactionDetails({ isVisible, onClose, tx }: Props) {
             <Text fontSize={FONT_SIZE["md"]}>Amount</Text>
             <Text fontSize={FONT_SIZE["md"]}>
               {parseFloat(
-                ethers.utils.formatEther(BigNumber.from(tx.value)),
+                ethers.formatEther(ethers.getBigInt(tx.value)),
                 5,
               )}{" "}
               {connectedNetwork.currencySymbol}

@@ -8,7 +8,6 @@ import {
 import useNetwork from "../../../../../../hooks/scaffold-eth/useNetwork";
 import useTargetNetwork from "../../../../../../hooks/scaffold-eth/useTargetNetwork";
 import useContractWrite from "../../../../../../hooks/scaffold-eth/useContractWrite";
-import { BigNumber } from "ethers";
 import { useToast } from "react-native-toast-notifications";
 import { TransactionReceipt } from "viem";
 import ContractInput from "./ContractInput";
@@ -50,7 +49,7 @@ export default function WriteOnlyFunctionForm({
 
   const handleWrite = async () => {
     try {
-      const receipt = await write({ value: BigNumber.from(txValue || 0) });
+      const receipt = await write({ value: BigInt(txValue || 0) });
       setTxReceipt(receipt);
       onChange();
     } catch (error) {

@@ -1,5 +1,6 @@
 import { Pressable, ScrollView, Text, VStack } from "native-base";
 import React, { useState } from "react";
+// @ts-ignore
 import Ionicons from "react-native-vector-icons/dist/Ionicons";
 import { WINDOW_WIDTH } from "../utils/styles";
 import { useDispatch } from "react-redux";

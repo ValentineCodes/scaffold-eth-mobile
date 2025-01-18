@@ -41,6 +41,7 @@
     "react-native-gesture-handler": "^2.16.0",
     "react-native-get-random-values": "^1.11.0",
     "react-native-image-crop-picker": "^0.41.2",
+    "react-native-linear-gradient": "^2.8.3",
     "react-native-modal": "^13.0.1",
     "react-native-modalfy": "^3.5.3",
     "react-native-navigation-bar-color": "^2.0.2",

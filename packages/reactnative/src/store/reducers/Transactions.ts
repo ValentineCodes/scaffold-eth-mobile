@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { BigNumber } from "ethers";
 
 export interface Transaction {
   action: string;

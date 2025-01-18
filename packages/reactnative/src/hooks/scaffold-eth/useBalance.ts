@@ -28,10 +28,10 @@ export default function useBalance({ address }: UseBalanceConfig) {
     setIsLoading(true);
 
     try {
-      const provider = new ethers.providers.JsonRpcProvider(network.provider);
+      const provider = new ethers.JsonRpcProvider(network.provider);
       const balance = await provider.getBalance(address);
-      const _balance = Number(ethers.utils.formatEther(balance))
-        ? parseFloat(Number(ethers.utils.formatEther(balance)).toString(), 4)
+      const _balance = Number(ethers.formatEther(balance))
+        ? parseFloat(Number(ethers.formatEther(balance)).toString(), 4)
         : 0;
 
       setBalance(_balance.toString());
@@ -53,7 +53,7 @@ export default function useBalance({ address }: UseBalanceConfig) {
   }
 
   useEffect(() => {
-    const provider = new ethers.providers.JsonRpcProvider(network.provider);
+    const provider = new ethers.JsonRpcProvider(network.provider);
 
     provider.off("block");
 

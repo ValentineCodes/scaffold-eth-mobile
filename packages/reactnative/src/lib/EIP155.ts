@@ -1,4 +1,4 @@
-import { providers, Wallet } from "ethers";
+import { JsonRpcProvider, TransactionRequest, Wallet } from "ethers";
 
 /**
  * Types
@@ -41,11 +41,11 @@ export default class EIP155Lib {
     return this.wallet._signTypedData(domain, types, data);
   }
 
-  connect(provider: providers.JsonRpcProvider) {
+  connect(provider: JsonRpcProvider) {
     return this.wallet.connect(provider);
   }
 
-  signTransaction(transaction: providers.TransactionRequest) {
+  signTransaction(transaction: TransactionRequest) {
     return this.wallet.signTransaction(transaction);
   }
 }

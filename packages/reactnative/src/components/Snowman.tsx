@@ -30,7 +30,7 @@ export default function Snowman({ id, remove }: Props) {
 
     try {
       setIsLoading(true);
-      const provider = new ethers.providers.JsonRpcProvider(network.provider);
+      const provider = new ethers.JsonRpcProvider(network.provider);
 
       ISnowman.current = new ethers.Contract(
         snowmanContract?.address,
