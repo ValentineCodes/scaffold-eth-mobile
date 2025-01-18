@@ -5,26 +5,24 @@ import ProgressIndicatorHeader from '../../components/headers/ProgressIndicatorH
 import { COLORS } from '../../utils/constants'
 import { FONT_SIZE } from '../../utils/styles'
 import Modal from "react-native-modal";
-
 import Button from '../../components/Button'
 import { useNavigation } from '@react-navigation/native'
 import { useDispatch } from 'react-redux'
 import { loginUser } from '../../store/reducers/Auth'
-import SInfo from "react-native-sensitive-info";
 import { useToast } from 'react-native-toast-notifications'
 import { shuffleArray } from '../../utils/helperFunctions'
 import AccountsCountModal from '../../components/modals/AccountsCountModal'
 import { initAccounts } from '../../store/reducers/Accounts'
 import { importMnemonic } from 'react-native-web3-wallet'
+import { useSecureStorage } from '../../hooks/useSecureStorage';
 
 type Props = {}
 
 export default function ConfirmSeedPhrase({ }: Props) {
     const navigation = useNavigation()
-
     const dispatch = useDispatch()
-
     const toast = useToast();
+    const { getItem, saveItem } = useSecureStorage();
 
     const [seedPhrase, setSeedPhrase] = useState<string[]>([])
     const [shuffledSeedPhrase, setShuffledSeedPhrase] = useState<string[]>([])
@@ -35,7 +33,6 @@ export default function ConfirmSeedPhrase({ }: Props) {
 
     const isWordSelected = (word: string): boolean => {
         let _seedPhrase = seedPhrase.slice()
-
         return _seedPhrase.includes(word)
     }
 
@@ -58,7 +55,6 @@ export default function ConfirmSeedPhrase({ }: Props) {
 
     const handleValueChange = (value: string, index: number) => {
         let _seedPhrase = seedPhrase.slice()
-
         _seedPhrase[index] = value.trim()
         setSeedPhrase(_seedPhrase)
     }
@@ -72,20 +68,16 @@ export default function ConfirmSeedPhrase({ }: Props) {
         }
 
         try {
-            const _seedPhrase = await SInfo.getItem("mnemonic", {
-                sharedPreferencesName: "sern.android.storage",
-                keychainService: "sern.ios.storage",
-            });
-            const selectedSeedPhrase = seedPhrase.join(" ")
+            const _seedPhrase = await getItem("seedPhrase");
+            const selectedSeedPhrase = seedPhrase.join(" ");
 
             if (_seedPhrase !== selectedSeedPhrase) {
                 toast.show("Incorrect seed phrase order", {
                     type: "danger"
-                })
-                return
+                });
+                return;
             }
-
-            setShowAccountsCountModal(true)
+            setShowAccountsCountModal(true);
         } catch (error) {
             toast.show("Failed to get mnemonic. Please try again.", {
                 type: 'danger'
@@ -95,36 +87,27 @@ export default function ConfirmSeedPhrase({ }: Props) {
 
     const confirm = async (accountsCount: number) => {
         try {
-            setIsConfirming(true)
-            const seedPhrase = await SInfo.getItem("mnemonic", {
-                sharedPreferencesName: "sern.android.storage",
-                keychainService: "sern.ios.storage",
-            });
+            setIsConfirming(true);
+            const seedPhrase = await getItem("seedPhrase");
 
-            let wallets = []
-
+            let wallets = [];
             for (let i = 0; i < accountsCount; i++) {
-                const newWallet = await importMnemonic(seedPhrase, "", `m/44'/60'/0'/0/${i}`, true)
+                const newWallet = await importMnemonic(seedPhrase, "", `m/44'/60'/0'/0/${i}`, true);
                 wallets.push({
                     address: newWallet.address,
                     privateKey: newWallet.privateKey
-                })
+                });
             }
 
-            await SInfo.setItem("accounts", JSON.stringify(wallets), {
-                sharedPreferencesName: "sern.android.storage",
-                keychainService: "sern.ios.storage",
-            })
-
-            dispatch(initAccounts(wallets.map(wallet => ({ ...wallet, isImported: false }))))
-
-            setShowSuccessModal(true)
+            await saveItem("accounts", wallets);
+            dispatch(initAccounts(wallets.map(wallet => ({ ...wallet, isImported: false }))));
+            setShowSuccessModal(true);
         } catch (error) {
             toast.show("Failed to create wallet. Please ensure you have a stable network connection and try again.", {
                 type: 'danger'
             })
         } finally {
-            setIsConfirming(false)
+            setIsConfirming(false);
         }
     }
 
@@ -136,18 +119,16 @@ export default function ConfirmSeedPhrase({ }: Props) {
 
     useEffect(() => {
         (async () => {
-            const seedPhrase = await SInfo.getItem("mnemonic", {
-                sharedPreferencesName: "sern.android.storage",
-                keychainService: "sern.ios.storage",
-            });
+            const seedPhrase = await getItem("seedPhrase");
             if (seedPhrase) {
-                const _seedPhrase: string[] = seedPhrase.split(" ")
-                const shuffledSeedPhrase = shuffleArray(_seedPhrase)
-                setShuffledSeedPhrase(shuffledSeedPhrase)
-                setIsLoading(false)
+                const _seedPhrase: string[] = seedPhrase.split(" ");
+                const shuffledSeedPhrase = shuffleArray(_seedPhrase);
+                setShuffledSeedPhrase(shuffledSeedPhrase);
+                setIsLoading(false);
             }
-        })()
-    }, [])
+        })();
+    }, []);
+
     return (
         <View style={styles.container}>
             <ProgressIndicatorHeader progress={3} />

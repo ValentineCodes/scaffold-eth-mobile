@@ -17,13 +17,13 @@ import { BigNumber, Wallet, ethers } from "ethers";
 
 import Button from '../../../components/Button';
 
-import SInfo from "react-native-sensitive-info"
-
 import Success from '../../../components/modals/modules/Success'
 import Fail from '../../../components/modals/modules/Fail'
 import { Linking } from 'react-native';
 import { useToast } from 'react-native-toast-notifications';
 import { addRecipient } from '../../../store/reducers/Recipients';
+import { useSecureStorage } from '../../../hooks/useSecureStorage';
+import { JsonRpcProvider, formatEther, parseEther } from "ethers";
 
 interface TxData {
     from: Account;
@@ -50,24 +50,24 @@ export default function ConfirmationModal({ isVisible, onClose, txData, estimate
     const [showFailModal, setShowFailModal] = useState(false)
     const [txReceipt, setTxReceipt] = useState<ethers.providers.TransactionReceipt | null>(null)
 
+    const { getItem } = useSecureStorage();
+
     const formatBalance = () => {
-        return txData.fromBalance && Number(ethers.utils.formatEther(txData.fromBalance)) ? parseFloat(Number(ethers.utils.formatEther(txData.fromBalance)).toString(), 4) : 0
+        return txData.fromBalance && Number(formatEther(txData.fromBalance)) ? parseFloat(Number(formatEther(txData.fromBalance)).toString(), 4) : 0
     }
 
     const calcTotal = () => {
-        return estimateGasCost && parseFloat((txData.amount + Number(ethers.utils.formatEther(estimateGasCost))).toString(), 8)
+        return estimateGasCost && parseFloat((txData.amount + Number(formatEther(estimateGasCost))).toString(), 8)
     }
 
     const transfer = async () => {
-        const accounts = await SInfo.getItem("accounts", {
-            sharedPreferencesName: "sern.android.storage",
-            keychainService: "sern.ios.storage",
-        })
+        const accounts = await getItem("accounts")
+        const activeAccount = Array.from(accounts).find(
+            account => account.address.toLowerCase() === txData.from.address.toLowerCase()
+        )
 
-        const activeAccount: Wallet = Array.from(JSON.parse(accounts)).find(account => account.address.toLowerCase() == txData.from.address.toLowerCase())
-
-        const provider = new ethers.providers.JsonRpcProvider(connectedNetwork.provider)
-        const wallet = new ethers.Wallet(activeAccount.privateKey).connect(provider)
+        const provider = new JsonRpcProvider(connectedNetwork.provider)
+        const wallet = new Wallet(activeAccount.privateKey, provider)
 
         try {
             setIsTransferring(true)
@@ -75,7 +75,7 @@ export default function ConfirmationModal({ isVisible, onClose, txData, estimate
             const tx = await wallet.sendTransaction({
                 from: txData.from.address,
                 to: txData.to,
-                value: ethers.utils.parseEther(txData.amount.toString())
+                value: parseEther(txData.amount.toString())
             })
 
             const txReceipt = await tx.wait(1)

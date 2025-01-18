@@ -5,7 +5,7 @@ import PasswordInput from '../forms/PasswordInput'
 import Button from '../Button'
 import { generate } from 'random-words'
 import { useToast } from 'react-native-toast-notifications'
-import SInfo from "react-native-sensitive-info"
+import { useSecureStorage } from '../../hooks/useSecureStorage'
 
 type Props = {
     modal: {
@@ -16,6 +16,8 @@ type Props = {
 export default function ChangePasswordModal({ modal: { closeModal } }: Props) {
     const toast = useToast()
 
+    const {saveItem, getItem} = useSecureStorage()
+
     const [password, setPassword] = useState({
         current: "",
         new: "",
@@ -25,11 +27,8 @@ export default function ChangePasswordModal({ modal: { closeModal } }: Props) {
 
     const change = async () => {
         try {
-            const _security = await SInfo.getItem("security", {
-                sharedPreferencesName: "sern.android.storage",
-                keychainService: "sern.ios.storage",
-            });
-            const security = JSON.parse(_security!)
+            const _security = await getItem("security");
+            const security = _security
 
             if (!password.current || !password.new || !password.confirm) {
                 toast.show("Password cannot be empty!", {
@@ -64,10 +63,7 @@ export default function ChangePasswordModal({ modal: { closeModal } }: Props) {
                 return
             }
 
-            await SInfo.setItem("security", JSON.stringify({ ...security, password: password.new.trim() }), {
-                sharedPreferencesName: "sern.android.storage",
-                keychainService: "sern.ios.storage",
-            })
+            await saveItem("security", JSON.stringify({ ...security, password: password.new.trim() }))
 
             closeModal()
 

@@ -5,7 +5,6 @@ import { useToast } from 'react-native-toast-notifications'
 import Ionicons from "react-native-vector-icons/dist/Ionicons"
 import MaterialCommunityIcons from "react-native-vector-icons/dist/MaterialCommunityIcons"
 import { useNavigation } from '@react-navigation/native'
-import SInfo from "react-native-sensitive-info";
 
 import "react-native-get-random-values"
 import "@ethersproject/shims"
@@ -25,11 +24,13 @@ import AccountsCountModal from '../../components/modals/AccountsCountModal'
 import ReactNativeBiometrics from 'react-native-biometrics'
 import { TouchableOpacity } from 'react-native'
 import { importMnemonic } from 'react-native-web3-wallet'
+import { useSecureStorage } from '../../hooks/useSecureStorage';
 
 function ImportWallet() {
   const navigation = useNavigation()
   const dispatch = useDispatch()
   const toast = useToast()
+  const { saveItem } = useSecureStorage();
 
   const [seedPhrase, setSeedPhrase] = useState("")
   const [suggestion, setSuggestion] = useState("")
@@ -44,7 +45,7 @@ function ImportWallet() {
   const renderSeedPhraseError = useCallback(() => {
     if (seedPhrase.trim().split(" ").length < 12) return
 
-    if (!ethers.utils.isValidMnemonic(seedPhrase)) {
+    if (!isValidMnemonic(seedPhrase)) {
       return "Invalid Seed Phrase"
     } else {
       return null
@@ -53,7 +54,7 @@ function ImportWallet() {
 
   const validateInput = () => {
     // input validation
-    if (!ethers.utils.isValidMnemonic(seedPhrase)) {
+    if (!ethers.isValidMnemonic(seedPhrase)) {
       toast.show("Invalid Seed Phrase", {
         type: "danger"
       })
@@ -96,27 +97,10 @@ function ImportWallet() {
       })
     }
 
-    const security = {
-      password,
-      isBiometricsEnabled
-    }
-
     try {
-      // Save wallet
-      await SInfo.setItem("mnemonic", seedPhrase, {
-        sharedPreferencesName: "sern.android.storage",
-        keychainService: "sern.ios.storage",
-      });
-      await SInfo.setItem("accounts", JSON.stringify(wallets), {
-        sharedPreferencesName: "sern.android.storage",
-        keychainService: "sern.ios.storage",
-      })
-
-      // Save password
-      await SInfo.setItem("security", JSON.stringify(security), {
-        sharedPreferencesName: "sern.android.storage",
-        keychainService: "sern.ios.storage",
-      });
+      await saveItem("seedPhrase", seedPhrase);
+      await saveItem("accounts", wallets);
+      await saveItem("security", { password, isBiometricsEnabled });
 
       dispatch(initAccounts(wallets.map(wallet => ({ ...wallet, isImported: false }))))
       dispatch(loginUser())

@@ -1,10 +1,11 @@
 import { HStack, VStack, Icon, Text, Input, Pressable, Button as RNButton } from 'native-base'
 import React, { useState } from 'react'
 import Modal from 'react-native-modal';
+// @ts-ignore
 import Ionicons from "react-native-vector-icons/dist/Ionicons"
 import { FONT_SIZE } from '../../utils/styles';
 import { COLORS } from '../../utils/constants';
-import SInfo from "react-native-sensitive-info";
+import { useSecureStorage } from '../../hooks/useSecureStorage'
 import Button from '../Button';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useToast } from 'react-native-toast-notifications';
@@ -17,6 +18,7 @@ type Props = {
 
 export default function SeedPhraseModal({ isVisible, onClose }: Props) {
     const toast = useToast()
+    const { getItem } = useSecureStorage()
 
     const [password, setPassword] = useState("")
     const [error, setError] = useState("")
@@ -29,11 +31,7 @@ export default function SeedPhraseModal({ isVisible, onClose }: Props) {
         }
 
         // verify password
-        const _security = await SInfo.getItem("security", {
-            sharedPreferencesName: "sern.android.storage",
-            keychainService: "sern.ios.storage",
-        });
-        const security = JSON.parse(_security!)
+        const security = await getItem("security")
 
         if (password !== security.password) {
             setError("Incorrect password!")
@@ -41,12 +39,10 @@ export default function SeedPhraseModal({ isVisible, onClose }: Props) {
         }
 
         // retrieve seed phrase
-        const seedPhrase = await SInfo.getItem("mnemonic", {
-            sharedPreferencesName: "sern.android.storage",
-            keychainService: "sern.ios.storage",
-        })
-
-        setSeedPhrase(seedPhrase)
+        const seedPhrase = await getItem("seedPhrase")
+        if (seedPhrase) {
+            setSeedPhrase(seedPhrase)
+        }
     }
 
     const handleInputChange = (value: string) => {

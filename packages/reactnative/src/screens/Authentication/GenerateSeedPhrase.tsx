@@ -12,9 +12,9 @@ import "react-native-get-random-values"
 import "@ethersproject/shims"
 import Button from '../../components/Button'
 import { useNavigation } from '@react-navigation/native'
-import SInfo from "react-native-sensitive-info";
 import { useToast } from 'react-native-toast-notifications'
 import { createWallet } from 'react-native-web3-wallet'
+import { useSecureStorage } from '../../hooks/useSecureStorage';
 
 interface Wallet {
     mnemonic: string;
@@ -32,6 +32,8 @@ export default function GenerateSeedPhrase({ }: Props) {
     const [wallet, setWallet] = useState<Wallet>()
     const [showSeedPhrase, setShowSeedPhrase] = useState(false)
     const [isLoading, setIsLoading] = useState(true)
+
+    const { saveItem } = useSecureStorage();
 
     const copySeedPhrase = () => {
         if (!wallet) {
@@ -53,14 +55,10 @@ export default function GenerateSeedPhrase({ }: Props) {
             return
         }
         try {
-            await SInfo.setItem("mnemonic", wallet.mnemonic, {
-                sharedPreferencesName: "sern.android.storage",
-                keychainService: "sern.ios.storage",
-            });
-
-            navigation.navigate("ConfirmSeedPhrase")
+            await saveItem("seedPhrase", wallet.mnemonic);
+            navigation.navigate("ConfirmSeedPhrase");
         } catch (error) {
-            return
+            return;
         }
     }
 

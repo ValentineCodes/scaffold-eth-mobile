@@ -5,7 +5,6 @@ import styles from "../../styles/authentication/createPassword"
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import PasswordInput from '../../components/forms/PasswordInput'
 import { useToast } from 'react-native-toast-notifications'
-import SInfo from "react-native-sensitive-info";
 
 import { COLORS } from '../../utils/constants'
 import Button from '../../components/Button'
@@ -13,12 +12,14 @@ import ProgressIndicatorHeader from '../../components/headers/ProgressIndicatorH
 import { FONT_SIZE } from '../../utils/styles'
 import { generate } from "random-words";
 import ReactNativeBiometrics from 'react-native-biometrics'
+import { useSecureStorage } from '../../hooks/useSecureStorage';
 
 type Props = {}
 
 function CreatePassword({ }: Props) {
     const navigation = useNavigation()
     const toast = useToast()
+    const { saveItem } = useSecureStorage();
 
     const [suggestion, setSuggestion] = useState("")
     const [password, setPassword] = useState("")
@@ -57,10 +58,7 @@ function CreatePassword({ }: Props) {
                 isBiometricsEnabled
             }
 
-            await SInfo.setItem("security", JSON.stringify(security), {
-                sharedPreferencesName: "sern.android.storage",
-                keychainService: "sern.ios.storage",
-            });
+            await saveItem("security", security)
 
             // clean up
             setPassword("")

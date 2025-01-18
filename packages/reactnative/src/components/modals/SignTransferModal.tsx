@@ -12,7 +12,6 @@ import { BigNumber, Wallet, ethers } from "ethers";
 
 import Button from '../../components/Button';
 
-import SInfo from "react-native-sensitive-info"
 import { getProviderWithName, Providers } from '../../utils/providers';
 
 import Success from './modules/Success'
@@ -24,6 +23,8 @@ import useNetwork from '../../hooks/scaffold-eth/useNetwork';
 import { Address } from 'viem';
 import useBalance from '../../hooks/scaffold-eth/useBalance';
 import useAccount from '../../hooks/scaffold-eth/useAccount';
+import { JsonRpcProvider, formatEther, parseEther } from "ethers";
+import { useSecureStorage } from '../../hooks/useSecureStorage';
 
 type Props = {
     modal: {
@@ -62,9 +63,11 @@ export default function SignTransferModal({ modal: { closeModal, params } }: Pro
         max: null
     })
 
+    const { getItem } = useSecureStorage();
+
     const calcTotal = () => {
-        const minAmount = estimatedGasCost.min && parseFloat(ethers.utils.formatEther(value.add(estimatedGasCost.min)), 8).toString()
-        const maxAmount = estimatedGasCost.max && parseFloat(ethers.utils.formatEther(value.add(estimatedGasCost.max)), 8).toString()
+        const minAmount = estimatedGasCost.min && parseFloat(formatEther(value + estimatedGasCost.min), 8).toString();
+        const maxAmount = estimatedGasCost.max && parseFloat(formatEther(value + estimatedGasCost.max), 8).toString();
         return {
             min: minAmount,
             max: maxAmount
@@ -72,36 +75,34 @@ export default function SignTransferModal({ modal: { closeModal, params } }: Pro
     }
 
     const transfer = async () => {
-        const accounts = await SInfo.getItem("accounts", {
-            sharedPreferencesName: "sern.android.storage",
-            keychainService: "sern.ios.storage",
-        })
+        const accounts = await getItem("accounts");
+        const activeAccount = Array.from(accounts).find(
+            account => account.address.toLowerCase() === from.address.toLowerCase()
+        );
 
-        const activeAccount: Wallet = Array.from(JSON.parse(accounts)).find(account => account.address.toLowerCase() == from.address.toLowerCase())
-
-        const provider = getProviderWithName(network.name.toLowerCase() as keyof Providers)
-        const wallet = new ethers.Wallet(activeAccount.privateKey).connect(provider)
+        const provider = getProviderWithName(network.name.toLowerCase() as keyof Providers);
+        const wallet = new Wallet(activeAccount.privateKey, provider);
 
         try {
-            setIsTransferring(true)
+            setIsTransferring(true);
 
             const tx = await wallet.sendTransaction({
                 from: from.address,
                 to: to,
-                value: ethers.utils.parseEther(value.toString())
-            })
+                value: parseEther(value.toString())
+            });
 
-            const txReceipt = await tx.wait(1)
+            const txReceipt = await tx.wait(1);
 
-            setTxReceipt(txReceipt)
-            setShowSuccessModal(true)
+            setTxReceipt(txReceipt);
+            setShowSuccessModal(true);
 
-            dispatch(addRecipient(to))
+            dispatch(addRecipient(to));
         } catch (error) {
-            setShowFailModal(true)
-            return
+            setShowFailModal(true);
+            return;
         } finally {
-            setIsTransferring(false)
+            setIsTransferring(false);
         }
     }
 
@@ -118,41 +119,39 @@ export default function SignTransferModal({ modal: { closeModal, params } }: Pro
     }
 
     const estimateGasCost = async () => {
-        const provider = new ethers.providers.JsonRpcProvider(network.provider)
+        const provider = new JsonRpcProvider(network.provider);
 
-        const gasPrice = await provider.getGasPrice()
+        const gasPrice = await provider.getFeeData();
 
-        const gasEstimate = gasPrice.mul(BigNumber.from(21000))
-
-        const feeData = await provider.getFeeData()
+        const gasEstimate = gasPrice.gasPrice * BigInt(21000);
 
         const gasCost: GasCost = {
             min: null,
             max: null
+        };
+
+        if (gasPrice.gasPrice) {
+            gasCost.min = gasEstimate;
         }
 
-        if (feeData.gasPrice) {
-            gasCost.min = gasEstimate.mul(feeData.gasPrice)
+        if (gasPrice.maxFeePerGas) {
+            gasCost.max = gasEstimate * gasPrice.maxFeePerGas / gasPrice.gasPrice;
         }
 
-        if (feeData.maxFeePerGas) {
-            gasCost.max = gasEstimate.mul(feeData.maxFeePerGas)
-        }
-
-        setEstimatedGasCost(gasCost)
+        setEstimatedGasCost(gasCost);
     }
 
     useEffect(() => {
-        const provider = new ethers.providers.JsonRpcProvider(network.provider)
+        const provider = new JsonRpcProvider(network.provider);
 
-        provider.off('block')
+        provider.off('block');
 
-        provider.on('block', blockNumber => estimateGasCost())
+        provider.on('block', blockNumber => estimateGasCost());
 
         return () => {
-            provider.off("block")
+            provider.off("block");
         }
-    }, [])
+    }, []);
 
     return (
         <>

@@ -1,6 +1,7 @@
 import { VStack, HStack, Icon, Divider, ScrollView, Pressable, Text } from 'native-base';
 import React, { useState } from 'react'
 import Modal from "react-native-modal"
+// @ts-ignore
 import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 import { FONT_SIZE } from '../../utils/styles';
 import { truncateAddress } from '../../utils/helperFunctions';
@@ -8,7 +9,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Account, addAccount, switchAccount } from '../../store/reducers/Accounts';
 import Button from "../../components/Button"
 import Blockie from '../Blockie'
-import SInfo from "react-native-sensitive-info"
 
 import { Dimensions } from 'react-native';
 
@@ -16,6 +16,7 @@ import { COLORS } from '../../utils/constants';
 import ImportAccountModal from './ImportAccountModal';
 import { importMnemonic } from 'react-native-web3-wallet';
 import { useToast } from 'react-native-toast-notifications';
+import { useSecureStorage } from '../../hooks/useSecureStorage';
 
 
 type Props = {
@@ -27,6 +28,8 @@ type Props = {
 export default function AccountsModal({ isVisible, setVisibility, onClose }: Props) {
     const dispatch = useDispatch()
     const toast = useToast()
+
+    const {getItem, saveItem} = useSecureStorage()
 
     const accounts: Account[] = useSelector(state => state.accounts)
     const connectedAccount: Account = useSelector(state => state.accounts.find((account: Account) => account.isConnected))
@@ -41,10 +44,7 @@ export default function AccountsModal({ isVisible, setVisibility, onClose }: Pro
     }
 
     const createAccount = async () => {
-        const mnemonic = await SInfo.getItem("mnemonic", {
-            sharedPreferencesName: "sern.android.storage",
-            keychainService: "sern.ios.storage",
-        })
+        const mnemonic = await getItem("mnemonic")
 
         let newAccount
 
@@ -65,15 +65,9 @@ export default function AccountsModal({ isVisible, setVisibility, onClose }: Pro
             return
         }
 
-        const createdAccounts = await SInfo.getItem("accounts", {
-            sharedPreferencesName: "sern.android.storage",
-            keychainService: "sern.ios.storage",
-        })
+        const createdAccounts = await getItem("accounts")
 
-        await SInfo.setItem("accounts", JSON.stringify([...JSON.parse(createdAccounts), { privateKey: newAccount.privateKey, address: newAccount.address }]), {
-            sharedPreferencesName: "sern.android.storage",
-            keychainService: "sern.ios.storage",
-        })
+        await saveItem("accounts", JSON.stringify([...createdAccounts, { privateKey: newAccount.privateKey, address: newAccount.address }]))
 
         dispatch(addAccount({ address: newAccount.address, isImported: false }))
 

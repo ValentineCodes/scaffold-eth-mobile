@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import Modal from "react-native-modal"
+// @ts-ignore
 import MaterialCommunityIcons from 'react-native-vector-icons/dist/MaterialCommunityIcons';
+// @ts-ignore
 import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 import { VStack, HStack, Icon, Pressable, Text, Input } from 'native-base';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,8 +15,8 @@ import QRCodeScanner from './QRCodeScanner';
 import "react-native-get-random-values"
 import "@ethersproject/shims"
 import { ethers } from "ethers";
-import SInfo from "react-native-sensitive-info";
 import { Account, addAccount, switchAccount } from '../../store/reducers/Accounts';
+import { useSecureStorage } from '../../hooks/useSecureStorage';
 
 type Props = {
     isVisible: boolean;
@@ -26,6 +28,8 @@ export default function ImportAccountModal({ isVisible, onClose, onImport }: Pro
     const [privateKey, setPrivateKey] = useState("")
     const [showScanner, setShowScanner] = useState(false)
     const [error, setError] = useState("")
+
+    const {saveItem, getItem} = useSecureStorage()
 
     const dispatch = useDispatch()
 
@@ -40,15 +44,9 @@ export default function ImportAccountModal({ isVisible, onClose, onImport }: Pro
                 return
             }
 
-            const createdAccounts = await SInfo.getItem("accounts", {
-                sharedPreferencesName: "sern.android.storage",
-                keychainService: "sern.ios.storage",
-            })
+            const createdAccounts = await getItem("accounts",)
 
-            await SInfo.setItem("accounts", JSON.stringify([...JSON.parse(createdAccounts), { privateKey: privateKey, address: wallet.address }]), {
-                sharedPreferencesName: "sern.android.storage",
-                keychainService: "sern.ios.storage",
-            })
+            await saveItem("accounts", JSON.stringify([...createdAccounts, { privateKey: privateKey, address: wallet.address }]))
 
             dispatch(addAccount({ address: wallet.address, isImported: true }))
             dispatch(switchAccount(wallet.address))

@@ -1,6 +1,7 @@
 import { HStack, VStack, Icon, Text, Input, Pressable, Button as RNButton } from 'native-base'
 import React, { useState } from 'react'
 import Modal from 'react-native-modal';
+// @ts-ignore
 import Ionicons from "react-native-vector-icons/dist/Ionicons"
 import { FONT_SIZE } from '../../utils/styles';
 import { COLORS } from '../../utils/constants';
@@ -9,11 +10,11 @@ import CopyableText from '../CopyableText';
 import { useSelector } from 'react-redux';
 import { Account } from '../../store/reducers/Accounts';
 import { truncateAddress } from '../../utils/helperFunctions'
-import SInfo from "react-native-sensitive-info";
 import Button from '../Button';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useToast } from 'react-native-toast-notifications';
 import { StyleSheet } from 'react-native';
+import { useSecureStorage } from '../../hooks/useSecureStorage';
 
 type Props = {
     isVisible: boolean;
@@ -23,6 +24,7 @@ type Props = {
 export default function PrivateKeyModal({ isVisible, onClose }: Props) {
     const connectedAccount: Account = useSelector(state => state.accounts.find((account: Account) => account.isConnected))
 
+    const { getItem } = useSecureStorage()
     const toast = useToast()
 
     const [password, setPassword] = useState("")
@@ -35,23 +37,15 @@ export default function PrivateKeyModal({ isVisible, onClose }: Props) {
             return
         }
 
-        const _security = await SInfo.getItem("security", {
-            sharedPreferencesName: "sern.android.storage",
-            keychainService: "sern.ios.storage",
-        });
-        const security = JSON.parse(_security!)
+        const security = await getItem("security")
 
         if (password !== security.password) {
             setError("Incorrect password!")
             return
         }
 
-        const accounts = await SInfo.getItem("accounts", {
-            sharedPreferencesName: "sern.android.storage",
-            keychainService: "sern.ios.storage",
-        })
-
-        const wallet: Wallet = Array.from(JSON.parse(accounts)).find(wallet => wallet.address == connectedAccount.address)
+        const accounts = await getItem("accounts")
+        const wallet = Array.from(accounts).find(wallet => wallet.address === connectedAccount.address)
 
         setPrivateKey(wallet.privateKey)
     }

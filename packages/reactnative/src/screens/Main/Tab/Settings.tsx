@@ -2,11 +2,11 @@ import { HStack, Pressable, Switch, Text, VStack } from 'native-base'
 import React, { useLayoutEffect, useState } from 'react'
 import { FONT_SIZE } from '../../../utils/styles'
 import { COLORS } from '../../../utils/constants'
-import SInfo from "react-native-sensitive-info"
 import ReactNativeBiometrics from 'react-native-biometrics'
 import { useToast } from 'react-native-toast-notifications'
 import { useModal } from 'react-native-modalfy'
 import { useIsFocused } from '@react-navigation/native'
+import { useSecureStorage } from '../../../hooks/useSecureStorage'
 
 type Props = {}
 
@@ -14,6 +14,7 @@ export default function Settings({ }: Props) {
     const toast = useToast()
     const { openModal } = useModal()
     const isFocused = useIsFocused()
+    const { getItem, saveItem } = useSecureStorage()
 
     const [isBiometricsAvailable, setIsBiometricsAvailable] = useState(false)
     const [isBiometricsEnabled, setIsBiometricsEnabled] = useState(false)
@@ -33,16 +34,8 @@ export default function Settings({ }: Props) {
                     })
 
                     if (response.success) {
-                        const _security = await SInfo.getItem("security", {
-                            sharedPreferencesName: "sern.android.storage",
-                            keychainService: "sern.ios.storage",
-                        });
-
-                        await SInfo.setItem("security", JSON.stringify({ ...JSON.parse(_security), isBiometricsEnabled }), {
-                            sharedPreferencesName: "sern.android.storage",
-                            keychainService: "sern.ios.storage",
-                        })
-
+                        const security = await getItem("security")
+                        await saveItem("security", { ...security, isBiometricsEnabled })
                         setIsBiometricsEnabled(isBiometricsEnabled)
                     }
                 } catch (error) {
@@ -80,12 +73,7 @@ export default function Settings({ }: Props) {
             setIsBiometricsAvailable(available)
 
             if (available) {
-                const _security = await SInfo.getItem("security", {
-                    sharedPreferencesName: "sern.android.storage",
-                    keychainService: "sern.ios.storage",
-                });
-                const security = JSON.parse(_security!)
-
+                const security = await getItem("security")
                 setIsBiometricsEnabled(security.isBiometricsEnabled)
             }
 

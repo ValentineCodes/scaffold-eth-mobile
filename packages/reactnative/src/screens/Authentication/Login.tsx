@@ -2,7 +2,6 @@ import { Image, Input, Text, VStack, Icon, Pressable, ScrollView } from 'native-
 import React, { useState, useEffect } from 'react'
 import { useToast } from 'react-native-toast-notifications'
 import { useNavigation } from '@react-navigation/native'
-import SInfo from "react-native-sensitive-info";
 import { StyleSheet } from 'react-native'
 import { FONT_SIZE, WINDOW_WIDTH } from '../../utils/styles'
 import { COLORS } from '../../utils/constants'
@@ -13,6 +12,7 @@ import { loginUser, logoutUser } from '../../store/reducers/Auth'
 import ConsentModal from '../../components/modals/ConsentModal'
 import { clearRecipients } from '../../store/reducers/Recipients'
 import ReactNativeBiometrics from 'react-native-biometrics';
+import { useSecureStorage } from '../../hooks/useSecureStorage';
 
 type Props = {}
 
@@ -20,6 +20,7 @@ export default function Login({ }: Props) {
     const toast = useToast()
     const navigation = useNavigation()
     const dispatch = useDispatch()
+    const { getItem, deleteItem } = useSecureStorage();
 
     const auth = useSelector(state => state.auth)
 
@@ -59,17 +60,12 @@ export default function Login({ }: Props) {
             return
         }
 
-        const _security = await SInfo.getItem("security", {
-            sharedPreferencesName: "sern.android.storage",
-            keychainService: "sern.ios.storage",
-        });
-        const security = JSON.parse(_security!)
-
+        const security = await getItem("security");
         if (password !== security.password) {
             toast.show("Incorrect password!", {
                 type: "danger"
-            })
-            return
+            });
+            return;
         }
 
         await initWallet()
@@ -118,46 +114,25 @@ export default function Login({ }: Props) {
     }
 
     const resetWallet = async () => {
-        // remove mnemonic
-        await SInfo.deleteItem("mnemonic", {
-            sharedPreferencesName: "sern.android.storage",
-            keychainService: "sern.ios.storage",
-        });
-        // remove accounts
-        await SInfo.deleteItem("accounts", {
-            sharedPreferencesName: "sern.android.storage",
-            keychainService: "sern.ios.storage",
-        })
-        // remove password
-        await SInfo.deleteItem("security", {
-            sharedPreferencesName: "sern.android.storage",
-            keychainService: "sern.ios.storage",
-        });
-        // clear recipients
-        dispatch(clearRecipients())
-        // logout user
-        dispatch(logoutUser())
-
+        await deleteItem("seedPhrase");
+        await deleteItem("accounts");
+        await deleteItem("security");
+        dispatch(clearRecipients());
+        dispatch(logoutUser());
         setTimeout(() => {
-            navigation.navigate("Onboarding")
-        }, 100)
-
+            navigation.navigate("Onboarding");
+        }, 100);
     }
 
     useEffect(() => {
         (async () => {
-            const _security = await SInfo.getItem("security", {
-                sharedPreferencesName: "sern.android.storage",
-                keychainService: "sern.ios.storage",
-            });
-            const security = JSON.parse(_security!)
-
-            setIsBiometricsEnabled(security.isBiometricsEnabled)
+            const security = await getItem("security");
+            setIsBiometricsEnabled(security.isBiometricsEnabled);
             if (security.isBiometricsEnabled) {
-                unlockWithBiometrics()
+                unlockWithBiometrics();
             }
-        })()
-    }, [])
+        })();
+    }, []);
     return (
         <ScrollView contentContainerStyle={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} style={styles.container}>
             <Image source={require("../../assets/images/logo.png")} alt='Scaffold-ETH' width={WINDOW_WIDTH * 0.3} height={WINDOW_WIDTH * 0.3} mb={"10"} />
