@@ -51,14 +51,14 @@ export default function useScaffoldContractRead({
       const activeAccount = Array.from(accounts).find(
         (account) =>
           account.address.toLowerCase() ===
-          connectedAccount.address.toLowerCase()
+          connectedAccount.address.toLowerCase(),
       );
 
       const wallet = new Wallet(activeAccount.privateKey, provider);
       const contract = new Contract(
         deployedContractData.address,
         deployedContractData.abi,
-        wallet
+        wallet,
       );
 
       const result = await contract[functionName](...args);

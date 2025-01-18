@@ -1,4 +1,4 @@
-import {providers, Wallet} from 'ethers';
+import { providers, Wallet } from "ethers";
 
 /**
  * Types
@@ -17,7 +17,7 @@ export default class EIP155Lib {
     this.wallet = wallet;
   }
 
-  static init({mnemonic}: IInitArgs) {
+  static init({ mnemonic }: IInitArgs) {
     const wallet = mnemonic
       ? Wallet.fromMnemonic(mnemonic)
       : Wallet.createRandom();

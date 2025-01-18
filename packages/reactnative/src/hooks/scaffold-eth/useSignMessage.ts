@@ -28,7 +28,7 @@ export default function useSignMessage({ message }: UseSignMessageConfig) {
   const signMessage = async (
     config: UseSignMessageConfig = {
       message: undefined,
-    }
+    },
   ): Promise<string> => {
     const { message } = config;
     const _message = message || messageToSign;
@@ -49,7 +49,7 @@ export default function useSignMessage({ message }: UseSignMessageConfig) {
           const activeAccount = Array.from(accounts).find(
             (account) =>
               account.address.toLowerCase() ==
-              connectedAccount.address.toLowerCase()
+              connectedAccount.address.toLowerCase(),
           );
 
           const wallet = new Wallet(activeAccount.privateKey, provider);

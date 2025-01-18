@@ -42,7 +42,7 @@ export default function useContractRead({
       const activeAccount = Array.from(accounts).find(
         (account) =>
           account.address.toLowerCase() ===
-          connectedAccount.address.toLowerCase()
+          connectedAccount.address.toLowerCase(),
       );
 
       const wallet = new Wallet(activeAccount.privateKey, provider);

@@ -6,13 +6,15 @@ import useNetwork from "./useNetwork";
  */
 
 export default function useTargetNetwork() {
-    const { targetNetworks } = scaffoldConfig;
-    const network = useNetwork()
+  const { targetNetworks } = scaffoldConfig;
+  const network = useNetwork();
 
-    const selectedNetwork = targetNetworks.find(targetNetwork => targetNetwork.id === network.id)
+  const selectedNetwork = targetNetworks.find(
+    (targetNetwork) => targetNetwork.id === network.id,
+  );
 
-    if(selectedNetwork){
-        return selectedNetwork
-    }
-    return targetNetworks[0]
+  if (selectedNetwork) {
+    return selectedNetwork;
+  }
+  return targetNetworks[0];
 }

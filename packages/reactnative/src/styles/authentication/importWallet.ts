@@ -1,14 +1,14 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
   container: {
     flex: 1,
     padding: 15,
-    backgroundColor: 'white'
+    backgroundColor: "white",
   },
   navBtn: {
     position: "absolute",
     top: 15,
-    left: 15
-  }
+    left: 15,
+  },
 });

@@ -67,7 +67,7 @@ export default function useScaffoldContractWrite({
     config: SendTxConfig = {
       args: undefined,
       value: undefined,
-    }
+    },
   ): Promise<TransactionReceipt> => {
     const { args, value } = config;
     const _args = args || writeArgs || [];
@@ -76,7 +76,7 @@ export default function useScaffoldContractWrite({
 
     if (!deployedContractData) {
       throw new Error(
-        "Target Contract is not deployed, did you forget to run `yarn deploy`?"
+        "Target Contract is not deployed, did you forget to run `yarn deploy`?",
       );
     }
     if (network.id !== targetNetwork.id) {
@@ -90,14 +90,14 @@ export default function useScaffoldContractWrite({
         const activeAccount = Array.from(accounts).find(
           (account) =>
             account.address.toLowerCase() ===
-            connectedAccount.address.toLowerCase()
+            connectedAccount.address.toLowerCase(),
         );
 
         const wallet = new Wallet(activeAccount.privateKey, provider);
         const contract = new Contract(
           deployedContractData.address,
           deployedContractData.abi,
-          wallet
+          wallet,
         );
 
         openModal("SignTransactionModal", {
@@ -125,14 +125,14 @@ export default function useScaffoldContractWrite({
           const activeAccount = Array.from(accounts).find(
             (account) =>
               account.address.toLowerCase() ===
-              connectedAccount.address.toLowerCase()
+              connectedAccount.address.toLowerCase(),
           );
 
           const wallet = new Wallet(activeAccount.privateKey, provider);
           const contract = new Contract(
             deployedContractData!.address,
             deployedContractData!.abi,
-            wallet
+            wallet,
           );
 
           const tx = await contract[functionName](..._args, {
