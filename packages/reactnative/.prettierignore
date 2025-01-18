@@ -1,0 +1,26 @@
+# Ignore node_modules and build directories
+node_modules/
+ios/
+android/
+build/
+
+# Ignore bundle output
+*.bundle
+*.jsbundle
+
+# Ignore logs and generated files
+*.log
+*.lock
+*.tmp
+*.out
+
+# Ignore version control directories
+.git/
+.gitignore
+
+# Ignore assets and fonts
+assets/
+
+# Ignore ESLint and TypeScript output files
+eslintcache
+*.d.ts
