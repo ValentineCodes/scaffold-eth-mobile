@@ -48,6 +48,7 @@
     "react-native-network-info": "5.2.1",
     "react-native-otp-textinput": "1.1.6",
     "react-native-pager-view": "^6.6.1",
+    "react-native-paper": "^5.13.1",
     "react-native-popup-menu": "0.16.1",
     "react-native-qrcode-svg": "6.3.0",
     "react-native-quick-base64": "2.1.2",
