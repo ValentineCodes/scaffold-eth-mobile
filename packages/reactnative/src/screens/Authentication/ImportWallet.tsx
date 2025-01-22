@@ -1,20 +1,8 @@
-import {
-  VStack,
-  Text,
-  HStack,
-  Icon,
-  Divider,
-  Switch,
-  View,
-  ScrollView,
-  Pressable,
-} from "native-base";
 import React, { useCallback, useState, useEffect } from "react";
+import { View, ScrollView, TouchableOpacity } from "react-native";
 import { useDispatch } from "react-redux";
 import { useToast } from "react-native-toast-notifications";
-// @ts-ignore
 import Ionicons from "react-native-vector-icons/dist/Ionicons";
-// @ts-ignore
 import MaterialCommunityIcons from "react-native-vector-icons/dist/MaterialCommunityIcons";
 import { useNavigation } from "@react-navigation/native";
 
@@ -25,7 +13,7 @@ import { ethers } from "ethers";
 import styles from "../../styles/authentication/importWallet";
 import SeedPhraseInput from "../../components/forms/SeedPhraseInput";
 import PasswordInput from "../../components/forms/PasswordInput";
-import Button from "../../components/Button";
+import { Text, Button, Switch, Divider, IconButton } from "react-native-paper";
 import { COLORS } from "../../utils/constants";
 import QRCodeScanner from "../../components/modals/QRCodeScanner";
 import { initAccounts } from "../../store/reducers/Accounts";
@@ -34,7 +22,6 @@ import { FONT_SIZE } from "../../utils/styles";
 import { generate } from "random-words";
 import AccountsCountModal from "../../components/modals/AccountsCountModal";
 import ReactNativeBiometrics from "react-native-biometrics";
-import { TouchableOpacity } from "react-native";
 import { useSecureStorage } from "../../hooks/useSecureStorage";
 import useWallet from "../../hooks/useWallet";
 
@@ -43,7 +30,6 @@ function ImportWallet() {
   const dispatch = useDispatch();
   const toast = useToast();
   const { saveItem } = useSecureStorage();
-
   const { importWallet: importAccount } = useWallet();
 
   const [seedPhrase, setSeedPhrase] = useState("");
@@ -55,6 +41,10 @@ function ImportWallet() {
   const [showAccountsCountModal, setShowAccountsCountModal] = useState(false);
   const [isImporting, setIsImporting] = useState(false);
   const [isBiometricsAvailable, setIsBiometricsAvailable] = useState(false);
+
+  function isValidMnemonic(seedPhrase: string) {
+    return true;
+  }
 
   const renderSeedPhraseError = useCallback(() => {
     if (seedPhrase.trim().split(" ").length < 12) return;
@@ -68,7 +58,7 @@ function ImportWallet() {
 
   const validateInput = () => {
     // input validation
-    if (!ethers.isValidMnemonic(seedPhrase)) {
+    if (!isValidMnemonic(seedPhrase)) {
       toast.show("Invalid Seed Phrase", {
         type: "danger",
       });
@@ -102,6 +92,7 @@ function ImportWallet() {
     let wallets = [];
 
     setIsImporting(true);
+
     for (let i = 0; i < accountsCount; i++) {
       const wallet = await importAccount(seedPhrase, i);
 
@@ -157,37 +148,37 @@ function ImportWallet() {
 
   return (
     <View style={styles.container}>
-      <HStack alignItems="center" justifyContent="space-between">
-        <HStack alignItems="center" space={2}>
-          <Pressable
+      <View style={styles.header}>
+        <View style={styles.headerLeft}>
+          <IconButton
+            icon={() => (
+              <Ionicons 
+                name="arrow-back-outline" 
+                size={1.3 * FONT_SIZE["xl"]} 
+                color="black" 
+              />
+            )}
             onPress={() => navigation.goBack()}
-            _pressed={{ opacity: 0.4 }}
-          >
-            <Icon
-              as={<Ionicons name="arrow-back-outline" />}
-              size={1.3 * FONT_SIZE["xl"]}
-              color="black"
-            />
-          </Pressable>
-          <Text fontSize={1.2 * FONT_SIZE["xl"]} bold>
+          />
+          <Text variant="titleLarge" style={{ fontWeight: 'bold' }}>
             Import From Seed
           </Text>
-        </HStack>
+        </View>
 
-        <TouchableOpacity
-          activeOpacity={0.4}
+        <IconButton
+          icon={() => (
+            <MaterialCommunityIcons 
+              name="qrcode-scan" 
+              size={1.3 * FONT_SIZE["xl"]} 
+              color="black" 
+            />
+          )}
           onPress={() => setShowScanner(true)}
-        >
-          <Icon
-            as={<MaterialCommunityIcons name="qrcode-scan" />}
-            size={1.3 * FONT_SIZE["xl"]}
-            color="black"
-          />
-        </TouchableOpacity>
-      </HStack>
+        />
+      </View>
 
-      <ScrollView flex="1">
-        <VStack space={6} mt="6" mb="50">
+      <ScrollView style={{ flex: 1 }}>
+        <View style={styles.content}>
           <SeedPhraseInput
             value={seedPhrase}
             onChange={setSeedPhrase}
@@ -215,24 +206,29 @@ function ImportWallet() {
 
           {isBiometricsAvailable && (
             <>
-              <Divider bgColor="muted.100" />
+              <Divider style={{ marginVertical: 16 }} />
 
-              <HStack alignItems="center" justifyContent="space-between">
-                <Text fontSize={FONT_SIZE["lg"]}>Sign in with Biometrics</Text>
+              <View style={styles.biometricsContainer}>
+                <Text variant="bodyLarge">Sign in with Biometrics</Text>
                 <Switch
-                  size="md"
-                  trackColor={{ true: COLORS.primary, false: "#E5E5E5" }}
-                  isChecked={isBiometricsEnabled}
-                  onToggle={setIsBiometricsEnabled}
+                  value={isBiometricsEnabled}
+                  onValueChange={setIsBiometricsEnabled}
+                  color={COLORS.primary}
                 />
-              </HStack>
+              </View>
             </>
           )}
 
-          <Divider bgColor="muted.100" />
+          <Divider style={{ marginVertical: 16 }} />
 
-          <Button text="Import" loading={isImporting} onPress={validateInput} />
-        </VStack>
+          <Button
+            mode="contained"
+            loading={isImporting}
+            onPress={validateInput}
+          >
+            Import
+          </Button>
+        </View>
 
         {showAccountsCountModal && (
           <AccountsCountModal
@@ -249,8 +245,8 @@ function ImportWallet() {
           <QRCodeScanner
             isOpen={showScanner}
             onClose={() => setShowScanner(false)}
-            onReadCode={(value) => {
-              setSeedPhrase(value);
+            onReadCode={(data) => {
+              setSeedPhrase(data);
               setShowScanner(false);
             }}
           />

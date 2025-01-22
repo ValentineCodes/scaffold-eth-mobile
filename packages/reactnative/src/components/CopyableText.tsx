@@ -1,9 +1,8 @@
-import { HStack, Text, Icon } from "native-base";
 import React from "react";
-import Ionicons from "react-native-vector-icons/dist/Ionicons";
+import { StyleSheet, TouchableOpacity, ViewStyle, TextStyle } from "react-native";
+import { Text, IconButton } from "react-native-paper";
 import Clipboard from "@react-native-clipboard/clipboard";
 import { useToast } from "react-native-toast-notifications";
-import { ViewStyle, TextStyle, TouchableOpacity } from "react-native";
 
 type Props = {
   value: string;
@@ -28,14 +27,34 @@ export default function CopyableText({
       type: "success",
     });
   };
+
   return (
-    <TouchableOpacity activeOpacity={0.4} onPress={copy}>
-      <HStack alignItems="center" space={1} style={containerStyle}>
-        <Text textAlign="center" fontWeight="medium" style={textStyle}>
-          {displayText || value}
-        </Text>
-        <Icon as={<Ionicons name="copy" />} size={5} style={iconStyle} />
-      </HStack>
+    <TouchableOpacity 
+      onPress={copy}
+      style={[styles.container, containerStyle]}
+    >
+      <Text style={[styles.text, textStyle]}>
+        {displayText || value}
+      </Text>
+      <IconButton 
+        icon="content-copy" 
+        size={20}
+        style={[styles.icon, iconStyle]}
+      />
     </TouchableOpacity>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  text: {
+    textAlign: "center",
+    fontWeight: "500",
+  },
+  icon: {
+    margin: 0,
+  }
+});

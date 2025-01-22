@@ -1,6 +1,6 @@
 import React from "react";
-import { ActivityIndicator } from "react-native";
-import { Button as RNButton, Text } from "native-base";
+import { StyleSheet } from "react-native";
+import { Button as PaperButton } from "react-native-paper";
 import { COLORS } from "../utils/constants";
 
 type Props = {
@@ -20,46 +20,49 @@ export default function Button({
   style,
   onPress,
 }: Props) {
-  if (type === "outline") {
-    return (
-      <RNButton
-        py="4"
-        borderRadius={25}
-        bgColor="#E8F7ED"
-        disabled={disabled || loading}
-        style={[style]}
-        w="full"
-        onPress={onPress}
-        _pressed={{ backgroundColor: "rgba(39, 184, 88, 0.2)" }}
-      >
-        {loading ? (
-          <ActivityIndicator color={COLORS.primary} />
-        ) : (
-          <Text color={COLORS.primary} bold fontSize="md">
-            {text}
-          </Text>
-        )}
-      </RNButton>
-    );
-  }
   return (
-    <RNButton
-      py="4"
-      borderRadius={25}
-      bgColor={disabled ? "#2A974D" : COLORS.primary}
-      disabled={disabled || loading}
-      style={[style]}
-      w="full"
+    <PaperButton
+      mode={type === "outline" ? "outlined" : "contained"}
       onPress={onPress}
-      _pressed={{ opacity: 0.8 }}
+      loading={loading}
+      disabled={disabled}
+      style={[
+        styles.button,
+        type === "outline" && styles.outlineButton,
+        disabled && styles.disabledButton,
+        style,
+      ]}
+      contentStyle={styles.content}
+      labelStyle={[
+        styles.label,
+        type === "outline" && styles.outlineLabel
+      ]}
     >
-      {loading ? (
-        <ActivityIndicator color="white" />
-      ) : (
-        <Text color="white" bold fontSize="md">
-          {text}
-        </Text>
-      )}
-    </RNButton>
+      {text}
+    </PaperButton>
   );
 }
+
+const styles = StyleSheet.create({
+  button: {
+    borderRadius: 25,
+    width: "100%",
+  },
+  outlineButton: {
+    backgroundColor: "#E8F7ED",
+  },
+  disabledButton: {
+    backgroundColor: "#2A974D",
+  },
+  content: {
+    paddingVertical: 8,
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "white",
+  },
+  outlineLabel: {
+    color: COLORS.primary,
+  }
+});

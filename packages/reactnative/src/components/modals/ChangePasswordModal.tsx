@@ -1,5 +1,6 @@
-import { VStack } from "native-base";
 import React, { useEffect, useState } from "react";
+import { StyleSheet, View } from "react-native";
+import { Modal, Portal } from "react-native-paper";
 import { WINDOW_WIDTH } from "../../utils/styles";
 import PasswordInput from "../forms/PasswordInput";
 import Button from "../Button";
@@ -15,7 +16,6 @@ type Props = {
 
 export default function ChangePasswordModal({ modal: { closeModal } }: Props) {
   const toast = useToast();
-
   const { saveItem, getItem } = useSecureStorage();
 
   const [password, setPassword] = useState({
@@ -27,27 +27,20 @@ export default function ChangePasswordModal({ modal: { closeModal } }: Props) {
 
   const change = async () => {
     try {
-      const _security = await getItem("security");
-      const security = _security;
+      const security = await getItem("security");
 
       if (!password.current || !password.new || !password.confirm) {
-        toast.show("Password cannot be empty!", {
-          type: "danger",
-        });
+        toast.show("Password cannot be empty!", { type: "danger" });
         return;
       }
 
       if (password.new.length < 8) {
-        toast.show("Password must be at least 8 characters", {
-          type: "danger",
-        });
+        toast.show("Password must be at least 8 characters", { type: "danger" });
         return;
       }
 
       if (password.current.trim() !== security.password) {
-        toast.show("Incorrect password!", {
-          type: "danger",
-        });
+        toast.show("Incorrect password!", { type: "danger" });
         return;
       }
 
@@ -57,9 +50,7 @@ export default function ChangePasswordModal({ modal: { closeModal } }: Props) {
       }
 
       if (password.new.trim() !== password.confirm.trim()) {
-        toast.show("Passwords do not match!", {
-          type: "danger",
-        });
+        toast.show("Passwords do not match!", { type: "danger" });
         return;
       }
 
@@ -69,7 +60,6 @@ export default function ChangePasswordModal({ modal: { closeModal } }: Props) {
       );
 
       closeModal();
-
       toast.show("Password Changed Successfully", { type: "success" });
     } catch (error) {
       toast.show("Failed to change password", { type: "danger" });
@@ -77,56 +67,69 @@ export default function ChangePasswordModal({ modal: { closeModal } }: Props) {
   };
 
   useEffect(() => {
-    // set suggested password
     setSuggestion(
       generate({ exactly: 2, join: "", minLength: 4, maxLength: 5 }),
     );
   }, []);
-  return (
-    <VStack
-      bgColor="white"
-      borderRadius="30"
-      p="5"
-      space={4}
-      w={WINDOW_WIDTH * 0.9}
-    >
-      <PasswordInput
-        label="Current Password"
-        value={password.current}
-        infoText={
-          password.current.length < 8 && "Must be at least 8 characters"
-        }
-        onChange={(value) =>
-          setPassword((password) => ({ ...password, current: value }))
-        }
-      />
-      <PasswordInput
-        label="New Password"
-        value={password.new}
-        suggestion={suggestion}
-        infoText={password.new.length < 8 && "Must be at least 8 characters"}
-        onChange={(value) =>
-          setPassword((password) => ({ ...password, new: value }))
-        }
-      />
-      <PasswordInput
-        label="Confirm Password"
-        value={password.confirm}
-        suggestion={suggestion}
-        infoText={
-          password.confirm.length < 8 && "Must be at least 8 characters"
-        }
-        onChange={(value) =>
-          setPassword((password) => ({ ...password, confirm: value }))
-        }
-      />
 
-      <Button
-        text="Change Password"
-        loading={false}
-        onPress={change}
-        style={{ marginTop: 10 }}
-      />
-    </VStack>
+  return (
+    <Portal>
+      <Modal
+        visible={true}
+        onDismiss={closeModal}
+        contentContainerStyle={styles.container}
+      >
+        <View style={styles.content}>
+          <PasswordInput
+            label="Current Password"
+            value={password.current}
+            infoText={password.current.length < 8 && "Must be at least 8 characters"}
+            onChange={(value) =>
+              setPassword((prev) => ({ ...prev, current: value }))
+            }
+          />
+          <PasswordInput
+            label="New Password"
+            value={password.new}
+            suggestion={suggestion}
+            infoText={password.new.length < 8 && "Must be at least 8 characters"}
+            onChange={(value) =>
+              setPassword((prev) => ({ ...prev, new: value }))
+            }
+          />
+          <PasswordInput
+            label="Confirm Password"
+            value={password.confirm}
+            suggestion={suggestion}
+            infoText={password.confirm.length < 8 && "Must be at least 8 characters"}
+            onChange={(value) =>
+              setPassword((prev) => ({ ...prev, confirm: value }))
+            }
+          />
+
+          <Button
+            text="Change Password"
+            onPress={change}
+            style={styles.button}
+          />
+        </View>
+      </Modal>
+    </Portal>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: "white",
+    borderRadius: 30,
+    padding: 20,
+    margin: 20,
+    width: WINDOW_WIDTH * 0.9,
+  },
+  content: {
+    gap: 16,
+  },
+  button: {
+    marginTop: 10,
+  },
+});

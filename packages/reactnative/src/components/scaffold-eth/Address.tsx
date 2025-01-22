@@ -1,6 +1,6 @@
-import { HStack, Text, Icon, Pressable } from "native-base";
 import React from "react";
-import Ionicons from "react-native-vector-icons/dist/Ionicons";
+import { StyleSheet, View, Pressable } from "react-native";
+import { Text, IconButton } from "react-native-paper";
 import Clipboard from "@react-native-clipboard/clipboard";
 import { useToast } from "react-native-toast-notifications";
 import { ViewStyle, TextStyle } from "react-native";
@@ -21,7 +21,6 @@ export default function Address({
   containerStyle,
   textStyle,
   iconStyle,
-  displayText,
 }: Props) {
   const toast = useToast();
 
@@ -31,25 +30,36 @@ export default function Address({
       type: "success",
     });
   };
+
   return (
-    <HStack
-      alignItems="center"
-      alignSelf={"flex-start"}
-      space={1}
-      style={containerStyle}
-    >
+    <View style={[styles.container, containerStyle]}>
       <Blockie address={address} size={1.3 * FONT_SIZE["xl"]} />
-      <Text textAlign="center" fontWeight="medium" style={textStyle}>
+      <Text variant="bodyMedium" style={[styles.text, textStyle]}>
         {truncateAddress(address)}
       </Text>
-      <Pressable onPress={copy}>
-        <Icon
-          as={<Ionicons name="copy-outline" />}
-          size={5}
-          color={COLORS.primary}
-          style={iconStyle}
-        />
-      </Pressable>
-    </HStack>
+      <IconButton
+        icon="content-copy"
+        size={20}
+        iconColor={COLORS.primary}
+        onPress={copy}
+        style={[styles.icon, iconStyle]}
+      />
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'flex-start',
+    gap: 4,
+  },
+  text: {
+    textAlign: 'center',
+    fontWeight: '500',
+  },
+  icon: {
+    margin: 0,
+  },
+});

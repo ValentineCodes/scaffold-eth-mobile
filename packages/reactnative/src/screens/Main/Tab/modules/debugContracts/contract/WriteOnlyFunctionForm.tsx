@@ -11,7 +11,8 @@ import useContractWrite from "../../../../../../hooks/scaffold-eth/useContractWr
 import { useToast } from "react-native-toast-notifications";
 import { TransactionReceipt } from "viem";
 import ContractInput from "./ContractInput";
-import { Button, HStack, Text, View } from "native-base";
+import { View } from "react-native";
+import { Button, Text } from "react-native-paper";
 import IntegerInput from "../../../../../../components/scaffold-eth/input/IntegerInput";
 import { COLORS } from "../../../../../../utils/constants";
 import { useModal } from "react-native-modalfy";
@@ -80,12 +81,12 @@ export default function WriteOnlyFunctionForm({
   };
   return (
     <View>
-      <Text fontSize={"md"} fontWeight={"medium"} my={"2"}>
+      <Text variant="titleMedium" style={{ marginVertical: 8 }}>
         {abiFunction.name}
       </Text>
       {inputElements}
       {abiFunction.stateMutability === "payable" ? (
-        <View mt={"2"}>
+        <View style={{ marginTop: 8 }}>
           <IntegerInput
             value={txValue}
             onChange={(updatedTxValue) => {
@@ -96,44 +97,37 @@ export default function WriteOnlyFunctionForm({
           />
         </View>
       ) : null}
-      <HStack alignItems={"center"} justifyContent={"space-between"}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
         {txReceipt ? (
           <Button
-            alignSelf={"flex-end"}
-            my={"2"}
-            py={"2"}
-            borderRadius={"3xl"}
-            bgColor={"blue.300"}
-            _pressed={{ backgroundColor: "rgba(39, 184, 88, 0.5)" }}
+            mode="contained"
+            style={{
+              marginVertical: 8,
+              borderRadius: 24,
+              backgroundColor: COLORS.primaryLight
+            }}
             onPress={showReceipt}
           >
-            <Text fontSize={"md"} fontWeight={"medium"} color={"white"}>
-              Show Receipt
-            </Text>
+            Show Receipt
           </Button>
         ) : (
           <View />
         )}
 
         <Button
-          alignSelf={"flex-end"}
-          my={"2"}
-          w={"20"}
-          py={"2"}
-          borderRadius={"3xl"}
-          bgColor={COLORS.primaryLight}
-          isLoading={isLoading}
-          isLoadingText="Send"
-          _loading={{ bgColor: COLORS.primary }}
-          isDisabled={writeDisabled || isLoading}
-          _pressed={{ backgroundColor: "rgba(39, 184, 88, 0.5)" }}
+          mode="contained"
+          style={{
+            marginVertical: 8,
+            borderRadius: 24,
+            backgroundColor: writeDisabled || isLoading ? COLORS.primaryLight : COLORS.primary
+          }}
+          loading={isLoading}
+          disabled={writeDisabled || isLoading}
           onPress={handleWrite}
         >
-          <Text fontSize={"md"} fontWeight={"medium"} color={COLORS.primary}>
-            Send
-          </Text>
+          Send
         </Button>
-      </HStack>
+      </View>
     </View>
   );
 }

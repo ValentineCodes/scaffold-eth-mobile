@@ -13,7 +13,6 @@ import Login from "./Authentication/Login";
 import Main from "./Main";
 import Transfer from "./Transfer";
 import { useSelector } from "react-redux";
-import Example from "./Example";
 
 type Props = {};
 
@@ -28,13 +27,13 @@ type AppStackParamsList = {
   Login: undefined;
   Main: undefined;
   Transfer: undefined;
-  Example: undefined;
 };
 
 const AppStack = createNativeStackNavigator<AppStackParamsList>();
 
 export default function Navigation({}: Props) {
   const auth = useSelector((state: any) => state.auth);
+
   return (
     <NavigationContainer>
       <AppStack.Navigator
@@ -63,7 +62,6 @@ export default function Navigation({}: Props) {
         <AppStack.Screen name="Login" component={Login} />
         <AppStack.Screen name="Main" component={Main} />
         <AppStack.Screen name="Transfer" component={Transfer} />
-        <AppStack.Screen name="Example" component={Example} />
       </AppStack.Navigator>
     </NavigationContainer>
   );

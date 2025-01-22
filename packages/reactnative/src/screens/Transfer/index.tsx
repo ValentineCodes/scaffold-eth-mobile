@@ -1,32 +1,20 @@
 import { useIsFocused, useNavigation } from "@react-navigation/native";
-import {
-  HStack,
-  VStack,
-  Icon,
-  Text,
-  Input,
-  Divider,
-  View,
-  FlatList,
-  Image,
-  Pressable,
-} from "native-base";
+import { View, StyleSheet, TouchableOpacity, BackHandler, Image, FlatList } from "react-native";
+import { Text, TextInput, Divider, IconButton } from "react-native-paper";
 import React, { useEffect, useState, useCallback, useMemo } from "react";
-import { FONT_SIZE } from "../../utils/styles";
+import { FONT_SIZE } from "../../utils/styles"; 
 import { ALCHEMY_KEY, COLORS } from "../../utils/constants";
 import { useDispatch, useSelector } from "react-redux";
 import { Account } from "../../store/reducers/Accounts";
 import { Network } from "../../store/reducers/Networks";
+// @ts-ignore
 import FontAwesome5 from "react-native-vector-icons/dist/FontAwesome5";
-import Ionicons from "react-native-vector-icons/dist/Ionicons";
-import MaterialCommunityIcons from "react-native-vector-icons/dist/MaterialCommunityIcons";
-import { StyleSheet, TouchableOpacity, BackHandler } from "react-native";
 import Button from "../../components/Button";
 import Blockie from "../../components/Blockie";
 
 import "react-native-get-random-values";
 import "@ethersproject/shims";
-import { BigNumber, ethers } from "ethers";
+import { JsonRpcProvider, formatEther, parseEther, isAddress } from "ethers";
 import QRCodeScanner from "../../components/modals/QRCodeScanner";
 import AccountsModal from "./modules/AccountsModal";
 import redstone from "redstone-api";
@@ -55,8 +43,8 @@ export default function Transfer({}: Props) {
   );
   const recipients: string[] = useSelector((state: any) => state.recipients);
 
-  const [balance, setBalance] = useState<BigNumber | null>(null);
-  const [gasCost, setGasCost] = useState<BigNumber | null>(null);
+  const [balance, setBalance] = useState<bigint | null>(null);
+  const [gasCost, setGasCost] = useState<bigint | null>(null);
   const [dollarRate, setDollarRate] = useState<number | null>(null);
 
   const [from, setFrom] = useState<Account>(connectedAccount);
@@ -78,24 +66,14 @@ export default function Transfer({}: Props) {
 
   const getBalance = async () => {
     try {
-      const provider = new ethers.providers.JsonRpcProvider(
-        connectedNetwork.provider,
-      );
+      const provider = new JsonRpcProvider(connectedNetwork.provider);
       const balance = await provider.getBalance(from.address);
-      const gasPrice = await provider.getGasPrice();
+      const gasPrice = await provider.getFeeData();
 
-      const gasCost = gasPrice.mul(BigNumber.from(21000));
+      const gasCost = gasPrice.gasPrice! * BigInt(21000);
 
-      // try {
-      //     const price = await redstone.getPrice(connectedNetwork.currencySymbol);
-      //     setDollarRate(price.value)
-      // } catch (error) {
-      //     setDollarRate(null)
-      //     return
-      // } finally {
       setGasCost(gasCost);
       setBalance(balance);
-      // }
     } catch (error) {
       return;
     }
@@ -114,7 +92,7 @@ export default function Transfer({}: Props) {
   }, [dollarRate, amount, isAmountInCrypto]);
 
   const confirm = () => {
-    if (!ethers.utils.isAddress(toAddress)) {
+    if (!isAddress(toAddress)) {
       toast.show("Invalid address", {
         type: "danger",
       });
@@ -139,13 +117,13 @@ export default function Transfer({}: Props) {
     }
 
     if (_amount.trim() && balance && gasCost && !isNaN(Number(_amount))) {
-      if (Number(_amount) >= Number(ethers.utils.formatEther(balance))) {
+      if (Number(_amount) >= Number(formatEther(balance))) {
         toast.show("Insufficient amount", {
           type: "danger",
         });
         return;
       } else if (
-        Number(ethers.utils.formatEther(balance.sub(gasCost))) < Number(_amount)
+        Number(formatEther(balance - gasCost)) < Number(_amount)
       ) {
         toast.show("Insufficient amount for gas", {
           type: "danger",
@@ -158,8 +136,8 @@ export default function Transfer({}: Props) {
   };
 
   const formatBalance = () => {
-    return Number(ethers.utils.formatEther(balance!))
-      ? parseFloat(Number(ethers.utils.formatEther(balance!)).toString(), 4)
+    return Number(formatEther(balance!))
+      ? parseFloat(Number(formatEther(balance!)).toString(), 4)
       : 0;
   };
 
@@ -172,13 +150,13 @@ export default function Transfer({}: Props) {
 
     if (isENS(value)) {
       try {
-        const provider = new ethers.providers.JsonRpcProvider(
+        const provider = new JsonRpcProvider(
           `https://eth-mainnet.alchemyapi.io/v2/${ALCHEMY_KEY}`,
         );
 
         const address = await provider.resolveName(value);
 
-        if (ethers.utils.isAddress(address)) {
+        if (address && isAddress(address)) {
           setToAddress(address);
         } else {
           setToAddressError("Invalid ENS");
@@ -204,10 +182,10 @@ export default function Transfer({}: Props) {
     }
 
     if (value.trim() && balance && !isNaN(amount) && gasCost) {
-      if (amount >= Number(ethers.utils.formatEther(balance))) {
+      if (amount >= Number(formatEther(balance))) {
         setAmountError("Insufficient amount");
       } else if (
-        Number(ethers.utils.formatEther(balance.sub(gasCost))) < amount
+        Number(formatEther(balance - gasCost)) < amount
       ) {
         setAmountError("Insufficient amount for gas");
       } else if (amountError) {
@@ -219,8 +197,8 @@ export default function Transfer({}: Props) {
   };
 
   const setMaxAmount = () => {
-    if (balance && gasCost && balance.gt(gasCost)) {
-      const max = ethers.utils.formatEther(balance.sub(gasCost));
+    if (balance && gasCost && balance > gasCost) {
+      const max = formatEther(balance - gasCost);
       handleAmountChange(max);
       setIsAmountInCrypto(true);
     }
@@ -293,18 +271,16 @@ export default function Transfer({}: Props) {
 
   useEffect(() => {
     if (!isFocused) return;
-    const provider = new ethers.providers.JsonRpcProvider(
-      connectedNetwork.provider,
-    );
+    const provider = new JsonRpcProvider(connectedNetwork.provider);
 
-    provider.off("block");
+    provider.removeAllListeners();
 
-    provider.on("block", (blockNumber) => {
+    provider.on("block", () => {
       getBalance();
     });
 
     return () => {
-      provider.off("block");
+      provider.removeAllListeners();
       backHandler.remove();
     };
   }, [from]);
@@ -312,78 +288,58 @@ export default function Transfer({}: Props) {
   if (!isFocused) return;
 
   return (
-    <VStack flex="1" bgColor="white" p="15" space="6">
-      <HStack alignItems="center" space={2}>
-        <Pressable
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <IconButton
+          icon="arrow-left"
+          size={24}
           onPress={() => navigation.goBack()}
-          _pressed={{ opacity: 0.4 }}
-        >
-          <Icon
-            as={<Ionicons name="arrow-back-outline" />}
-            size={1.3 * FONT_SIZE["xl"]}
-            color="black"
-          />
-        </Pressable>
-        <Text fontSize={1.2 * FONT_SIZE["xl"]} bold>
+        />
+        <Text variant="headlineMedium" style={styles.headerText}>
           Send {connectedNetwork.currencySymbol}
         </Text>
-      </HStack>
+      </View>
 
-      <VStack space="2">
-        <Text fontSize={FONT_SIZE["lg"]} fontWeight="medium">
-          From:
-        </Text>
+      <View style={styles.section}>
+        <Text variant="titleMedium">From:</Text>
 
-        <Pressable
+        <TouchableOpacity
           disabled={accounts.length === 1}
           onPress={() => setShowFromAccountsModal(true)}
+          style={[
+            styles.fromAccountContainer,
+            {backgroundColor: accounts.length === 1 ? '#f5f5f5' : '#fff'}
+          ]}
         >
-          {({ isPressed }) => (
-            <>
-              <View
-                style={styles.fromAccountContainer}
-                bgColor={isPressed ? "rgba(39, 184, 88, 0.2)" : "#f5f5f5"}
-              >
-                <HStack alignItems="center" space="2">
-                  <Blockie
-                    address={from.address}
-                    size={1.8 * FONT_SIZE["xl"]}
-                  />
+          <View style={styles.accountInfo}>
+            <Blockie
+              address={from.address}
+              size={1.8 * FONT_SIZE["xl"]}
+            />
 
-                  <VStack w="75%">
-                    <Text fontSize={FONT_SIZE["xl"]} fontWeight="medium">
-                      {from.name}
-                    </Text>
-                    <Text fontSize={FONT_SIZE["md"]}>
-                      Balance:{" "}
-                      {balance !== null &&
-                        `${formatBalance()} ${connectedNetwork.currencySymbol}`}
-                    </Text>
-                  </VStack>
-                </HStack>
+            <View style={styles.accountDetails}>
+              <Text variant="titleMedium">{from.name}</Text>
+              <Text variant="bodyMedium">
+                Balance:{" "}
+                {balance !== null &&
+                  `${formatBalance()} ${connectedNetwork.currencySymbol}`}
+              </Text>
+            </View>
+          </View>
 
-                {accounts.length > 1 && (
-                  <Icon
-                    as={<Ionicons name="chevron-down" />}
-                    size={1.1 * FONT_SIZE["xl"]}
-                    color="black"
-                    mr="2"
-                  />
-                )}
-              </View>
-            </>
+          {accounts.length > 1 && (
+            <IconButton
+              icon="chevron-down"
+              size={24}
+            />
           )}
-        </Pressable>
-      </VStack>
+        </TouchableOpacity>
+      </View>
 
-      <VStack space="2">
-        <HStack alignItems="center" space="2">
-          <Text fontSize={FONT_SIZE["lg"]} fontWeight="medium">
-            To:
-          </Text>
+      <View style={styles.section}>
+        <View style={styles.toHeader}>
+          <Text variant="titleMedium">To:</Text>
           <TouchableOpacity
-            activeOpacity={0.4}
-            style={{ width: "100%" }}
             onPress={() => {
               if (accounts.length > 1) {
                 setShowToAccountsModal(true);
@@ -392,162 +348,109 @@ export default function Transfer({}: Props) {
               }
             }}
           >
-            <Text
-              color={COLORS.primary}
-              fontWeight="medium"
-              fontSize={FONT_SIZE["lg"]}
-              flex="1"
-            >
-              My account<Text color="black">{getToAddressName()}</Text>
+            <Text style={styles.myAccountText}>
+              My account<Text style={styles.accountName}>{getToAddressName()}</Text>
             </Text>
           </TouchableOpacity>
-        </HStack>
+        </View>
 
-        <Input
+        <TextInput
           value={toAddress}
-          borderRadius="lg"
-          variant="filled"
-          fontSize="md"
-          focusOutlineColor={COLORS.primary}
-          InputLeftElement={
-            ethers.utils.isAddress(toAddress) ? (
-              <View ml="2">
-                <Blockie address={toAddress} size={1.8 * FONT_SIZE["xl"]} />
-              </View>
-            ) : undefined
-          }
-          InputRightElement={
-            <TouchableOpacity
-              onPress={() => setShowScanner(true)}
-              style={{ marginRight: 10 }}
-            >
-              <Icon
-                as={<MaterialCommunityIcons name="qrcode-scan" />}
-                size={1.3 * FONT_SIZE["xl"]}
-                color={COLORS.primary}
-              />
-            </TouchableOpacity>
-          }
+          mode="outlined"
+          style={styles.input}
           placeholder="Recipient Address"
           onChangeText={handleToAddressChange}
-          _input={{
-            selectionColor: COLORS.primary,
-            cursorColor: COLORS.primary,
-          }}
-          onSubmitEditing={confirm}
+          left={isAddress(toAddress) ? (
+            <TextInput.Icon icon={() => (
+              <Blockie address={toAddress} size={1.8 * FONT_SIZE["xl"]} />
+            )} />
+          ) : null}
+          right={
+            <TextInput.Icon 
+              icon="qrcode-scan"
+              onPress={() => setShowScanner(true)}
+            />
+          }
+          error={!!toAddressError}
         />
-
         {toAddressError && (
-          <Text fontSize={FONT_SIZE["md"]} color="red.400">
+          <Text variant="bodySmall" style={styles.errorText}>
             {toAddressError}
           </Text>
         )}
-      </VStack>
+      </View>
 
-      <VStack space="2">
-        <HStack alignItems="center" space="2">
-          <Text fontSize={FONT_SIZE["lg"]} fontWeight="medium">
-            Amount:
-          </Text>
-          {balance && gasCost && balance.gte(gasCost) && (
-            <TouchableOpacity activeOpacity={0.4} onPress={setMaxAmount}>
-              <Text
-                color={COLORS.primary}
-                fontWeight="medium"
-                fontSize={FONT_SIZE["lg"]}
-              >
-                Max
-              </Text>
+      <View style={styles.section}>
+        <View style={styles.amountHeader}>
+          <Text variant="titleMedium">Amount:</Text>
+          {balance && gasCost && balance > gasCost ? (
+            <TouchableOpacity onPress={setMaxAmount}>
+              <Text style={styles.maxText}>Max</Text>
             </TouchableOpacity>
-          )}
-        </HStack>
+          ) : null}
+        </View>
 
-        <Input
+        <TextInput
           value={amount}
-          borderRadius="lg"
-          variant="filled"
-          fontSize="lg"
-          focusOutlineColor={COLORS.primary}
+          mode="outlined"
+          style={styles.input}
           placeholder={`0 ${isAmountInCrypto ? connectedNetwork.currencySymbol : "USD"}`}
           onChangeText={handleAmountChange}
-          _input={{
-            selectionColor: COLORS.primary,
-            cursorColor: COLORS.primary,
-          }}
-          onSubmitEditing={confirm}
           keyboardType="number-pad"
-          InputLeftElement={
-            <TouchableOpacity
-              activeOpacity={0.4}
+          left={
+            <TextInput.Icon
+              icon={() => (
+                isAmountInCrypto ? (
+                  logo
+                ) : (
+                  <FontAwesome5 name="dollar-sign" size={24} color={COLORS.primary} />
+                )
+              )}
               onPress={convertCurrency}
               disabled={!Boolean(dollarRate)}
-              style={{ marginLeft: 10 }}
-            >
-              {isAmountInCrypto ? (
-                logo
-              ) : (
-                <Icon
-                  as={<FontAwesome5 name="dollar-sign" />}
-                  size={1.3 * FONT_SIZE["xl"]}
-                  ml={3}
-                  color={COLORS.primary}
-                />
-              )}
-            </TouchableOpacity>
+            />
           }
-          InputRightElement={
-            dollarRate !== null ? (
-              <Text fontSize={FONT_SIZE["lg"]} color={COLORS.primary} mr="2">
-                {getAmountConversion()}
-              </Text>
-            ) : undefined
-          }
+          right={dollarRate !== null ? (
+            <TextInput.Affix
+              text={getAmountConversion()}
+            />
+          ) : null}
+          error={!!amountError}
         />
 
         {amountError && (
-          <Text fontSize={FONT_SIZE["md"]} color="red.400">
+          <Text variant="bodySmall" style={styles.errorText}>
             {amountError}
           </Text>
         )}
-      </VStack>
+      </View>
 
-      <Divider bgColor="muted.300" my="2" />
+      <Divider style={styles.divider} />
 
-      <View flex="1">
+      <View style={styles.recipientsContainer}>
         {recipients.length > 0 && (
           <>
-            <HStack alignItems="center" justifyContent="space-between" mb="4">
-              <Text bold fontSize={FONT_SIZE["xl"]}>
-                Recents
-              </Text>
+            <View style={styles.recipientsHeader}>
+              <Text variant="titleLarge">Recents</Text>
               <TouchableOpacity
-                activeOpacity={0.4}
                 onPress={() => setShowClearRecipientsConsentModal(true)}
               >
-                <Text
-                  color={COLORS.primary}
-                  fontSize={FONT_SIZE["lg"]}
-                  fontWeight="medium"
-                >
-                  Clear
-                </Text>
+                <Text style={styles.clearText}>Clear</Text>
               </TouchableOpacity>
-            </HStack>
+            </View>
 
             <FlatList
               keyExtractor={(item) => item}
               data={recipients}
               renderItem={({ item }) => (
                 <TouchableOpacity
-                  activeOpacity={0.4}
                   onPress={() => setToAddress(item)}
+                  style={styles.recipientItem}
                 >
-                  <HStack alignItems="center" space="4" mb="4">
-                    <Blockie address={item} size={1.7 * FONT_SIZE["xl"]} />
-                    <Text fontSize={FONT_SIZE["xl"]} fontWeight="medium">
-                      {truncateAddress(item)}
-                    </Text>
-                  </HStack>
+                  <Blockie address={item} size={1.7 * FONT_SIZE["xl"]} />
+                  <Text variant="titleMedium" style={styles.recipientAddress}>
+                    {truncateAddress(item)}
+                  </Text>
                 </TouchableOpacity>
               )}
             />
@@ -620,18 +523,100 @@ export default function Transfer({}: Props) {
           }
         }}
       />
-    </VStack>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+    padding: 15
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 24
+  },
+  headerText: {
+    marginLeft: 8
+  },
+  section: {
+    marginBottom: 24
+  },
   fromAccountContainer: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     borderRadius: 10,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
+    padding: 10,
+    marginTop: 8
+  },
+  accountInfo: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  accountDetails: {
+    marginLeft: 8,
+    width: '75%'
+  },
+  toHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 8
+  },
+  myAccountText: {
+    color: COLORS.primary,
+    fontSize: FONT_SIZE.lg,
+    fontWeight: '500',
+    marginLeft: 8
+  },
+  accountName: {
+    color: 'black'
+  },
+  input: {
+    backgroundColor: '#f5f5f5'
+  },
+  errorText: {
+    color: 'red',
+    marginTop: 4
+  },
+  amountHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 8
+  },
+  maxText: {
+    color: COLORS.primary,
+    fontSize: FONT_SIZE.lg,
+    fontWeight: '500',
+    marginLeft: 8
+  },
+  divider: {
+    backgroundColor: '#e0e0e0',
+    marginVertical: 16
+  },
+  recipientsContainer: {
+    flex: 1
+  },
+  recipientsHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16
+  },
+  clearText: {
+    color: COLORS.primary,
+    fontSize: FONT_SIZE.lg,
+    fontWeight: '500'
+  },
+  recipientItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16
+  },
+  recipientAddress: {
+    marginLeft: 16
   },
   networkLogo: {
     width: 2 * FONT_SIZE["xl"],

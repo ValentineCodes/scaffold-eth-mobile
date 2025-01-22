@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { HStack, VStack, Input, Icon, Text } from "native-base";
-import Ionicons from "react-native-vector-icons/dist/Ionicons";
+import { View } from "react-native";
+import { TextInput, IconButton, Text } from "react-native-paper";
 import { useSelector, useDispatch } from "react-redux";
 import { Account, changeName } from "../../store/reducers/Accounts";
 import { COLORS } from "../../utils/constants";
@@ -39,46 +39,43 @@ export default function EditAccountNameForm({ close }: Props) {
       setError("");
     }
   };
+
   return (
-    <VStack w="full" alignItems="center">
-      <HStack alignItems="center" space={2}>
-        <Icon
-          as={<Ionicons name="close-outline" />}
-          size={7}
-          color="red.400"
+    <View style={{ width: '100%', alignItems: 'center' }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+        <IconButton
+          icon="close"
+          iconColor="red"
+          size={28}
           onPress={close}
         />
 
-        <Input
+        <TextInput
           placeholder="New account name"
           value={name}
           onChangeText={handleInputChange}
           onSubmitEditing={editName}
-          borderRadius="lg"
-          variant="filled"
-          fontSize="md"
-          w="60%"
-          focusOutlineColor={COLORS.primary}
+          mode="outlined"
+          style={{ width: '60%' }}
+          outlineColor={COLORS.primary}
+          activeOutlineColor={COLORS.primary}
+          selectionColor={COLORS.primary}
           selectTextOnFocus
-          _input={{
-            selectionColor: COLORS.primary,
-            cursorColor: COLORS.primary,
-          }}
         />
 
-        <Icon
-          as={<Ionicons name="checkmark-done-outline" />}
-          size={5}
-          color={COLORS.primary}
+        <IconButton
+          icon="check"
+          iconColor={COLORS.primary}
+          size={20}
           onPress={editName}
         />
-      </HStack>
+      </View>
 
       {error && (
-        <Text fontSize="sm" color="red.400">
+        <Text variant="bodySmall" style={{ color: 'red' }}>
           {error}
         </Text>
       )}
-    </VStack>
+    </View>
   );
 }

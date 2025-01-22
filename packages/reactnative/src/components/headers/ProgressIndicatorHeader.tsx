@@ -1,6 +1,7 @@
-import { HStack, Icon, View, Pressable } from "native-base";
+import { View, Dimensions } from "react-native";
 import React from "react";
-import { Dimensions } from "react-native";
+import { IconButton } from "react-native-paper";
+// @ts-ignore
 import Ionicons from "react-native-vector-icons/dist/Ionicons";
 import ProgressStepIndicator from "../ProgressStepIndicator";
 import { useNavigation } from "@react-navigation/native";
@@ -14,21 +15,23 @@ const ProgressIndicatorHeader = ({ progress }: Props) => {
   const navigation = useNavigation();
 
   return (
-    <HStack alignItems="center">
-      <Pressable
+    <View style={{ flexDirection: "row", alignItems: "center" }}>
+      <IconButton
+        icon={() => (
+          <Ionicons
+            name="arrow-back-outline"
+            size={1.3 * FONT_SIZE["xl"]}
+            color="black"
+          />
+        )}
         onPress={() => navigation.goBack()}
-        _pressed={{ opacity: 0.4 }}
-      >
-        <Icon
-          as={<Ionicons name="arrow-back-outline" />}
-          size={1.3 * FONT_SIZE["xl"]}
-          color="black"
-        />
-      </Pressable>
+      />
       <View
-        position="absolute"
-        top={3.5}
-        left={Dimensions.get("window").width * 0.19}
+        style={{
+          position: "absolute",
+          top: 3.5,
+          left: Dimensions.get("window").width * 0.19,
+        }}
       >
         <ProgressStepIndicator
           steps={3}
@@ -37,7 +40,7 @@ const ProgressIndicatorHeader = ({ progress }: Props) => {
           size={Dimensions.get("window").width * 0.04}
         />
       </View>
-    </HStack>
+    </View>
   );
 };
 

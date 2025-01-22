@@ -1,25 +1,14 @@
-import {
-  Divider,
-  Button as RNButton,
-  ScrollView,
-  Text,
-  VStack,
-  View,
-  Icon,
-} from "native-base";
 import React, { useState, useEffect } from "react";
-import { ActivityIndicator, StyleSheet } from "react-native";
+import { ScrollView, StyleSheet, View, ActivityIndicator } from "react-native";
+import { Text, Button, Divider, IconButton } from "react-native-paper";
 import ProgressIndicatorHeader from "../../components/headers/ProgressIndicatorHeader";
 import { COLORS } from "../../utils/constants";
 import { FONT_SIZE } from "../../utils/styles";
 import { BlurView } from "@react-native-community/blur";
-// @ts-ignore
-import MaterialIcons from "react-native-vector-icons/dist/MaterialIcons";
 import Clipboard from "@react-native-clipboard/clipboard";
 
 import "react-native-get-random-values";
 import "@ethersproject/shims";
-import Button from "../../components/Button";
 import { useNavigation } from "@react-navigation/native";
 import { useToast } from "react-native-toast-notifications";
 import { useSecureStorage } from "../../hooks/useSecureStorage";
@@ -35,15 +24,11 @@ type Props = {};
 
 export default function GenerateSeedPhrase({}: Props) {
   const navigation = useNavigation();
-
   const toast = useToast();
-
   const { createWallet } = useWallet();
-
   const [wallet, setWallet] = useState<Wallet>();
   const [showSeedPhrase, setShowSeedPhrase] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-
   const { saveItem } = useSecureStorage();
 
   const copySeedPhrase = () => {
@@ -67,7 +52,6 @@ export default function GenerateSeedPhrase({}: Props) {
     }
     try {
       await saveItem("seedPhrase", wallet.mnemonic);
-      // @ts-ignore
       navigation.navigate("ConfirmSeedPhrase");
     } catch (error) {
       return;
@@ -90,25 +74,25 @@ export default function GenerateSeedPhrase({}: Props) {
     <View style={styles.container}>
       <ProgressIndicatorHeader progress={2} />
 
-      <Divider bgColor="muted.100" mt="8" mb="4" />
+      <Divider style={{ marginTop: 32, marginBottom: 16 }} />
 
-      <ScrollView flex="1">
+      <ScrollView style={{ flex: 1 }}>
         <Text
-          textAlign="center"
-          color={COLORS.primary}
-          fontSize={1.7 * FONT_SIZE["xl"]}
-          lineHeight="40"
-          bold
+          variant="headlineMedium"
+          style={styles.title}
         >
           Write Down Your Seed Phrase
         </Text>
-        <Text textAlign="center" fontSize={FONT_SIZE["lg"]} my="2">
+        <Text
+          variant="bodyLarge"
+          style={styles.subtitle}
+        >
           This is your seed phrase. Write it down on a piece of paper and keep
           it in a safe place. You'll be asked to re-enter this phrase (in order)
           on the next step.
         </Text>
 
-        <Divider bgColor="muted.100" my="4" />
+        <Divider style={{ marginVertical: 16 }} />
 
         {isLoading ? (
           <View style={styles.loader}>
@@ -132,52 +116,45 @@ export default function GenerateSeedPhrase({}: Props) {
                   blurAmount={6}
                   reducedTransparencyFallbackColor="white"
                 />
-                <VStack style={styles.seedPhraseMask} space={2}>
-                  <Text fontSize={FONT_SIZE["xl"]} bold textAlign="center">
+                <View style={styles.seedPhraseMask}>
+                  <Text variant="titleLarge" style={{ textAlign: 'center', fontWeight: 'bold' }}>
                     Tap to reveal your seed phrase
                   </Text>
-                  <Text fontSize={FONT_SIZE["md"]} textAlign="center">
+                  <Text variant="bodyMedium" style={{ textAlign: 'center', marginTop: 8 }}>
                     Make sure no one is watching your screen
                   </Text>
-                  <RNButton
-                    py="3"
-                    borderRadius={25}
-                    bgColor="#2AB858"
-                    w="24"
-                    mt="2"
-                    leftIcon={
-                      <Icon
-                        as={<MaterialIcons name="visibility" color="white" />}
-                        size="md"
-                      />
-                    }
+                  <Button
+                    mode="contained"
+                    icon="eye"
                     onPress={() => setShowSeedPhrase(true)}
-                    _pressed={{ opacity: 0.8 }}
+                    style={styles.viewButton}
                   >
-                    <Text color="white" bold fontSize={FONT_SIZE["lg"]}>
-                      View
-                    </Text>
-                  </RNButton>
-                </VStack>
+                    View
+                  </Button>
+                </View>
               </>
             )}
           </View>
         )}
 
-        <Divider bgColor="muted.100" my="4" />
+        <Divider style={{ marginVertical: 16 }} />
 
         <Button
-          type="outline"
-          text="Copy To Clipboard"
-          disabled={isLoading}
+          mode="outlined"
           onPress={copySeedPhrase}
-        />
-        <Button
-          text="Next"
           disabled={isLoading}
+          style={styles.copyButton}
+        >
+          Copy To Clipboard
+        </Button>
+        <Button
+          mode="contained"
           onPress={saveWallet}
-          style={{ marginBottom: 50, marginTop: 20 }}
-        />
+          disabled={isLoading}
+          style={styles.nextButton}
+        >
+          Next
+        </Button>
       </ScrollView>
     </View>
   );
@@ -188,6 +165,17 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "white",
     padding: 15,
+  },
+  title: {
+    textAlign: 'center',
+    color: COLORS.primary,
+    fontSize: 1.7 * FONT_SIZE["xl"],
+    fontWeight: 'bold',
+    lineHeight: 40
+  },
+  subtitle: {
+    textAlign: 'center',
+    marginVertical: 8
   },
   loader: {
     height: 280,
@@ -207,13 +195,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     width: "100%",
-  },
-  seedPhraseWord: {
-    borderWidth: 1,
-    borderRadius: 10,
-    paddingVertical: 10,
-    paddingHorizontal: 5,
-    width: "50%",
   },
   word: {
     width: "45%",
@@ -235,5 +216,17 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     justifyContent: "center",
     alignItems: "center",
+    gap: 8
   },
+  viewButton: {
+    marginTop: 8,
+    borderRadius: 25,
+    backgroundColor: "#2AB858"
+  },
+  copyButton: {
+    marginBottom: 20
+  },
+  nextButton: {
+    marginBottom: 50
+  }
 });

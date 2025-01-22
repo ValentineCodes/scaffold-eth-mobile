@@ -1,4 +1,5 @@
-import { Text, View } from "native-base";
+import { View } from "react-native";
+import { Text } from "react-native-paper";
 import React from "react";
 
 import ContractUI from "./modules/debugContracts/contract/ContractUI";
@@ -21,10 +22,10 @@ export default function ({}: Props) {
 
   if (!isFocused) return;
   return (
-    <View flex={1} bgColor={"white"}>
+    <View style={{ flex: 1, backgroundColor: 'white' }}>
       {contractNames.length === 0 ? (
-        <View flex={1} alignItems={"center"} justifyContent={"center"}>
-          <Text fontSize={"xl"}>No contracts found!</Text>
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+          <Text variant="headlineSmall">No contracts found!</Text>
         </View>
       ) : (
         <>

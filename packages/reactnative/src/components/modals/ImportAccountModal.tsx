@@ -1,25 +1,13 @@
 import React, { useState } from "react";
-import Modal from "react-native-modal";
-// @ts-ignore
-import MaterialCommunityIcons from "react-native-vector-icons/dist/MaterialCommunityIcons";
-// @ts-ignore
-import Ionicons from "react-native-vector-icons/dist/Ionicons";
-import { VStack, HStack, Icon, Pressable, Text, Input } from "native-base";
+import { StyleSheet, View } from "react-native";
+import { Modal, Portal, Text, TextInput, IconButton } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
-
 import { COLORS } from "../../utils/constants";
 import { FONT_SIZE } from "../../utils/styles";
-import Button from "../../components/Button";
+import Button from "../Button";
 import QRCodeScanner from "./QRCodeScanner";
-
-import "react-native-get-random-values";
-import "@ethersproject/shims";
 import { ethers } from "ethers";
-import {
-  Account,
-  addAccount,
-  switchAccount,
-} from "../../store/reducers/Accounts";
+import { Account, addAccount, switchAccount } from "../../store/reducers/Accounts";
 import { useSecureStorage } from "../../hooks/useSecureStorage";
 
 type Props = {
@@ -38,25 +26,19 @@ export default function ImportAccountModal({
   const [error, setError] = useState("");
 
   const { saveItem, getItem } = useSecureStorage();
-
   const dispatch = useDispatch();
-
   const accounts: Account[] = useSelector((state) => state.accounts);
 
   const importWallet = async () => {
     try {
       const wallet = new ethers.Wallet(privateKey);
 
-      if (
-        accounts.find((account) => account.address == wallet.address) !=
-        undefined
-      ) {
+      if (accounts.find((account) => account.address == wallet.address)) {
         setError("Account already exists");
         return;
       }
 
       const createdAccounts = await getItem("accounts");
-
       await saveItem(
         "accounts",
         JSON.stringify([
@@ -82,94 +64,110 @@ export default function ImportAccountModal({
   };
 
   return (
-    <Modal
-      isVisible={isVisible}
-      animationIn="slideInLeft"
-      animationOut="slideOutRight"
-      onBackButtonPress={onClose}
-      onBackdropPress={onClose}
-    >
-      <VStack
-        bgColor="white"
-        borderRadius="30"
-        px="7"
-        py="5"
-        alignItems="center"
-        space="4"
+    <Portal>
+      <Modal
+        visible={isVisible}
+        onDismiss={onClose}
+        contentContainerStyle={styles.container}
       >
-        <Icon
-          as={<Ionicons name="cloud-download" />}
-          color={COLORS.primary}
-          size={4 * FONT_SIZE["xl"]}
-        />
-        <Text color={COLORS.primary} bold fontSize={1.2 * FONT_SIZE["xl"]}>
-          Import Account
-        </Text>
-        <Text fontSize={FONT_SIZE["lg"]} textAlign="center">
-          Imported accounts won’t be associated with your Paux Secret Recovery
-          Phrase.
-        </Text>
+        <View style={styles.content}>
+          <IconButton
+            icon="cloud-download"
+            size={4 * FONT_SIZE.xl}
+            iconColor={COLORS.primary}
+          />
+          <Text variant="headlineMedium" style={styles.title}>
+            Import Account
+          </Text>
+          <Text variant="bodyLarge" style={styles.subtitle}>
+            Imported accounts won't be associated with your Paux Secret Recovery
+            Phrase.
+          </Text>
 
-        <VStack space={2} w="full">
-          <Input
-            value={privateKey}
-            borderRadius="lg"
-            variant="filled"
-            fontSize="md"
-            focusOutlineColor={COLORS.primary}
-            InputRightElement={
-              <Pressable
-                onPress={() => setShowScanner(true)}
-                mr="2"
-                _pressed={{ opacity: 0.4 }}
-              >
-                <Icon
-                  as={<MaterialCommunityIcons name="qrcode-scan" />}
-                  size={1.3 * FONT_SIZE["xl"]}
-                  color={COLORS.primary}
+          <View style={styles.inputContainer}>
+            <TextInput
+              value={privateKey}
+              onChangeText={handleInputChange}
+              mode="outlined"
+              secureTextEntry
+              placeholder="Enter your private key here"
+              right={
+                <TextInput.Icon
+                  icon="qrcode-scan"
+                  onPress={() => setShowScanner(true)}
+                  forceTextInputFocus={false}
                 />
-              </Pressable>
-            }
-            secureTextEntry
-            placeholder="Enter your private key here"
-            onChangeText={handleInputChange}
-            _input={{
-              selectionColor: COLORS.primary,
-              cursorColor: COLORS.primary,
+              }
+              error={!!error}
+            />
+            {error && (
+              <Text variant="bodySmall" style={styles.errorText}>
+                {error}
+              </Text>
+            )}
+          </View>
+
+          <View style={styles.buttonContainer}>
+            <Button
+              type="outline"
+              text="Cancel"
+              onPress={onClose}
+              style={styles.button}
+            />
+            <Button
+              text="Import"
+              onPress={importWallet}
+              style={styles.button}
+            />
+          </View>
+        </View>
+
+        {showScanner && (
+          <QRCodeScanner
+            isOpen={showScanner}
+            onClose={() => setShowScanner(false)}
+            onReadCode={(privateKey) => {
+              setPrivateKey(privateKey);
+              setShowScanner(false);
             }}
           />
-          {error && (
-            <Text fontSize="sm" color="red.400">
-              {error}
-            </Text>
-          )}
-        </VStack>
-
-        <HStack w="full" alignItems="center" justifyContent="space-between">
-          <Button
-            type="outline"
-            text="Cancel"
-            onPress={onClose}
-            style={{ width: "50%", borderRadius: 0 }}
-          />
-          <Button
-            text="Import"
-            onPress={importWallet}
-            style={{ width: "50%", borderRadius: 0 }}
-          />
-        </HStack>
-      </VStack>
-
-      {showScanner && (
-        <QRCodeScanner
-          isOpen={showScanner}
-          onClose={() => setShowScanner(false)}
-          onReadCode={(privateKey) => {
-            setPrivateKey(privateKey);
-            setShowScanner(false);
-          }}
-        />
-      )}
-    </Modal>
+        )}
+      </Modal>
+    </Portal>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: "white",
+    borderRadius: 30,
+    padding: 28,
+    margin: 20,
+  },
+  content: {
+    alignItems: "center",
+    gap: 16,
+  },
+  title: {
+    color: COLORS.primary,
+    fontWeight: "bold",
+  },
+  subtitle: {
+    textAlign: "center",
+  },
+  inputContainer: {
+    width: "100%",
+    gap: 4,
+  },
+  errorText: {
+    color: COLORS.error,
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    gap: 16,
+    width: "100%",
+  },
+  button: {
+    flex: 1,
+  },
+});

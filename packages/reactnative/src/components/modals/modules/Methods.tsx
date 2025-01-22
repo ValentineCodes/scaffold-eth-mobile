@@ -1,5 +1,6 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
+import { Text } from "react-native-paper";
 import { Tag } from "../../Tag";
 
 interface IMethodsProps {
@@ -9,7 +10,9 @@ interface IMethodsProps {
 export function Methods({ methods }: IMethodsProps) {
   return (
     <View style={styles.methodsContainer}>
-      <Text style={styles.methodEventsTitle}>Methods</Text>
+      <Text variant="bodyMedium" style={styles.methodEventsTitle}>
+        Methods
+      </Text>
       <View style={styles.flexRowWrapped}>
         {methods?.length &&
           methods?.map((method: string, index: number) => (
@@ -33,8 +36,6 @@ const styles = StyleSheet.create({
   },
   methodEventsTitle: {
     color: "rgba(121, 134, 134, 1)",
-    fontSize: 13,
-    lineHeight: 18,
     fontWeight: "600",
     paddingLeft: 6,
     paddingVertical: 4,

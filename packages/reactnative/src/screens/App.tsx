@@ -6,7 +6,6 @@ import changeNavigationBarColor from "react-native-navigation-bar-color";
 import Providers from "./Providers";
 import Navigation from "./Navigation";
 import SwitchNetwork from "../components/SwitchNetwork";
-import { Text } from "native-base";
 
 function App(): JSX.Element {
   useEffect(() => {
@@ -23,11 +22,9 @@ function App(): JSX.Element {
   return (
     <Providers>
       <SafeAreaView style={styles.container}>
-        {/* <StatusBar barStyle="dark-content" backgroundColor="white" />
+        <StatusBar barStyle="dark-content" backgroundColor="white" />
         <Navigation />
-        <SwitchNetwork /> */}
-
-        <Text>Hello</Text>
+        <SwitchNetwork />
       </SafeAreaView>
     </Providers>
   );
@@ -36,7 +33,7 @@ function App(): JSX.Element {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "red",
+    backgroundColor: "white",
     paddingHorizontal: 5,
   },
 });

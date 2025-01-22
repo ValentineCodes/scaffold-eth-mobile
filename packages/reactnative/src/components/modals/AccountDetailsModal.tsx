@@ -1,19 +1,16 @@
 import React, { useState } from "react";
-import { Dimensions, StyleSheet } from "react-native";
-import { Icon, Text, VStack, HStack, Button as RNButton } from "native-base";
-import Ionicons from "react-native-vector-icons/dist/Ionicons";
+import { Dimensions, StyleSheet, View } from "react-native";
+import { Modal, Portal, Text, Button, IconButton } from "react-native-paper";
 import QRCode from "react-native-qrcode-svg";
 import { useDispatch, useSelector } from "react-redux";
 
 import { Account, removeAccount } from "../../store/reducers/Accounts";
 import EditAccountNameForm from "../forms/EditAccountNameForm";
 import CopyableText from "../CopyableText";
-import Modal from "react-native-modal";
 import Blockie from "../Blockie";
 import { FONT_SIZE } from "../../utils/styles";
-import Button from "../Button";
+import { COLORS } from "../../utils/constants";
 import PrivateKeyModal from "./PrivateKeyModal";
-import { TouchableOpacity } from "react-native";
 
 type Props = {
   isVisible: boolean;
@@ -33,164 +30,128 @@ export default function AccountDetailsModal({ isVisible, onClose }: Props) {
   const [showRemoveAccountConsentModal, setShowRemoveAccountConsentModal] =
     useState(false);
 
-  const handleOnClose = () => {
-    if (isEditingAccountName) {
-      setIsEditingAccountName(false);
-    }
+  const handleAccountRemoval = () => {
+    dispatch(removeAccount(connectedAccount.address));
     onClose();
   };
 
-  const handleAccountRemoval = () => {
-    dispatch(removeAccount(connectedAccount.address));
-    handleOnClose();
-  };
   return (
-    <Modal
-      isVisible={isVisible}
-      animationIn="slideInRight"
-      animationOut="slideOutLeft"
-      onBackButtonPress={handleOnClose}
-      onBackdropPress={handleOnClose}
-    >
-      <VStack
-        bgColor="white"
-        borderRadius="30"
-        p="5"
-        alignItems="center"
-        space="4"
-        w="full"
+    <Portal>
+      <Modal
+        visible={isVisible}
+        onDismiss={onClose}
+        contentContainerStyle={styles.container}
       >
-        <Blockie
-          address={connectedAccount.address}
-          size={2.5 * FONT_SIZE["xl"]}
-        />
-        {isEditingAccountName ? (
-          <EditAccountNameForm close={() => setIsEditingAccountName(false)} />
-        ) : (
-          <TouchableOpacity
-            activeOpacity={0.4}
-            onPress={() => setIsEditingAccountName(true)}
+        <View style={styles.content}>
+          <Blockie
+            address={connectedAccount.address}
+            size={2.5 * FONT_SIZE["xl"]}
+          />
+          {isEditingAccountName ? (
+            <EditAccountNameForm close={() => setIsEditingAccountName(false)} />
+          ) : (
+            <View style={styles.nameContainer}>
+              <Text variant="titleLarge">{connectedAccount.name}</Text>
+              <IconButton
+                icon="pencil"
+                size={24}
+                onPress={() => setIsEditingAccountName(true)}
+              />
+            </View>
+          )}
+
+          <QRCode value={connectedAccount.address} size={12 * FONT_SIZE["xl"]} />
+
+          <CopyableText
+            value={connectedAccount.address}
+            containerStyle={styles.addressContainer}
+            textStyle={styles.addressText}
+          />
+
+          <Button
+            mode="outlined"
+            onPress={() => setShowPrivateKeyModal(true)}
+            style={styles.button}
           >
-            <VStack alignItems="center" space="2">
-              <HStack alignItems="center" space="2">
-                <Text fontSize={FONT_SIZE["xl"]} bold>
-                  {connectedAccount.name}
-                </Text>
-                <Icon
-                  as={<Ionicons name="create-outline" />}
-                  size={1.5 * FONT_SIZE["xl"]}
-                  color="muted.400"
-                />
-              </HStack>
-            </VStack>
-          </TouchableOpacity>
-        )}
+            Show private key
+          </Button>
 
-        <QRCode value={connectedAccount.address} size={12 * FONT_SIZE["xl"]} />
-
-        <CopyableText
-          value={connectedAccount.address}
-          containerStyle={styles.addressContainer}
-          textStyle={styles.addressText}
-        />
-
-        <Button
-          type="outline"
-          text="Show private key"
-          onPress={() => setShowPrivateKeyModal(true)}
-        />
-
-        {accounts.length > 1 && (
-          <RNButton
-            py="4"
-            borderRadius={25}
-            bgColor="red.100"
-            w="full"
-            onPress={() => setShowRemoveAccountConsentModal(true)}
-          >
-            <Text color="red.400" bold fontSize="md">
+          {accounts.length > 1 && (
+            <Button
+              mode="contained"
+              onPress={() => setShowRemoveAccountConsentModal(true)}
+              style={[styles.button, styles.dangerButton]}
+              textColor="white"
+            >
               Remove account
-            </Text>
-          </RNButton>
-        )}
-      </VStack>
+            </Button>
+          )}
+        </View>
 
-      {showPrivateKeyModal && (
         <PrivateKeyModal
           isVisible={showPrivateKeyModal}
           onClose={() => setShowPrivateKeyModal(false)}
         />
-      )}
 
-      {showRemoveAccountConsentModal && (
-        <Modal
-          isVisible={showRemoveAccountConsentModal}
-          animationIn="zoomIn"
-          animationOut="zoomOut"
-          onBackButtonPress={() => setShowRemoveAccountConsentModal(false)}
-          onBackdropPress={() => setShowRemoveAccountConsentModal(false)}
-        >
-          <VStack
-            bgColor="white"
-            borderRadius="30"
-            px="7"
-            py="5"
-            alignItems="center"
-            space="4"
+        <Portal>
+          <Modal
+            visible={showRemoveAccountConsentModal}
+            onDismiss={() => setShowRemoveAccountConsentModal(false)}
+            contentContainerStyle={styles.consentModal}
           >
-            <Icon
-              as={<Ionicons name="warning-outline" />}
-              size={Dimensions.get("window").height * 0.17}
-              color="red.400"
-            />
-            <Text
-              color="red.400"
-              bold
-              fontSize={1.5 * FONT_SIZE["xl"]}
-              textAlign="center"
-            >
-              Remove account
-            </Text>
-            <Text fontSize={FONT_SIZE["xl"]} textAlign="center">
-              This action cannot be reversed. Are you sure you want to go
-              through with this?
-            </Text>
-
-            <HStack
-              w="full"
-              mt="5"
-              alignItems="center"
-              justifyContent="space-between"
-            >
-              <RNButton
-                py="4"
-                bgColor="red.100"
-                w="50%"
-                onPress={() => setShowRemoveAccountConsentModal(false)}
-              >
-                <Text color="red.400" bold fontSize="md">
+            <View style={styles.consentContent}>
+              <IconButton
+                icon="alert"
+                size={50}
+                iconColor={COLORS.error}
+              />
+              <Text variant="headlineSmall" style={styles.warningText}>
+                Remove account
+              </Text>
+              <Text variant="bodyLarge" style={styles.warningDescription}>
+                This action cannot be reversed. Are you sure you want to go
+                through with this?
+              </Text>
+              <View style={styles.buttonContainer}>
+                <Button
+                  mode="outlined"
+                  onPress={() => setShowRemoveAccountConsentModal(false)}
+                  style={styles.button}
+                >
                   Not really
-                </Text>
-              </RNButton>
-              <RNButton
-                py="4"
-                bgColor="red.400"
-                w="50%"
-                onPress={handleAccountRemoval}
-              >
-                <Text color="white" bold fontSize="md">
+                </Button>
+                <Button
+                  mode="contained"
+                  onPress={handleAccountRemoval}
+                  style={[styles.button, styles.dangerButton]}
+                >
                   Yes, I'm sure
-                </Text>
-              </RNButton>
-            </HStack>
-          </VStack>
-        </Modal>
-      )}
-    </Modal>
+                </Button>
+              </View>
+            </View>
+          </Modal>
+        </Portal>
+      </Modal>
+    </Portal>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: "white",
+    padding: 20,
+    margin: 20,
+    borderRadius: 30,
+  },
+  content: {
+    alignItems: "center",
+    gap: 16,
+  },
+  nameContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+  },
   addressContainer: {
     paddingHorizontal: 15,
     paddingVertical: 5,
@@ -201,5 +162,34 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     fontSize: FONT_SIZE["xl"],
     width: "92%",
+  },
+  button: {
+    width: "100%",
+    marginTop: 8,
+  },
+  dangerButton: {
+    backgroundColor: COLORS.error,
+  },
+  consentModal: {
+    backgroundColor: "white",
+    padding: 20,
+    margin: 20,
+    borderRadius: 30,
+  },
+  consentContent: {
+    alignItems: "center",
+    gap: 16,
+  },
+  warningText: {
+    color: COLORS.error,
+    textAlign: "center",
+  },
+  warningDescription: {
+    textAlign: "center",
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    gap: 16,
+    marginTop: 16,
   },
 });

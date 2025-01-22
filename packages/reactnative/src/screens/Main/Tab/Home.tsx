@@ -1,4 +1,5 @@
-import { HStack, ScrollView, Text, VStack, View } from "native-base";
+import { ScrollView, View } from "react-native";
+import { Surface, Text } from "react-native-paper";
 import React from "react";
 import Ionicons from "react-native-vector-icons/dist/Ionicons";
 import { WINDOW_WIDTH } from "../../../utils/styles";
@@ -9,11 +10,11 @@ type Props = {};
 
 function HighlightedText({ children }: { children: string }) {
   return (
-    <View bgColor={COLORS.primaryLight} px={"1"}>
-      <Text fontSize={"md"} textAlign={"center"}>
+    <Surface style={{ backgroundColor: COLORS.primaryLight, paddingHorizontal: 4 }}>
+      <Text variant="bodyMedium" style={{ textAlign: "center" }}>
         {children}
       </Text>
-    </View>
+    </Surface>
   );
 }
 
@@ -21,52 +22,52 @@ export default function Example({}: Props) {
   const navigation = useNavigation();
 
   return (
-    <ScrollView flex={"1"} bgColor={"white"}>
-      <VStack px={"2"} py={"8"} alignItems={"center"}>
-        <Text fontSize={"2xl"} fontWeight={"light"}>
+    <ScrollView style={{ flex: 1, backgroundColor: "white" }}>
+      <View style={{ padding: 8, paddingVertical: 32, alignItems: "center" }}>
+        <Text variant="headlineSmall" style={{ fontWeight: "300" }}>
           Welcome to
         </Text>
-        <Text fontSize={"4xl"} fontWeight={"bold"}>
+        <Text variant="displaySmall" style={{ fontWeight: "bold" }}>
           Scaffold-ETH
         </Text>
 
-        <Text fontSize={"lg"} mt={"4"} mb={"1"}>
+        <Text variant="titleMedium" style={{ marginTop: 16, marginBottom: 4 }}>
           Get started by editing
         </Text>
         <HighlightedText>
           packages/reactnative/src/screens/Main/Tab/Home.tsx
         </HighlightedText>
 
-        <HStack mt={"4"} mb={"1"} space={"1"} maxW={"full"}>
-          <Text fontSize={"lg"}>Edit your smart contract</Text>
+        <View style={{ flexDirection: "row", marginTop: 16, marginBottom: 4, gap: 4, maxWidth: "100%" }}>
+          <Text variant="titleMedium">Edit your smart contract</Text>
           <HighlightedText>YourContract.sol</HighlightedText>
-          <Text fontSize={"lg"}>in</Text>
-        </HStack>
+          <Text variant="titleMedium">in</Text>
+        </View>
         <HighlightedText>packages/hardhat/contracts</HighlightedText>
-      </VStack>
+      </View>
 
-      <View p={"4"} justifyContent={"center"} alignItems={"center"}>
-        <VStack
-          px={"4"}
-          py={"8"}
-          w={"80%"}
-          borderWidth={"1"}
-          borderColor={"muted.200"}
-          rounded={"3xl"}
-          alignItems={"center"}
-          space={"6"}
-        >
+      <View style={{ padding: 16, justifyContent: "center", alignItems: "center" }}>
+        <Surface style={{ 
+          padding: 16,
+          paddingVertical: 32,
+          width: "80%",
+          borderWidth: 1,
+          borderColor: "#e5e5e5",
+          borderRadius: 24,
+          alignItems: "center",
+          gap: 24
+        }}>
           <Ionicons
             name="bug-outline"
             color={"grey"}
             size={WINDOW_WIDTH * 0.08}
           />
 
-          <Text textAlign={"center"} fontSize={"lg"}>
+          <Text variant="titleMedium" style={{ textAlign: "center" }}>
             Tinker with your smart contracts using the
             <Text
-              underline
-              fontWeight={"medium"}
+              variant="titleMedium" 
+              style={{ textDecorationLine: "underline", fontWeight: "500" }}
               onPress={() => navigation.navigate("DebugContracts")}
             >
               {" "}
@@ -74,33 +75,7 @@ export default function Example({}: Props) {
             </Text>
             tab
           </Text>
-        </VStack>
-
-        <VStack
-          mt={"4"}
-          px={"4"}
-          py={"8"}
-          w={"80%"}
-          borderWidth={"1"}
-          borderColor={"muted.200"}
-          rounded={"3xl"}
-          alignItems={"center"}
-          space={"6"}
-        >
-          <Text fontSize={"3xl"}>☃️</Text>
-
-          <Text textAlign={"center"} fontSize={"lg"}>
-            See example implementation in
-            <Text
-              underline
-              fontWeight={"medium"}
-              onPress={() => navigation.navigate("Example")}
-            >
-              {" "}
-              Example{" "}
-            </Text>
-          </Text>
-        </VStack>
+        </Surface>
       </View>
     </ScrollView>
   );

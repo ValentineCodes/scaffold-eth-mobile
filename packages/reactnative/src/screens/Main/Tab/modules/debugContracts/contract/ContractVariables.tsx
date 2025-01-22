@@ -1,11 +1,11 @@
 import { Abi, AbiFunction } from "abitype";
-import { Contract } from "ethers";
 import {
+  Contract,
   ContractName,
   GenericContract,
   InheritedFunctions,
 } from "../../../../../../../utils/scaffold-eth/contract";
-import { Text } from "native-base";
+import { Text } from "react-native-paper";
 import DisplayVariable from "./DisplayVariable";
 
 export default function ContractVariables({
@@ -45,7 +45,7 @@ export default function ContractVariables({
 
   if (!functionsToDisplay.length) {
     return (
-      <Text fontSize={"xl"} fontWeight={"light"}>
+      <Text variant="headlineSmall" style={{ fontWeight: '300' }}>
         No contract variables
       </Text>
     );

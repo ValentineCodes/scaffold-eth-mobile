@@ -1,5 +1,6 @@
 import React from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View, Image } from "react-native";
+import { Text } from "react-native-paper";
 
 interface IModalHeaderProps {
   name: string;
@@ -22,9 +23,15 @@ export function ModalHeader({ name, url, icon }: IModalHeaderProps) {
         ) : null}
       </View>
 
-      <Text style={styles.dappTitle}>{name}</Text>
-      <Text style={styles.wouldLikeToConnectText}>would like to connect</Text>
-      <Text style={styles.urlText}>{url?.slice(8)}</Text>
+      <Text variant="headlineSmall" style={styles.dappTitle}>
+        {name}
+      </Text>
+      <Text variant="bodyLarge" style={styles.wouldLikeToConnectText}>
+        would like to connect
+      </Text>
+      <Text variant="bodyMedium" style={styles.urlText}>
+        {url?.slice(8)}
+      </Text>
     </View>
   );
 }
@@ -66,24 +73,17 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   dappTitle: {
-    fontSize: 22,
-    lineHeight: 28,
     fontWeight: "700",
     color: "black",
     textAlign: "center",
   },
   wouldLikeToConnectText: {
-    fontSize: 22,
-    lineHeight: 28,
-    fontWeight: "400",
     opacity: 0.6,
     color: "black",
   },
   urlText: {
     paddingTop: 8,
     color: "rgba(60, 60, 67, 0.6)",
-    fontSize: 13,
-    lineHeight: 18,
     fontWeight: "500",
     textAlign: "center",
   },

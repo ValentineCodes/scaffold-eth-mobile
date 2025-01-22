@@ -1,5 +1,7 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
+import { Text } from "react-native-paper";
+import { COLORS } from "../utils/constants";
 
 interface ITagProps {
   value: string;

@@ -1,15 +1,6 @@
-import {
-  Image,
-  Text,
-  VStack,
-  Divider,
-  Pressable,
-  Icon,
-  View,
-  HStack,
-} from "native-base";
+import { View, StyleSheet, ScrollView, RefreshControl, Image } from "react-native";
+import { Text, Divider, IconButton } from "react-native-paper";
 import React, { useState, useMemo } from "react";
-import { StyleSheet, ScrollView, RefreshControl } from "react-native";
 import Ionicons from "react-native-vector-icons/dist/Ionicons";
 import { useNavigation } from "@react-navigation/native";
 
@@ -49,12 +40,9 @@ function MainBalance({ backHandler }: Props) {
     }
 
     return (
-      <Image
-        key={`${_logo}`}
-        source={_logo}
-        alt={network.name}
-        style={styles.networkLogo}
-      />
+      <View style={styles.logoContainer}>
+        <Image source={_logo} style={styles.networkLogo} />
+      </View>
     );
   }, [network]);
 
@@ -75,10 +63,11 @@ function MainBalance({ backHandler }: Props) {
         />
       }
     >
-      <VStack alignItems="center" space={2} paddingTop={5}>
-        <Text fontSize={FONT_SIZE["xl"]} bold textAlign="center">
+      <View style={styles.container}>
+        <Text variant="headlineMedium" style={styles.nameText}>
           {account.name}
         </Text>
+        
         <CopyableText
           displayText={truncateAddress(account.address)}
           value={account.address}
@@ -86,80 +75,65 @@ function MainBalance({ backHandler }: Props) {
           textStyle={styles.addressText}
           iconStyle={{ color: COLORS.primary }}
         />
+        
         {logo}
-        <VStack alignItems="center">
-          <Text fontSize={2 * FONT_SIZE["xl"]} bold textAlign="center">
+        
+        <View style={styles.balanceContainer}>
+          <Text variant="headlineLarge" style={styles.balanceText}>
             {balance !== "" && `${balance} ${network.currencySymbol}`}
           </Text>
-        </VStack>
+        </View>
 
-        <Divider bgColor="muted.100" my="2" />
+        <Divider style={styles.divider} />
 
-        <HStack alignItems="center" space="10">
-          <Pressable alignItems="center" onPress={handleNav}>
-            {({ isPressed }) => (
-              <>
-                <View
-                  bgColor={
-                    isPressed ? "rgba(39, 184, 88, 0.2)" : COLORS.primaryLight
-                  }
-                  p="4"
-                  borderRadius="full"
-                >
-                  <Icon
-                    as={<Ionicons name="paper-plane" />}
-                    size={1.2 * FONT_SIZE["xl"]}
-                    color={COLORS.primary}
-                    borderRadius="full"
-                  />
-                </View>
-                <Text fontSize={FONT_SIZE["lg"]} bold mt="2">
-                  Send
-                </Text>
-              </>
-            )}
-          </Pressable>
+        <View style={styles.actionContainer}>
+          <View style={styles.actionButton}>
+            <IconButton
+              icon={() => <Ionicons name="paper-plane" size={24} color={COLORS.primary} />}
+              mode="contained"
+              containerColor={COLORS.primaryLight}
+              size={48}
+              onPress={handleNav}
+            />
+            <Text variant="titleMedium" style={styles.actionText}>Send</Text>
+          </View>
 
-          <Pressable
-            alignItems="center"
-            onPress={() => setShowReceiveModal(true)}
-          >
-            {({ isPressed }) => (
-              <>
-                <View
-                  bgColor={
-                    isPressed ? "rgba(39, 184, 88, 0.2)" : COLORS.primaryLight
-                  }
-                  p="4"
-                  borderRadius="full"
-                >
-                  <Icon
-                    as={<Ionicons name="download" />}
-                    size={1.2 * FONT_SIZE["xl"]}
-                    color={COLORS.primary}
-                    borderRadius="full"
-                  />
-                </View>
-                <Text fontSize={FONT_SIZE["lg"]} bold mt="2">
-                  Receive
-                </Text>
-              </>
-            )}
-          </Pressable>
-        </HStack>
+          <View style={styles.actionButton}>
+            <IconButton
+              icon={() => <Ionicons name="download" size={24} color={COLORS.primary} />}
+              mode="contained"
+              containerColor={COLORS.primaryLight}
+              size={48}
+              onPress={() => setShowReceiveModal(true)}
+            />
+            <Text variant="titleMedium" style={styles.actionText}>Receive</Text>
+          </View>
+        </View>
 
-        <Divider bgColor="muted.100" mt="2" />
+        <Divider style={styles.divider} />
 
         <ReceiveModal
           isVisible={showReceiveModal}
           onClose={() => setShowReceiveModal(false)}
         />
-      </VStack>
+      </View>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    alignItems: 'center',
+    paddingTop: 20,
+    gap: 8
+  },
+  nameText: {
+    fontWeight: 'bold',
+    textAlign: 'center'
+  },
+  logoContainer: {
+    marginVertical: 8
+  },
   networkLogo: {
     width: 4 * FONT_SIZE["xl"],
     height: 4 * FONT_SIZE["xl"],
@@ -175,6 +149,29 @@ const styles = StyleSheet.create({
     fontSize: FONT_SIZE["md"],
     color: COLORS.primary,
   },
+  balanceContainer: {
+    alignItems: 'center'
+  },
+  balanceText: {
+    fontWeight: 'bold',
+    textAlign: 'center'
+  },
+  divider: {
+    width: '100%',
+    marginVertical: 8
+  },
+  actionContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 40
+  },
+  actionButton: {
+    alignItems: 'center'
+  },
+  actionText: {
+    marginTop: 8,
+    fontWeight: 'bold'
+  }
 });
 
 export default MainBalance;

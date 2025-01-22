@@ -1,4 +1,5 @@
-import { HStack, VStack, Text, Input, Button as RNButton } from "native-base";
+import { View } from "react-native";
+import { Text, TextInput, Button as PaperButton, Surface } from "react-native-paper";
 import React, { useState } from "react";
 import Modal from "react-native-modal";
 import { FONT_SIZE } from "../../utils/styles";
@@ -59,72 +60,83 @@ export default function AccountsCountModal({
       onBackButtonPress={onClose}
       onBackdropPress={onClose}
     >
-      <VStack
-        bgColor="white"
-        borderRadius="30"
-        p="5"
-        alignItems="center"
-        space="4"
-        w="full"
+      <Surface
+        style={{
+          borderRadius: 30,
+          padding: 20,
+          elevation: 4,
+        }}
       >
-        <Text
-          fontSize={1.1 * FONT_SIZE["xl"]}
-          fontWeight="medium"
-          textAlign="center"
-        >
-          How many accounts would you like to start with?
-        </Text>
-
-        <Text
-          fontSize={FONT_SIZE["lg"]}
-          color={COLORS.primary}
-          textAlign="center"
-        >
-          Max: 10
-        </Text>
-        <Input
-          value={accountsCount}
-          borderWidth="0"
-          fontSize="4xl"
-          focusOutlineColor={COLORS.primary}
-          onChangeText={handleInputChange}
-          onSubmitEditing={handleOnFinish}
-          keyboardType="number-pad"
-          focusOutlineColor={COLORS.primary}
-          color={COLORS.primary}
-          bgColor="transaparent"
-          selectTextOnFocus
-          _input={{
-            selectionColor: COLORS.primaryLight,
-            cursorColor: COLORS.primary,
-          }}
-          textAlign="center"
-        />
-        {error && (
-          <Text fontSize="sm" color="red.400">
-            {error}
-          </Text>
-        )}
-
-        <HStack w="full" alignItems="center" justifyContent="space-between">
-          <RNButton
-            py="4"
-            bgColor="red.100"
-            w="50%"
-            onPress={onClose}
-            _pressed={{ backgroundColor: "red.200" }}
+        <View style={{ alignItems: 'center', gap: 16 }}>
+          <Text 
+            variant="headlineSmall" 
+            style={{ textAlign: 'center' }}
           >
-            <Text color="red.400" bold fontSize="md">
-              Cancel
-            </Text>
-          </RNButton>
-          <Button
-            text="Continue"
-            onPress={handleOnFinish}
-            style={{ width: "50%", borderRadius: 0 }}
+            How many accounts would you like to start with?
+          </Text>
+
+          <Text
+            variant="titleMedium"
+            style={{
+              color: COLORS.primary,
+              textAlign: 'center',
+            }}
+          >
+            Max: 10
+          </Text>
+
+          <TextInput
+            value={accountsCount}
+            mode="flat"
+            style={{
+              backgroundColor: 'transparent',
+              fontSize: 32,
+              textAlign: 'center',
+              width: '100%',
+            }}
+            underlineColor="transparent"
+            activeUnderlineColor={COLORS.primary}
+            onChangeText={handleInputChange}
+            onSubmitEditing={handleOnFinish}
+            keyboardType="number-pad"
+            textColor={COLORS.primary}
+            selectTextOnFocus
           />
-        </HStack>
-      </VStack>
+
+          {error && (
+            <Text 
+              variant="bodySmall" 
+              style={{ color: 'red' }}
+            >
+              {error}
+            </Text>
+          )}
+
+          <View 
+            style={{
+              flexDirection: 'row',
+              width: '100%',
+              gap: 8,
+            }}
+          >
+            <PaperButton
+              mode="contained-tonal"
+              onPress={onClose}
+              style={{
+                flex: 1,
+              }}
+            >
+              Cancel
+            </PaperButton>
+
+            <Button
+              text="Continue"
+              onPress={handleOnFinish}
+              style={{ flex: 1, borderRadius: 0 }}
+            />
+          </View>
+        </View>
+      </Surface>
     </Modal>
   );
 }

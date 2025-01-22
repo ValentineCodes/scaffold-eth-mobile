@@ -18,7 +18,9 @@ function Application() {
     <StoreProvider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <ToastProvider>
-          <PaperProvider></PaperProvider>
+          <PaperProvider>
+            <App />
+          </PaperProvider>
         </ToastProvider>
       </PersistGate>
     </StoreProvider>

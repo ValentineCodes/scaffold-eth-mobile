@@ -1,6 +1,6 @@
-import { Text, VStack, HStack, Input, Icon, Pressable } from "native-base";
+import { View } from "react-native";
 import React, { useState } from "react";
-import MaterialIcons from "react-native-vector-icons/dist/MaterialIcons";
+import { TextInput, Text, IconButton } from "react-native-paper";
 import { COLORS } from "../../utils/constants";
 import { FONT_SIZE } from "../../utils/styles";
 import { TouchableOpacity } from "react-native";
@@ -22,32 +22,34 @@ export default function SeedPhraseInput({
 }: Props) {
   const [show, setShow] = useState(false);
   return (
-    <VStack space={2}>
-      <Text fontSize={FONT_SIZE["xl"]} bold>
+    <View style={{ gap: 8 }}>
+      <Text style={{ fontSize: FONT_SIZE["xl"], fontWeight: "bold" }}>
         Seed Phrase
       </Text>
-      <Input
-        borderRadius="lg"
-        variant="filled"
-        pt="4"
-        pl="4"
-        pr="20"
-        pb="12"
-        fontSize="md"
-        focusOutlineColor={COLORS.primary}
+      <TextInput
+        mode="outlined"
+        style={{
+          borderRadius: 8,
+          paddingTop: 16,
+          paddingLeft: 16,
+          paddingRight: 80,
+          paddingBottom: 48,
+          fontSize: 16,
+        }}
+        outlineColor={COLORS.primary}
+        activeOutlineColor={COLORS.primary}
         value={value}
-        InputRightElement={
-          <HStack space={1} position="absolute" right="2" top="5">
+        right={
+          <View style={{ flexDirection: "row", gap: 4, position: "absolute", right: 8, top: 20 }}>
             {value && (
               <TouchableOpacity
                 activeOpacity={0.4}
                 onPress={() => onChange("")}
               >
-                <Icon
-                  as={<MaterialIcons name="close" />}
-                  size={5}
-                  mr="2"
-                  color="muted.400"
+                <IconButton
+                  icon="close"
+                  size={20}
+                  iconColor="#a3a3a3"
                 />
               </TouchableOpacity>
             )}
@@ -55,39 +57,32 @@ export default function SeedPhraseInput({
               activeOpacity={0.4}
               onPress={() => setShow(!show)}
             >
-              <Icon
-                as={
-                  <MaterialIcons
-                    name={show ? "visibility" : "visibility-off"}
-                  />
-                }
-                size={5}
-                mr="2"
-                color="muted.400"
+              <IconButton
+                icon={show ? "eye" : "eye-off"}
+                size={20}
+                iconColor="#a3a3a3"
               />
             </TouchableOpacity>
-          </HStack>
+          </View>
         }
         secureTextEntry={!show}
         multiline={show}
         placeholder="Seed Phrase"
         onChangeText={onChange}
         onBlur={onBlur}
-        _input={{
-          selectionColor: COLORS.primary,
-          cursorColor: "#303030",
-        }}
+        selectionColor={COLORS.primary}
+        cursorColor="#303030"
       />
       {infoText ? (
-        <Text fontSize="sm" color="muted.400">
+        <Text style={{ fontSize: 14, color: "#a3a3a3" }}>
           {infoText}
         </Text>
       ) : null}
       {errorText ? (
-        <Text fontSize="sm" color="red.400">
+        <Text style={{ fontSize: 14, color: "#ef4444" }}>
           {errorText}
         </Text>
       ) : null}
-    </VStack>
+    </View>
   );
 }

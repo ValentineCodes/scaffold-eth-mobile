@@ -1,25 +1,16 @@
-import {
-  Divider,
-  ScrollView,
-  Text,
-  VStack,
-  View,
-  HStack,
-  Input,
-  Image,
-} from "native-base";
 import React, { useState, useEffect } from "react";
 import {
+  ScrollView,
+  View,
   ActivityIndicator,
-  Dimensions,
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
+import { Text, Button, Divider, TextInput } from "react-native-paper";
 import ProgressIndicatorHeader from "../../components/headers/ProgressIndicatorHeader";
 import { COLORS } from "../../utils/constants";
 import { FONT_SIZE } from "../../utils/styles";
 import Modal from "react-native-modal";
-import Button from "../../components/Button";
 import { useNavigation } from "@react-navigation/native";
 import { useDispatch } from "react-redux";
 import { loginUser } from "../../store/reducers/Auth";
@@ -37,7 +28,6 @@ export default function ConfirmSeedPhrase({}: Props) {
   const dispatch = useDispatch();
   const toast = useToast();
   const { getItem, saveItem } = useSecureStorage();
-
   const { importWallet } = useWallet();
 
   const [seedPhrase, setSeedPhrase] = useState<string[]>([]);
@@ -157,23 +147,23 @@ export default function ConfirmSeedPhrase({}: Props) {
     <View style={styles.container}>
       <ProgressIndicatorHeader progress={3} />
 
-      <Divider bgColor="muted.100" mt="8" mb="4" />
+      <Divider style={{ marginTop: 32, marginBottom: 16 }} />
 
-      <ScrollView flex="1">
+      <ScrollView style={{ flex: 1 }}>
         <Text
-          textAlign="center"
-          color={COLORS.primary}
-          fontSize={1.7 * FONT_SIZE["xl"]}
-          lineHeight="40"
-          bold
+          variant="headlineMedium"
+          style={styles.title}
         >
           Confirm Seed Phrase
         </Text>
-        <Text textAlign="center" fontSize={FONT_SIZE["lg"]} my="2">
+        <Text
+          variant="bodyLarge"
+          style={styles.subtitle}
+        >
           Select each word in the order it was presented to you.
         </Text>
 
-        <Divider bgColor="muted.100" my="4" />
+        <Divider style={{ marginVertical: 16 }} />
 
         {isLoading ? (
           <View style={styles.loader}>
@@ -186,12 +176,12 @@ export default function ConfirmSeedPhrase({}: Props) {
           >
             {shuffledSeedPhrase.map((word) => (
               <TouchableOpacity
+                key={word}
                 activeOpacity={0.4}
                 onPress={() => handleWordSelection(word)}
                 style={{ width: "45%" }}
               >
                 <Text
-                  key={Math.random().toString()}
                   style={[
                     styles.word,
                     {
@@ -209,65 +199,76 @@ export default function ConfirmSeedPhrase({}: Props) {
           </ScrollView>
         )}
 
-        <HStack
-          my="10"
-          w="full"
-          justifyContent="space-between"
-          alignItems="center"
-        >
+        <View style={styles.progressContainer}>
           {shuffledSeedPhrase.map((word, index) => (
-            <Divider
+            <View
               key={word}
-              w={`${100 / 15}%`}
-              bgColor={
-                index <=
-                seedPhrase.filter(
-                  (word) => word && shuffledSeedPhrase.includes(word),
-                ).length -
-                  1
-                  ? COLORS.primary
-                  : "muted.200"
-              }
+              style={[
+                styles.progressBar,
+                {
+                  backgroundColor:
+                    index <=
+                    seedPhrase.filter(
+                      (word) => word && shuffledSeedPhrase.includes(word),
+                    ).length -
+                      1
+                      ? COLORS.primary
+                      : "#E5E5E5",
+                },
+              ]}
             />
           ))}
-        </HStack>
+        </View>
 
-        <HStack style={styles.seedPhraseInputContainer}>
+        <View style={styles.inputContainer}>
           {Array(12)
             .fill(null)
-            .map((word, index) => (
-              <Input
-                borderRadius="lg"
-                variant="filled"
-                fontSize="md"
-                w="32%"
-                mb="2"
+            .map((_, index) => (
+              <TextInput
+                key={index}
+                mode="outlined"
+                style={styles.input}
                 value={seedPhrase[index]}
                 onChangeText={(value) => handleValueChange(value, index)}
-                InputLeftElement={<Text ml="2">{index + 1}.</Text>}
-                _input={{
-                  selectionColor: COLORS.primary,
-                  cursorColor: "#303030",
-                }}
-                focusOutlineColor={COLORS.primary}
-                onSubmitEditing={validateInput}
+                left={<TextInput.Affix text={`${index + 1}.`} />}
+                outlineColor={COLORS.primary}
+                activeOutlineColor={COLORS.primary}
               />
             ))}
-        </HStack>
-
-        <Divider bgColor="muted.100" mt="4" mb="3" />
+        </View>
 
         <Button
-          text="Confirm"
-          style={{
-            backgroundColor:
-              seedPhrase.length === 12 ? COLORS.primary : "#2A974D",
-            marginBottom: 50,
-          }}
-          disabled={seedPhrase.length !== 12}
-          loading={isConfirming}
+          mode="contained"
           onPress={validateInput}
-        />
+          loading={isConfirming}
+          style={styles.confirmButton}
+        >
+          Confirm
+        </Button>
+
+        <Modal
+          isVisible={showSuccessModal}
+          animationIn="slideInUp"
+          animationOut="slideOutDown"
+          style={styles.modal}
+        >
+          <View style={styles.modalContent}>
+            <Text variant="headlineSmall" style={styles.modalTitle}>
+              Congratulations
+            </Text>
+            <Text variant="bodyLarge" style={styles.modalText}>
+              You've successfully protected your wallet. Remember to keep your seed
+              phrase safe, it's your responsibility!
+            </Text>
+            <Button
+              mode="contained"
+              onPress={handleSuccess}
+              style={styles.modalButton}
+            >
+              Done
+            </Button>
+          </View>
+        </Modal>
 
         {showAccountsCountModal && (
           <AccountsCountModal
@@ -279,44 +280,6 @@ export default function ConfirmSeedPhrase({}: Props) {
             }}
           />
         )}
-
-        {/* Success modal */}
-        <Modal
-          isVisible={showSuccessModal}
-          animationIn="zoomIn"
-          animationOut="zoomOut"
-          onBackdropPress={() => setShowSuccessModal(false)}
-          onBackButtonPress={() => setShowSuccessModal(false)}
-        >
-          <VStack
-            bgColor="white"
-            borderRadius="40"
-            px="7"
-            py="5"
-            alignItems="center"
-            space="4"
-          >
-            <Image
-              source={require("../../assets/images/success_icon.png")}
-              alt="Success!"
-              style={{
-                width: Dimensions.get("window").height * 0.25,
-                height: Dimensions.get("window").height * 0.25,
-              }}
-            />
-            <Text color={COLORS.primary} bold fontSize={1.5 * FONT_SIZE["xl"]}>
-              Successful!
-            </Text>
-            <Text fontSize={FONT_SIZE["xl"]} textAlign="center">
-              You've successfully protected your wallet. Remember to keep your
-              seed phrase safe. It's your responsibility!
-            </Text>
-            <Text fontSize={FONT_SIZE["xl"]} textAlign="center">
-              Scaffold-ETH cannot recover your wallet should you lose it.
-            </Text>
-            <Button text="Ok" onPress={handleSuccess} />
-          </VStack>
-        </Modal>
       </ScrollView>
     </View>
   );
@@ -327,6 +290,17 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "white",
     padding: 15,
+  },
+  title: {
+    textAlign: 'center',
+    color: COLORS.primary,
+    fontSize: 1.7 * FONT_SIZE["xl"],
+    fontWeight: 'bold',
+    lineHeight: 40
+  },
+  subtitle: {
+    textAlign: 'center',
+    marginVertical: 8
   },
   loader: {
     height: 280,
@@ -348,17 +322,58 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   word: {
+    width: "100%",
     padding: 10,
+    borderRadius: 25,
     textAlign: "center",
     fontWeight: "bold",
     marginBottom: 10,
-    borderRadius: 25,
   },
-  seedPhraseInputContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-between",
-    alignItems: "center",
-    width: "100%",
+  progressContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginVertical: 40,
+    width: '100%'
   },
+  progressBar: {
+    width: `${100 / 15}%`,
+    height: 2
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    gap: 8
+  },
+  input: {
+    width: '32%',
+    marginBottom: 8,
+    backgroundColor: '#F5F5F5'
+  },
+  confirmButton: {
+    marginTop: 20,
+    marginBottom: 50
+  },
+  modal: {
+    justifyContent: 'center',
+    margin: 0,
+    padding: 20
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 20,
+    gap: 16
+  },
+  modalTitle: {
+    textAlign: 'center',
+    fontWeight: 'bold'
+  },
+  modalText: {
+    textAlign: 'center'
+  },
+  modalButton: {
+    marginTop: 8
+  }
 });

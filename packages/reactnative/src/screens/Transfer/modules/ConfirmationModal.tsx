@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Modal from "react-native-modal";
-import { HStack, VStack, Text, Divider, Button as RNButton } from "native-base";
+import { View, StyleSheet } from "react-native";
+import { Text, Button, Divider } from "react-native-paper";
 import { FONT_SIZE } from "../../../utils/styles";
 import { parseFloat, truncateAddress } from "../../../utils/helperFunctions";
 import { useSelector, useDispatch } from "react-redux";
@@ -13,9 +14,9 @@ import { Network } from "../../../store/reducers/Networks";
 
 import "react-native-get-random-values";
 import "@ethersproject/shims";
-import { BigNumber, Wallet, ethers } from "ethers";
+import { Wallet, ethers } from "ethers";
 
-import Button from "../../../components/Button";
+import CustomButton from "../../../components/Button";
 
 import Success from "../../../components/modals/modules/Success";
 import Fail from "../../../components/modals/modules/Fail";
@@ -29,13 +30,13 @@ interface TxData {
   from: Account;
   to: string;
   amount: number;
-  fromBalance: BigNumber | null;
+  fromBalance: bigint | null;
 }
 type Props = {
   isVisible: boolean;
   onClose: () => void;
   txData: TxData;
-  estimateGasCost: BigNumber | null;
+  estimateGasCost: bigint | null;
 };
 
 export default function ConfirmationModal({
@@ -56,7 +57,7 @@ export default function ConfirmationModal({
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showFailModal, setShowFailModal] = useState(false);
   const [txReceipt, setTxReceipt] =
-    useState<ethers.providers.TransactionReceipt | null>(null);
+    useState<ethers.TransactionReceipt | null>(null);
 
   const { getItem } = useSecureStorage();
 
@@ -114,7 +115,7 @@ export default function ConfirmationModal({
 
     try {
       await Linking.openURL(
-        `${connectedNetwork.blockExplorer}/tx/${txReceipt.transactionHash}`,
+        `${connectedNetwork.blockExplorer}/tx/${txReceipt.hash}`,
       );
     } catch (error) {
       toast.show("Cannot open url", {
@@ -131,127 +132,93 @@ export default function ConfirmationModal({
       onBackButtonPress={onClose}
       onBackdropPress={onClose}
     >
-      <VStack bgColor="white" borderRadius="30" p="5" space={4}>
-        <VStack space="2">
-          <Text fontSize={FONT_SIZE["lg"]} fontWeight="medium">
+      <View style={styles.container}>
+        <View style={styles.section}>
+          <Text variant="titleMedium" style={styles.sectionTitle}>
             From:
           </Text>
 
-          <HStack
-            alignItems="center"
-            justifyContent="space-between"
-            bgColor="#F5F5F5"
-            borderRadius="10"
-            p="2"
-          >
-            <HStack alignItems="center" space="2">
+          <View style={styles.accountContainer}>
+            <View style={styles.accountInfo}>
               <Blockie
                 address={txData.from.address}
                 size={1.8 * FONT_SIZE["xl"]}
               />
 
-              <VStack w="75%">
-                <Text fontSize={FONT_SIZE["xl"]} fontWeight="medium">
+              <View style={styles.accountDetails}>
+                <Text variant="titleLarge" style={styles.accountName}>
                   {txData.from.name}
                 </Text>
-                <Text fontSize={FONT_SIZE["md"]}>
+                <Text variant="bodyMedium">
                   Balance: {formatBalance()} {connectedNetwork.currencySymbol}
                 </Text>
-              </VStack>
-            </HStack>
-          </HStack>
-        </VStack>
+              </View>
+            </View>
+          </View>
+        </View>
 
-        <VStack space="2">
-          <Text fontSize={FONT_SIZE["lg"]} fontWeight="medium">
+        <View style={styles.section}>
+          <Text variant="titleMedium" style={styles.sectionTitle}>
             To:
           </Text>
 
-          <HStack
-            alignItems="center"
-            space="2"
-            bgColor="#F5F5F5"
-            borderRadius="10"
-            p="2"
-          >
+          <View style={styles.recipientContainer}>
             <Blockie address={txData.to} size={1.8 * FONT_SIZE["xl"]} />
-            <Text fontSize={FONT_SIZE["xl"]} fontWeight="medium">
+            <Text variant="titleLarge" style={styles.accountName}>
               {truncateAddress(txData.to)}
             </Text>
-          </HStack>
-        </VStack>
+          </View>
+        </View>
 
-        <Text
-          fontSize={FONT_SIZE["lg"]}
-          fontWeight="medium"
-          textAlign="center"
-          mb="-4"
-        >
+        <Text variant="titleMedium" style={styles.amountLabel}>
           AMOUNT
         </Text>
-        <Text fontSize={2 * FONT_SIZE["xl"]} bold textAlign="center">
+        <Text variant="headlineLarge" style={styles.amount}>
           {txData.amount} {connectedNetwork.currencySymbol}
         </Text>
 
-        <VStack borderWidth="1" borderColor="muted.300" borderRadius="10">
-          <HStack p="3" alignItems="flex-start" justifyContent="space-between">
-            <VStack>
-              <Text fontSize={FONT_SIZE["lg"]} fontWeight="medium">
-                Estimated gas fee
-              </Text>
-              <Text fontSize={FONT_SIZE["sm"]} color="green.500">
+        <View style={styles.detailsContainer}>
+          <View style={styles.detailsRow}>
+            <View>
+              <Text variant="titleMedium">Estimated gas fee</Text>
+              <Text variant="bodySmall" style={styles.gasEstimate}>
                 Likely in &lt; 30 second
               </Text>
-            </VStack>
-            <Text
-              fontSize={FONT_SIZE["lg"]}
-              fontWeight="medium"
-              w="50%"
-              textAlign="right"
-            >
+            </View>
+            <Text variant="titleMedium" style={styles.detailsValue}>
               {estimateGasCost &&
-                parseFloat(ethers.utils.formatEther(estimateGasCost), 8)}{" "}
+                parseFloat(ethers.formatEther(estimateGasCost), 8)}{" "}
               {connectedNetwork.currencySymbol}
             </Text>
-          </HStack>
+          </View>
 
-          <Divider bgColor="muted.100" />
+          <Divider />
 
-          <HStack p="3" alignItems="flex-start" justifyContent="space-between">
-            <Text fontSize={FONT_SIZE["lg"]} fontWeight="medium">
-              Total
-            </Text>
-            <Text
-              fontSize={FONT_SIZE["lg"]}
-              fontWeight="medium"
-              w="50%"
-              textAlign="right"
-            >
+          <View style={styles.detailsRow}>
+            <Text variant="titleMedium">Total</Text>
+            <Text variant="titleMedium" style={styles.detailsValue}>
               {calcTotal()} {connectedNetwork.currencySymbol}
             </Text>
-          </HStack>
-        </VStack>
+          </View>
+        </View>
 
-        <HStack w="full" alignItems="center" justifyContent="space-between">
-          <RNButton
-            py="4"
-            bgColor="red.100"
-            w="50%"
-            onPress={onClose}
-            _pressed={{ background: "red.200" }}
-          >
-            <Text color="red.400" bold fontSize="md">
-              Cancel
-            </Text>
-          </RNButton>
+        <View style={styles.buttonContainer}>
           <Button
+            mode="contained"
+            buttonColor="#ffebee"
+            style={styles.cancelButton}
+            onPress={onClose}
+          >
+            <Text style={styles.cancelButtonText}>Cancel</Text>
+          </Button>
+          <CustomButton
             text="Confirm"
             loading={isTransferring}
             onPress={transfer}
-            style={{ width: "50%", borderRadius: 0 }}
+            style={styles.confirmButton}
           />
-        </HStack>
-      </VStack>
+        </View>
+      </View>
 
       <Success
         isVisible={showSuccessModal}
@@ -273,3 +240,86 @@ export default function ConfirmationModal({
     </Modal>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: 'white',
+    borderRadius: 30,
+    padding: 20,
+    gap: 16
+  },
+  section: {
+    gap: 8
+  },
+  sectionTitle: {
+    fontWeight: '500'
+  },
+  accountContainer: {
+    backgroundColor: '#F5F5F5',
+    borderRadius: 10,
+    padding: 8
+  },
+  accountInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8
+  },
+  accountDetails: {
+    width: '75%'
+  },
+  accountName: {
+    fontWeight: '500'
+  },
+  recipientContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    backgroundColor: '#F5F5F5',
+    borderRadius: 10,
+    padding: 8
+  },
+  amountLabel: {
+    textAlign: 'center',
+    fontWeight: '500',
+    marginBottom: -16
+  },
+  amount: {
+    textAlign: 'center',
+    fontWeight: 'bold'
+  },
+  detailsContainer: {
+    borderWidth: 1,
+    borderColor: '#E0E0E0',
+    borderRadius: 10
+  },
+  detailsRow: {
+    padding: 12,
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between'
+  },
+  gasEstimate: {
+    color: '#27B858'
+  },
+  detailsValue: {
+    width: '50%',
+    textAlign: 'right'
+  },
+  buttonContainer: {
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between'
+  },
+  cancelButton: {
+    width: '50%',
+    borderRadius: 0
+  },
+  cancelButtonText: {
+    color: '#ef5350'
+  },
+  confirmButton: {
+    width: '50%',
+    borderRadius: 0
+  }
+});

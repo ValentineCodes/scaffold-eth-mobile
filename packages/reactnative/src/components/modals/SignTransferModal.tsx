@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { HStack, VStack, Text, Divider, Button as RNButton } from "native-base";
+import { View } from "react-native";
+import { Text, Button as PaperButton, Divider } from "react-native-paper";
 import { FONT_SIZE, WINDOW_WIDTH } from "../../utils/styles";
 import { parseFloat, truncateAddress } from "../../utils/helperFunctions";
 import { useDispatch } from "react-redux";
@@ -164,163 +165,107 @@ export default function SignTransferModal({
 
   return (
     <>
-      <VStack
-        bgColor="white"
-        borderRadius="30"
-        p="5"
-        space={4}
-        w={WINDOW_WIDTH * 0.9}
-      >
-        <VStack space="2">
-          <Text textAlign={"right"} fontSize={"md"} fontWeight={"medium"}>
-            {network.name} network
-          </Text>
-          <Text fontSize={FONT_SIZE["lg"]} fontWeight="medium">
-            From:
-          </Text>
+      <View style={{
+        backgroundColor: 'white',
+        borderRadius: 30,
+        padding: 20,
+      }}>
+        <View style={{marginBottom: 16}}>
+          <View style={{
+            backgroundColor: '#F5F5F5',
+            borderRadius: 10,
+            padding: 12,
+            flexDirection: 'row',
+            alignItems: 'center',
+            marginBottom: 16
+          }}>
+            <Blockie address={from.address} size={1.8 * FONT_SIZE.xl} />
+            <View style={{marginLeft: 12}}>
+              <Text variant="titleMedium">{from.name}</Text>
+              <Text variant="bodyMedium">
+                Balance: {balance && `${balance} ${network.currencySymbol}`}
+              </Text>
+            </View>
+          </View>
 
-          <HStack
-            alignItems="center"
-            justifyContent="space-between"
-            bgColor="#F5F5F5"
-            borderRadius="10"
-            p="2"
-          >
-            <HStack alignItems="center" space="2">
-              <Blockie address={account.address} size={1.8 * FONT_SIZE["xl"]} />
-
-              <VStack w="75%">
-                <Text fontSize={FONT_SIZE["xl"]} fontWeight="medium">
-                  {account.name}
-                </Text>
-                <Text fontSize={FONT_SIZE["md"]}>
-                  Balance: {balance && `${balance} ${network.currencySymbol}`}
-                </Text>
-              </VStack>
-            </HStack>
-          </HStack>
-        </VStack>
-
-        <VStack space="2">
-          <Text fontSize={FONT_SIZE["lg"]} fontWeight="medium">
-            To:
-          </Text>
-
-          <HStack
-            alignItems="center"
-            space="2"
-            bgColor="#F5F5F5"
-            borderRadius="10"
-            p="2"
-          >
-            <Blockie address={to} size={1.8 * FONT_SIZE["xl"]} />
-            <Text fontSize={FONT_SIZE["xl"]} fontWeight="medium">
+          <View style={{
+            backgroundColor: '#F5F5F5',
+            borderRadius: 10,
+            padding: 12,
+            flexDirection: 'row',
+            alignItems: 'center'
+          }}>
+            <Blockie address={to} size={1.8 * FONT_SIZE.xl} />
+            <Text variant="titleMedium" style={{marginLeft: 12}}>
               {truncateAddress(to)}
             </Text>
-          </HStack>
-        </VStack>
+          </View>
+        </View>
 
-        <Text fontSize={2 * FONT_SIZE["xl"]} bold textAlign="center">
+        <Text variant="headlineMedium" style={{textAlign: 'center', marginBottom: 16}}>
           {formatEther(value)} {network.currencySymbol}
         </Text>
 
-        <VStack borderWidth="1" borderColor="muted.300" borderRadius="10">
-          <HStack p="3" alignItems="flex-start" justifyContent="space-between">
-            <VStack>
-              <Text fontSize={FONT_SIZE["lg"]} fontWeight="medium">
-                Estimated gas fee
-              </Text>
-              <Text fontSize={FONT_SIZE["sm"]} color="green.500">
-                Likely in &lt; 30 second
-              </Text>
-            </VStack>
-
-            <VStack w="50%">
-              <Text
-                fontSize={FONT_SIZE["lg"]}
-                fontWeight="medium"
-                textAlign="right"
-              >
+        <View style={{
+          borderWidth: 1,
+          borderColor: '#E0E0E0',
+          borderRadius: 10,
+          marginBottom: 16
+        }}>
+          <View style={{padding: 12}}>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', marginBottom: 8}}>
+              <Text variant="titleMedium">Estimated Gas Fee</Text>
+              <Text variant="titleMedium">
                 {estimatedGasCost.min &&
-                  parseFloat(
-                    formatEther(estimatedGasCost.min),
-                    8,
-                  )}{" "}
-                {network.currencySymbol}
+                  `${formatEther(estimatedGasCost.min)} ${network.currencySymbol}`}
               </Text>
-              <Text
-                fontSize={FONT_SIZE["md"]}
-                fontWeight={"semibold"}
-                textAlign="right"
-                color={"muted.500"}
-              >
-                Max fee:
+            </View>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              <Text variant="bodySmall" style={{color: 'green'}}>
+                Likely in {'<'} 30 seconds
               </Text>
-              <Text fontSize={FONT_SIZE["md"]} textAlign="right">
-                {estimatedGasCost.max &&
-                  parseFloat(
-                    formatEther(estimatedGasCost.max),
-                    8,
-                  )}{" "}
-                {network.currencySymbol}
+              <Text variant="bodySmall" style={{color: 'gray'}}>
+                Max: {estimatedGasCost.max &&
+                  `${formatEther(estimatedGasCost.max)} ${network.currencySymbol}`}
               </Text>
-            </VStack>
-          </HStack>
+            </View>
+          </View>
 
-          <Divider bgColor="muted.100" />
+          <Divider />
 
-          <HStack p="3" alignItems="flex-start" justifyContent="space-between">
-            <VStack>
-              <Text fontSize={FONT_SIZE["lg"]} fontWeight="medium">
-                Total:
-              </Text>
-              <Text fontSize={FONT_SIZE["sm"]} color="green.500">
-                Amount + gas fee
-              </Text>
-            </VStack>
-
-            <VStack w="50%">
-              <Text
-                fontSize={FONT_SIZE["lg"]}
-                fontWeight="medium"
-                textAlign="right"
-              >
+          <View style={{padding: 12}}>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', marginBottom: 8}}>
+              <Text variant="titleMedium">Total</Text>
+              <Text variant="titleMedium">
                 {calcTotal().min} {network.currencySymbol}
               </Text>
-              <Text
-                fontSize={FONT_SIZE["md"]}
-                fontWeight={"semibold"}
-                textAlign="right"
-                color={"muted.500"}
-              >
-                Max amount:
+            </View>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              <Text variant="bodySmall" style={{color: 'green'}}>Amount + Gas Fee</Text>
+              <Text variant="bodySmall" style={{color: 'gray'}}>
+                Max: {calcTotal().max} {network.currencySymbol}
               </Text>
-              <Text fontSize={FONT_SIZE["md"]} textAlign="right">
-                {calcTotal().max} {network.currencySymbol}
-              </Text>
-            </VStack>
-          </HStack>
-        </VStack>
+            </View>
+          </View>
+        </View>
 
-        <HStack w="full" alignItems="center" justifyContent="space-between">
-          <RNButton
-            py="4"
-            bgColor="red.100"
-            w="50%"
-            onPress={() => closeModal}
-            _pressed={{ background: "red.200" }}
+        <View style={{flexDirection: 'row', gap: 12}}>
+          <PaperButton
+            mode="contained"
+            onPress={closeModal}
+            buttonColor="#FFCDD2"
+            style={{flex: 1}}
           >
-            <Text color="red.400" bold fontSize="md">
-              Reject
-            </Text>
-          </RNButton>
+            Reject
+          </PaperButton>
           <Button
             text="Confirm"
             onPress={transfer}
-            style={{ width: "50%", borderRadius: 0 }}
+            style={{flex: 1, borderRadius: 0}}
+            loading={isTransferring}
           />
-        </HStack>
-      </VStack>
+        </View>
+      </View>
 
       <Success
         isVisible={showSuccessModal}

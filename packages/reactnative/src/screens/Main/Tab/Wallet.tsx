@@ -1,4 +1,5 @@
-import { View } from "native-base";
+import { View } from "react-native";
+import { Surface } from "react-native-paper";
 import React, { useEffect } from "react";
 import { BackHandler, NativeEventSubscription } from "react-native";
 import Header from "./modules/wallet/Header";
@@ -30,11 +31,11 @@ function Wallet({}: Props) {
   if (!isFocused) return;
 
   return (
-    <View flex={"1"} bgColor={"white"} px={"4"} py={"1"}>
+    <Surface style={{ flex: 1, backgroundColor: 'white', paddingHorizontal: 16, paddingVertical: 4 }}>
       <Header />
       <MainBalance backHandler={backHandler} />
       <Transactions />
-    </View>
+    </Surface>
   );
 }
 

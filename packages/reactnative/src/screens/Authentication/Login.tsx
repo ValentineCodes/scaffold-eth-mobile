@@ -1,20 +1,17 @@
 import {
   Image,
-  Input,
-  Text,
-  VStack,
-  Icon,
-  Pressable,
+  StyleSheet,
   ScrollView,
-} from "native-base";
+  View,
+  TouchableOpacity,
+} from "react-native";
 import React, { useState, useEffect } from "react";
 import { useToast } from "react-native-toast-notifications";
 import { useNavigation } from "@react-navigation/native";
-import { StyleSheet } from "react-native";
 import { FONT_SIZE, WINDOW_WIDTH } from "../../utils/styles";
 import { COLORS } from "../../utils/constants";
 import MaterialIcons from "react-native-vector-icons/dist/MaterialIcons";
-import Button from "../../components/Button";
+import { Text, TextInput, Button } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser, logoutUser } from "../../store/reducers/Auth";
 import ConsentModal from "../../components/modals/ConsentModal";
@@ -28,7 +25,7 @@ export default function Login({}: Props) {
   const toast = useToast();
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const { getItem, deleteItem } = useSecureStorage();
+  const { getItem, removeItem } = useSecureStorage();
 
   const auth = useSelector((state) => state.auth);
 
@@ -123,9 +120,9 @@ export default function Login({}: Props) {
   };
 
   const resetWallet = async () => {
-    await deleteItem("seedPhrase");
-    await deleteItem("accounts");
-    await deleteItem("security");
+    await removeItem("seedPhrase");
+    await removeItem("accounts");
+    await removeItem("security");
     dispatch(clearRecipients());
     dispatch(logoutUser());
     setTimeout(() => {
@@ -153,68 +150,71 @@ export default function Login({}: Props) {
     >
       <Image
         source={require("../../assets/images/logo.png")}
-        alt="Scaffold-ETH"
-        width={WINDOW_WIDTH * 0.3}
-        height={WINDOW_WIDTH * 0.3}
-        mb={"10"}
+        style={{
+          width: WINDOW_WIDTH * 0.3,
+          height: WINDOW_WIDTH * 0.3,
+          marginBottom: 40
+        }}
       />
-      <Text fontSize={2 * FONT_SIZE["xl"]} color={COLORS.primary} bold>
+      <Text 
+        variant="headlineLarge" 
+        style={{ 
+          color: COLORS.primary,
+          fontWeight: 'bold'
+        }}
+      >
         Welcome Back!
       </Text>
 
-      <VStack mt="5" space={2} w="full">
-        <Text fontSize={FONT_SIZE["xl"]} bold>
+      <View style={styles.inputContainer}>
+        <Text variant="titleLarge" style={{ fontWeight: 'bold' }}>
           Password
         </Text>
-        <Input
+        <TextInput
           value={password}
-          borderRadius="lg"
-          variant="filled"
-          fontSize="md"
-          focusOutlineColor={COLORS.primary}
-          InputLeftElement={
-            <Icon
-              as={<MaterialIcons name="lock" />}
-              size={5}
-              ml="4"
-              color="muted.400"
-            />
-          }
+          mode="outlined"
+          style={styles.input}
+          outlineColor={COLORS.primary}
+          activeOutlineColor={COLORS.primary}
+          left={<TextInput.Icon icon="lock" />}
           secureTextEntry
           placeholder="Password"
           onChangeText={setPassword}
           onSubmitEditing={unlockWithPassword}
         />
-      </VStack>
+      </View>
 
       <Button
-        text={
-          isBiometricsEnabled && !password
-            ? "SIGN IN WITH BIOMETRICS"
-            : "SIGN IN"
-        }
+        mode="contained"
         onPress={
           isBiometricsEnabled && !password
             ? unlockWithBiometrics
             : unlockWithPassword
         }
         loading={isInitializing}
-        style={{ marginTop: 20 }}
-      />
+        style={styles.button}
+      >
+        {isBiometricsEnabled && !password ? "SIGN IN WITH BIOMETRICS" : "SIGN IN"}
+      </Button>
 
-      <Text fontSize={FONT_SIZE["lg"]} textAlign="center" my="4">
-        Wallet won't unlock? You can ERASE your current wallet and setup a new
-        one
+      <Text 
+        variant="bodyLarge" 
+        style={styles.resetText}
+      >
+        Wallet won't unlock? You can ERASE your current wallet and setup a new one
       </Text>
 
-      <Pressable
+      <TouchableOpacity
         onPress={() => setShowResetWalletConsentModal(true)}
-        _pressed={{ opacity: 0.4 }}
+        style={{ opacity: 0.8 }}
       >
-        <Text fontSize={FONT_SIZE["xl"]} color={COLORS.primary}>
+        <Text 
+          variant="titleLarge" 
+          style={{ color: COLORS.primary }}
+        >
           Reset Wallet
         </Text>
-      </Pressable>
+      </TouchableOpacity>
 
       <ConsentModal
         isVisible={showResetWalletConsentModal}
@@ -235,4 +235,20 @@ const styles = StyleSheet.create({
     padding: 15,
     backgroundColor: "white",
   },
+  inputContainer: {
+    width: '100%',
+    marginTop: 20,
+    gap: 8
+  },
+  input: {
+    backgroundColor: '#f5f5f5',
+  },
+  button: {
+    marginTop: 20,
+    width: '100%'
+  },
+  resetText: {
+    textAlign: 'center',
+    marginVertical: 16
+  }
 });

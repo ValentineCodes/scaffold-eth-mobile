@@ -1,11 +1,10 @@
 import React from "react";
-import { Text, VStack, Icon, HStack, Divider, Pressable } from "native-base";
+import { View, StyleSheet } from "react-native";
+import { Text, IconButton, Divider } from "react-native-paper";
 import { useSelector } from "react-redux";
 import { Account } from "../../store/reducers/Accounts";
 import { Network } from "../../store/reducers/Networks";
 
-import "react-native-get-random-values";
-import "@ethersproject/shims";
 import { ethers } from "ethers";
 import { Linking } from "react-native";
 import { useToast } from "react-native-toast-notifications";
@@ -112,100 +111,137 @@ export default function TransactionDetails({ isVisible, onClose, tx }: Props) {
       onBackButtonPress={onClose}
       onBackdropPress={onClose}
     >
-      <VStack bgColor="white" borderRadius="20" p="5" space={2}>
-        <HStack alignItems="center" justifyContent="space-between">
-          <Text fontSize={FONT_SIZE["xl"]} bold>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Text variant="headlineSmall" style={styles.title}>
             {renderAction()}
           </Text>
-          <Pressable onPress={onClose} _pressed={{ opacity: 0.4 }}>
-            <Icon
-              as={<Ionicons name="close-outline" />}
-              size={1.5 * FONT_SIZE["xl"]}
-            />
-          </Pressable>
-        </HStack>
+          <IconButton
+            icon="close"
+            size={24}
+            onPress={onClose}
+          />
+        </View>
 
-        <Divider bgColor="muted.300" my="2" />
+        <Divider style={styles.divider} />
 
-        <HStack alignItems="center" justifyContent="space-between">
-          <VStack>
-            <Text fontSize={FONT_SIZE["sm"]}>From</Text>
-            <Text fontSize={FONT_SIZE["md"]} fontWeight="medium">
+        <View style={styles.row}>
+          <View>
+            <Text variant="labelMedium">From</Text>
+            <Text variant="bodyLarge">
               {truncateAddress(tx.from)}
             </Text>
-          </VStack>
+          </View>
 
-          <VStack alignItems="flex-end">
-            <Text fontSize={FONT_SIZE["sm"]}>To</Text>
-            <Text fontSize={FONT_SIZE["md"]} fontWeight="medium">
+          <View style={styles.alignRight}>
+            <Text variant="labelMedium">To</Text>
+            <Text variant="bodyLarge">
               {truncateAddress(tx.to || tx.contractAddress)}
             </Text>
-          </VStack>
-        </HStack>
+          </View>
+        </View>
 
-        <Divider bgColor="muted.300" my="2" />
+        <Divider style={styles.divider} />
 
-        <HStack alignItems="center" justifyContent="space-between">
-          <VStack>
-            <Text fontSize={FONT_SIZE["sm"]}>Nonce</Text>
-            <Text fontSize={FONT_SIZE["md"]} fontWeight="medium">
+        <View style={styles.row}>
+          <View>
+            <Text variant="labelMedium">Nonce</Text>
+            <Text variant="bodyLarge">
               #{tx.nonce}
             </Text>
-          </VStack>
+          </View>
 
-          <VStack alignItems="flex-end">
-            <Text fontSize={FONT_SIZE["sm"]}>Date</Text>
-            <Text fontSize={FONT_SIZE["md"]} fontWeight="medium">
+          <View style={styles.alignRight}>
+            <Text variant="labelMedium">Date</Text>
+            <Text variant="bodyLarge">
               {renderTimestamp()}
             </Text>
-          </VStack>
-        </HStack>
+          </View>
+        </View>
 
-        <VStack borderWidth={0.5} mt="5" borderRadius={10} p="5" space={2}>
-          <HStack alignItems="center" justifyContent="space-between">
-            <Text fontSize={FONT_SIZE["md"]}>Amount</Text>
-            <Text fontSize={FONT_SIZE["md"]}>
+        <View style={styles.detailsBox}>
+          <View style={styles.row}>
+            <Text variant="bodyLarge">Amount</Text>
+            <Text variant="bodyLarge">
               {parseFloat(
                 ethers.formatEther(ethers.getBigInt(tx.value)),
                 5,
               )}{" "}
               {connectedNetwork.currencySymbol}
             </Text>
-          </HStack>
+          </View>
 
-          <HStack alignItems="center" justifyContent="space-between">
-            <Text fontSize={FONT_SIZE["md"]}>Estimated gas fee</Text>
-            <Text fontSize={FONT_SIZE["md"]}>
+          <View style={styles.row}>
+            <Text variant="bodyLarge">Estimated gas fee</Text>
+            <Text variant="bodyLarge">
               {calcGasFee()} {connectedNetwork.currencySymbol}
             </Text>
-          </HStack>
+          </View>
 
-          <Divider bgColor="muted.300" my="2" />
+          <Divider style={styles.divider} />
 
-          <HStack alignItems="center" justifyContent="space-between">
-            <Text fontSize={FONT_SIZE["md"]} bold>
+          <View style={styles.row}>
+            <Text variant="bodyLarge" style={styles.bold}>
               Total amount
             </Text>
-            <Text fontSize={FONT_SIZE["md"]} bold>
+            <Text variant="bodyLarge" style={styles.bold}>
               {calcTotalAmount()} {connectedNetwork.currencySymbol}
             </Text>
-          </HStack>
-        </VStack>
+          </View>
+        </View>
 
         {connectedNetwork.blockExplorer && (
-          <Pressable onPress={viewOnBlockExplorer} _pressed={{ opacity: 0.4 }}>
-            <Text
-              textAlign="center"
-              mt="2"
-              fontSize={FONT_SIZE["lg"]}
-              fontWeight="semibold"
-              color={COLORS.primary}
-            >
-              View on block explorer
-            </Text>
-          </Pressable>
+          <Text
+            variant="titleMedium"
+            style={styles.link}
+            onPress={viewOnBlockExplorer}
+          >
+            View on block explorer
+          </Text>
         )}
-      </VStack>
+      </View>
     </Modal>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 20,
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  title: {
+    flex: 1,
+  },
+  divider: {
+    marginVertical: 8,
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginVertical: 4,
+  },
+  alignRight: {
+    alignItems: 'flex-end',
+  },
+  detailsBox: {
+    borderWidth: 0.5,
+    borderRadius: 10,
+    padding: 20,
+    marginTop: 20,
+  },
+  bold: {
+    fontWeight: 'bold',
+  },
+  link: {
+    textAlign: 'center',
+    marginTop: 8,
+    color: COLORS.primary,
+  }
+});

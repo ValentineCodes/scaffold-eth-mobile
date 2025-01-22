@@ -1,5 +1,5 @@
 import { Abi, AbiFunction } from "abitype";
-import { Text } from "native-base";
+import { Text } from "react-native-paper";
 import {
   Contract,
   ContractName,
@@ -44,7 +44,7 @@ export default function ContractWriteMethods({
 
   if (!functionsToDisplay.length) {
     return (
-      <Text fontSize={"xl"} fontWeight={"light"}>
+      <Text variant="headlineSmall" style={{ fontWeight: '300' }}>
         No write methods
       </Text>
     );

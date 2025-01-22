@@ -1,4 +1,5 @@
-import { HStack, Pressable, Switch, Text, VStack } from "native-base";
+import { View, StyleSheet } from "react-native";
+import { Text, Switch } from "react-native-paper";
 import React, { useLayoutEffect, useState } from "react";
 import { FONT_SIZE } from "../../../utils/styles";
 import { COLORS } from "../../../utils/constants";
@@ -7,6 +8,7 @@ import { useToast } from "react-native-toast-notifications";
 import { useModal } from "react-native-modalfy";
 import { useIsFocused } from "@react-navigation/native";
 import { useSecureStorage } from "../../../hooks/useSecureStorage";
+import { TouchableOpacity } from "react-native";
 
 type Props = {};
 
@@ -82,22 +84,40 @@ export default function Settings({}: Props) {
 
   if (!isFocused) return;
   return (
-    <VStack flex={1} bgColor={"white"} p={"4"}>
+    <View style={styles.container}>
       {isBiometricsAvailable && (
-        <HStack alignItems="center" justifyContent="space-between">
-          <Text fontSize={FONT_SIZE["xl"]}>Sign in with Biometrics</Text>
+        <View style={styles.row}>
+          <Text variant="titleLarge">Sign in with Biometrics</Text>
           <Switch
-            size="md"
-            trackColor={{ true: COLORS.primary, false: "#E5E5E5" }}
-            isChecked={isBiometricsEnabled}
-            onToggle={toggleBiometrics}
+            value={isBiometricsEnabled}
+            onValueChange={toggleBiometrics}
+            color={COLORS.primary}
           />
-        </HStack>
+        </View>
       )}
 
-      <Pressable onPress={() => openModal("ChangePasswordModal")} py={"4"}>
-        <Text fontSize={FONT_SIZE["xl"]}>Change Password</Text>
-      </Pressable>
-    </VStack>
+      <TouchableOpacity 
+        onPress={() => openModal("ChangePasswordModal")}
+        style={styles.button}
+      >
+        <Text variant="titleLarge">Change Password</Text>
+      </TouchableOpacity>
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+    padding: 16
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between'
+  },
+  button: {
+    paddingVertical: 16
+  }
+});

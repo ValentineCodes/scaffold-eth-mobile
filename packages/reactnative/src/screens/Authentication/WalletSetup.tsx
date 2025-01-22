@@ -1,8 +1,6 @@
 import React from "react";
-import { StyleSheet, Dimensions } from "react-native";
-import { ScrollView, Image, Text, Icon, VStack, Pressable } from "native-base";
-
-import Button from "../../components/Button";
+import { StyleSheet, Dimensions, ScrollView, View, TouchableOpacity, Image } from "react-native";
+import { Text, Button, IconButton } from "react-native-paper";
 import { COLORS } from "../../utils/constants";
 import { useNavigation } from "@react-navigation/native";
 import Ionicons from "react-native-vector-icons/dist/Ionicons";
@@ -21,53 +19,55 @@ export default function WalletSetup({}: Props) {
       }}
       style={styles.container}
     >
-      <Pressable
+      <IconButton
+        icon={() => (
+          <Ionicons 
+            name="arrow-back-outline" 
+            size={1.3 * FONT_SIZE["xl"]} 
+            color="black" 
+          />
+        )}
         onPress={() => navigation.goBack()}
-        _pressed={{ opacity: 0.4 }}
         style={styles.navBtn}
-      >
-        <Icon
-          as={<Ionicons name="arrow-back-outline" />}
-          size={1.3 * FONT_SIZE["xl"]}
-          color="black"
-        />
-      </Pressable>
+      />
       <Image
         source={require("../../assets/icons/wallet_icon.png")}
-        alt="Paux"
         style={{
           width: Dimensions.get("window").height * 0.3,
           height: Dimensions.get("window").height * 0.3,
         }}
       />
 
-      <VStack w="full" mt="10">
+      <View style={styles.content}>
         <Text
-          textAlign="center"
-          color={COLORS.primary}
-          fontSize={2 * FONT_SIZE["xl"]}
-          bold
-          mt="10"
+          variant="headlineLarge"
+          style={styles.title}
         >
           Wallet Setup
         </Text>
-        <Text textAlign="center" fontSize={FONT_SIZE["lg"]} my="4">
+        <Text
+          variant="bodyLarge"
+          style={styles.subtitle}
+        >
           Create your new Wallet or import using a seed phrase if you already
           have an account
         </Text>
 
         <Button
-          text="Create a New Wallet"
+          mode="contained"
           onPress={() => navigation.navigate("CreatePassword")}
-          style={{ marginTop: 40 }}
-        />
+          style={styles.createButton}
+        >
+          Create a New Wallet
+        </Button>
         <Button
-          text="Import Using Seed Phrase"
-          type="outline"
+          mode="outlined"
           onPress={() => navigation.navigate("ImportWallet")}
-          style={{ marginTop: 20 }}
-        />
-      </VStack>
+          style={styles.importButton}
+        >
+          Import Using Seed Phrase
+        </Button>
+      </View>
     </ScrollView>
   );
 }
@@ -82,4 +82,25 @@ const styles = StyleSheet.create({
     top: 15,
     left: 15,
   },
+  content: {
+    width: '100%',
+    marginTop: 40
+  },
+  title: {
+    textAlign: 'center',
+    color: COLORS.primary,
+    fontSize: 2 * FONT_SIZE["xl"],
+    fontWeight: 'bold',
+    marginTop: 40
+  },
+  subtitle: {
+    textAlign: 'center',
+    marginVertical: 16
+  },
+  createButton: {
+    marginTop: 40
+  },
+  importButton: {
+    marginTop: 20
+  }
 });

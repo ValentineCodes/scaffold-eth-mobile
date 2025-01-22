@@ -5,7 +5,8 @@ import { Address, isAddress } from "viem";
 import { useEnsAddress, useEnsAvatar, useEnsName } from "wagmi";
 import InputBase from "./InputBase";
 import { CommonInputProps, isENS } from "./utils";
-import { HStack, Image, Text, View } from "native-base";
+import { Image, View } from "react-native";
+import { Text } from "react-native-paper";
 
 /**
  * Address input with ENS name resolution
@@ -75,33 +76,26 @@ export default function AddressInput({
       disabled={isEnsAddressLoading || isEnsNameLoading || disabled}
       prefix={
         ensName && (
-          <HStack roundedLeft={"full"} alignItems={"center"}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', borderTopLeftRadius: 24, borderBottomLeftRadius: 24 }}>
             {ensAvatar ? (
-              <View w={35}>
-                {
-                  <Image
-                    w={"full"}
-                    rounded={"full"}
-                    src={ensAvatar}
-                    alt={`${ensAddress} avatar`}
-                  />
-                }
+              <View style={{ width: 35 }}>
+                <Image
+                  style={{ width: '100%', borderRadius: 999 }}
+                  source={{ uri: ensAvatar }}
+                />
               </View>
             ) : null}
-            <Text fontSize={"md"} px={"2"}>
+            <Text variant="bodyLarge" style={{ paddingHorizontal: 8 }}>
               {enteredEnsName ?? ensName}
             </Text>
-          </HStack>
+          </View>
         )
       }
       suffix={
-        value && (
+        !!value && (
           <Image
-            alt=""
-            rounded={"full"}
-            src={blo(value as `0x${string}`)}
-            width="35"
-            height="35"
+            style={{ width: 35, height: 35, borderRadius: 999 }}
+            source={{ uri: blo(value as `0x${string}`) }}
           />
         )
       }

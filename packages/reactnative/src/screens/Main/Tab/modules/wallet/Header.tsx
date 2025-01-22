@@ -1,25 +1,19 @@
-import { Text, Select, CheckIcon, HStack, Icon, Image } from "native-base";
+import { View, StyleSheet, Linking, Pressable } from "react-native";
+import { Text, IconButton, Divider } from "react-native-paper";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Network, switchNetwork } from "../../../../../store/reducers/Networks";
 import { Account } from "../../../../../store/reducers/Accounts";
-import { Linking, StyleSheet } from "react-native";
 import { useToast } from "react-native-toast-notifications";
-import Ionicons from "react-native-vector-icons/dist/Ionicons";
 import Share from "react-native-share";
 import Blockie from "../../../../../components/Blockie";
-
-import {
-  Menu,
-  MenuOptions,
-  MenuOption,
-  MenuTrigger,
-} from "react-native-popup-menu";
 import AccountDetailsModal from "../../../../../components/modals/AccountDetailsModal";
 import { FONT_SIZE, WINDOW_WIDTH } from "../../../../../utils/styles";
 import { COLORS } from "../../../../../utils/constants";
 import AccountsModal from "../../../../../components/modals/AccountsModal";
 import SeedPhraseModal from "../../../../../components/modals/SeedPhraseModal";
+import { Menu, MenuOption, MenuOptions, MenuTrigger } from "react-native-popup-menu";
+import Ionicons from "react-native-vector-icons/dist/Ionicons";
 
 type Props = {};
 
@@ -67,20 +61,13 @@ export default function Header({}: Props) {
   };
 
   return (
-    <HStack
-      alignItems="center"
-      justifyContent="space-between"
-      py="4"
-      borderBottomColor="#ccc"
-    >
-      <Image
-        source={require("../../../../../assets/images/logo.png")}
-        alt="Paux"
-        width={WINDOW_WIDTH * 0.08}
-        height={WINDOW_WIDTH * 0.08}
+    <View style={styles.container}>
+      <IconButton
+        icon={require("../../../../../assets/images/logo.png")}
+        size={WINDOW_WIDTH * 0.08}
       />
 
-      <Select
+{/* <Select
         selectedValue={connectedNetwork.id.toString()}
         flex="1"
         borderRadius={25}
@@ -109,9 +96,9 @@ export default function Header({}: Props) {
             value={network.id.toString()}
           />
         ))}
-      </Select>
+      </Select> */}
 
-      <Menu>
+<Menu>
         <MenuTrigger>
           <Blockie
             address={connectedAccount.address}
@@ -123,59 +110,49 @@ export default function Header({}: Props) {
             onSelect={() => setIsAccountModalVisible(true)}
             style={styles.menuOption}
           >
-            <Icon
-              as={<Ionicons name="layers-outline" />}
+            <IconButton
+              icon={() => <Ionicons name="layers-outline" size={1.2 * FONT_SIZE["xl"]} color="black" />}
               size={1.2 * FONT_SIZE["xl"]}
-              color="black"
-              mr="2"
             />
-            <Text fontSize={FONT_SIZE["lg"]}>Accounts</Text>
+            <Text variant="bodyLarge">Accounts</Text>
           </MenuOption>
           <MenuOption
             onSelect={() => setShowAccountDetailsModal(true)}
             style={styles.menuOption}
           >
-            <Icon
-              as={<Ionicons name="grid-outline" />}
-              size={1.2 * FONT_SIZE["xl"]}
-              color="black"
-              mr="2"
+            <IconButton
+              icon={() => <Ionicons name="grid-outline" size={1.2 * FONT_SIZE["xl"]} color="black" />}
+              size={1.2 * FONT_SIZE["xl"]} 
             />
-            <Text fontSize={FONT_SIZE["lg"]}>Account details</Text>
+            <Text variant="bodyLarge">Account details</Text>
           </MenuOption>
           <MenuOption
             onSelect={() => setShowSeedPhraseModal(true)}
             style={styles.menuOption}
           >
-            <Icon
-              as={<Ionicons name="key-outline" />}
+            <IconButton
+              icon={() => <Ionicons name="key-outline" size={1.2 * FONT_SIZE["xl"]} color="black" />}
               size={1.2 * FONT_SIZE["xl"]}
-              color="black"
-              mr="2"
             />
-            <Text fontSize={FONT_SIZE["lg"]}>Show seed phrase</Text>
+            <Text variant="bodyLarge">Show seed phrase</Text>
           </MenuOption>
           <MenuOption onSelect={shareAddress} style={styles.menuOption}>
-            <Icon
-              as={<Ionicons name="share-social-outline" />}
+            <IconButton
+              icon={() => <Ionicons name="share-social-outline" size={1.2 * FONT_SIZE["xl"]} color="black" />}
               size={1.2 * FONT_SIZE["xl"]}
-              color="black"
-              mr="2"
             />
-            <Text fontSize={FONT_SIZE["lg"]}>Share address</Text>
+            <Text variant="bodyLarge">Share address</Text>
           </MenuOption>
           {connectedNetwork.blockExplorer && (
             <MenuOption
               onSelect={viewOnBlockExplorer}
               style={styles.menuOption}
             >
-              <Icon
-                as={<Ionicons name="open-outline" />}
+              <IconButton
+                icon={() => <Ionicons name="open-outline" size={1.2 * FONT_SIZE["xl"]} color="black" />}
                 size={1.2 * FONT_SIZE["xl"]}
-                color="black"
-                mr="2"
               />
-              <Text fontSize={FONT_SIZE["lg"]}>View on block explorer</Text>
+              <Text variant="bodyLarge">View on block explorer</Text>
             </MenuOption>
           )}
         </MenuOptions>
@@ -199,11 +176,19 @@ export default function Header({}: Props) {
           onClose={() => setShowAccountDetailsModal(false)}
         />
       )}
-    </HStack>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 16,
+    borderBottomColor: '#ccc',
+    borderBottomWidth: 1
+  },
   logo: {
     width: 3 * FONT_SIZE["xl"],
     height: 3 * FONT_SIZE["xl"],

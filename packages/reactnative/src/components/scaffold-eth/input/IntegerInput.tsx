@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import InputBase from "./InputBase";
 import { CommonInputProps, IntegerVariant, isValidInteger } from "./utils";
-import { Pressable, Text } from "native-base";
+import { TouchableRipple, Text } from "react-native-paper";
 
 type IntegerInputProps = CommonInputProps<string | bigint> & {
   variant?: IntegerVariant;
@@ -47,16 +47,15 @@ export default function IntegerInput({
       suffix={
         !inputError &&
         !disableMultiplyBy1e18 && (
-          <Pressable
+          <TouchableRipple
             onPress={multiplyBy1e18}
-            isDisabled={disabled}
-            px={"4"}
-            mt={"1"}
+            disabled={disabled}
+            style={{ paddingHorizontal: 16, marginTop: 4 }}
           >
-            <Text fontSize={"xl"} fontWeight={"semibold"}>
+            <Text variant="headlineSmall" style={{ fontWeight: '600' }}>
               *
             </Text>
-          </Pressable>
+          </TouchableRipple>
         )
       }
     />

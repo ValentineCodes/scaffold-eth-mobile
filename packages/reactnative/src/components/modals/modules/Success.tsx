@@ -1,8 +1,7 @@
 import React from "react";
-import { Dimensions } from "react-native";
-import Modal from "react-native-modal";
+import { StyleSheet, View, Dimensions, Image } from "react-native";
+import { Modal, Portal, Text } from "react-native-paper";
 import { FONT_SIZE } from "../../../utils/styles";
-import { VStack, Text, Image } from "native-base";
 import { COLORS } from "../../../utils/constants";
 import Button from "../../Button";
 
@@ -14,38 +13,47 @@ type Props = {
 
 export default function Success({ isVisible, onClose, onViewDetails }: Props) {
   return (
-    <Modal
-      isVisible={isVisible}
-      animationIn="zoomIn"
-      animationOut="zoomOut"
-      onBackdropPress={onClose}
-      onBackButtonPress={onClose}
-    >
-      <VStack
-        bgColor="white"
-        borderRadius="40"
-        px="7"
-        py="5"
-        alignItems="center"
-        space="4"
-      >
-        <Image
-          source={require("../../../assets/images/success_transfer.png")}
-          alt="Success!"
-          style={{
-            width: Dimensions.get("window").height * 0.25,
-            height: Dimensions.get("window").height * 0.25,
-          }}
-        />
-        <Text color={COLORS.primary} bold fontSize={1.5 * FONT_SIZE["xl"]}>
-          Successfully Sent!
-        </Text>
-        <Text fontSize={FONT_SIZE["xl"]} textAlign="center">
-          Your crypto was sent successfully. You can view transaction below.
-        </Text>
-        <Button text="View Details" onPress={onViewDetails} />
-        <Button type="outline" text="Cancel" onPress={onClose} />
-      </VStack>
-    </Modal>
+    <Portal>
+      <Modal visible={isVisible} onDismiss={onClose} contentContainerStyle={styles.container}>
+        <View style={styles.content}>
+          <Image
+            source={require("../../../assets/images/success_transfer.png")}
+            style={styles.image}
+          />
+          <Text variant="headlineSmall" style={styles.successText}>
+            Successfully Sent!
+          </Text>
+          <Text variant="bodyLarge" style={styles.message}>
+            Your crypto was sent successfully. You can view transaction below.
+          </Text>
+          <Button text="View Details" onPress={onViewDetails} />
+          <Button type="outline" text="Cancel" onPress={onClose} />
+        </View>
+      </Modal>
+    </Portal>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: 'white',
+    borderRadius: 40,
+    margin: 20,
+  },
+  content: {
+    padding: 20,
+    alignItems: 'center',
+    gap: 16,
+  },
+  image: {
+    width: Dimensions.get("window").height * 0.25,
+    height: Dimensions.get("window").height * 0.25,
+  },
+  successText: {
+    color: COLORS.primary,
+    fontWeight: 'bold',
+  },
+  message: {
+    textAlign: 'center',
+  },
+});

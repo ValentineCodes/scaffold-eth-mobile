@@ -1,11 +1,6 @@
 import React from "react";
-import {
-  TouchableOpacity,
-  StyleSheet,
-  Text,
-  ActivityIndicator,
-} from "react-native";
-import LinearGradient from "react-native-linear-gradient";
+import { StyleSheet } from "react-native";
+import { Button, ActivityIndicator } from "react-native-paper";
 
 interface IAcceptRejectButtonProps {
   accept: boolean;
@@ -20,26 +15,22 @@ export function AcceptRejectButton({
   isLoading,
   onPress,
 }: IAcceptRejectButtonProps) {
-  const acceptButtonColor = accept
-    ? ["#2BEE6C", "#1DC956"]
-    : ["#F25A67", "#F05142"];
-
+  const buttonMode = "contained";
+  const buttonColor = accept ? "#2BEE6C" : "#F25A67";
   const buttonText = accept ? "Accept" : "Decline";
 
   return (
-    <TouchableOpacity
-      style={!accept ? styles.accept : null}
-      onPress={() => onPress()}
+    <Button
+      mode={buttonMode}
+      style={[styles.buttonContainer, !accept && styles.accept]}
+      onPress={onPress}
       disabled={disabled}
+      loading={isLoading}
+      buttonColor={buttonColor}
+      labelStyle={styles.mainText}
     >
-      <LinearGradient colors={acceptButtonColor} style={styles.buttonContainer}>
-        {isLoading ? (
-          <ActivityIndicator size="small" color="white" />
-        ) : (
-          <Text style={styles.mainText}>{buttonText}</Text>
-        )}
-      </LinearGradient>
-    </TouchableOpacity>
+      {buttonText}
+    </Button>
   );
 }
 
@@ -49,9 +40,6 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     marginVertical: 16,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
     borderRadius: 20,
     height: 56,
     width: 160,
@@ -60,7 +48,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     lineHeight: 24,
     fontWeight: "600",
-    color: "white",
   },
   imageContainer: {
     width: 24,

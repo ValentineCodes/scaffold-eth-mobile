@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
-import { StyleSheet, BackHandler, NativeEventSubscription } from "react-native";
-import { ScrollView, Image, Text, VStack } from "native-base";
+import { StyleSheet, BackHandler, NativeEventSubscription, ScrollView, View } from "react-native";
+import { Text, Button } from "react-native-paper";
+import { Image } from "react-native";
 
-import Button from "../../components/Button";
 import { COLORS } from "../../utils/constants";
 import { FONT_SIZE, WINDOW_WIDTH } from "../../utils/styles";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
@@ -15,6 +15,7 @@ export default function Onboarding({}: Props) {
   const navigation = useNavigation();
 
   const handleNav = () => {
+    // @ts-ignore
     navigation.navigate("WalletSetup");
     backHandler?.remove();
   };
@@ -44,30 +45,34 @@ export default function Onboarding({}: Props) {
     >
       <Image
         source={require("../../assets/images/logo.png")}
-        alt="Scaffold-ETH"
-        width={WINDOW_WIDTH * 0.3}
-        height={WINDOW_WIDTH * 0.3}
+        style={{
+          width: WINDOW_WIDTH * 0.3,
+          height: WINDOW_WIDTH * 0.3
+        }}
       />
-      <VStack w="full" mt="10">
+      <View style={styles.content}>
         <Text
-          textAlign="center"
-          color={COLORS.primary}
-          fontSize={2 * FONT_SIZE["xl"]}
-          bold
+          variant="headlineLarge"
+          style={styles.title}
         >
           Welcome to Scaffold-ETH
         </Text>
-        <Text textAlign="center" fontSize={FONT_SIZE["lg"]} my="4">
+        <Text
+          variant="bodyLarge"
+          style={styles.subtitle}
+        >
           First, we'll need to setup a wallet. This will be unique to you and
           will be used to sign transactions, messages, and manage funds
         </Text>
 
         <Button
-          text="Get Started"
+          mode="contained"
           onPress={handleNav}
-          style={{ marginTop: 40, marginBottom: 50 }}
-        />
-      </VStack>
+          style={styles.button}
+        >
+          Get Started
+        </Button>
+      </View>
     </ScrollView>
   );
 }
@@ -77,4 +82,23 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     backgroundColor: "white",
   },
+  content: {
+    width: "100%",
+    marginTop: 40,
+  },
+  title: {
+    textAlign: "center",
+    color: COLORS.primary,
+    fontSize: 2 * FONT_SIZE["xl"],
+    fontWeight: "bold"
+  },
+  subtitle: {
+    textAlign: "center",
+    fontSize: FONT_SIZE["lg"],
+    marginVertical: 16
+  },
+  button: {
+    marginTop: 40,
+    marginBottom: 50
+  }
 });

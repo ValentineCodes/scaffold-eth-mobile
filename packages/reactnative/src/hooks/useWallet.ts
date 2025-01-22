@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { ethers } from "../../patches/ethers";
-import { addAccount } from "../store/reducers/Accounts";
-import { useSecureStorage } from "./useSecureStorage";
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { ethers } from '../../patches/ethers';
+import { addAccount } from '../store/reducers/Accounts';
+import { useSecureStorage } from './useSecureStorage';
 
 export interface Controller {
   address: string;
@@ -13,7 +13,7 @@ export interface Controller {
  * @notice hook to read and write mnemonic
  */
 export default function useWallet() {
-  const [mnemonic, setMnemonic] = useState("");
+  const [mnemonic, setMnemonic] = useState('');
   const [controller, setAccounts] = useState<Controller[]>([]);
 
   const { saveItem, getItem } = useSecureStorage();
@@ -26,7 +26,7 @@ export default function useWallet() {
    */
   async function _getMnemonic(): Promise<string> {
     // read mnemonic from secure storage
-    const _mnemonic = (await getItem("mnemonic")) as string;
+    const _mnemonic = (await getItem('mnemonic')) as string;
 
     setMnemonic(_mnemonic);
 
@@ -35,7 +35,7 @@ export default function useWallet() {
 
   async function getController(): Promise<Controller> {
     // read controller from secure storage
-    const controller = (await getItem("controller")) as Controller;
+    const controller = (await getItem('controller')) as Controller;
 
     setAccounts([controller]);
 
@@ -50,7 +50,7 @@ export default function useWallet() {
     setMnemonic(_mnemonic);
 
     // encrypt and store mnemonic
-    await saveItem("mnemonic", _mnemonic);
+    await saveItem('mnemonic', _mnemonic);
   }
 
   /**
@@ -60,17 +60,17 @@ export default function useWallet() {
    */
   async function _storeAccount(_controller: Controller, _isImported: boolean) {
     // read controller from secure storage
-    const controller = (await getItem("controller")) as Controller;
+    const controller = (await getItem('controller')) as Controller;
 
     const newAccounts = [controller, _controller];
 
     // encrypt and store controller
-    await saveItem("controller", JSON.stringify(newAccounts));
+    await saveItem('controller', JSON.stringify(newAccounts));
 
     setAccounts(newAccounts);
 
     dispatch(
-      addAccount({ address: _controller.address, isImported: _isImported }),
+      addAccount({ address: _controller.address, isImported: _isImported })
     );
   }
 
@@ -82,28 +82,28 @@ export default function useWallet() {
 
     const hdnode = ethers.HDNodeWallet.fromPhrase(
       mnemonic,
-      "mnemonicPassword",
-      "m/44'/60'/0'/0/0",
+      'mnemonicPassword',
+      "m/44'/60'/0'/0/0"
     );
 
     return {
       mnemonic,
       address: hdnode.address,
-      privateKey: hdnode.privateKey,
+      privateKey: hdnode.privateKey
     };
   }
 
   async function importWallet(_mnemonic: string, _index: number) {
     const hdnode = ethers.HDNodeWallet.fromPhrase(
       mnemonic,
-      "mnemonicPassword",
-      `m/44'/60'/0'/0/${_index}`,
+      'mnemonicPassword',
+      `m/44'/60'/0'/0/${_index}`
     );
 
     return {
       mnemonic,
       address: hdnode.address,
-      privateKey: hdnode.privateKey,
+      privateKey: hdnode.privateKey
     };
   }
 
@@ -120,6 +120,6 @@ export default function useWallet() {
     storeMnemonic: _storeMnemonic,
     storeAccount: _storeAccount,
     createWallet,
-    importWallet,
+    importWallet
   };
 }

@@ -1,13 +1,6 @@
-import {
-  HStack,
-  Switch,
-  Text,
-  VStack,
-  ScrollView,
-  Divider,
-  View,
-} from "native-base";
 import React, { useCallback, useEffect, useState } from "react";
+import { View, ScrollView } from "react-native";
+import { Text, Switch, Button, Divider } from "react-native-paper";
 
 import styles from "../../styles/authentication/createPassword";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
@@ -15,7 +8,6 @@ import PasswordInput from "../../components/forms/PasswordInput";
 import { useToast } from "react-native-toast-notifications";
 
 import { COLORS } from "../../utils/constants";
-import Button from "../../components/Button";
 import ProgressIndicatorHeader from "../../components/headers/ProgressIndicatorHeader";
 import { FONT_SIZE } from "../../utils/styles";
 import { generate } from "random-words";
@@ -109,22 +101,23 @@ function CreatePassword({}: Props) {
     <View style={styles.container}>
       <ProgressIndicatorHeader progress={1} />
 
-      <Divider bgColor="muted.100" my="8" />
+      <Divider style={{ marginVertical: 32 }} />
 
-      <ScrollView flex="1">
+      <ScrollView style={{ flex: 1 }}>
         <Text
-          textAlign="center"
-          color={COLORS.primary}
-          fontSize={1.7 * FONT_SIZE["xl"]}
-          bold
+          variant="headlineMedium"
+          style={styles.title}
         >
           Create Password
         </Text>
-        <Text textAlign="center" fontSize={FONT_SIZE["lg"]} my="2">
+        <Text
+          variant="bodyLarge"
+          style={styles.subtitle}
+        >
           This password will unlock Scaffold-ETH only on this device
         </Text>
 
-        <VStack space={6} mb="50" mt="4">
+        <View style={styles.formContainer}>
           <PasswordInput
             label="New Password"
             value={password}
@@ -147,24 +140,29 @@ function CreatePassword({}: Props) {
 
           {isBiometricsAvailable && (
             <>
-              <Divider bgColor="muted.100" />
+              <Divider style={{ marginVertical: 16 }} />
 
-              <HStack alignItems="center" justifyContent="space-between">
-                <Text fontSize={FONT_SIZE["xl"]}>Sign in with Biometrics</Text>
+              <View style={styles.biometricsContainer}>
+                <Text variant="titleLarge">Sign in with Biometrics</Text>
                 <Switch
-                  size="md"
-                  trackColor={{ true: COLORS.primary, false: "#E5E5E5" }}
-                  isChecked={isBiometricsEnabled}
-                  onToggle={setIsBiometricsEnabled}
+                  value={isBiometricsEnabled}
+                  onValueChange={setIsBiometricsEnabled}
+                  color={COLORS.primary}
                 />
-              </HStack>
+              </View>
             </>
           )}
 
-          <Divider bgColor="muted.100" />
+          <Divider style={{ marginVertical: 16 }} />
 
-          <Button text="Import" loading={isCreating} onPress={createPassword} />
-        </VStack>
+          <Button
+            mode="contained"
+            loading={isCreating}
+            onPress={createPassword}
+          >
+            Import
+          </Button>
+        </View>
       </ScrollView>
     </View>
   );

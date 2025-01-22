@@ -1,6 +1,7 @@
 import { Abi, AbiFunction } from "abitype";
-import { HStack, Pressable, Spinner, Text, VStack } from "native-base";
 import React, { useEffect } from "react";
+import { View, TouchableOpacity } from "react-native";
+import { ActivityIndicator, Text } from "react-native-paper";
 import { useToast } from "react-native-toast-notifications";
 import { Address, isAddress } from "viem";
 import useContractRead from "../../../../../../hooks/scaffold-eth/useContractRead";
@@ -44,29 +45,29 @@ export default function DisplayVariable({
   }, [refreshDisplayVariables]);
 
   return (
-    <VStack space={1} mb={"4"}>
-      <HStack alignItems={"center"} space={2}>
-        <Text fontSize={"lg"} fontWeight={"semibold"}>
+    <View style={{ marginBottom: 16 }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+        <Text variant="titleMedium">
           {abiFunction.name}
         </Text>
-        <Pressable onPress={async () => await refetch()}>
+        <TouchableOpacity onPress={async () => await refetch()}>
           {isFetching ? (
-            <Spinner size={1.2 * FONT_SIZE["sm"]} color={COLORS.primary} />
+            <ActivityIndicator size={1.2 * FONT_SIZE["sm"]} color={COLORS.primary} />
           ) : (
             <MaterialIcons
               name="cached"
-              color="blue"
+              color={COLORS.primary}
               size={1.2 * FONT_SIZE["sm"]}
             />
           )}
-        </Pressable>
-      </HStack>
+        </TouchableOpacity>
+      </View>
       {result !== null &&
         result !== undefined &&
         result.map((data) => {
           if (typeof data == "object" && isNaN(data)) {
             return (
-              <Text key={Math.random().toString()} fontSize={"sm"}>
+              <Text key={Math.random().toString()} variant="bodyMedium">
                 {JSON.stringify(data)}
               </Text>
             );
@@ -82,11 +83,11 @@ export default function DisplayVariable({
           }
 
           return (
-            <Text key={Math.random().toString()} fontSize={"sm"}>
+            <Text key={Math.random().toString()} variant="bodyMedium">
               {data.toString()}
             </Text>
           );
         })}
-    </VStack>
+    </View>
   );
 }

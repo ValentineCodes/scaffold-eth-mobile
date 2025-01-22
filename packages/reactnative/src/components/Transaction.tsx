@@ -1,114 +1,139 @@
 import React, { useState } from "react";
-import { HStack, Text, Icon, Pressable, View, VStack } from "native-base";
+import { StyleSheet, View, Pressable } from "react-native";
+import { Text, IconButton } from "react-native-paper";
 import { useSelector } from "react-redux";
-import { Account } from "../store/reducers/Accounts";
 import { Network } from "../store/reducers/Networks";
-
-import "react-native-get-random-values";
-import "@ethersproject/shims";
-import { ethers } from "ethers";
-import TransactionDetails from "./modals/TransactionDetails";
-// @ts-ignore
-import Ionicons from "react-native-vector-icons/dist/Ionicons";
+import { truncateAddress } from "../utils/helperFunctions";
 import { COLORS } from "../utils/constants";
 import { FONT_SIZE } from "../utils/styles";
-import { truncateAddress, parseFloat } from "../utils/helperFunctions";
+import { ethers } from "ethers";
+import Tag from "./Tag";
+import Clipboard from "@react-native-clipboard/clipboard";
+import { useToast } from "react-native-toast-notifications";
+import { Linking } from "react-native";
 
 type Props = {
-  tx: any;
+  tx: {
+    hash: string;
+    from: string;
+    to: string;
+    value: bigint;
+    status?: "success" | "error" | "pending";
+  };
 };
 
 export default function Transaction({ tx }: Props) {
-  const connectedAccount: Account = useSelector((state) =>
-    state.accounts.find((account: Account) => account.isConnected),
-  );
+  const [isExpanded, setIsExpanded] = useState(false);
+  const toast = useToast();
+
   const connectedNetwork: Network = useSelector((state: any) =>
     state.networks.find((network: Network) => network.isConnected),
   );
 
-  const [showTxDetails, setShowTxDetails] = useState(false);
-
-  const renderAction = () => {
-    if (tx.functionName === "") {
-      if (tx.from.toLowerCase() == connectedAccount.address.toLowerCase()) {
-        return `Transfer`;
-      }
-      if (tx.to.toLowerCase() == connectedAccount.address.toLowerCase()) {
-        return `Receive`;
-      }
-    }
-
-    return "Contract Interaction";
+  const copyHash = () => {
+    Clipboard.setString(tx.hash);
+    toast.show("Copied to clipboard", { type: "success" });
   };
 
-  const renderActionIcon = () => {
-    let icon = "sync";
-
-    if (renderAction() === "Transfer") {
-      icon = "paper-plane";
-    } else if (renderAction() === "Receive") {
-      icon = "download";
-    }
-
-    return (
-      <View bgColor={COLORS.primaryLight} p="3" borderRadius="full">
-        <Icon
-          as={<Ionicons name={icon} />}
-          size={1.2 * FONT_SIZE["xl"]}
-          color={COLORS.primary}
-          borderRadius="full"
-        />
-      </View>
-    );
-  };
-
-  const renderAddress = () => {
-    let address = `Address: ${truncateAddress(tx.to || tx.contractAddress)}`;
-
-    if (renderAction() === "Transfer") {
-      address = `To: ${truncateAddress(tx.to || tx.contractAddress)}`;
-    } else if (renderAction() === "Receive") {
-      address = `From: ${truncateAddress(tx.from)}`;
-    }
-
-    return <Text fontSize={FONT_SIZE["md"]}>{address}</Text>;
+  const openExplorer = () => {
+    Linking.openURL(`${connectedNetwork.blockExplorer}/tx/${tx.hash}`);
   };
 
   return (
     <Pressable
-      onPress={() => setShowTxDetails(true)}
-      _pressed={{ backgroundColor: "rgba(39, 184, 88, 0.2)" }}
+      style={styles.container}
+      onPress={() => setIsExpanded(!isExpanded)}
     >
-      <HStack justifyContent="space-between" alignItems="center" py="2">
-        <HStack alignItems="center" space={4}>
-          {renderActionIcon()}
-
-          <VStack>
-            <Text fontSize={FONT_SIZE["xl"]} bold>
-              {renderAction()}
+      <View style={styles.header}>
+        <View style={styles.headerLeft}>
+          <IconButton
+            icon={tx.status === "error" ? "close-circle" : "check-circle"}
+            size={24}
+            iconColor={tx.status === "error" ? COLORS.error : COLORS.primary}
+          />
+          <View>
+            <Text variant="titleMedium">
+              {ethers.formatEther(tx.value)} {connectedNetwork.currencySymbol}
             </Text>
-            {renderAddress()}
-          </VStack>
-        </HStack>
+            <Text variant="bodySmall" style={styles.date}>
+              {new Date().toLocaleString()}
+            </Text>
+          </View>
+        </View>
+        <Tag
+          text={tx.status || "pending"}
+          type={tx.status as "success" | "error" | "warning"}
+        />
+      </View>
 
-        <Text fontSize={FONT_SIZE["lg"]} bold>
-          {Number(ethers.formatEther(BigInt(tx.value)))
-            ? parseFloat(
-                Number(
-                  ethers.formatEther(BigInt(tx.value)),
-                ).toString(),
-                4,
-              )
-            : 0}{" "}
-          {connectedNetwork.currencySymbol}
-        </Text>
-      </HStack>
-
-      <TransactionDetails
-        isVisible={showTxDetails}
-        onClose={() => setShowTxDetails(false)}
-        tx={tx}
-      />
+      {isExpanded && (
+        <View style={styles.details}>
+          <View style={styles.detailRow}>
+            <Text variant="bodyMedium">From:</Text>
+            <Text variant="bodyMedium">{truncateAddress(tx.from)}</Text>
+          </View>
+          <View style={styles.detailRow}>
+            <Text variant="bodyMedium">To:</Text>
+            <Text variant="bodyMedium">{truncateAddress(tx.to)}</Text>
+          </View>
+          <View style={styles.detailRow}>
+            <Text variant="bodyMedium">Hash:</Text>
+            <View style={styles.hashContainer}>
+              <Text variant="bodyMedium" style={styles.hash}>
+                {truncateAddress(tx.hash)}
+              </Text>
+              <IconButton
+                icon="content-copy"
+                size={20}
+                onPress={copyHash}
+              />
+              <IconButton
+                icon="open-in-new"
+                size={20}
+                onPress={openExplorer}
+              />
+            </View>
+          </View>
+        </View>
+      )}
     </Pressable>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: "white",
+    borderRadius: 12,
+    padding: 16,
+    gap: 16,
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  headerLeft: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+  },
+  date: {
+    color: "#666",
+  },
+  details: {
+    gap: 12,
+  },
+  detailRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  hashContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
+  },
+  hash: {
+    color: COLORS.primary,
+  },
+});

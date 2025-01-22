@@ -9,7 +9,8 @@ import {
   getParsedContractFunctionArgs,
 } from "./utilsContract";
 import ContractInput from "./ContractInput";
-import { Button, HStack, Text, VStack, View } from "native-base";
+import { View } from "react-native";
+import { Button, Card, Text } from "react-native-paper";
 import { COLORS } from "../../../../../../utils/constants";
 
 type Props = {
@@ -60,43 +61,39 @@ export default function ReadOnlyFunctionForm({
 
   return (
     <View>
-      <Text fontSize={"md"} fontWeight={"medium"} my={"2"}>
+      <Text variant="titleMedium" style={{ marginVertical: 8 }}>
         {abiFunction.name}
       </Text>
       {inputElements}
       {result !== null && result !== undefined && (
-        <VStack bgColor={COLORS.primaryLight} p={"2"} rounded={"2xl"} mt={"2"}>
-          <Text fontSize={"md"} fontWeight={"semibold"}>
-            Result:
-          </Text>
-          {result.map((data) => (
-            <Text key={Math.random().toString()} fontSize={"sm"}>
-              {typeof data == "object" && isNaN(data)
-                ? JSON.stringify(data)
-                : data.toString()}
-            </Text>
-          ))}
-        </VStack>
+        <Card style={{ backgroundColor: COLORS.primaryLight, marginTop: 8 }}>
+          <Card.Content>
+            <Text variant="titleMedium">Result:</Text>
+            {result.map((data: any) => (
+              <Text key={Math.random().toString()} variant="bodyMedium">
+                {typeof data == "object" && isNaN(data)
+                  ? JSON.stringify(data)
+                  : data.toString()}
+              </Text>
+            ))}
+          </Card.Content>
+        </Card>
       )}
       <Button
-        alignSelf={"flex-end"}
-        my={"2"}
-        w={"20"}
-        py={"2"}
-        borderRadius={"3xl"}
-        bgColor={COLORS.primaryLight}
-        isLoading={isFetching}
-        isLoadingText="Read"
-        _loading={{ bgColor: COLORS.primary }}
-        _pressed={{ backgroundColor: "rgba(39, 184, 88, 0.5)" }}
+        mode="contained"
+        style={{
+          marginVertical: 8,
+          borderRadius: 24,
+          alignSelf: 'flex-end',
+          backgroundColor: isFetching ? COLORS.primary : COLORS.primaryLight
+        }}
+        loading={isFetching}
         onPress={async () => {
           const data = await refetch();
-          setResult(data);
+          setResult(Array.isArray(data) ? data : [data]);
         }}
       >
-        <Text fontSize={"md"} fontWeight={"medium"} color={COLORS.primary}>
-          Read
-        </Text>
+        Read
       </Button>
     </View>
   );

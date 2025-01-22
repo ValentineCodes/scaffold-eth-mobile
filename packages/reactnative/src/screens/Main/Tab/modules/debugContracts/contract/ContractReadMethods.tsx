@@ -1,4 +1,4 @@
-import { Text } from "native-base";
+import { Text } from "react-native-paper";
 import React from "react";
 import {
   GenericContract,
@@ -42,7 +42,7 @@ export default function ContractReadMethods({ deployedContractData }: Props) {
 
   if (!functionsToDisplay.length) {
     return (
-      <Text fontSize={"xl"} fontWeight={"light"}>
+      <Text variant="headlineSmall" style={{ fontWeight: '300' }}>
         No read methods
       </Text>
     );

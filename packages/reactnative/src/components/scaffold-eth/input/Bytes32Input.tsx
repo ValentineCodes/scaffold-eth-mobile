@@ -2,7 +2,7 @@ import { useCallback } from "react";
 import { hexToString, isHex, stringToHex } from "viem";
 import InputBase from "./InputBase";
 import { CommonInputProps } from "./utils";
-import { Pressable, Text } from "native-base";
+import { TouchableRipple, Text } from "react-native-paper";
 
 export default function Bytes32Input({
   value,
@@ -30,11 +30,11 @@ export default function Bytes32Input({
       onChange={onChange}
       disabled={disabled}
       suffix={
-        <Pressable onPress={convertStringToBytes32} px={"4"}>
-          <Text fontSize={"md"} fontWeight={"semibold"}>
+        <TouchableRipple onPress={convertStringToBytes32} style={{ paddingHorizontal: 16 }}>
+          <Text variant="titleMedium" style={{ fontWeight: "600" }}>
             #
           </Text>
-        </Pressable>
+        </TouchableRipple>
       }
     />
   );

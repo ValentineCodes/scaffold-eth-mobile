@@ -1,75 +1,94 @@
-import { HStack, Icon, Pressable, ScrollView, Text, View } from "native-base";
 import React from "react";
-import { WINDOW_HEIGHT, WINDOW_WIDTH } from "../../utils/styles";
-import { TransactionReceipt } from "viem";
-import Ionicons from "react-native-vector-icons/dist/Ionicons";
-import Clipboard from "@react-native-clipboard/clipboard";
-import { useToast } from "react-native-toast-notifications";
+import { StyleSheet, View, Linking } from "react-native";
+import { Modal, Portal, Text, IconButton } from "react-native-paper";
+import { useSelector } from "react-redux";
+import { Network } from "../../store/reducers/Networks";
 import { COLORS } from "../../utils/constants";
-import { displayTxResult } from "../../screens/Main/Tab/modules/debugContracts/contract/utilsDisplay";
+import Button from "../Button";
 
 type Props = {
   modal: {
-    closeModal: (modal?: string, callback?: () => void) => void;
+    closeModal: () => void;
     params: {
-      txReceipt:
-        | string
-        | number
-        | bigint
-        | Record<string, any>
-        | TransactionReceipt
-        | undefined;
+      hash: string;
+      isError?: boolean;
     };
   };
 };
 
 export default function TxReceiptModal({
-  modal: { closeModal, params },
+  modal: {
+    closeModal,
+    params: { hash, isError },
+  },
 }: Props) {
-  const toast = useToast();
+  const connectedNetwork: Network = useSelector((state: any) =>
+    state.networks.find((network: Network) => network.isConnected),
+  );
 
-  const copy = () => {
-    Clipboard.setString(JSON.stringify(params.txReceipt));
-    toast.show("Copied to clipboard", {
-      type: "success",
-    });
+  const openExplorer = () => {
+    Linking.openURL(`${connectedNetwork.blockExplorer}/tx/${hash}`);
   };
 
   return (
-    <View
-      bgColor="white"
-      borderRadius="30"
-      p="5"
-      w={WINDOW_WIDTH * 0.9}
-      h={WINDOW_HEIGHT * 0.5}
-    >
-      <HStack alignItems={"center"} justifyContent={"space-between"}>
-        <HStack alignItems={"center"} space={"1"}>
-          <Pressable onPress={copy}>
-            <Icon
-              as={<Ionicons name="copy-outline" />}
-              size={5}
-              color={COLORS.primary}
-            />
-          </Pressable>
-
-          <Text fontSize={"md"} fontWeight={"medium"}>
-            Transaction Receipt
+    <Portal>
+      <Modal
+        visible={true}
+        onDismiss={closeModal}
+        contentContainerStyle={styles.container}
+      >
+        <View style={styles.header}>
+          <Text variant="titleLarge">
+            {isError ? "Transaction Failed" : "Transaction Sent"}
           </Text>
-        </HStack>
+          <IconButton icon="close" onPress={closeModal} />
+        </View>
 
-        <Pressable onPress={() => closeModal()}>
-          <Icon
-            as={<Ionicons name="close-outline" />}
-            size={"xl"}
-            color={"muted.400"}
+        <View style={styles.content}>
+          <IconButton
+            icon={isError ? "close-circle" : "check-circle"}
+            size={64}
+            iconColor={isError ? COLORS.error : COLORS.primary}
           />
-        </Pressable>
-      </HStack>
-
-      <ScrollView flex={1}>
-        <Text my={"4"}>{displayTxResult(params.txReceipt)}</Text>
-      </ScrollView>
-    </View>
+          <Text variant="bodyLarge" style={styles.message}>
+            {isError
+              ? "Something went wrong while sending your transaction."
+              : "Your transaction has been sent to the network."}
+          </Text>
+          {!isError && (
+            <Button
+              text="View on Explorer"
+              onPress={openExplorer}
+              style={styles.button}
+            />
+          )}
+        </View>
+      </Modal>
+    </Portal>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: "white",
+    borderRadius: 30,
+    padding: 20,
+    margin: 20,
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  content: {
+    alignItems: "center",
+    gap: 16,
+  },
+  message: {
+    textAlign: "center",
+  },
+  button: {
+    marginTop: 10,
+  },
+});

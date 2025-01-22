@@ -1,21 +1,12 @@
 import React from "react";
-import Modal from "react-native-modal";
-import {
-  Text,
-  VStack,
-  Icon,
-  HStack,
-  Divider,
-  Pressable,
-  View,
-} from "native-base";
-import Ionicons from "react-native-vector-icons/dist/Ionicons";
-import { FONT_SIZE } from "../../utils/styles";
+import { StyleSheet, View } from "react-native";
+import { Modal, Portal, Text, IconButton, Surface, Button } from "react-native-paper";
 import { useSelector } from "react-redux";
 import { Account } from "../../store/reducers/Accounts";
 import { Network } from "../../store/reducers/Networks";
 import QRCode from "react-native-qrcode-svg";
 import { COLORS } from "../../utils/constants";
+import { FONT_SIZE } from "../../utils/styles";
 import Clipboard from "@react-native-clipboard/clipboard";
 import { useToast } from "react-native-toast-notifications";
 import Share from "react-native-share";
@@ -37,9 +28,7 @@ export default function ReceiveModal({ isVisible, onClose }: Props) {
 
   const copyAddress = () => {
     Clipboard.setString(connectedAccount.address);
-    toast.show("Copied to clipboard", {
-      type: "success",
-    });
+    toast.show("Copied to clipboard", { type: "success" });
   };
 
   const shareAddress = async () => {
@@ -51,97 +40,90 @@ export default function ReceiveModal({ isVisible, onClose }: Props) {
   };
 
   return (
-    <Modal
-      isVisible={isVisible}
-      animationIn="slideInUp"
-      animationOut="slideOutDown"
-      onBackButtonPress={onClose}
-      onBackdropPress={onClose}
-    >
-      <VStack
-        bgColor="white"
-        borderRadius="30"
-        p="5"
-        space={4}
-        alignItems="center"
-      >
-        <HStack alignItems="center" justifyContent="space-between" w="full">
-          <Text fontSize={FONT_SIZE["xl"]} bold>
+    <Portal>
+      <Modal visible={isVisible} onDismiss={onClose} contentContainerStyle={styles.container}>
+        <View style={styles.header}>
+          <Text variant="headlineMedium">
             Receive {connectedNetwork.currencySymbol}
           </Text>
-          <Pressable onPress={onClose} _pressed={{ opacity: 0.4 }}>
-            <Icon
-              as={<Ionicons name="close-outline" />}
-              size={1.5 * FONT_SIZE["xl"]}
-            />
-          </Pressable>
-        </HStack>
+          <IconButton icon="close" onPress={onClose} />
+        </View>
 
-        <Divider bgColor="muted.100" />
+        <View style={styles.content}>
+          <QRCode value={connectedAccount.address} size={240} />
+          <Text variant="titleLarge" style={styles.address}>
+            {connectedAccount.address}
+          </Text>
+        </View>
 
-        <QRCode value={connectedAccount.address} size={12 * FONT_SIZE["xl"]} />
+        <Surface style={styles.warning} elevation={0}>
+          <Text variant="bodyMedium" style={styles.warningText}>
+            Send only {connectedNetwork.name} ({connectedNetwork.currencySymbol})
+            to this address. Sending any other coins may result in permanent loss.
+          </Text>
+        </Surface>
 
-        <Text fontSize={FONT_SIZE["xl"]} fontWeight="medium" textAlign="center">
-          {connectedAccount.address}
-        </Text>
+        <View style={styles.buttonContainer}>
+          <Button
+            mode="contained-tonal"
+            onPress={copyAddress}
+            icon="content-copy"
+            contentStyle={styles.buttonContent}
+          >
+            Copy
+          </Button>
 
-        <Divider bgColor="muted.100" />
-
-        <Text fontSize={FONT_SIZE["md"]} textAlign="center">
-          Send only {connectedNetwork.name} ({connectedNetwork.currencySymbol})
-          to this address. Sending any other coins may result in permanent loss.
-        </Text>
-
-        <HStack alignItems="center" space="10" mt="5">
-          <Pressable alignItems="center" onPress={copyAddress}>
-            {({ isPressed }) => (
-              <>
-                <View
-                  bgColor={
-                    isPressed ? "rgba(39, 184, 88, 0.2)" : COLORS.primaryLight
-                  }
-                  p="4"
-                  borderRadius="full"
-                >
-                  <Icon
-                    as={<Ionicons name="reader" />}
-                    size={1.2 * FONT_SIZE["xl"]}
-                    color={COLORS.primary}
-                    borderRadius="full"
-                  />
-                </View>
-                <Text fontSize={FONT_SIZE["lg"]} bold mt="2">
-                  Copy
-                </Text>
-              </>
-            )}
-          </Pressable>
-
-          <Pressable alignItems="center" onPress={shareAddress}>
-            {({ isPressed }) => (
-              <>
-                <View
-                  bgColor={
-                    isPressed ? "rgba(39, 184, 88, 0.2)" : COLORS.primaryLight
-                  }
-                  p="4"
-                  borderRadius="full"
-                >
-                  <Icon
-                    as={<Ionicons name="paper-plane" />}
-                    size={1.2 * FONT_SIZE["xl"]}
-                    color={COLORS.primary}
-                    borderRadius="full"
-                  />
-                </View>
-                <Text fontSize={FONT_SIZE["lg"]} bold mt="2">
-                  Share
-                </Text>
-              </>
-            )}
-          </Pressable>
-        </HStack>
-      </VStack>
-    </Modal>
+          <Button
+            mode="contained-tonal"
+            onPress={shareAddress}
+            icon="share"
+            contentStyle={styles.buttonContent}
+          >
+            Share
+          </Button>
+        </View>
+      </Modal>
+    </Portal>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: "white",
+    borderRadius: 30,
+    padding: 20,
+    margin: 20,
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  content: {
+    alignItems: "center",
+    gap: 16,
+    marginBottom: 20,
+  },
+  address: {
+    textAlign: "center",
+  },
+  warning: {
+    backgroundColor: COLORS.primaryLight,
+    padding: 16,
+    borderRadius: 12,
+    marginBottom: 20,
+  },
+  warningText: {
+    textAlign: "center",
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    gap: 40,
+  },
+  buttonContent: {
+    flexDirection: "column",
+    height: 80,
+  },
+});

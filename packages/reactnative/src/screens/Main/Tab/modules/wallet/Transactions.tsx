@@ -1,17 +1,7 @@
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  FlatList,
-  VStack,
-  Icon,
-  Image,
-  Divider,
-} from "native-base";
+import { View, FlatList, ActivityIndicator, RefreshControl, StyleSheet } from "react-native";
+import { Text, Divider, IconButton } from "react-native-paper";
 import Transaction from "../../../../../components/Transaction";
-import { ActivityIndicator, RefreshControl, StyleSheet } from "react-native";
-// @ts-ignore
-import Ionicons from "react-native-vector-icons/dist/Ionicons";
 import { COLORS } from "../../../../../utils/constants";
 import { FONT_SIZE } from "../../../../../utils/styles";
 import TransactionsAPI from "../../../../../apis/transactions";
@@ -175,29 +165,30 @@ export default function Transactions() {
           />
         </View>
       ) : loadingStatus === "error" ? (
-        <VStack flex="1" justifyContent="center" alignItems="center" space="4">
-          <Image
-            source={require("../../../../../assets/icons/failed_icon.png")}
-            alt="Retry"
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center", gap: 16 }}>
+          <IconButton
+            icon="alert"
+            size={7 * FONT_SIZE["xl"]}
+            iconColor={COLORS.primary}
             style={styles.failedIcon}
           />
-          <Text fontSize={1.1 * FONT_SIZE["lg"]}>
+          <Text variant="titleLarge">
             Failed to load transactions.{" "}
-            <Text onPress={getTransactions} color={COLORS.primary} bold>
+            <Text onPress={getTransactions} style={{color: COLORS.primary, fontWeight: 'bold'}}>
               Retry
             </Text>
           </Text>
-        </VStack>
+        </View>
       ) : transactions.length > 0 ? (
         <>
           <FlatList
             keyExtractor={(item) => item.timeStamp}
             data={transactions}
             renderItem={({ item }) => <Transaction tx={item} />}
-            ItemSeparatorComponent={<Divider bgColor="muted.100" my="2" />}
+            ItemSeparatorComponent={() => <Divider style={{marginVertical: 8}} />}
             ListFooterComponent={
               isLoadingMore ? (
-                <View py="4">
+                <View style={{paddingVertical: 16}}>
                   <ActivityIndicator
                     size="small"
                     color={COLORS.primary}
@@ -219,19 +210,17 @@ export default function Transactions() {
           />
         </>
       ) : (
-        <VStack flex="1" justifyContent="center" alignItems="center" space="4">
-          <View bgColor={COLORS.primaryLight} p="4" borderRadius="full">
-            <Icon
-              as={<Ionicons name="swap-horizontal-outline" />}
-              size={3 * FONT_SIZE["xl"]}
-              color={COLORS.primary}
-              borderRadius="full"
-            />
-          </View>
-          <Text fontSize={1.2 * FONT_SIZE["xl"]} bold color="muted.400">
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center", gap: 16 }}>
+          <IconButton
+            icon="swap-horizontal"
+            size={3 * FONT_SIZE["xl"]}
+            iconColor={COLORS.primary}
+            style={{backgroundColor: COLORS.primaryLight, borderRadius: 50}}
+          />
+          <Text variant="headlineSmall" style={{color: '#a1a1aa', fontWeight: 'bold'}}>
             No Transactions
           </Text>
-        </VStack>
+        </View>
       )}
     </View>
   );

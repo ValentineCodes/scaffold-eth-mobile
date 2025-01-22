@@ -1,17 +1,14 @@
-import { VStack, HStack, Icon, Divider, ScrollView, Text } from "native-base";
 import React from "react";
 import Modal from "react-native-modal";
+// @ts-ignore
 import Ionicons from "react-native-vector-icons/dist/Ionicons";
 import { FONT_SIZE } from "../../../utils/styles";
 import { truncateAddress } from "../../../utils/helperFunctions";
 import { useSelector } from "react-redux";
 import { Account } from "../../../store/reducers/Accounts";
 import Blockie from "../../../components/Blockie";
-
-import "react-native-get-random-values";
-import "@ethersproject/shims";
-import { Dimensions, TouchableOpacity } from "react-native";
-
+import { View, ScrollView, TouchableOpacity, Dimensions } from "react-native";
+import { Text, Divider, IconButton } from "react-native-paper";
 import { COLORS } from "../../../utils/constants";
 
 type Props = {
@@ -37,58 +34,62 @@ export default function AccountsModal({
       onBackButtonPress={onClose}
       onBackdropPress={onClose}
     >
-      <VStack bgColor="white" borderRadius="30" p="5" space={2}>
-        <HStack alignItems="center" justifyContent="space-between">
-          <Text fontSize={FONT_SIZE["xl"]} bold>
+      <View style={{ backgroundColor: 'white', borderRadius: 30, padding: 20 }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+          <Text variant="headlineMedium" style={{ fontWeight: 'bold' }}>
             Accounts
           </Text>
-          <Icon
-            as={<Ionicons name="close-outline" />}
-            size={1.5 * FONT_SIZE["xl"]}
+          <IconButton
+            icon={() => <Ionicons name="close-outline" size={1.5 * FONT_SIZE["xl"]} />}
             onPress={onClose}
           />
-        </HStack>
+        </View>
 
-        <Divider bgColor="muted.300" mt="2" />
+        <Divider style={{ marginTop: 8 }} />
 
-        <ScrollView maxH={Dimensions.get("window").height / 4.8}>
+        <ScrollView style={{ maxHeight: Dimensions.get("window").height / 4.8 }}>
           {accounts.map((account, index) => (
             <TouchableOpacity
               key={account.address}
               activeOpacity={0.4}
               onPress={() => onSelect(account)}
             >
-              <HStack
-                alignItems="center"
-                justifyContent="space-between"
-                paddingY={3}
-                borderBottomWidth={index === accounts.length - 1 ? 0 : 1}
-                borderBottomColor="muted.300"
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  paddingVertical: 12,
+                  borderBottomWidth: index === accounts.length - 1 ? 0 : 1,
+                  borderBottomColor: '#E5E5E5'
+                }}
               >
-                <HStack alignItems="center" space={4}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                   <Blockie
                     address={account.address}
                     size={1.7 * FONT_SIZE["xl"]}
                   />
-                  <VStack>
-                    <Text fontSize={FONT_SIZE["lg"]} fontWeight="medium">
+                  <View style={{ marginLeft: 16 }}>
+                    <Text variant="bodyLarge" style={{ fontWeight: '500' }}>
                       {account.name}
                     </Text>
-                    <Text>{truncateAddress(account.address)}</Text>
-                  </VStack>
-                </HStack>
+                    <Text variant="bodyMedium">
+                      {truncateAddress(account.address)}
+                    </Text>
+                  </View>
+                </View>
                 {selectedAccount === account.address && (
-                  <Icon
-                    as={<Ionicons name="checkmark-done" />}
+                  <Ionicons 
+                    name="checkmark-done" 
                     color={COLORS.primary}
                     size={1.2 * FONT_SIZE["xl"]}
                   />
                 )}
-              </HStack>
+              </View>
             </TouchableOpacity>
           ))}
         </ScrollView>
-      </VStack>
+      </View>
     </Modal>
   );
 }

@@ -1,4 +1,5 @@
-import { Input, View } from "native-base";
+import { View } from "react-native";
+import { TextInput } from "react-native-paper";
 import React, { useCallback } from "react";
 import { CommonInputProps } from "./utils";
 import { COLORS } from "../../../utils/constants";
@@ -30,23 +31,23 @@ export default function InputBase<
 
   return (
     <View>
-      <Input
+      <TextInput
         value={value?.toString()}
-        borderRadius={"3xl"}
-        variant="filled"
-        fontSize="md"
-        mt={"1"}
-        focusOutlineColor={COLORS.primary}
-        _input={{
-          selectionColor: COLORS.primary,
-          cursorColor: COLORS.primary,
+        mode="outlined"
+        style={{
+          borderRadius: 24,
+          marginTop: 4,
         }}
+        outlineColor={COLORS.primary}
+        activeOutlineColor={COLORS.primary}
+        selectionColor={COLORS.primary}
         cursorColor={COLORS.primary}
-        isDisabled={disabled}
+        disabled={disabled}
         placeholder={placeholder}
         onChangeText={handleChange}
-        InputLeftElement={prefix}
-        InputRightElement={suffix}
+        left={prefix}
+        right={suffix}
+        error={error}
       />
     </View>
   );
