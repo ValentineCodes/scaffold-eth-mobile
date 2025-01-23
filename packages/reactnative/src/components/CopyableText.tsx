@@ -1,8 +1,13 @@
-import React from "react";
-import { StyleSheet, TouchableOpacity, ViewStyle, TextStyle } from "react-native";
-import { Text, IconButton } from "react-native-paper";
-import Clipboard from "@react-native-clipboard/clipboard";
-import { useToast } from "react-native-toast-notifications";
+import Clipboard from '@react-native-clipboard/clipboard';
+import React from 'react';
+import {
+  StyleSheet,
+  TextStyle,
+  TouchableOpacity,
+  ViewStyle
+} from 'react-native';
+import { IconButton, Text } from 'react-native-paper';
+import { useToast } from 'react-native-toast-notifications';
 
 type Props = {
   value: string;
@@ -17,27 +22,22 @@ export default function CopyableText({
   containerStyle,
   textStyle,
   iconStyle,
-  displayText,
+  displayText
 }: Props) {
   const toast = useToast();
 
   const copy = () => {
     Clipboard.setString(value);
-    toast.show("Copied to clipboard", {
-      type: "success",
+    toast.show('Copied to clipboard', {
+      type: 'success'
     });
   };
 
   return (
-    <TouchableOpacity 
-      onPress={copy}
-      style={[styles.container, containerStyle]}
-    >
-      <Text style={[styles.text, textStyle]}>
-        {displayText || value}
-      </Text>
-      <IconButton 
-        icon="content-copy" 
+    <TouchableOpacity onPress={copy} style={[styles.container, containerStyle]}>
+      <Text style={[styles.text, textStyle]}>{displayText || value}</Text>
+      <IconButton
+        icon="content-copy"
         size={20}
         style={[styles.icon, iconStyle]}
       />
@@ -47,14 +47,14 @@ export default function CopyableText({
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center'
   },
   text: {
-    textAlign: "center",
-    fontWeight: "500",
+    textAlign: 'center',
+    fontWeight: '500'
   },
   icon: {
-    margin: 0,
+    margin: 0
   }
 });

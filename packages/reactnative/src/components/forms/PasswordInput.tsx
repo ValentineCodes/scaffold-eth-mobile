@@ -1,9 +1,8 @@
-import { View } from "react-native";
-import { Text, TextInput, IconButton } from "react-native-paper";
-import React, { useState } from "react";
-import { COLORS } from "../../utils/constants";
-import { FONT_SIZE } from "../../utils/styles";
-import { TouchableOpacity } from "react-native";
+import React, { useState } from 'react';
+import { TouchableOpacity, View } from 'react-native';
+import { IconButton, Text, TextInput } from 'react-native-paper';
+import { COLORS } from '../../utils/constants';
+import { FONT_SIZE } from '../../utils/styles';
 
 type Props = {
   label: string;
@@ -22,7 +21,7 @@ function PasswordInput({
   defaultValue,
   infoText,
   errorText,
-  onChange,
+  onChange
 }: Props) {
   const [show, setShow] = useState(false);
 
@@ -31,8 +30,8 @@ function PasswordInput({
   };
 
   return (
-    <View style={{gap: 8}}>
-      <Text variant="headlineSmall" style={{fontWeight: 'bold'}}>
+    <View style={{ gap: 8 }}>
+      <Text variant="headlineSmall" style={{ fontWeight: 'bold' }}>
         {label}
       </Text>
       <TextInput
@@ -41,25 +40,20 @@ function PasswordInput({
         mode="outlined"
         outlineColor={COLORS.primary}
         activeOutlineColor={COLORS.primary}
-        style={{fontSize: FONT_SIZE.md}}
-        left={
-          <TextInput.Icon
-            icon="lock"
-            color="#a3a3a3"
-          />
-        }
+        style={{ fontSize: FONT_SIZE.md }}
+        left={<TextInput.Icon icon="lock" color="#a3a3a3" />}
         right={
           value || !suggestion ? (
-            <View style={{flexDirection: 'row'}}>
+            <View style={{ flexDirection: 'row' }}>
               {value && (
                 <TextInput.Icon
                   icon="close"
                   color="#a3a3a3"
-                  onPress={() => onChange("")}
+                  onPress={() => onChange('')}
                 />
               )}
               <TextInput.Icon
-                icon={show ? "eye" : "eye-off"}
+                icon={show ? 'eye' : 'eye-off'}
                 color="#a3a3a3"
                 onPress={() => setShow(!show)}
               />
@@ -67,22 +61,22 @@ function PasswordInput({
           ) : (
             <TextInput.Affix
               text="Use Suggestion"
-              textStyle={{color: COLORS.primary, fontSize: FONT_SIZE.lg}}
+              textStyle={{ color: COLORS.primary, fontSize: FONT_SIZE.lg }}
               onPress={useSuggestion}
             />
           )
         }
         secureTextEntry={!show}
-        placeholder={suggestion ? `Suggestion: ${suggestion}` : "Password"}
+        placeholder={suggestion ? `Suggestion: ${suggestion}` : 'Password'}
         onChangeText={onChange}
       />
       {infoText ? (
-        <Text variant="bodySmall" style={{color: '#a3a3a3'}}>
+        <Text variant="bodySmall" style={{ color: '#a3a3a3' }}>
           {infoText}
         </Text>
       ) : null}
       {errorText ? (
-        <Text variant="bodySmall" style={{color: '#ef4444'}}>
+        <Text variant="bodySmall" style={{ color: '#ef4444' }}>
           {errorText}
         </Text>
       ) : null}

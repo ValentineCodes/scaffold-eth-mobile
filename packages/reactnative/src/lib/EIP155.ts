@@ -1,4 +1,4 @@
-import { JsonRpcProvider, TransactionRequest, Wallet } from "ethers";
+import { JsonRpcProvider, TransactionRequest, Wallet } from 'ethers';
 
 /**
  * Types

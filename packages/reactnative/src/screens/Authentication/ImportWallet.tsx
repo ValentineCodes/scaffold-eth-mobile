@@ -1,29 +1,27 @@
-import React, { useCallback, useState, useEffect } from "react";
-import { View, ScrollView, TouchableOpacity } from "react-native";
-import { useDispatch } from "react-redux";
-import { useToast } from "react-native-toast-notifications";
-import Ionicons from "react-native-vector-icons/dist/Ionicons";
-import MaterialCommunityIcons from "react-native-vector-icons/dist/MaterialCommunityIcons";
-import { useNavigation } from "@react-navigation/native";
-
-import "react-native-get-random-values";
-import "@ethersproject/shims";
-import { ethers } from "ethers";
-
-import styles from "../../styles/authentication/importWallet";
-import SeedPhraseInput from "../../components/forms/SeedPhraseInput";
-import PasswordInput from "../../components/forms/PasswordInput";
-import { Text, Button, Switch, Divider, IconButton } from "react-native-paper";
-import { COLORS } from "../../utils/constants";
-import QRCodeScanner from "../../components/modals/QRCodeScanner";
-import { initAccounts } from "../../store/reducers/Accounts";
-import { loginUser } from "../../store/reducers/Auth";
-import { FONT_SIZE } from "../../utils/styles";
-import { generate } from "random-words";
-import AccountsCountModal from "../../components/modals/AccountsCountModal";
-import ReactNativeBiometrics from "react-native-biometrics";
-import { useSecureStorage } from "../../hooks/useSecureStorage";
-import useWallet from "../../hooks/useWallet";
+import { useNavigation } from '@react-navigation/native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { ScrollView, TouchableOpacity, View } from 'react-native';
+import { useToast } from 'react-native-toast-notifications';
+import Ionicons from 'react-native-vector-icons/dist/Ionicons';
+import MaterialCommunityIcons from 'react-native-vector-icons/dist/MaterialCommunityIcons';
+import { useDispatch } from 'react-redux';
+import 'react-native-get-random-values';
+import '@ethersproject/shims';
+import { ethers } from 'ethers';
+import { generate } from 'random-words';
+import ReactNativeBiometrics from 'react-native-biometrics';
+import { Button, Divider, IconButton, Switch, Text } from 'react-native-paper';
+import PasswordInput from '../../components/forms/PasswordInput';
+import SeedPhraseInput from '../../components/forms/SeedPhraseInput';
+import AccountsCountModal from '../../components/modals/AccountsCountModal';
+import QRCodeScanner from '../../components/modals/QRCodeScanner';
+import { useSecureStorage } from '../../hooks/useSecureStorage';
+import useWallet from '../../hooks/useWallet';
+import { initAccounts } from '../../store/reducers/Accounts';
+import { loginUser } from '../../store/reducers/Auth';
+import styles from '../../styles/authentication/importWallet';
+import { COLORS } from '../../utils/constants';
+import { FONT_SIZE } from '../../utils/styles';
 
 function ImportWallet() {
   const navigation = useNavigation();
@@ -32,10 +30,10 @@ function ImportWallet() {
   const { saveItem } = useSecureStorage();
   const { importWallet: importAccount } = useWallet();
 
-  const [seedPhrase, setSeedPhrase] = useState("");
-  const [suggestion, setSuggestion] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [seedPhrase, setSeedPhrase] = useState('');
+  const [suggestion, setSuggestion] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [isBiometricsEnabled, setIsBiometricsEnabled] = useState(false);
   const [showScanner, setShowScanner] = useState(false);
   const [showAccountsCountModal, setShowAccountsCountModal] = useState(false);
@@ -47,10 +45,10 @@ function ImportWallet() {
   }
 
   const renderSeedPhraseError = useCallback(() => {
-    if (seedPhrase.trim().split(" ").length < 12) return;
+    if (seedPhrase.trim().split(' ').length < 12) return;
 
     if (!isValidMnemonic(seedPhrase)) {
-      return "Invalid Seed Phrase";
+      return 'Invalid Seed Phrase';
     } else {
       return null;
     }
@@ -59,28 +57,28 @@ function ImportWallet() {
   const validateInput = () => {
     // input validation
     if (!isValidMnemonic(seedPhrase)) {
-      toast.show("Invalid Seed Phrase", {
-        type: "danger",
+      toast.show('Invalid Seed Phrase', {
+        type: 'danger'
       });
       return;
     }
     if (!password) {
-      toast.show("Password cannot be empty!", {
-        type: "danger",
+      toast.show('Password cannot be empty!', {
+        type: 'danger'
       });
       return;
     }
 
     if (password.length < 8) {
-      toast.show("Password must be at least 8 characters", {
-        type: "danger",
+      toast.show('Password must be at least 8 characters', {
+        type: 'danger'
       });
       return;
     }
 
     if (password !== confirmPassword) {
-      toast.show("Passwords do not match!", {
-        type: "danger",
+      toast.show('Passwords do not match!', {
+        type: 'danger'
       });
       return;
     }
@@ -98,30 +96,28 @@ function ImportWallet() {
 
       wallets.push({
         address: wallet.address,
-        privateKey: wallet.privateKey,
+        privateKey: wallet.privateKey
       });
     }
 
     try {
-      await saveItem("seedPhrase", seedPhrase);
-      await saveItem("accounts", wallets);
-      await saveItem("security", { password, isBiometricsEnabled });
+      await saveItem('seedPhrase', seedPhrase);
+      await saveItem('accounts', wallets);
+      await saveItem('security', { password, isBiometricsEnabled });
 
       dispatch(
-        initAccounts(
-          wallets.map((wallet) => ({ ...wallet, isImported: false })),
-        ),
+        initAccounts(wallets.map(wallet => ({ ...wallet, isImported: false })))
       );
       dispatch(loginUser());
 
       // @ts-ignore
-      navigation.navigate("Main");
+      navigation.navigate('Main');
     } catch (error) {
       toast.show(
-        "Failed to import wallet. Please ensure you have a stable network connection and try again",
+        'Failed to import wallet. Please ensure you have a stable network connection and try again',
         {
-          type: "danger",
-        },
+          type: 'danger'
+        }
       );
     } finally {
       setIsImporting(false);
@@ -132,7 +128,7 @@ function ImportWallet() {
     (async () => {
       // set suggested password
       setSuggestion(
-        generate({ exactly: 2, join: "", minLength: 4, maxLength: 5 }),
+        generate({ exactly: 2, join: '', minLength: 4, maxLength: 5 })
       );
 
       // check biometrics availability
@@ -152,10 +148,10 @@ function ImportWallet() {
         <View style={styles.headerLeft}>
           <IconButton
             icon={() => (
-              <Ionicons 
-                name="arrow-back-outline" 
-                size={1.3 * FONT_SIZE["xl"]} 
-                color="black" 
+              <Ionicons
+                name="arrow-back-outline"
+                size={1.3 * FONT_SIZE['xl']}
+                color="black"
               />
             )}
             onPress={() => navigation.goBack()}
@@ -167,10 +163,10 @@ function ImportWallet() {
 
         <IconButton
           icon={() => (
-            <MaterialCommunityIcons 
-              name="qrcode-scan" 
-              size={1.3 * FONT_SIZE["xl"]} 
-              color="black" 
+            <MaterialCommunityIcons
+              name="qrcode-scan"
+              size={1.3 * FONT_SIZE['xl']}
+              color="black"
             />
           )}
           onPress={() => setShowScanner(true)}
@@ -188,7 +184,7 @@ function ImportWallet() {
             label="New Password"
             value={password}
             suggestion={suggestion}
-            infoText={password.length < 8 && "Must be at least 8 characters"}
+            infoText={password.length < 8 && 'Must be at least 8 characters'}
             onChange={setPassword}
           />
           <PasswordInput
@@ -199,7 +195,7 @@ function ImportWallet() {
               password &&
               confirmPassword &&
               password !== confirmPassword &&
-              "Password must match"
+              'Password must match'
             }
             onChange={setConfirmPassword}
           />
@@ -245,7 +241,7 @@ function ImportWallet() {
           <QRCodeScanner
             isOpen={showScanner}
             onClose={() => setShowScanner(false)}
-            onReadCode={(data) => {
+            onReadCode={data => {
               setSeedPhrase(data);
               setShowScanner(false);
             }}

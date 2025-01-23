@@ -1,7 +1,7 @@
-import { Dimensions } from "react-native";
+import { Dimensions } from 'react-native';
 
-export const WINDOW_WIDTH = Dimensions.get("window").width;
-export const WINDOW_HEIGHT = Dimensions.get("window").height;
+export const WINDOW_WIDTH = Dimensions.get('window').width;
+export const WINDOW_HEIGHT = Dimensions.get('window').height;
 
 const sm = WINDOW_HEIGHT * 0.014;
 const md = WINDOW_HEIGHT * 0.017;
@@ -12,5 +12,5 @@ export const FONT_SIZE = {
   sm,
   md,
   lg,
-  xl,
+  xl
 };

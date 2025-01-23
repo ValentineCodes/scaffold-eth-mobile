@@ -1,11 +1,11 @@
-import React from "react";
-import { StyleSheet } from "react-native";
-import { Button as PaperButton } from "react-native-paper";
-import { COLORS } from "../utils/constants";
+import React from 'react';
+import { StyleSheet } from 'react-native';
+import { Button as PaperButton } from 'react-native-paper';
+import { COLORS } from '../utils/constants';
 
 type Props = {
   text: string;
-  type?: "normal" | "outline";
+  type?: 'normal' | 'outline';
   loading?: boolean;
   disabled?: boolean;
   style?: any;
@@ -18,25 +18,22 @@ export default function Button({
   loading,
   disabled,
   style,
-  onPress,
+  onPress
 }: Props) {
   return (
     <PaperButton
-      mode={type === "outline" ? "outlined" : "contained"}
+      mode={type === 'outline' ? 'outlined' : 'contained'}
       onPress={onPress}
       loading={loading}
       disabled={disabled}
       style={[
         styles.button,
-        type === "outline" && styles.outlineButton,
+        type === 'outline' && styles.outlineButton,
         disabled && styles.disabledButton,
-        style,
+        style
       ]}
       contentStyle={styles.content}
-      labelStyle={[
-        styles.label,
-        type === "outline" && styles.outlineLabel
-      ]}
+      labelStyle={[styles.label, type === 'outline' && styles.outlineLabel]}
     >
       {text}
     </PaperButton>
@@ -46,23 +43,23 @@ export default function Button({
 const styles = StyleSheet.create({
   button: {
     borderRadius: 25,
-    width: "100%",
+    width: '100%'
   },
   outlineButton: {
-    backgroundColor: "#E8F7ED",
+    backgroundColor: '#E8F7ED'
   },
   disabledButton: {
-    backgroundColor: "#2A974D",
+    backgroundColor: '#2A974D'
   },
   content: {
-    paddingVertical: 8,
+    paddingVertical: 8
   },
   label: {
     fontSize: 16,
-    fontWeight: "bold",
-    color: "white",
+    fontWeight: 'bold',
+    color: 'white'
   },
   outlineLabel: {
-    color: COLORS.primary,
+    color: COLORS.primary
   }
 });

@@ -1,17 +1,16 @@
-import React, { useEffect } from "react";
-import { SafeAreaView, StyleSheet, StatusBar } from "react-native";
-
+import React, { useEffect } from 'react';
+import { SafeAreaView, StatusBar, StyleSheet } from 'react-native';
 // import BootSplash from "react-native-bootsplash";
-import changeNavigationBarColor from "react-native-navigation-bar-color";
-import Providers from "./Providers";
-import Navigation from "./Navigation";
-import SwitchNetwork from "../components/SwitchNetwork";
+import changeNavigationBarColor from 'react-native-navigation-bar-color';
+import SwitchNetwork from '../components/SwitchNetwork';
+import Navigation from './Navigation';
+import Providers from './Providers';
 
 function App(): JSX.Element {
   useEffect(() => {
     (async () => {
       try {
-        changeNavigationBarColor("#ffffff");
+        changeNavigationBarColor('#ffffff');
         // await BootSplash.hide({ fade: true });
       } catch (error) {
         return;
@@ -33,9 +32,9 @@ function App(): JSX.Element {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
-    paddingHorizontal: 5,
-  },
+    backgroundColor: 'white',
+    paddingHorizontal: 5
+  }
 });
 
 export default App;

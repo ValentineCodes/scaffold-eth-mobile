@@ -1,10 +1,15 @@
-import { View } from "react-native";
-import { Text, TextInput, Button as PaperButton, Surface } from "react-native-paper";
-import React, { useState } from "react";
-import Modal from "react-native-modal";
-import { FONT_SIZE } from "../../utils/styles";
-import { COLORS } from "../../utils/constants";
-import Button from "../Button";
+import React, { useState } from 'react';
+import { View } from 'react-native';
+import Modal from 'react-native-modal';
+import {
+  Button as PaperButton,
+  Surface,
+  Text,
+  TextInput
+} from 'react-native-paper';
+import { COLORS } from '../../utils/constants';
+import { FONT_SIZE } from '../../utils/styles';
+import Button from '../Button';
 
 type Props = {
   isVisible: boolean;
@@ -17,16 +22,16 @@ const MAX_INITIAL_ACCOUNT = 10;
 export default function AccountsCountModal({
   isVisible,
   onClose,
-  onFinish,
+  onFinish
 }: Props) {
-  const [accountsCount, setAccountsCount] = useState("1");
-  const [error, setError] = useState("");
+  const [accountsCount, setAccountsCount] = useState('1');
+  const [error, setError] = useState('');
 
   const isAccountsCountValid = (value?: string): boolean => {
     const _accountsCount = Number(value || accountsCount);
 
     if (isNaN(_accountsCount)) {
-      setError("Invalid count");
+      setError('Invalid count');
       return false;
     } else if (_accountsCount > MAX_INITIAL_ACCOUNT || _accountsCount < 1) {
       setError(`Initial accounts must be from 1 - ${MAX_INITIAL_ACCOUNT}`);
@@ -40,7 +45,7 @@ export default function AccountsCountModal({
     setAccountsCount(value);
 
     if (error) {
-      setError("");
+      setError('');
     }
 
     isAccountsCountValid(value);
@@ -64,14 +69,11 @@ export default function AccountsCountModal({
         style={{
           borderRadius: 30,
           padding: 20,
-          elevation: 4,
+          elevation: 4
         }}
       >
         <View style={{ alignItems: 'center', gap: 16 }}>
-          <Text 
-            variant="headlineSmall" 
-            style={{ textAlign: 'center' }}
-          >
+          <Text variant="headlineSmall" style={{ textAlign: 'center' }}>
             How many accounts would you like to start with?
           </Text>
 
@@ -79,7 +81,7 @@ export default function AccountsCountModal({
             variant="titleMedium"
             style={{
               color: COLORS.primary,
-              textAlign: 'center',
+              textAlign: 'center'
             }}
           >
             Max: 10
@@ -92,7 +94,7 @@ export default function AccountsCountModal({
               backgroundColor: 'transparent',
               fontSize: 32,
               textAlign: 'center',
-              width: '100%',
+              width: '100%'
             }}
             underlineColor="transparent"
             activeUnderlineColor={COLORS.primary}
@@ -104,26 +106,23 @@ export default function AccountsCountModal({
           />
 
           {error && (
-            <Text 
-              variant="bodySmall" 
-              style={{ color: 'red' }}
-            >
+            <Text variant="bodySmall" style={{ color: 'red' }}>
               {error}
             </Text>
           )}
 
-          <View 
+          <View
             style={{
               flexDirection: 'row',
               width: '100%',
-              gap: 8,
+              gap: 8
             }}
           >
             <PaperButton
               mode="contained-tonal"
               onPress={onClose}
               style={{
-                flex: 1,
+                flex: 1
               }}
             >
               Cancel

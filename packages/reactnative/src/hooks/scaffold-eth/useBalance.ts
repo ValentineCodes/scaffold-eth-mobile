@@ -1,11 +1,9 @@
-import { useEffect, useState } from "react";
-import useNetwork from "./useNetwork";
-
-import "react-native-get-random-values";
-import "@ethersproject/shims";
-import { ethers } from "ethers";
-
-import { parseFloat } from "../../utils/helperFunctions";
+import { useEffect, useState } from 'react';
+import useNetwork from './useNetwork';
+import 'react-native-get-random-values';
+import '@ethersproject/shims';
+import { ethers } from 'ethers';
+import { parseFloat } from '../../utils/helperFunctions';
 
 interface UseBalanceConfig {
   address: string;
@@ -19,7 +17,7 @@ interface UseBalanceConfig {
 export default function useBalance({ address }: UseBalanceConfig) {
   const network = useNetwork();
 
-  const [balance, setBalance] = useState("");
+  const [balance, setBalance] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [isRefetching, setIsRefetching] = useState(false);
   const [error, setError] = useState<any>(null);
@@ -55,14 +53,14 @@ export default function useBalance({ address }: UseBalanceConfig) {
   useEffect(() => {
     const provider = new ethers.JsonRpcProvider(network.provider);
 
-    provider.off("block");
+    provider.off('block');
 
-    provider.on("block", (blockNumber) => {
+    provider.on('block', blockNumber => {
       getBalance();
     });
 
     return () => {
-      provider.off("block");
+      provider.off('block');
     };
   }, [address, network]);
 
@@ -71,6 +69,6 @@ export default function useBalance({ address }: UseBalanceConfig) {
     refetch,
     isLoading,
     isRefetching,
-    error,
+    error
   };
 }

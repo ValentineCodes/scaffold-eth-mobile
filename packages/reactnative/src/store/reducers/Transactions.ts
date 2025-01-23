@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 export interface Transaction {
   action: string;
@@ -11,13 +11,13 @@ export interface Transaction {
 }
 
 export const transactionsSlice = createSlice({
-  name: "TRANSACTIONS",
+  name: 'TRANSACTIONS',
   initialState: [] as Transaction[] | [],
   reducers: {
     addTransaction: (state, action) => {
       return [...state, action.payload];
-    },
-  },
+    }
+  }
 });
 
 export const { addTransaction } = transactionsSlice.actions;

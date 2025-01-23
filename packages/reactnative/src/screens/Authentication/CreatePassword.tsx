@@ -1,18 +1,16 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { View, ScrollView } from "react-native";
-import { Text, Switch, Button, Divider } from "react-native-paper";
-
-import styles from "../../styles/authentication/createPassword";
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import PasswordInput from "../../components/forms/PasswordInput";
-import { useToast } from "react-native-toast-notifications";
-
-import { COLORS } from "../../utils/constants";
-import ProgressIndicatorHeader from "../../components/headers/ProgressIndicatorHeader";
-import { FONT_SIZE } from "../../utils/styles";
-import { generate } from "random-words";
-import ReactNativeBiometrics from "react-native-biometrics";
-import { useSecureStorage } from "../../hooks/useSecureStorage";
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { generate } from 'random-words';
+import React, { useCallback, useEffect, useState } from 'react';
+import { ScrollView, View } from 'react-native';
+import ReactNativeBiometrics from 'react-native-biometrics';
+import { Button, Divider, Switch, Text } from 'react-native-paper';
+import { useToast } from 'react-native-toast-notifications';
+import PasswordInput from '../../components/forms/PasswordInput';
+import ProgressIndicatorHeader from '../../components/headers/ProgressIndicatorHeader';
+import { useSecureStorage } from '../../hooks/useSecureStorage';
+import styles from '../../styles/authentication/createPassword';
+import { COLORS } from '../../utils/constants';
+import { FONT_SIZE } from '../../utils/styles';
 
 type Props = {};
 
@@ -21,31 +19,31 @@ function CreatePassword({}: Props) {
   const toast = useToast();
   const { saveItem } = useSecureStorage();
 
-  const [suggestion, setSuggestion] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [suggestion, setSuggestion] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [isBiometricsEnabled, setIsBiometricsEnabled] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
   const [isBiometricsAvailable, setIsBiometricsAvailable] = useState(false);
 
   const createPassword = async () => {
     if (!password) {
-      toast.show("Password cannot be empty!", {
-        type: "danger",
+      toast.show('Password cannot be empty!', {
+        type: 'danger'
       });
       return;
     }
 
     if (password.length < 8) {
-      toast.show("Password must be at least 8 characters", {
-        type: "danger",
+      toast.show('Password must be at least 8 characters', {
+        type: 'danger'
       });
       return;
     }
 
     if (password !== confirmPassword) {
-      toast.show("Passwords do not match!", {
-        type: "danger",
+      toast.show('Passwords do not match!', {
+        type: 'danger'
       });
       return;
     }
@@ -55,20 +53,20 @@ function CreatePassword({}: Props) {
 
       const security = {
         password,
-        isBiometricsEnabled,
+        isBiometricsEnabled
       };
 
-      await saveItem("security", security);
+      await saveItem('security', security);
 
       // clean up
-      setPassword("");
-      setConfirmPassword("");
+      setPassword('');
+      setConfirmPassword('');
       setIsBiometricsEnabled(false);
 
-      navigation.navigate("SecureWallet");
+      navigation.navigate('SecureWallet');
     } catch (error) {
-      toast.show("Failed to create password. Please try again", {
-        type: "danger",
+      toast.show('Failed to create password. Please try again', {
+        type: 'danger'
       });
     } finally {
       setIsCreating(false);
@@ -79,9 +77,9 @@ function CreatePassword({}: Props) {
   useFocusEffect(
     useCallback(() => {
       setSuggestion(
-        generate({ exactly: 2, join: "", minLength: 4, maxLength: 5 }),
+        generate({ exactly: 2, join: '', minLength: 4, maxLength: 5 })
       );
-    }, []),
+    }, [])
   );
 
   // check biometrics availability
@@ -104,16 +102,10 @@ function CreatePassword({}: Props) {
       <Divider style={{ marginVertical: 32 }} />
 
       <ScrollView style={{ flex: 1 }}>
-        <Text
-          variant="headlineMedium"
-          style={styles.title}
-        >
+        <Text variant="headlineMedium" style={styles.title}>
           Create Password
         </Text>
-        <Text
-          variant="bodyLarge"
-          style={styles.subtitle}
-        >
+        <Text variant="bodyLarge" style={styles.subtitle}>
           This password will unlock Scaffold-ETH only on this device
         </Text>
 
@@ -122,7 +114,7 @@ function CreatePassword({}: Props) {
             label="New Password"
             value={password}
             suggestion={suggestion}
-            infoText={password.length < 8 && "Must be at least 8 characters"}
+            infoText={password.length < 8 && 'Must be at least 8 characters'}
             onChange={setPassword}
           />
           <PasswordInput
@@ -133,7 +125,7 @@ function CreatePassword({}: Props) {
               password &&
               confirmPassword &&
               password !== confirmPassword &&
-              "Password must match"
+              'Password must match'
             }
             onChange={setConfirmPassword}
           />

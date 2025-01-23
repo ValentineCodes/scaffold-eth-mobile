@@ -1,28 +1,27 @@
-import { configureStore, combineReducers } from "@reduxjs/toolkit";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import {
-  persistReducer,
-  persistStore,
   FLUSH,
-  REHYDRATE,
   PAUSE,
   PERSIST,
+  persistReducer,
+  persistStore,
   PURGE,
   REGISTER,
-} from "redux-persist";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-
-import Auth from "./reducers/Auth";
-import Networks from "./reducers/Networks";
-import Accounts from "./reducers/Accounts";
-import Transactions from "./reducers/Transactions";
-import Balance from "./reducers/Balance";
-import Recipients from "./reducers/Recipients";
+  REHYDRATE
+} from 'redux-persist';
+import Accounts from './reducers/Accounts';
+import Auth from './reducers/Auth';
+import Balance from './reducers/Balance';
+import Networks from './reducers/Networks';
+import Recipients from './reducers/Recipients';
+import Transactions from './reducers/Transactions';
 
 const persistConfig = {
-  key: "root",
+  key: 'root',
   version: 1,
   storage: AsyncStorage,
-  blacklist: ["balance", "activeSessions", "networks"],
+  blacklist: ['balance', 'activeSessions', 'networks']
 };
 
 const reducers = combineReducers({
@@ -31,19 +30,19 @@ const reducers = combineReducers({
   accounts: Accounts,
   transactions: Transactions,
   balance: Balance,
-  recipients: Recipients,
+  recipients: Recipients
 });
 
 const persistedReducer = persistReducer(persistConfig, reducers);
 
 export const store = configureStore({
   reducer: persistedReducer,
-  middleware: (getDefaultMiddleware) =>
+  middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-      },
-    }),
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]
+      }
+    })
 });
 
 export const persistor = persistStore(store);

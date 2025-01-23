@@ -1,7 +1,7 @@
-import React from "react";
-import { StyleSheet, View } from "react-native";
-import { Text } from "react-native-paper";
-import { Tag } from "../../Tag";
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
+import { Text } from 'react-native-paper';
+import { Tag } from '../../Tag';
 
 interface IMethodsProps {
   methods: [] | [string] | undefined;
@@ -26,25 +26,25 @@ export function Methods({ methods }: IMethodsProps) {
 const styles = StyleSheet.create({
   methodsContainer: {
     marginTop: 4,
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderRadius: 20,
     padding: 8,
-    display: "flex",
-    flexWrap: "wrap",
-    alignItems: "flex-start",
-    marginBottom: 8,
+    display: 'flex',
+    flexWrap: 'wrap',
+    alignItems: 'flex-start',
+    marginBottom: 8
   },
   methodEventsTitle: {
-    color: "rgba(121, 134, 134, 1)",
-    fontWeight: "600",
+    color: 'rgba(121, 134, 134, 1)',
+    fontWeight: '600',
     paddingLeft: 6,
-    paddingVertical: 4,
+    paddingVertical: 4
   },
   flexRowWrapped: {
-    display: "flex",
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "flex-start",
-    alignItems: "center",
-  },
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'flex-start',
+    alignItems: 'center'
+  }
 });

@@ -1,6 +1,6 @@
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { Tag } from "../../Tag";
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { Tag } from '../../Tag';
 
 interface IEventProps {
   events: [];
@@ -21,27 +21,27 @@ export function Events({ events }: IEventProps) {
 
 const styles = StyleSheet.create({
   methodsContainer: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderRadius: 20,
     padding: 8,
-    display: "flex",
-    flexWrap: "wrap",
-    alignItems: "flex-start",
-    marginBottom: 8,
+    display: 'flex',
+    flexWrap: 'wrap',
+    alignItems: 'flex-start',
+    marginBottom: 8
   },
   methodEventsTitle: {
-    color: "rgba(121, 134, 134, 1)",
+    color: 'rgba(121, 134, 134, 1)',
     fontSize: 13,
     lineHeight: 18,
-    fontWeight: "600",
+    fontWeight: '600',
     paddingLeft: 6,
-    paddingVertical: 4,
+    paddingVertical: 4
   },
   flexRowWrapped: {
-    display: "flex",
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "flex-start",
-    alignItems: "center",
-  },
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'flex-start',
+    alignItems: 'center'
+  }
 });

@@ -1,13 +1,12 @@
-import React, { useState } from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
-import Modal from "react-native-modal";
-import { Text, Button, Divider } from "react-native-paper";
-
-import ProgressIndicatorHeader from "../../components/headers/ProgressIndicatorHeader";
-import { COLORS } from "../../utils/constants";
-import { FONT_SIZE } from "../../utils/styles";
-import BulletText from "../../components/BulletText";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation } from '@react-navigation/native';
+import React, { useState } from 'react';
+import { ScrollView, StyleSheet, View } from 'react-native';
+import Modal from 'react-native-modal';
+import { Button, Divider, Text } from 'react-native-paper';
+import BulletText from '../../components/BulletText';
+import ProgressIndicatorHeader from '../../components/headers/ProgressIndicatorHeader';
+import { COLORS } from '../../utils/constants';
+import { FONT_SIZE } from '../../utils/styles';
 
 type Props = {};
 
@@ -24,10 +23,7 @@ export default function SecureWallet({}: Props) {
       <Divider style={{ marginTop: 32, marginBottom: 16 }} />
 
       <ScrollView style={{ flex: 1 }}>
-        <Text
-          variant="headlineLarge"
-          style={styles.title}
-        >
+        <Text variant="headlineLarge" style={styles.title}>
           Secure Your Wallet
         </Text>
         <View style={styles.seedPhraseContainer}>
@@ -58,7 +54,7 @@ export default function SecureWallet({}: Props) {
           <View style={styles.securityIndicator}>
             {Array(3)
               .fill(null)
-              .map((_) => (
+              .map(_ => (
                 <View
                   key={Math.random().toString()}
                   style={styles.securityBar}
@@ -88,7 +84,7 @@ export default function SecureWallet({}: Props) {
 
           <Button
             mode="contained"
-            onPress={() => navigation.navigate("GenerateSeedPhrase")}
+            onPress={() => navigation.navigate('GenerateSeedPhrase')}
           >
             Start
           </Button>
@@ -100,7 +96,7 @@ export default function SecureWallet({}: Props) {
           animationOut="slideOutDown"
           onBackdropPress={() => setIsSeedPhraseDescriptionVisible(false)}
           onBackButtonPress={() => setIsSeedPhraseDescriptionVisible(false)}
-          style={{ justifyContent: "flex-end" }}
+          style={{ justifyContent: 'flex-end' }}
         >
           <View style={styles.modalContent}>
             <Text variant="headlineSmall" style={styles.modalTitle}>
@@ -143,13 +139,13 @@ export default function SecureWallet({}: Props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
-    padding: 15,
+    backgroundColor: 'white',
+    padding: 15
   },
   title: {
     textAlign: 'center',
     color: COLORS.primary,
-    fontSize: 1.7 * FONT_SIZE["xl"],
+    fontSize: 1.7 * FONT_SIZE['xl'],
     fontWeight: 'bold'
   },
   seedPhraseContainer: {

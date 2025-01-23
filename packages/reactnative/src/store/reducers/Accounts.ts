@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 export interface Account {
   name: string;
@@ -8,7 +8,7 @@ export interface Account {
 }
 
 export const accountsSlice = createSlice({
-  name: "ACCOUNTS",
+  name: 'ACCOUNTS',
   initialState: [] as Account[] | [],
   reducers: {
     initAccounts: (state, action) => {
@@ -17,15 +17,15 @@ export const accountsSlice = createSlice({
         name: `Account ${index + 1}`,
         address: wallet.address,
         isConnected: index === 0,
-        isImported: wallet.isImported,
+        isImported: wallet.isImported
       }));
 
       return accounts;
     },
     addAccount: (state, action) => {
-      const accounts = state.map((account) => ({
+      const accounts = state.map(account => ({
         ...account,
-        isConnected: false,
+        isConnected: false
       }));
       return [
         ...accounts,
@@ -33,13 +33,13 @@ export const accountsSlice = createSlice({
           name: `Account ${state.length + 1}`,
           address: action.payload.address,
           isConnected: true,
-          isImported: action.payload.isImported,
-        },
+          isImported: action.payload.isImported
+        }
       ];
     },
     switchAccount: (state, action) => {
       // action.payload => account address
-      return state.map((account) => {
+      return state.map(account => {
         if (account.address === action.payload) {
           return { ...account, isConnected: true };
         } else {
@@ -49,25 +49,25 @@ export const accountsSlice = createSlice({
     },
     removeAccount: (state, action) => {
       return state
-        .filter((account) => account.address != action.payload)
+        .filter(account => account.address != action.payload)
         .map((account, index) => {
           if (index === 0) return { ...account, isConnected: true };
           return account;
         });
     },
     changeName: (state, action) => {
-      return state.map((account) => {
+      return state.map(account => {
         if (account.address === action.payload.address) {
           return {
             ...account,
-            name: action.payload.newName,
+            name: action.payload.newName
           };
         } else {
           return account;
         }
       });
-    },
-  },
+    }
+  }
 });
 
 export const {
@@ -75,7 +75,7 @@ export const {
   addAccount,
   switchAccount,
   removeAccount,
-  changeName,
+  changeName
 } = accountsSlice.actions;
 
 export default accountsSlice.reducer;

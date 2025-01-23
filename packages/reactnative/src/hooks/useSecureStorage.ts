@@ -1,5 +1,5 @@
-import { useCallback, useState } from "react";
-import EncryptedStorage from "react-native-encrypted-storage";
+import { useCallback, useState } from 'react';
+import EncryptedStorage from 'react-native-encrypted-storage';
 
 /**
  * Type for useSecureStorage return object.
@@ -36,16 +36,16 @@ export function useSecureStorage(): UseSecureStorageReturn {
         setLoading(true);
         setError(null);
         const stringValue =
-          typeof value === "object" ? JSON.stringify(value) : String(value);
+          typeof value === 'object' ? JSON.stringify(value) : String(value);
         await EncryptedStorage.setItem(key, stringValue);
       } catch (err) {
-        setError((err as Error).message || "Failed to save item.");
-        console.error("useSecureStorage saveItem error:", err);
+        setError((err as Error).message || 'Failed to save item.');
+        console.error('useSecureStorage saveItem error:', err);
       } finally {
         setLoading(false);
       }
     },
-    [],
+    []
   );
 
   /**
@@ -62,8 +62,8 @@ export function useSecureStorage(): UseSecureStorageReturn {
       const value = await EncryptedStorage.getItem(key);
       return value ? (JSON.parse(value) as T) : null;
     } catch (err) {
-      setError((err as Error).message || "Failed to retrieve item.");
-      console.error("useSecureStorage getItem error:", err);
+      setError((err as Error).message || 'Failed to retrieve item.');
+      console.error('useSecureStorage getItem error:', err);
       return null;
     } finally {
       setLoading(false);
@@ -82,8 +82,8 @@ export function useSecureStorage(): UseSecureStorageReturn {
       setError(null);
       await EncryptedStorage.removeItem(key);
     } catch (err) {
-      setError((err as Error).message || "Failed to remove item.");
-      console.error("useSecureStorage removeItem error:", err);
+      setError((err as Error).message || 'Failed to remove item.');
+      console.error('useSecureStorage removeItem error:', err);
     } finally {
       setLoading(false);
     }
@@ -94,6 +94,6 @@ export function useSecureStorage(): UseSecureStorageReturn {
     getItem,
     removeItem,
     loading,
-    error,
+    error
   };
 }

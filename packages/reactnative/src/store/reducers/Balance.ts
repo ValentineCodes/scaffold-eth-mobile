@@ -1,13 +1,13 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 export const balanceSlice = createSlice({
-  name: "BALANCE",
-  initialState: "",
+  name: 'BALANCE',
+  initialState: '',
   reducers: {
     setBalance: (state, action) => {
       return action.payload;
-    },
-  },
+    }
+  }
 });
 
 export const { setBalance } = balanceSlice.actions;

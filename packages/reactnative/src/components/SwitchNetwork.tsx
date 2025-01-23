@@ -1,22 +1,22 @@
-import React from "react";
-import { StyleSheet, View, ScrollView, Pressable } from "react-native";
-import { Text, IconButton } from "react-native-paper";
-import { useDispatch, useSelector } from "react-redux";
-import { Network, switchNetwork } from "../store/reducers/Networks";
-import { COLORS } from "../utils/constants";
-import { FONT_SIZE } from "../utils/styles";
-import scaffoldConfig from "../../scaffold.config";
+import React from 'react';
+import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { IconButton, Text } from 'react-native-paper';
+import { useDispatch, useSelector } from 'react-redux';
+import scaffoldConfig from '../../scaffold.config';
+import { Network, switchNetwork } from '../store/reducers/Networks';
+import { COLORS } from '../utils/constants';
+import { FONT_SIZE } from '../utils/styles';
 
 export default function SwitchNetwork() {
   const dispatch = useDispatch();
   const networks: Network[] = useSelector((state: any) => state.networks);
   const connectedNetwork: Network = useSelector((state: any) =>
-    state.networks.find((network: Network) => network.isConnected),
+    state.networks.find((network: Network) => network.isConnected)
   );
 
   if (
     scaffoldConfig.targetNetworks
-      .map((network) => network.id)
+      .map(network => network.id)
       .includes(connectedNetwork.id)
   )
     return;
@@ -36,7 +36,7 @@ export default function SwitchNetwork() {
             key={network.id.toString()}
             style={[
               styles.networkItem,
-              network.isConnected && styles.networkItemActive,
+              network.isConnected && styles.networkItemActive
             ]}
             onPress={() => dispatch(switchNetwork(network.id.toString()))}
           >
@@ -45,7 +45,7 @@ export default function SwitchNetwork() {
                 variant="titleMedium"
                 style={[
                   styles.networkName,
-                  network.isConnected && styles.networkNameActive,
+                  network.isConnected && styles.networkNameActive
                 ]}
               >
                 {network.name}
@@ -54,18 +54,14 @@ export default function SwitchNetwork() {
                 variant="bodyMedium"
                 style={[
                   styles.networkChainId,
-                  network.isConnected && styles.networkChainIdActive,
+                  network.isConnected && styles.networkChainIdActive
                 ]}
               >
                 Chain ID: {network.id.toString()}
               </Text>
             </View>
             {network.isConnected && (
-              <IconButton
-                icon="check"
-                size={24}
-                iconColor={COLORS.primary}
-              />
+              <IconButton icon="check" size={24} iconColor={COLORS.primary} />
             )}
           </Pressable>
         ))}
@@ -77,42 +73,42 @@ export default function SwitchNetwork() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: 'white'
   },
   header: {
     padding: 16,
-    gap: 4,
+    gap: 4
   },
   subtitle: {
-    color: "#666",
+    color: '#666'
   },
   scrollView: {
-    flex: 1,
+    flex: 1
   },
   networkItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: "#e5e5e5",
+    borderBottomColor: '#e5e5e5'
   },
   networkItemActive: {
-    backgroundColor: COLORS.primaryLight,
+    backgroundColor: COLORS.primaryLight
   },
   networkInfo: {
-    gap: 4,
+    gap: 4
   },
   networkName: {
-    fontSize: FONT_SIZE.lg,
+    fontSize: FONT_SIZE.lg
   },
   networkNameActive: {
-    color: COLORS.primary,
+    color: COLORS.primary
   },
   networkChainId: {
-    color: "#666",
+    color: '#666'
   },
   networkChainIdActive: {
-    color: COLORS.primary,
-  },
+    color: COLORS.primary
+  }
 });

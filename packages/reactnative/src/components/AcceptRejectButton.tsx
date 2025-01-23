@@ -1,6 +1,6 @@
-import React from "react";
-import { StyleSheet } from "react-native";
-import { Button, ActivityIndicator } from "react-native-paper";
+import React from 'react';
+import { StyleSheet } from 'react-native';
+import { ActivityIndicator, Button } from 'react-native-paper';
 
 interface IAcceptRejectButtonProps {
   accept: boolean;
@@ -13,11 +13,11 @@ export function AcceptRejectButton({
   accept,
   disabled,
   isLoading,
-  onPress,
+  onPress
 }: IAcceptRejectButtonProps) {
-  const buttonMode = "contained";
-  const buttonColor = accept ? "#2BEE6C" : "#F25A67";
-  const buttonText = accept ? "Accept" : "Decline";
+  const buttonMode = 'contained';
+  const buttonColor = accept ? '#2BEE6C' : '#F25A67';
+  const buttonText = accept ? 'Accept' : 'Decline';
 
   return (
     <Button
@@ -36,21 +36,21 @@ export function AcceptRejectButton({
 
 const styles = StyleSheet.create({
   accept: {
-    marginRight: 20,
+    marginRight: 20
   },
   buttonContainer: {
     marginVertical: 16,
     borderRadius: 20,
     height: 56,
-    width: 160,
+    width: 160
   },
   mainText: {
     fontSize: 20,
     lineHeight: 24,
-    fontWeight: "600",
+    fontWeight: '600'
   },
   imageContainer: {
     width: 24,
-    height: 24,
-  },
+    height: 24
+  }
 });

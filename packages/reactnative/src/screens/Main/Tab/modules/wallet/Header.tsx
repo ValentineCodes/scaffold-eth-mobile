@@ -1,19 +1,24 @@
-import { View, StyleSheet, Linking, Pressable } from "react-native";
-import { Text, IconButton, Divider } from "react-native-paper";
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Network, switchNetwork } from "../../../../../store/reducers/Networks";
-import { Account } from "../../../../../store/reducers/Accounts";
-import { useToast } from "react-native-toast-notifications";
-import Share from "react-native-share";
-import Blockie from "../../../../../components/Blockie";
-import AccountDetailsModal from "../../../../../components/modals/AccountDetailsModal";
-import { FONT_SIZE, WINDOW_WIDTH } from "../../../../../utils/styles";
-import { COLORS } from "../../../../../utils/constants";
-import AccountsModal from "../../../../../components/modals/AccountsModal";
-import SeedPhraseModal from "../../../../../components/modals/SeedPhraseModal";
-import { Menu, MenuOption, MenuOptions, MenuTrigger } from "react-native-popup-menu";
-import Ionicons from "react-native-vector-icons/dist/Ionicons";
+import React, { useState } from 'react';
+import { Linking, Pressable, StyleSheet, View } from 'react-native';
+import { Divider, IconButton, Text } from 'react-native-paper';
+import {
+  Menu,
+  MenuOption,
+  MenuOptions,
+  MenuTrigger
+} from 'react-native-popup-menu';
+import Share from 'react-native-share';
+import { useToast } from 'react-native-toast-notifications';
+import Ionicons from 'react-native-vector-icons/dist/Ionicons';
+import { useDispatch, useSelector } from 'react-redux';
+import Blockie from '../../../../../components/Blockie';
+import AccountDetailsModal from '../../../../../components/modals/AccountDetailsModal';
+import AccountsModal from '../../../../../components/modals/AccountsModal';
+import SeedPhraseModal from '../../../../../components/modals/SeedPhraseModal';
+import { Account } from '../../../../../store/reducers/Accounts';
+import { Network, switchNetwork } from '../../../../../store/reducers/Networks';
+import { COLORS } from '../../../../../utils/constants';
+import { FONT_SIZE, WINDOW_WIDTH } from '../../../../../utils/styles';
 
 type Props = {};
 
@@ -23,13 +28,13 @@ export default function Header({}: Props) {
   const [showAccountDetailsModal, setShowAccountDetailsModal] = useState(false);
   const [showSeedPhraseModal, setShowSeedPhraseModal] = useState(false);
 
-  const networks: Network[] = useSelector((state) => state.networks);
-  const connectedNetwork: Network = useSelector((state) =>
-    state.networks.find((network: Network) => network.isConnected),
+  const networks: Network[] = useSelector(state => state.networks);
+  const connectedNetwork: Network = useSelector(state =>
+    state.networks.find((network: Network) => network.isConnected)
   );
 
-  const connectedAccount: Account = useSelector((state) =>
-    state.accounts.find((account: Account) => account.isConnected),
+  const connectedAccount: Account = useSelector(state =>
+    state.accounts.find((account: Account) => account.isConnected)
   );
 
   const toast = useToast();
@@ -51,11 +56,11 @@ export default function Header({}: Props) {
 
     try {
       await Linking.openURL(
-        `${connectedNetwork.blockExplorer}/address/${connectedAccount.address}`,
+        `${connectedNetwork.blockExplorer}/address/${connectedAccount.address}`
       );
     } catch (error) {
-      toast.show("Cannot open url", {
-        type: "danger",
+      toast.show('Cannot open url', {
+        type: 'danger'
       });
     }
   };
@@ -63,11 +68,11 @@ export default function Header({}: Props) {
   return (
     <View style={styles.container}>
       <IconButton
-        icon={require("../../../../../assets/images/logo.png")}
+        icon={require('../../../../../assets/images/logo.png')}
         size={WINDOW_WIDTH * 0.08}
       />
 
-{/* <Select
+      {/* <Select
         selectedValue={connectedNetwork.id.toString()}
         flex="1"
         borderRadius={25}
@@ -98,11 +103,11 @@ export default function Header({}: Props) {
         ))}
       </Select> */}
 
-<Menu>
+      <Menu>
         <MenuTrigger>
           <Blockie
             address={connectedAccount.address}
-            size={1.7 * FONT_SIZE["xl"]}
+            size={1.7 * FONT_SIZE['xl']}
           />
         </MenuTrigger>
         <MenuOptions>
@@ -111,8 +116,14 @@ export default function Header({}: Props) {
             style={styles.menuOption}
           >
             <IconButton
-              icon={() => <Ionicons name="layers-outline" size={1.2 * FONT_SIZE["xl"]} color="black" />}
-              size={1.2 * FONT_SIZE["xl"]}
+              icon={() => (
+                <Ionicons
+                  name="layers-outline"
+                  size={1.2 * FONT_SIZE['xl']}
+                  color="black"
+                />
+              )}
+              size={1.2 * FONT_SIZE['xl']}
             />
             <Text variant="bodyLarge">Accounts</Text>
           </MenuOption>
@@ -121,8 +132,14 @@ export default function Header({}: Props) {
             style={styles.menuOption}
           >
             <IconButton
-              icon={() => <Ionicons name="grid-outline" size={1.2 * FONT_SIZE["xl"]} color="black" />}
-              size={1.2 * FONT_SIZE["xl"]} 
+              icon={() => (
+                <Ionicons
+                  name="grid-outline"
+                  size={1.2 * FONT_SIZE['xl']}
+                  color="black"
+                />
+              )}
+              size={1.2 * FONT_SIZE['xl']}
             />
             <Text variant="bodyLarge">Account details</Text>
           </MenuOption>
@@ -131,15 +148,27 @@ export default function Header({}: Props) {
             style={styles.menuOption}
           >
             <IconButton
-              icon={() => <Ionicons name="key-outline" size={1.2 * FONT_SIZE["xl"]} color="black" />}
-              size={1.2 * FONT_SIZE["xl"]}
+              icon={() => (
+                <Ionicons
+                  name="key-outline"
+                  size={1.2 * FONT_SIZE['xl']}
+                  color="black"
+                />
+              )}
+              size={1.2 * FONT_SIZE['xl']}
             />
             <Text variant="bodyLarge">Show seed phrase</Text>
           </MenuOption>
           <MenuOption onSelect={shareAddress} style={styles.menuOption}>
             <IconButton
-              icon={() => <Ionicons name="share-social-outline" size={1.2 * FONT_SIZE["xl"]} color="black" />}
-              size={1.2 * FONT_SIZE["xl"]}
+              icon={() => (
+                <Ionicons
+                  name="share-social-outline"
+                  size={1.2 * FONT_SIZE['xl']}
+                  color="black"
+                />
+              )}
+              size={1.2 * FONT_SIZE['xl']}
             />
             <Text variant="bodyLarge">Share address</Text>
           </MenuOption>
@@ -149,8 +178,14 @@ export default function Header({}: Props) {
               style={styles.menuOption}
             >
               <IconButton
-                icon={() => <Ionicons name="open-outline" size={1.2 * FONT_SIZE["xl"]} color="black" />}
-                size={1.2 * FONT_SIZE["xl"]}
+                icon={() => (
+                  <Ionicons
+                    name="open-outline"
+                    size={1.2 * FONT_SIZE['xl']}
+                    color="black"
+                  />
+                )}
+                size={1.2 * FONT_SIZE['xl']}
               />
               <Text variant="bodyLarge">View on block explorer</Text>
             </MenuOption>
@@ -190,12 +225,12 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1
   },
   logo: {
-    width: 3 * FONT_SIZE["xl"],
-    height: 3 * FONT_SIZE["xl"],
+    width: 3 * FONT_SIZE['xl'],
+    height: 3 * FONT_SIZE['xl']
   },
   menuOption: {
-    flexDirection: "row",
-    alignItems: "center",
-    padding: 10,
-  },
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 10
+  }
 });

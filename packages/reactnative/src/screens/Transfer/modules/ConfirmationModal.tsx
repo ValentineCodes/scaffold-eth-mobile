@@ -1,30 +1,31 @@
-import React, { useState } from "react";
-import Modal from "react-native-modal";
-import { View, StyleSheet } from "react-native";
-import { Text, Button, Divider } from "react-native-paper";
-import { FONT_SIZE } from "../../../utils/styles";
-import { parseFloat, truncateAddress } from "../../../utils/helperFunctions";
-import { useSelector, useDispatch } from "react-redux";
-import { Account } from "../../../store/reducers/Accounts";
-import Blockie from "../../../components/Blockie";
-
-import "react-native-get-random-values";
-import "@ethersproject/shims";
-import { Network } from "../../../store/reducers/Networks";
-
-import "react-native-get-random-values";
-import "@ethersproject/shims";
-import { Wallet, ethers } from "ethers";
-
-import CustomButton from "../../../components/Button";
-
-import Success from "../../../components/modals/modules/Success";
-import Fail from "../../../components/modals/modules/Fail";
-import { Linking } from "react-native";
-import { useToast } from "react-native-toast-notifications";
-import { addRecipient } from "../../../store/reducers/Recipients";
-import { useSecureStorage } from "../../../hooks/useSecureStorage";
-import { JsonRpcProvider, formatEther, parseEther } from "ethers";
+import React, { useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import Modal from 'react-native-modal';
+import { Button, Divider, Text } from 'react-native-paper';
+import { useDispatch, useSelector } from 'react-redux';
+import Blockie from '../../../components/Blockie';
+import { Account } from '../../../store/reducers/Accounts';
+import { parseFloat, truncateAddress } from '../../../utils/helperFunctions';
+import { FONT_SIZE } from '../../../utils/styles';
+import 'react-native-get-random-values';
+import '@ethersproject/shims';
+import { Network } from '../../../store/reducers/Networks';
+import 'react-native-get-random-values';
+import '@ethersproject/shims';
+import {
+  ethers,
+  formatEther,
+  JsonRpcProvider,
+  parseEther,
+  Wallet
+} from 'ethers';
+import { Linking } from 'react-native';
+import { useToast } from 'react-native-toast-notifications';
+import CustomButton from '../../../components/Button';
+import Fail from '../../../components/modals/modules/Fail';
+import Success from '../../../components/modals/modules/Success';
+import { useSecureStorage } from '../../../hooks/useSecureStorage';
+import { addRecipient } from '../../../store/reducers/Recipients';
 
 interface TxData {
   from: Account;
@@ -43,21 +44,22 @@ export default function ConfirmationModal({
   isVisible,
   onClose,
   txData,
-  estimateGasCost,
+  estimateGasCost
 }: Props) {
   const dispatch = useDispatch();
 
   const toast = useToast();
 
   const connectedNetwork: Network = useSelector((state: any) =>
-    state.networks.find((network: Network) => network.isConnected),
+    state.networks.find((network: Network) => network.isConnected)
   );
 
   const [isTransferring, setIsTransferring] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showFailModal, setShowFailModal] = useState(false);
-  const [txReceipt, setTxReceipt] =
-    useState<ethers.TransactionReceipt | null>(null);
+  const [txReceipt, setTxReceipt] = useState<ethers.TransactionReceipt | null>(
+    null
+  );
 
   const { getItem } = useSecureStorage();
 
@@ -72,16 +74,16 @@ export default function ConfirmationModal({
       estimateGasCost &&
       parseFloat(
         (txData.amount + Number(formatEther(estimateGasCost))).toString(),
-        8,
+        8
       )
     );
   };
 
   const transfer = async () => {
-    const accounts = await getItem("accounts");
+    const accounts = await getItem('accounts');
     const activeAccount = Array.from(accounts).find(
-      (account) =>
-        account.address.toLowerCase() === txData.from.address.toLowerCase(),
+      account =>
+        account.address.toLowerCase() === txData.from.address.toLowerCase()
     );
 
     const provider = new JsonRpcProvider(connectedNetwork.provider);
@@ -93,7 +95,7 @@ export default function ConfirmationModal({
       const tx = await wallet.sendTransaction({
         from: txData.from.address,
         to: txData.to,
-        value: parseEther(txData.amount.toString()),
+        value: parseEther(txData.amount.toString())
       });
 
       const txReceipt = await tx.wait(1);
@@ -115,11 +117,11 @@ export default function ConfirmationModal({
 
     try {
       await Linking.openURL(
-        `${connectedNetwork.blockExplorer}/tx/${txReceipt.hash}`,
+        `${connectedNetwork.blockExplorer}/tx/${txReceipt.hash}`
       );
     } catch (error) {
-      toast.show("Cannot open url", {
-        type: "danger",
+      toast.show('Cannot open url', {
+        type: 'danger'
       });
     }
   };
@@ -142,7 +144,7 @@ export default function ConfirmationModal({
             <View style={styles.accountInfo}>
               <Blockie
                 address={txData.from.address}
-                size={1.8 * FONT_SIZE["xl"]}
+                size={1.8 * FONT_SIZE['xl']}
               />
 
               <View style={styles.accountDetails}>
@@ -163,7 +165,7 @@ export default function ConfirmationModal({
           </Text>
 
           <View style={styles.recipientContainer}>
-            <Blockie address={txData.to} size={1.8 * FONT_SIZE["xl"]} />
+            <Blockie address={txData.to} size={1.8 * FONT_SIZE['xl']} />
             <Text variant="titleLarge" style={styles.accountName}>
               {truncateAddress(txData.to)}
             </Text>
@@ -187,7 +189,7 @@ export default function ConfirmationModal({
             </View>
             <Text variant="titleMedium" style={styles.detailsValue}>
               {estimateGasCost &&
-                parseFloat(ethers.formatEther(estimateGasCost), 8)}{" "}
+                parseFloat(ethers.formatEther(estimateGasCost), 8)}{' '}
               {connectedNetwork.currencySymbol}
             </Text>
           </View>

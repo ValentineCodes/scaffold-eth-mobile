@@ -1,23 +1,23 @@
-import React, { useState } from "react";
-import { View, StyleSheet } from "react-native";
-import Modal from "react-native-modal";
-import { SignClientTypes } from "@walletconnect/types";
-import { Tag } from "../Tag";
-import { Methods } from "./modules/Methods";
-import { Message } from "./modules/Message";
-import { AcceptRejectButton } from "../AcceptRejectButton";
-import { ModalHeader } from "./modules/ModalHeader";
+import { SignClientTypes } from '@walletconnect/types';
+import React, { useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import Modal from 'react-native-modal';
 import {
   approveEIP155Request,
-  rejectEIP155Request,
-} from "../../utils/EIP155Request";
-import { web3wallet } from "../../utils/Web3WalletClient";
-import { handleDeepLinkRedirect } from "../../utils/LinkingUtils";
+  rejectEIP155Request
+} from '../../utils/EIP155Request';
+import { handleDeepLinkRedirect } from '../../utils/LinkingUtils';
+import { web3wallet } from '../../utils/Web3WalletClient';
+import { AcceptRejectButton } from '../AcceptRejectButton';
+import { Tag } from '../Tag';
+import { Message } from './modules/Message';
+import { Methods } from './modules/Methods';
+import { ModalHeader } from './modules/ModalHeader';
 
 interface SendTransactionModalProps {
   visible: boolean;
   setVisible: (arg0: boolean) => void;
-  requestEvent: SignClientTypes.EventArguments["session_request"] | undefined;
+  requestEvent: SignClientTypes.EventArguments['session_request'] | undefined;
   requestSession: any;
 }
 
@@ -25,7 +25,7 @@ export function SendTransactionModal({
   visible,
   setVisible,
   requestEvent,
-  requestSession,
+  requestSession
 }: SendTransactionModalProps) {
   const chainID = requestEvent?.params?.chainId?.toUpperCase();
   const method = requestEvent?.params?.request?.method;
@@ -54,7 +54,7 @@ export function SendTransactionModal({
         const response = await approveEIP155Request(requestEvent);
         await web3wallet.respondSessionRequest({
           topic,
-          response,
+          response
         });
         setVisible(false);
         onRedirect();
@@ -73,7 +73,7 @@ export function SendTransactionModal({
         const response = rejectEIP155Request(requestEvent);
         await web3wallet.respondSessionRequest({
           topic,
-          response,
+          response
         });
         setVisible(false);
         onRedirect();
@@ -120,49 +120,49 @@ export function SendTransactionModal({
 
 const styles = StyleSheet.create({
   chainContainer: {
-    width: "90%",
+    width: '90%',
     padding: 10,
     borderRadius: 25,
-    backgroundColor: "rgba(80, 80, 89, 0.1)",
+    backgroundColor: 'rgba(80, 80, 89, 0.1)'
   },
   flexRow: {
-    display: "flex",
-    flexDirection: "row",
+    display: 'flex',
+    flexDirection: 'row'
   },
   flexRowWrapped: {
-    display: "flex",
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "flex-start",
-    alignItems: "center",
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'flex-start',
+    alignItems: 'center'
   },
   modalContainer: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     borderRadius: 34,
     paddingTop: 30,
-    backgroundColor: "white",
-    width: "100%",
-    position: "absolute",
-    bottom: 44,
+    backgroundColor: 'white',
+    width: '100%',
+    position: 'absolute',
+    bottom: 44
   },
   rejectButton: {
-    color: "red",
+    color: 'red'
   },
   dappTitle: {
     fontSize: 22,
     lineHeight: 28,
-    fontWeight: "700",
+    fontWeight: '700'
   },
   imageContainer: {
     width: 48,
-    height: 48,
+    height: 48
   },
   divider: {
     height: 1,
-    width: "100%",
-    backgroundColor: "rgba(60, 60, 67, 0.36)",
-    marginVertical: 16,
-  },
+    width: '100%',
+    backgroundColor: 'rgba(60, 60, 67, 0.36)',
+    marginVertical: 16
+  }
 });

@@ -1,15 +1,15 @@
-import { useCallback } from "react";
-import { hexToString, isHex, stringToHex } from "viem";
-import InputBase from "./InputBase";
-import { CommonInputProps } from "./utils";
-import { TouchableRipple, Text } from "react-native-paper";
+import { useCallback } from 'react';
+import { Text, TouchableRipple } from 'react-native-paper';
+import { hexToString, isHex, stringToHex } from 'viem';
+import InputBase from './InputBase';
+import { CommonInputProps } from './utils';
 
 export default function Bytes32Input({
   value,
   onChange,
   name,
   placeholder,
-  disabled,
+  disabled
 }: CommonInputProps) {
   const convertStringToBytes32 = useCallback(() => {
     if (!value) {
@@ -18,7 +18,7 @@ export default function Bytes32Input({
     onChange(
       isHex(value)
         ? hexToString(value, { size: 32 })
-        : stringToHex(value, { size: 32 }),
+        : stringToHex(value, { size: 32 })
     );
   }, [onChange, value]);
 
@@ -30,8 +30,11 @@ export default function Bytes32Input({
       onChange={onChange}
       disabled={disabled}
       suffix={
-        <TouchableRipple onPress={convertStringToBytes32} style={{ paddingHorizontal: 16 }}>
-          <Text variant="titleMedium" style={{ fontWeight: "600" }}>
+        <TouchableRipple
+          onPress={convertStringToBytes32}
+          style={{ paddingHorizontal: 16 }}
+        >
+          <Text variant="titleMedium" style={{ fontWeight: '600' }}>
             #
           </Text>
         </TouchableRipple>

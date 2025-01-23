@@ -1,15 +1,15 @@
-import { useModal } from "react-native-modalfy";
-import useNetwork from "./useNetwork";
-import { useToast } from "react-native-toast-notifications";
-import useTargetNetwork from "./useTargetNetwork";
-import "react-native-get-random-values";
-import "@ethersproject/shims";
-import { Contract, JsonRpcProvider, Wallet } from "ethers";
-import useAccount from "./useAccount";
-import { Abi } from "abitype";
-import { useState } from "react";
-import { TransactionReceipt } from "viem";
-import { useSecureStorage } from "../useSecureStorage";
+import { useModal } from 'react-native-modalfy';
+import { useToast } from 'react-native-toast-notifications';
+import useNetwork from './useNetwork';
+import useTargetNetwork from './useTargetNetwork';
+import 'react-native-get-random-values';
+import '@ethersproject/shims';
+import { Abi } from 'abitype';
+import { Contract, JsonRpcProvider, Wallet } from 'ethers';
+import { useState } from 'react';
+import { TransactionReceipt } from 'viem';
+import { useSecureStorage } from '../useSecureStorage';
+import useAccount from './useAccount';
 
 interface UseWriteConfig {
   abi: Abi;
@@ -44,7 +44,7 @@ export default function useContractWrite({
   args,
   value,
   blockConfirmations,
-  gasLimit,
+  gasLimit
 }: UseWriteConfig) {
   const writeArgs = args;
   const writeValue = value;
@@ -67,7 +67,7 @@ export default function useContractWrite({
   const sendTransaction = async (
     config: SendTxConfig = {
       args: undefined,
-      value: undefined,
+      value: undefined
     }
   ): Promise<TransactionReceipt> => {
     const { args, value } = config;
@@ -75,16 +75,16 @@ export default function useContractWrite({
     const _value = value || writeValue || BigInt(0);
 
     if (network.id !== targetNetwork.id) {
-      throw new Error("You are on the wrong network");
+      throw new Error('You are on the wrong network');
     }
 
     return new Promise(async (resolve, reject) => {
       try {
         const provider = new JsonRpcProvider(network.provider);
 
-        const accounts = await getItem("accounts");
+        const accounts = await getItem('accounts');
         const activeAccount = Array.from(accounts).find(
-          (account) =>
+          account =>
             account.address.toLowerCase() ===
             connectedAccount.address.toLowerCase()
         );
@@ -92,14 +92,14 @@ export default function useContractWrite({
         const wallet = new Wallet(activeAccount.privateKey, provider);
         const contract = new Contract(address, abi, wallet);
 
-        openModal("SignTransactionModal", {
+        openModal('SignTransactionModal', {
           contract,
           contractAddress: address,
           functionName,
           args: _args,
           value: _value,
           gasLimit: _gasLimit,
-          onConfirm,
+          onConfirm
         });
       } catch (error) {
         reject(error);
@@ -110,9 +110,9 @@ export default function useContractWrite({
         try {
           const provider = new JsonRpcProvider(network.provider);
 
-          const accounts = await getItem("accounts");
+          const accounts = await getItem('accounts');
           const activeAccount = Array.from(accounts).find(
-            (account) =>
+            account =>
               account.address.toLowerCase() ===
               connectedAccount.address.toLowerCase()
           );
@@ -122,12 +122,12 @@ export default function useContractWrite({
 
           const tx = await contract[functionName](..._args, {
             value: _value,
-            gasLimit: _gasLimit,
+            gasLimit: _gasLimit
           });
 
           const receipt = await tx.wait(blockConfirmations || 1);
-          toast.show("Transaction Successful!", {
-            type: "success",
+          toast.show('Transaction Successful!', {
+            type: 'success'
           });
           resolve(receipt);
         } catch (error) {
@@ -141,6 +141,6 @@ export default function useContractWrite({
 
   return {
     isLoading,
-    write: sendTransaction,
+    write: sendTransaction
   };
 }

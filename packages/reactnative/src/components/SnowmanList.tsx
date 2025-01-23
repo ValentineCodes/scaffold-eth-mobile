@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, View, ScrollView } from "react-native";
-import { Text } from "react-native-paper";
-import { useDeployedContractInfo } from "../hooks/scaffold-eth/useDeployedContractInfo";
-import { ethers } from "ethers";
-import useNetwork from "../hooks/scaffold-eth/useNetwork";
-import Snowman from "./Snowman";
+import { ethers } from 'ethers';
+import React, { useEffect, useState } from 'react';
+import { ScrollView, StyleSheet, View } from 'react-native';
+import { Text } from 'react-native-paper';
+import { useDeployedContractInfo } from '../hooks/scaffold-eth/useDeployedContractInfo';
+import useNetwork from '../hooks/scaffold-eth/useNetwork';
+import Snowman from './Snowman';
 
 export default function SnowmanList() {
   const [snowmen, setSnowmen] = useState<number[]>([]);
@@ -12,7 +12,7 @@ export default function SnowmanList() {
 
   const network = useNetwork();
   const { data: snowmanContract, isLoading: isLoadingSnowmanContract } =
-    useDeployedContractInfo("Snowman");
+    useDeployedContractInfo('Snowman');
 
   const getSnowmen = async () => {
     if (isLoadingSnowmanContract) return;
@@ -23,7 +23,7 @@ export default function SnowmanList() {
       const ISnowman = new ethers.Contract(
         snowmanContract?.address,
         snowmanContract?.abi,
-        provider,
+        provider
       );
 
       const balance = await ISnowman.balanceOf(network.account);
@@ -64,12 +64,12 @@ export default function SnowmanList() {
 
   return (
     <ScrollView contentContainerStyle={styles.scrollContent}>
-      {snowmen.map((id) => (
+      {snowmen.map(id => (
         <Snowman
           key={id}
           id={id}
           remove={() => {
-            setSnowmen((prev) => prev.filter((snowmanId) => snowmanId !== id));
+            setSnowmen(prev => prev.filter(snowmanId => snowmanId !== id));
           }}
         />
       ))}
@@ -80,11 +80,11 @@ export default function SnowmanList() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   scrollContent: {
     gap: 16,
-    padding: 16,
-  },
+    padding: 16
+  }
 });

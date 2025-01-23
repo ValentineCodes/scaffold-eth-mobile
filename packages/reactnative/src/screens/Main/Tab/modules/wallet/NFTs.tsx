@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 type Props = {};
 
-function Tokens({}: Props) {
+function NFTs({}: Props) {
   const { openModal } = useModal();
   return (
     <Surface style={{ paddingTop: 75, padding: 2 }}>
@@ -20,18 +20,18 @@ function Tokens({}: Props) {
       >
         <TextInput
           mode="outlined"
-          placeholder="Search tokens"
+          placeholder="Search NFTs"
           style={{ width: '85%' }}
         />
         <Icon
           name="add"
           size={30}
           style={{ color: 'white', backgroundColor: 'blue', padding: 5 }}
-          onPress={() => openModal('ImportTokenModal')}
+          onPress={() => openModal('ImportNFTModal')}
         />
       </View>
     </Surface>
   );
 }
 
-export default Tokens;
+export default NFTs;

@@ -1,6 +1,6 @@
-import React from "react";
-import { StyleSheet, View } from "react-native";
-import { Text } from "react-native-paper";
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
+import { Text } from 'react-native-paper';
 
 type Props = {
   text: string;
@@ -9,23 +9,27 @@ type Props = {
 export default function BulletText({ text }: Props) {
   return (
     <View style={styles.container}>
-      <Text variant="bodyLarge" style={styles.bullet}>•</Text>
-      <Text variant="bodyLarge" style={styles.text}>{text}</Text>
+      <Text variant="bodyLarge" style={styles.bullet}>
+        •
+      </Text>
+      <Text variant="bodyLarge" style={styles.text}>
+        {text}
+      </Text>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     marginLeft: 12,
-    gap: 8,
+    gap: 8
   },
   bullet: {
-    fontSize: 18,
+    fontSize: 18
   },
   text: {
-    flex: 1,
+    flex: 1
   }
 });

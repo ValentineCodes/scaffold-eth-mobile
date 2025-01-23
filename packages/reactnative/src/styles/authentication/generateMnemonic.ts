@@ -1,27 +1,27 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   container: {
     padding: 10,
-    backgroundColor: "white",
-    flex: 1,
+    backgroundColor: 'white',
+    flex: 1
   },
   mnemonicWrapper: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     marginVertical: 20,
-    width: "100%",
+    width: '100%'
   },
   mnemonicMask: {
-    position: "absolute",
+    position: 'absolute',
     top: 0,
-    width: "100%",
-    height: "100%",
-    backgroundColor: "#313234",
-    alignItems: "center",
+    width: '100%',
+    height: '100%',
+    backgroundColor: '#313234',
+    alignItems: 'center',
     padding: 10,
-    justifyContent: "center",
-  },
+    justifyContent: 'center'
+  }
 });

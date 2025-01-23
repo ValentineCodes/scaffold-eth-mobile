@@ -1,21 +1,21 @@
-import { Abi, AbiFunction, Address } from "abitype";
-import React, { useState } from "react";
+import { Abi, AbiFunction, Address } from 'abitype';
+import React, { useState } from 'react';
+import { View } from 'react-native';
+import { useModal } from 'react-native-modalfy';
+import { Button, Text } from 'react-native-paper';
+import { useToast } from 'react-native-toast-notifications';
+import { TransactionReceipt } from 'viem';
+import IntegerInput from '../../../../../../components/scaffold-eth/input/IntegerInput';
+import useContractWrite from '../../../../../../hooks/scaffold-eth/useContractWrite';
+import useNetwork from '../../../../../../hooks/scaffold-eth/useNetwork';
+import useTargetNetwork from '../../../../../../hooks/scaffold-eth/useTargetNetwork';
+import { COLORS } from '../../../../../../utils/constants';
+import ContractInput from './ContractInput';
 import {
   getFunctionInputKey,
   getInitialFormState,
-  getParsedContractFunctionArgs,
-} from "./utilsContract";
-import useNetwork from "../../../../../../hooks/scaffold-eth/useNetwork";
-import useTargetNetwork from "../../../../../../hooks/scaffold-eth/useTargetNetwork";
-import useContractWrite from "../../../../../../hooks/scaffold-eth/useContractWrite";
-import { useToast } from "react-native-toast-notifications";
-import { TransactionReceipt } from "viem";
-import ContractInput from "./ContractInput";
-import { View } from "react-native";
-import { Button, Text } from "react-native-paper";
-import IntegerInput from "../../../../../../components/scaffold-eth/input/IntegerInput";
-import { COLORS } from "../../../../../../utils/constants";
-import { useModal } from "react-native-modalfy";
+  getParsedContractFunctionArgs
+} from './utilsContract';
 
 type Props = {
   abi: Abi;
@@ -28,12 +28,12 @@ export default function WriteOnlyFunctionForm({
   abi,
   abiFunction,
   contractAddress,
-  onChange,
+  onChange
 }: Props) {
   const [form, setForm] = useState<Record<string, any>>(() =>
-    getInitialFormState(abiFunction),
+    getInitialFormState(abiFunction)
   );
-  const [txValue, setTxValue] = useState<string | bigint>("");
+  const [txValue, setTxValue] = useState<string | bigint>('');
   const network = useNetwork();
   const targetNetwork = useTargetNetwork();
   const toast = useToast();
@@ -45,7 +45,7 @@ export default function WriteOnlyFunctionForm({
     address: contractAddress,
     functionName: abiFunction.name,
     abi: abi,
-    args: getParsedContractFunctionArgs(form),
+    args: getParsedContractFunctionArgs(form)
   });
 
   const handleWrite = async () => {
@@ -54,7 +54,7 @@ export default function WriteOnlyFunctionForm({
       setTxReceipt(receipt);
       onChange();
     } catch (error) {
-      toast.show(JSON.stringify(error), { type: "danger" });
+      toast.show(JSON.stringify(error), { type: 'danger' });
     }
   };
 
@@ -63,7 +63,7 @@ export default function WriteOnlyFunctionForm({
     return (
       <ContractInput
         key={key}
-        setForm={(updatedFormValue) => {
+        setForm={updatedFormValue => {
           setTxReceipt(undefined);
           setForm(updatedFormValue);
         }}
@@ -74,10 +74,10 @@ export default function WriteOnlyFunctionForm({
     );
   });
   const zeroInputs =
-    inputElements.length === 0 && abiFunction.stateMutability !== "payable";
+    inputElements.length === 0 && abiFunction.stateMutability !== 'payable';
 
   const showReceipt = () => {
-    openModal("TxReceiptModal", { txReceipt });
+    openModal('TxReceiptModal', { txReceipt });
   };
   return (
     <View>
@@ -85,11 +85,11 @@ export default function WriteOnlyFunctionForm({
         {abiFunction.name}
       </Text>
       {inputElements}
-      {abiFunction.stateMutability === "payable" ? (
+      {abiFunction.stateMutability === 'payable' ? (
         <View style={{ marginTop: 8 }}>
           <IntegerInput
             value={txValue}
-            onChange={(updatedTxValue) => {
+            onChange={updatedTxValue => {
               setTxReceipt(undefined);
               setTxValue(updatedTxValue);
             }}
@@ -97,7 +97,13 @@ export default function WriteOnlyFunctionForm({
           />
         </View>
       ) : null}
-      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between'
+        }}
+      >
         {txReceipt ? (
           <Button
             mode="contained"
@@ -119,7 +125,8 @@ export default function WriteOnlyFunctionForm({
           style={{
             marginVertical: 8,
             borderRadius: 24,
-            backgroundColor: writeDisabled || isLoading ? COLORS.primaryLight : COLORS.primary
+            backgroundColor:
+              writeDisabled || isLoading ? COLORS.primaryLight : COLORS.primary
           }}
           loading={isLoading}
           disabled={writeDisabled || isLoading}

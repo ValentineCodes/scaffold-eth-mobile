@@ -1,20 +1,20 @@
+import { formatJsonRpcError, formatJsonRpcResult } from '@json-rpc-tools/utils';
+import { SignClientTypes } from '@walletconnect/types';
+import { getSdkError } from '@walletconnect/utils';
+import { JsonRpcProvider, Wallet } from 'ethers';
 import {
   EIP155_CHAINS,
   EIP155_SIGNING_METHODS,
-  TEIP155Chain,
-} from "../data/EIP155";
+  TEIP155Chain
+} from '../data/EIP155';
+import { useSecureStorage } from '../hooks/useSecureStorage';
 import {
   getSignParamsMessage,
-  getSignTypedDataParamsData,
-} from "./helperFunctions";
-import { formatJsonRpcError, formatJsonRpcResult } from "@json-rpc-tools/utils";
-import { SignClientTypes } from "@walletconnect/types";
-import { getSdkError } from "@walletconnect/utils";
-import { JsonRpcProvider, Wallet } from "ethers";
-import { useSecureStorage } from "../hooks/useSecureStorage";
+  getSignTypedDataParamsData
+} from './helperFunctions';
 
 export async function approveEIP155Request(
-  requestEvent: SignClientTypes.EventArguments["session_request"],
+  requestEvent: SignClientTypes.EventArguments['session_request']
 ) {
   const { params, id } = requestEvent;
   const { chainId, request } = params;
@@ -22,18 +22,17 @@ export async function approveEIP155Request(
 
   let connectedAccount: string;
 
-  if (request.method === "personal_sign") {
+  if (request.method === 'personal_sign') {
     connectedAccount = request.params[1];
-  } else if (request.method === "eth_sendTransaction") {
+  } else if (request.method === 'eth_sendTransaction') {
     connectedAccount = request.params[0].from;
   } else {
-    connectedAccount = "";
+    connectedAccount = '';
   }
 
-  const accounts = await getItem("accounts");
+  const accounts = await getItem('accounts');
   const activeAccount = Array.from(accounts).find(
-    (account) =>
-      account.address.toLowerCase() == connectedAccount.toLowerCase(),
+    account => account.address.toLowerCase() == connectedAccount.toLowerCase()
   );
 
   const wallet = new Wallet(activeAccount.privateKey);
@@ -51,7 +50,7 @@ export async function approveEIP155Request(
       const {
         domain,
         types,
-        message: data,
+        message: data
       } = getSignTypedDataParamsData(request.params);
       delete types.EIP712Domain;
       const signedData = await wallet.signTypedData(domain, types, data);
@@ -59,11 +58,11 @@ export async function approveEIP155Request(
 
     case EIP155_SIGNING_METHODS.ETH_SEND_TRANSACTION:
       const provider = new JsonRpcProvider(
-        EIP155_CHAINS[chainId as TEIP155Chain].rpc,
+        EIP155_CHAINS[chainId as TEIP155Chain].rpc
       );
       const sendTransaction = request.params[0];
 
-      if (sendTransaction.hasOwnProperty("gas")) {
+      if (sendTransaction.hasOwnProperty('gas')) {
         delete sendTransaction.gas;
       }
 
@@ -77,14 +76,14 @@ export async function approveEIP155Request(
       return formatJsonRpcResult(id, signature);
 
     default:
-      throw new Error(getSdkError("INVALID_METHOD").message);
+      throw new Error(getSdkError('INVALID_METHOD').message);
   }
 }
 
 export function rejectEIP155Request(
-  request: SignClientTypes.EventArguments["session_request"],
+  request: SignClientTypes.EventArguments['session_request']
 ) {
   const { id } = request;
 
-  return formatJsonRpcError(id, getSdkError("USER_REJECTED_METHODS").message);
+  return formatJsonRpcError(id, getSdkError('USER_REJECTED_METHODS').message);
 }
