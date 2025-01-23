@@ -1,58 +1,88 @@
-import { Text, VStack, HStack, Input, Icon, Pressable } from 'native-base'
-import React, { useState } from 'react'
-import MaterialIcons from "react-native-vector-icons/dist/MaterialIcons"
-import { COLORS } from '../../utils/constants';
-import { FONT_SIZE } from '../../utils/styles';
-import { TouchableOpacity } from 'react-native';
+import { View } from "react-native";
+import React, { useState } from "react";
+import { TextInput, Text, IconButton } from "react-native-paper";
+import { COLORS } from "../../utils/constants";
+import { FONT_SIZE } from "../../utils/styles";
+import { TouchableOpacity } from "react-native";
 
 type Props = {
-    value?: string;
-    infoText?: string | null;
-    errorText?: string | null;
-    onChange: (value: string) => void;
-    onBlur?: () => void;
-}
+  value?: string;
+  infoText?: string | null;
+  errorText?: string | null;
+  onChange: (value: string) => void;
+  onBlur?: () => void;
+};
 
-export default function SeedPhraseInput({ value, infoText, errorText, onChange, onBlur }: Props) {
-    const [show, setShow] = useState(false)
-    return (
-        <VStack space={2}>
-            <Text fontSize={FONT_SIZE["xl"]} bold>Seed Phrase</Text>
-            <Input
-                borderRadius="lg"
-                variant="filled"
-                pt="4"
-                pl="4"
-                pr="20"
-                pb="12"
-                fontSize="md"
-                focusOutlineColor={COLORS.primary}
-                value={value}
-                InputRightElement={
-                    <HStack space={1} position="absolute" right="2" top="5">
-                        {value && (
-                            <TouchableOpacity activeOpacity={0.4} onPress={() => onChange("")} >
-                                <Icon as={<MaterialIcons name="close" />} size={5} mr="2" color="muted.400" />
-                            </TouchableOpacity>
-                        )}
-                        <TouchableOpacity activeOpacity={0.4} onPress={() => setShow(!show)} >
-                            <Icon as={<MaterialIcons name={show ? "visibility" : "visibility-off"} />} size={5} mr="2" color="muted.400" />
-                        </TouchableOpacity>
-                    </HStack>
-
-                }
-                secureTextEntry={!show}
-                multiline={show}
-                placeholder='Seed Phrase'
-                onChangeText={onChange}
-                onBlur={onBlur}
-                _input={{
-                    selectionColor: COLORS.primary,
-                    cursorColor: '#303030',
-                }}
-            />
-            {infoText ? <Text fontSize="sm" color="muted.400">{infoText}</Text> : null}
-            {errorText ? <Text fontSize="sm" color="red.400">{errorText}</Text> : null}
-        </VStack>
-    )
+export default function SeedPhraseInput({
+  value,
+  infoText,
+  errorText,
+  onChange,
+  onBlur,
+}: Props) {
+  const [show, setShow] = useState(false);
+  return (
+    <View style={{ gap: 8 }}>
+      <Text style={{ fontSize: FONT_SIZE["xl"], fontWeight: "bold" }}>
+        Seed Phrase
+      </Text>
+      <TextInput
+        mode="outlined"
+        style={{
+          borderRadius: 8,
+          paddingTop: 16,
+          paddingLeft: 16,
+          paddingRight: 80,
+          paddingBottom: 48,
+          fontSize: 16,
+        }}
+        outlineColor={COLORS.primary}
+        activeOutlineColor={COLORS.primary}
+        value={value}
+        right={
+          <View style={{ flexDirection: "row", gap: 4, position: "absolute", right: 8, top: 20 }}>
+            {value && (
+              <TouchableOpacity
+                activeOpacity={0.4}
+                onPress={() => onChange("")}
+              >
+                <IconButton
+                  icon="close"
+                  size={20}
+                  iconColor="#a3a3a3"
+                />
+              </TouchableOpacity>
+            )}
+            <TouchableOpacity
+              activeOpacity={0.4}
+              onPress={() => setShow(!show)}
+            >
+              <IconButton
+                icon={show ? "eye" : "eye-off"}
+                size={20}
+                iconColor="#a3a3a3"
+              />
+            </TouchableOpacity>
+          </View>
+        }
+        secureTextEntry={!show}
+        multiline={show}
+        placeholder="Seed Phrase"
+        onChangeText={onChange}
+        onBlur={onBlur}
+        selectionColor={COLORS.primary}
+        cursorColor="#303030"
+      />
+      {infoText ? (
+        <Text style={{ fontSize: 14, color: "#a3a3a3" }}>
+          {infoText}
+        </Text>
+      ) : null}
+      {errorText ? (
+        <Text style={{ fontSize: 14, color: "#ef4444" }}>
+          {errorText}
+        </Text>
+      ) : null}
+    </View>
+  );
 }

@@ -1,4 +1,4 @@
 export interface Wallet {
-    address: string;
-    privateKey: string;
+  address: string;
+  privateKey: string;
 }

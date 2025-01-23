@@ -1,68 +1,81 @@
-import React, { useState } from 'react'
-import { HStack, VStack, Input, Icon, Text } from "native-base"
-import Ionicons from "react-native-vector-icons/dist/Ionicons"
-import { useSelector, useDispatch } from 'react-redux'
-import { Account, changeName } from '../../store/reducers/Accounts'
-import { COLORS } from '../../utils/constants'
+import React, { useState } from "react";
+import { View } from "react-native";
+import { TextInput, IconButton, Text } from "react-native-paper";
+import { useSelector, useDispatch } from "react-redux";
+import { Account, changeName } from "../../store/reducers/Accounts";
+import { COLORS } from "../../utils/constants";
 
 type Props = {
-    close: () => void
-}
+  close: () => void;
+};
 
 export default function EditAccountNameForm({ close }: Props) {
-    const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-    const accounts: Account[] = useSelector(state => state.accounts)
-    const connectedAccount: Account = useSelector(state => state.accounts.find((account: Account) => account.isConnected))
+  const accounts: Account[] = useSelector((state) => state.accounts);
+  const connectedAccount: Account = useSelector((state) =>
+    state.accounts.find((account: Account) => account.isConnected),
+  );
 
-    const [name, setName] = useState(connectedAccount.name)
-    const [error, setError] = useState("")
+  const [name, setName] = useState(connectedAccount.name);
+  const [error, setError] = useState("");
 
-    const editName = () => {
-        if (name.trim().length === 0) {
-            setError("Account name cannot be empty")
-            return
-        }
-        if (accounts.find(account => account.name == name) !== undefined) {
-            setError("Account name already exists")
-            return
-        }
-        dispatch(changeName({ address: connectedAccount.address, newName: name }))
-        close()
+  const editName = () => {
+    if (name.trim().length === 0) {
+      setError("Account name cannot be empty");
+      return;
     }
-
-    const handleInputChange = (value: string) => {
-        setName(value)
-        if (error) {
-            setError("")
-        }
+    if (accounts.find((account) => account.name == name) !== undefined) {
+      setError("Account name already exists");
+      return;
     }
-    return (
-        <VStack w="full" alignItems="center">
-            <HStack alignItems="center" space={2}>
-                <Icon as={<Ionicons name="close-outline" />} size={7} color="red.400" onPress={close} />
+    dispatch(changeName({ address: connectedAccount.address, newName: name }));
+    close();
+  };
 
-                <Input
-                    placeholder='New account name'
-                    value={name}
-                    onChangeText={handleInputChange}
-                    onSubmitEditing={editName}
-                    borderRadius="lg"
-                    variant="filled"
-                    fontSize="md"
-                    w="60%"
-                    focusOutlineColor={COLORS.primary}
-                    selectTextOnFocus
-                    _input={{
-                        selectionColor: COLORS.primary,
-                        cursorColor: COLORS.primary,
-                    }}
-                />
+  const handleInputChange = (value: string) => {
+    setName(value);
+    if (error) {
+      setError("");
+    }
+  };
 
-                <Icon as={<Ionicons name="checkmark-done-outline" />} size={5} color={COLORS.primary} onPress={editName} />
-            </HStack>
+  return (
+    <View style={{ width: '100%', alignItems: 'center' }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+        <IconButton
+          icon="close"
+          iconColor="red"
+          size={28}
+          onPress={close}
+        />
 
-            {error && <Text fontSize="sm" color="red.400">{error}</Text>}
-        </VStack>
-    )
+        <TextInput
+          placeholder="New account name"
+          value={name}
+          onChangeText={handleInputChange}
+          onSubmitEditing={editName}
+          mode="outlined"
+          style={{ width: '60%' }}
+          outlineColor={COLORS.primary}
+          activeOutlineColor={COLORS.primary}
+          selectionColor={COLORS.primary}
+          selectTextOnFocus
+        />
+
+        <IconButton
+          icon="check"
+          iconColor={COLORS.primary}
+          size={20}
+          onPress={editName}
+        />
+      </View>
+
+      {error && (
+        <Text variant="bodySmall" style={{ color: 'red' }}>
+          {error}
+        </Text>
+      )}
+    </View>
+  );
 }

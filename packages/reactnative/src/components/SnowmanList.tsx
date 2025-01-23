@@ -1,68 +1,90 @@
-import { ScrollView, Spinner, Text, VStack } from 'native-base'
-import React, { useState, useEffect } from 'react'
-import useAccount from '../hooks/scaffold-eth/useAccount'
-import { useDeployedContractInfo } from '../hooks/scaffold-eth/useDeployedContractInfo'
-import { ethers } from 'ethers'
-import useNetwork from '../hooks/scaffold-eth/useNetwork'
-import { COLORS } from '../utils/constants'
-import Snowman from './Snowman'
+import React, { useEffect, useState } from "react";
+import { StyleSheet, View, ScrollView } from "react-native";
+import { Text } from "react-native-paper";
+import { useDeployedContractInfo } from "../hooks/scaffold-eth/useDeployedContractInfo";
+import { ethers } from "ethers";
+import useNetwork from "../hooks/scaffold-eth/useNetwork";
+import Snowman from "./Snowman";
 
-type Props = { balance: number }
+export default function SnowmanList() {
+  const [snowmen, setSnowmen] = useState<number[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-export default function SnowmanList({ balance }: Props) {
-    const [snowmanBalance, setSnowmanBalance] = useState(balance)
-    const [snowmen, setSnowmen] = useState<any[] | null>(null)
-    const [isLoading, setIsLoading] = useState(true)
+  const network = useNetwork();
+  const { data: snowmanContract, isLoading: isLoadingSnowmanContract } =
+    useDeployedContractInfo("Snowman");
 
-    const account = useAccount()
-    const network = useNetwork()
+  const getSnowmen = async () => {
+    if (isLoadingSnowmanContract) return;
 
-    const { data: snowmanContract, isLoading: isLoadingSnowmanContract } = useDeployedContractInfo("Snowman")
+    try {
+      setIsLoading(true);
+      const provider = new ethers.JsonRpcProvider(network.provider);
+      const ISnowman = new ethers.Contract(
+        snowmanContract?.address,
+        snowmanContract?.abi,
+        provider,
+      );
 
-    useEffect(() => {
-        if (isLoadingSnowmanContract) return
+      const balance = await ISnowman.balanceOf(network.account);
+      const snowmenIds = [];
 
-        (async () => {
-            setIsLoading(true)
-            setSnowmanBalance(balance)
+      for (let i = 0; i < balance; i++) {
+        const tokenId = await ISnowman.tokenOfOwnerByIndex(network.account, i);
+        snowmenIds.push(Number(tokenId));
+      }
 
-            const provider = new ethers.providers.JsonRpcProvider(network.provider)
-
-            const snowman = new ethers.Contract(snowmanContract?.address, snowmanContract?.abi, provider)
-            const tokenIds = [];
-            for (let tokenIndex = 0; tokenIndex < balance; tokenIndex++) {
-                try {
-                    const tokenId = await snowman.tokenOfOwnerByIndex(account.address, tokenIndex);
-                    tokenIds.push({ id: tokenId });
-                } catch (error) {
-                    console.error(error)
-                }
-            }
-            setSnowmen(tokenIds)
-            setIsLoading(false)
-        })()
-    }, [balance, isLoadingSnowmanContract])
-
-    const renderSnowmanList = () => {
-        if (!snowmen && isLoading) return <Spinner color={COLORS.primary} />
-
-        if (!snowmen || snowmen.length === 0) return
-
-        return snowmen.map(snowman => {
-            const remove = () => {
-                setSnowmen(snowmen => snowmen?.filter(_snowman => _snowman.id.toNumber() !== snowman.id.toNumber()))
-                setSnowmanBalance(balance - 1)
-            }
-            return <Snowman key={snowman.id} id={snowman.id} remove={remove} />
-        })
+      setSnowmen(snowmenIds);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
     }
+  };
 
+  useEffect(() => {
+    getSnowmen();
+  }, [isLoadingSnowmanContract]);
+
+  if (isLoading) {
     return (
-        <VStack>
-            <Text fontSize={"lg"} mt={"4"} mb={"1"} textAlign={"center"}>You own {snowmanBalance} Snowman☃️</Text>
-            <ScrollView contentContainerStyle={{ alignItems: "center" }}>
-                {renderSnowmanList()}
-            </ScrollView>
-        </VStack>
-    )
+      <View style={styles.container}>
+        <Text variant="bodyLarge">Loading snowmen...</Text>
+      </View>
+    );
+  }
+
+  if (!snowmen.length) {
+    return (
+      <View style={styles.container}>
+        <Text variant="bodyLarge">No snowmen found</Text>
+      </View>
+    );
+  }
+
+  return (
+    <ScrollView contentContainerStyle={styles.scrollContent}>
+      {snowmen.map((id) => (
+        <Snowman
+          key={id}
+          id={id}
+          remove={() => {
+            setSnowmen((prev) => prev.filter((snowmanId) => snowmanId !== id));
+          }}
+        />
+      ))}
+    </ScrollView>
+  );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  scrollContent: {
+    gap: 16,
+    padding: 16,
+  },
+});

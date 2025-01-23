@@ -27,7 +27,16 @@
     "android": "yarn workspace @se-2/reactnative android",
     "ios": "yarn workspace @se-2/reactnative ios",
     "start": "yarn workspace @se-2/reactnative start",
-    "patch-ethers": "yarn workspace @se-2/reactnative patch-ethers"
+    "patch-ethers": "yarn workspace @se-2/reactnative patch-ethers",
+    "add:frontend": "yarn workspace @se-2/reactnative add",
+    "add:backend": "yarn workspace @se-2/backend add",
+    "add:contract": "yarn workspace @se-2/hardhat add",
+    "remove:frontend": "yarn workspace @se-2/reactnative remove",
+    "remove:backend": "yarn workspace @se-2/backend remove",
+    "remove:contract": "yarn workspace @se-2/hardhat remove",
+    "format:frontend": "yarn workspace @se-2/reactnative format:write",
+    "format:backend": "yarn workspace @se-2/backend format:write",
+    "format:contract": "yarn workspace @se-2/hardhat format:write"
   },
   "packageManager": "yarn@3.2.3",
   "devDependencies": {

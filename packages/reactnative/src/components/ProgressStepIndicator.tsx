@@ -1,29 +1,69 @@
-import { Divider, HStack, View } from 'native-base'
-import React from 'react'
-import { COLORS } from '../utils/constants';
+import React from "react";
+import { StyleSheet, View } from "react-native";
+import { COLORS } from "../utils/constants";
 
 type Props = {
-    steps: number;
-    progress: number;
-    width?: string | number;
-    size?: number;
+  steps: number;
+  progress: number;
+  width?: string | number;
+  size?: number;
+};
+
+export default function ProgressStepIndicator({
+  steps,
+  progress,
+  width = 200,
+  size = 20,
+}: Props) {
+  return (
+    <View style={[styles.container, { width }]}>
+      {Array(steps - 1).fill(null).map((_, index) => (
+        <View
+          key={`divider-${index}`}
+          style={[
+            styles.divider,
+            { 
+              width: `${100 / (steps - 1)}%`,
+              backgroundColor: index <= progress - 2 ? COLORS.primary : "#e5e5e5"
+            }
+          ]}
+        />
+      ))}
+
+      <View style={[styles.dotsContainer, { width: "100%" }]}>
+        {Array(steps).fill(null).map((_, index) => (
+          <View
+            key={`dot-${index}`}
+            style={[
+              styles.dot,
+              { 
+                width: size,
+                height: size,
+                backgroundColor: index <= progress - 1 ? COLORS.primary : "#e5e5e5"
+              }
+            ]}
+          />
+        ))}
+      </View>
+    </View>
+  );
 }
 
-export default function ProgressStepIndicator({ steps, progress, width, size }: Props) {
-    return (
-        <HStack w={width || 200}>
-            {Array(steps - 1).fill(null).map((_, index) => <Divider key={Math.random().toString()} w={`${100 / (steps - 1)}%`} h="0.5" bgColor={index <= progress - 2 ? COLORS.primary : "muted.200"} />)}
-
-            <HStack style={{
-                position: "absolute",
-                top: -(size / 2 || 10),
-                width: "100%",
-                justifyContent: "space-between",
-                alignItems: "center"
-            }}>
-                {Array(steps).fill(null).map((_, index) => <View key={Math.random().toString()} style={{ width: size || 20, aspectRatio: 1, borderRadius: 100 }} bgColor={index <= progress - 1 ? COLORS.primary : "muted.200"} />)}
-
-            </HStack>
-        </HStack>
-    )
-}
+const styles = StyleSheet.create({
+  container: {
+    position: "relative",
+  },
+  divider: {
+    height: 2,
+    position: "absolute",
+    top: "50%",
+  },
+  dotsContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  dot: {
+    borderRadius: 100,
+  }
+});

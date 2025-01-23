@@ -1,110 +1,123 @@
-import { HStack, Pressable, Switch, Text, VStack } from 'native-base'
-import React, { useLayoutEffect, useState } from 'react'
-import { FONT_SIZE } from '../../../utils/styles'
-import { COLORS } from '../../../utils/constants'
-import SInfo from "react-native-sensitive-info"
-import ReactNativeBiometrics from 'react-native-biometrics'
-import { useToast } from 'react-native-toast-notifications'
-import { useModal } from 'react-native-modalfy'
-import { useIsFocused } from '@react-navigation/native'
+import { View, StyleSheet } from "react-native";
+import { Text, Switch } from "react-native-paper";
+import React, { useLayoutEffect, useState } from "react";
+import { FONT_SIZE } from "../../../utils/styles";
+import { COLORS } from "../../../utils/constants";
+import ReactNativeBiometrics from "react-native-biometrics";
+import { useToast } from "react-native-toast-notifications";
+import { useModal } from "react-native-modalfy";
+import { useIsFocused } from "@react-navigation/native";
+import { useSecureStorage } from "../../../hooks/useSecureStorage";
+import { TouchableOpacity } from "react-native";
 
-type Props = {}
+type Props = {};
 
-export default function Settings({ }: Props) {
-    const toast = useToast()
-    const { openModal } = useModal()
-    const isFocused = useIsFocused()
+export default function Settings({}: Props) {
+  const toast = useToast();
+  const { openModal } = useModal();
+  const isFocused = useIsFocused();
+  const { getItem, saveItem } = useSecureStorage();
 
-    const [isBiometricsAvailable, setIsBiometricsAvailable] = useState(false)
-    const [isBiometricsEnabled, setIsBiometricsEnabled] = useState(false)
+  const [isBiometricsAvailable, setIsBiometricsAvailable] = useState(false);
+  const [isBiometricsEnabled, setIsBiometricsEnabled] = useState(false);
 
-    const toggleBiometrics = async (isBiometricsEnabled: boolean) => {
-        const rnBiometrics = new ReactNativeBiometrics()
+  const toggleBiometrics = async (isBiometricsEnabled: boolean) => {
+    const rnBiometrics = new ReactNativeBiometrics();
+
+    try {
+      const signInWithBio = async () => {
+        let epochTimeSeconds = Math.round(
+          new Date().getTime() / 1000,
+        ).toString();
+        let payload = epochTimeSeconds + "some message";
 
         try {
-            const signInWithBio = async () => {
-                let epochTimeSeconds = Math.round((new Date()).getTime() / 1000).toString()
-                let payload = epochTimeSeconds + 'some message'
+          const response = await rnBiometrics.createSignature({
+            promptMessage: "Authenticate",
+            payload: payload,
+          });
 
-                try {
-                    const response = await rnBiometrics.createSignature({
-                        promptMessage: 'Authenticate',
-                        payload: payload
-                    })
-
-                    if (response.success) {
-                        const _security = await SInfo.getItem("security", {
-                            sharedPreferencesName: "sern.android.storage",
-                            keychainService: "sern.ios.storage",
-                        });
-
-                        await SInfo.setItem("security", JSON.stringify({ ...JSON.parse(_security), isBiometricsEnabled }), {
-                            sharedPreferencesName: "sern.android.storage",
-                            keychainService: "sern.ios.storage",
-                        })
-
-                        setIsBiometricsEnabled(isBiometricsEnabled)
-                    }
-                } catch (error) {
-                    return
-                }
-
-            }
-
-            const { available } = await rnBiometrics.isSensorAvailable()
-
-            if (available) {
-                const { keysExist } = await rnBiometrics.biometricKeysExist()
-
-                if (!keysExist) {
-                    await rnBiometrics.createKeys()
-                }
-
-                signInWithBio()
-            } else {
-                toast.show("Biometrics is not available on this device")
-            }
+          if (response.success) {
+            const security = await getItem("security");
+            await saveItem("security", { ...security, isBiometricsEnabled });
+            setIsBiometricsEnabled(isBiometricsEnabled);
+          }
         } catch (error) {
-            toast.show("Could not sign in with biometrics", {
-                type: "danger"
-            })
+          return;
         }
+      };
+
+      const { available } = await rnBiometrics.isSensorAvailable();
+
+      if (available) {
+        const { keysExist } = await rnBiometrics.biometricKeysExist();
+
+        if (!keysExist) {
+          await rnBiometrics.createKeys();
+        }
+
+        signInWithBio();
+      } else {
+        toast.show("Biometrics is not available on this device");
+      }
+    } catch (error) {
+      toast.show("Could not sign in with biometrics", {
+        type: "danger",
+      });
     }
+  };
 
-    useLayoutEffect(() => {
-        (async () => {
-            const rnBiometrics = new ReactNativeBiometrics()
+  useLayoutEffect(() => {
+    (async () => {
+      const rnBiometrics = new ReactNativeBiometrics();
 
-            const { available } = await rnBiometrics.isSensorAvailable()
+      const { available } = await rnBiometrics.isSensorAvailable();
 
-            setIsBiometricsAvailable(available)
+      setIsBiometricsAvailable(available);
 
-            if (available) {
-                const _security = await SInfo.getItem("security", {
-                    sharedPreferencesName: "sern.android.storage",
-                    keychainService: "sern.ios.storage",
-                });
-                const security = JSON.parse(_security!)
+      if (available) {
+        const security = await getItem("security");
+        setIsBiometricsEnabled(security.isBiometricsEnabled);
+      }
+    })();
+  }, []);
 
-                setIsBiometricsEnabled(security.isBiometricsEnabled)
-            }
+  if (!isFocused) return;
+  return (
+    <View style={styles.container}>
+      {isBiometricsAvailable && (
+        <View style={styles.row}>
+          <Text variant="titleLarge">Sign in with Biometrics</Text>
+          <Switch
+            value={isBiometricsEnabled}
+            onValueChange={toggleBiometrics}
+            color={COLORS.primary}
+          />
+        </View>
+      )}
 
-        })()
-    }, [])
-
-    if (!isFocused) return
-    return (
-        <VStack flex={1} bgColor={"white"} p={"4"}>
-            {isBiometricsAvailable && (
-                <HStack alignItems="center" justifyContent="space-between">
-                    <Text fontSize={FONT_SIZE["xl"]}>Sign in with Biometrics</Text>
-                    <Switch size="md" trackColor={{ true: COLORS.primary, false: "#E5E5E5" }} isChecked={isBiometricsEnabled} onToggle={toggleBiometrics} />
-                </HStack>
-            )}
-
-            <Pressable onPress={() => openModal("ChangePasswordModal")} py={"4"}>
-                <Text fontSize={FONT_SIZE["xl"]}>Change Password</Text>
-            </Pressable>
-        </VStack>
-    )
+      <TouchableOpacity 
+        onPress={() => openModal("ChangePasswordModal")}
+        style={styles.button}
+      >
+        <Text variant="titleLarge">Change Password</Text>
+      </TouchableOpacity>
+    </View>
+  );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+    padding: 16
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between'
+  },
+  button: {
+    paddingVertical: 16
+  }
+});

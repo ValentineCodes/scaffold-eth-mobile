@@ -1,95 +1,139 @@
-import { Image, Text, VStack, Divider, Pressable, Icon, View, HStack } from 'native-base'
-import React, { useState, useMemo } from 'react'
-import { StyleSheet, ScrollView, RefreshControl } from 'react-native'
-import Ionicons from "react-native-vector-icons/dist/Ionicons"
-import { useNavigation } from '@react-navigation/native'
+import { View, StyleSheet, ScrollView, RefreshControl, Image } from "react-native";
+import { Text, Divider, IconButton } from "react-native-paper";
+import React, { useState, useMemo } from "react";
+import Ionicons from "react-native-vector-icons/dist/Ionicons";
+import { useNavigation } from "@react-navigation/native";
 
-import CopyableText from '../../../../../components/CopyableText'
-import { truncateAddress } from '../../../../../utils/helperFunctions'
-import { FONT_SIZE } from '../../../../../utils/styles'
-import { COLORS } from '../../../../../utils/constants'
-import ReceiveModal from '../../../../../components/modals/ReceiveModal'
-import useBalance from '../../../../../hooks/scaffold-eth/useBalance'
-import useAccount from '../../../../../hooks/scaffold-eth/useAccount'
-import useNetwork from '../../../../../hooks/scaffold-eth/useNetwork'
+import CopyableText from "../../../../../components/CopyableText";
+import { truncateAddress } from "../../../../../utils/helperFunctions";
+import { FONT_SIZE } from "../../../../../utils/styles";
+import { COLORS } from "../../../../../utils/constants";
+import ReceiveModal from "../../../../../components/modals/ReceiveModal";
+import useBalance from "../../../../../hooks/scaffold-eth/useBalance";
+import useAccount from "../../../../../hooks/scaffold-eth/useAccount";
+import useNetwork from "../../../../../hooks/scaffold-eth/useNetwork";
 
 type Props = {
   backHandler: any;
-}
+};
 
 function MainBalance({ backHandler }: Props) {
-  const network = useNetwork()
-  const account = useAccount()
-  const { balance, isRefetching, refetch } = useBalance({ address: account.address })
+  const network = useNetwork();
+  const account = useAccount();
+  const { balance, isRefetching, refetch } = useBalance({
+    address: account.address,
+  });
 
-  const [showReceiveModal, setShowReceiveModal] = useState(false)
+  const [showReceiveModal, setShowReceiveModal] = useState(false);
 
-  const navigation = useNavigation()
+  const navigation = useNavigation();
 
   const logo = useMemo(() => {
     let _logo = require("../../../../../assets/images/eth-icon.png");
 
     if (["Polygon", "Mumbai"].includes(network.name)) {
-      _logo = require("../../../../../assets/images/polygon-icon.png")
+      _logo = require("../../../../../assets/images/polygon-icon.png");
     } else if (["Arbitrum", "Arbitrum Goerli"].includes(network.name)) {
-      _logo = require("../../../../../assets/images/arbitrum-icon.png")
+      _logo = require("../../../../../assets/images/arbitrum-icon.png");
     } else if (["Optimism", "Optimism Goerli"].includes(network.name)) {
-      _logo = require("../../../../../assets/images/optimism-icon.png")
+      _logo = require("../../../../../assets/images/optimism-icon.png");
     }
 
-    return <Image key={`${_logo}`} source={_logo} alt={network.name} style={styles.networkLogo} />
-  }, [network])
+    return (
+      <View style={styles.logoContainer}>
+        <Image source={_logo} style={styles.networkLogo} />
+      </View>
+    );
+  }, [network]);
 
   const handleNav = () => {
-    navigation.navigate("Transfer")
-    backHandler?.remove()
-  }
+    navigation.navigate("Transfer");
+    backHandler?.remove();
+  };
 
   return (
-    <ScrollView style={{ flexGrow: 0 }} refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={refetch} colors={[COLORS.primary]} tintColor={COLORS.primary} />}>
-      <VStack alignItems="center" space={2} paddingTop={5}>
-        <Text fontSize={FONT_SIZE["xl"]} bold textAlign="center">{account.name}</Text>
-        <CopyableText displayText={truncateAddress(account.address)} value={account.address} containerStyle={styles.addressContainer} textStyle={styles.addressText} iconStyle={{ color: COLORS.primary }} />
+    <ScrollView
+      style={{ flexGrow: 0 }}
+      refreshControl={
+        <RefreshControl
+          refreshing={isRefetching}
+          onRefresh={refetch}
+          colors={[COLORS.primary]}
+          tintColor={COLORS.primary}
+        />
+      }
+    >
+      <View style={styles.container}>
+        <Text variant="headlineMedium" style={styles.nameText}>
+          {account.name}
+        </Text>
+        
+        <CopyableText
+          displayText={truncateAddress(account.address)}
+          value={account.address}
+          containerStyle={styles.addressContainer}
+          textStyle={styles.addressText}
+          iconStyle={{ color: COLORS.primary }}
+        />
+        
         {logo}
-        <VStack alignItems="center">
-          <Text fontSize={2 * FONT_SIZE["xl"]} bold textAlign="center">{balance !== '' && `${balance} ${network.currencySymbol}`}</Text>
-        </VStack>
+        
+        <View style={styles.balanceContainer}>
+          <Text variant="headlineLarge" style={styles.balanceText}>
+            {balance !== "" && `${balance} ${network.currencySymbol}`}
+          </Text>
+        </View>
 
-        <Divider bgColor="muted.100" my="2" />
+        <Divider style={styles.divider} />
 
-        <HStack alignItems="center" space="10">
-          <Pressable alignItems="center" onPress={handleNav}>
-            {({ isPressed }) => (
-              <>
-                <View bgColor={isPressed ? 'rgba(39, 184, 88, 0.2)' : COLORS.primaryLight} p="4" borderRadius="full">
-                  <Icon as={<Ionicons name="paper-plane" />} size={1.2 * FONT_SIZE['xl']} color={COLORS.primary} borderRadius="full" />
-                </View>
-                <Text fontSize={FONT_SIZE["lg"]} bold mt="2">Send</Text>
-              </>
-            )}
-          </Pressable>
+        <View style={styles.actionContainer}>
+          <View style={styles.actionButton}>
+            <IconButton
+              icon={() => <Ionicons name="paper-plane" size={24} color={COLORS.primary} />}
+              mode="contained"
+              containerColor={COLORS.primaryLight}
+              size={48}
+              onPress={handleNav}
+            />
+            <Text variant="titleMedium" style={styles.actionText}>Send</Text>
+          </View>
 
-          <Pressable alignItems="center" onPress={() => setShowReceiveModal(true)}>
-            {({ isPressed }) => (
-              <>
-                <View bgColor={isPressed ? 'rgba(39, 184, 88, 0.2)' : COLORS.primaryLight} p="4" borderRadius="full">
-                  <Icon as={<Ionicons name="download" />} size={1.2 * FONT_SIZE['xl']} color={COLORS.primary} borderRadius="full" />
-                </View>
-                <Text fontSize={FONT_SIZE["lg"]} bold mt="2">Receive</Text>
-              </>
-            )}
-          </Pressable>
-        </HStack>
+          <View style={styles.actionButton}>
+            <IconButton
+              icon={() => <Ionicons name="download" size={24} color={COLORS.primary} />}
+              mode="contained"
+              containerColor={COLORS.primaryLight}
+              size={48}
+              onPress={() => setShowReceiveModal(true)}
+            />
+            <Text variant="titleMedium" style={styles.actionText}>Receive</Text>
+          </View>
+        </View>
 
-        <Divider bgColor="muted.100" mt="2" />
+        <Divider style={styles.divider} />
 
-        <ReceiveModal isVisible={showReceiveModal} onClose={() => setShowReceiveModal(false)} />
-      </VStack>
+        <ReceiveModal
+          isVisible={showReceiveModal}
+          onClose={() => setShowReceiveModal(false)}
+        />
+      </View>
     </ScrollView>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    alignItems: 'center',
+    paddingTop: 20,
+    gap: 8
+  },
+  nameText: {
+    fontWeight: 'bold',
+    textAlign: 'center'
+  },
+  logoContainer: {
+    marginVertical: 8
+  },
   networkLogo: {
     width: 4 * FONT_SIZE["xl"],
     height: 4 * FONT_SIZE["xl"],
@@ -98,13 +142,36 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     paddingVertical: 5,
     backgroundColor: COLORS.primaryLight,
-    borderRadius: 15
+    borderRadius: 15,
   },
   addressText: {
-    fontWeight: '700',
-    fontSize: FONT_SIZE['md'],
-    color: COLORS.primary
+    fontWeight: "700",
+    fontSize: FONT_SIZE["md"],
+    color: COLORS.primary,
+  },
+  balanceContainer: {
+    alignItems: 'center'
+  },
+  balanceText: {
+    fontWeight: 'bold',
+    textAlign: 'center'
+  },
+  divider: {
+    width: '100%',
+    marginVertical: 8
+  },
+  actionContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 40
+  },
+  actionButton: {
+    alignItems: 'center'
+  },
+  actionText: {
+    marginTop: 8,
+    fontWeight: 'bold'
   }
-})
+});
 
-export default MainBalance
+export default MainBalance;

@@ -1,156 +1,247 @@
-import React from 'react'
-import { Text, VStack, Icon, HStack, Divider, Pressable } from 'native-base'
-import { useSelector } from 'react-redux';
-import { Account } from '../../store/reducers/Accounts';
-import { Network } from '../../store/reducers/Networks';
+import React from "react";
+import { View, StyleSheet } from "react-native";
+import { Text, IconButton, Divider } from "react-native-paper";
+import { useSelector } from "react-redux";
+import { Account } from "../../store/reducers/Accounts";
+import { Network } from "../../store/reducers/Networks";
 
-import "react-native-get-random-values"
-import "@ethersproject/shims"
-import { BigNumber, ethers } from "ethers";
-import { Linking } from 'react-native';
-import { useToast } from 'react-native-toast-notifications';
-import Modal from "react-native-modal"
-import Ionicons from "react-native-vector-icons/dist/Ionicons"
-import { FONT_SIZE } from '../../utils/styles';
-import { parseFloat, truncateAddress } from '../../utils/helperFunctions';
-import { COLORS } from '../../utils/constants';
+import { ethers } from "ethers";
+import { Linking } from "react-native";
+import { useToast } from "react-native-toast-notifications";
+import Modal from "react-native-modal";
+// @ts-ignore
+import Ionicons from "react-native-vector-icons/dist/Ionicons";
+import { FONT_SIZE } from "../../utils/styles";
+import { parseFloat, truncateAddress } from "../../utils/helperFunctions";
+import { COLORS } from "../../utils/constants";
 
 type Props = {
-    isVisible: boolean;
-    onClose: () => void;
-    tx: any;
-}
+  isVisible: boolean;
+  onClose: () => void;
+  tx: any;
+};
 
 export default function TransactionDetails({ isVisible, onClose, tx }: Props) {
-    const connectedAccount: Account = useSelector(state => state.accounts.find((account: Account) => account.isConnected))
-    const connectedNetwork: Network = useSelector((state: any) => state.networks.find((network: Network) => network.isConnected))
+  const connectedAccount: Account = useSelector((state) =>
+    state.accounts.find((account: Account) => account.isConnected),
+  );
+  const connectedNetwork: Network = useSelector((state: any) =>
+    state.networks.find((network: Network) => network.isConnected),
+  );
 
-    const toast = useToast()
+  const toast = useToast();
 
-    const renderAction = () => {
-        if (tx.functionName === '') {
-            if (tx.from.toLowerCase() == connectedAccount.address.toLowerCase()) {
-                return `Transfer `
-            }
-            if (tx.to.toLowerCase() == connectedAccount.address.toLowerCase()) {
-                return `Receive`
-            }
-        }
-
-        return "Contract Interaction"
+  const renderAction = () => {
+    if (tx.functionName === "") {
+      if (tx.from.toLowerCase() == connectedAccount.address.toLowerCase()) {
+        return `Transfer `;
+      }
+      if (tx.to.toLowerCase() == connectedAccount.address.toLowerCase()) {
+        return `Receive`;
+      }
     }
 
-    const renderTimestamp = () => {
-        const MONTHS = [
-            'Jan',
-            'Feb',
-            'Mar',
-            'Apr',
-            'May',
-            'Jun',
-            'Jul',
-            'Aug',
-            'Sep',
-            'Oct',
-            'Nov',
-            'Dec',
-        ];
+    return "Contract Interaction";
+  };
 
-        const d = new Date(Number(tx.timeStamp) * 1000)
+  const renderTimestamp = () => {
+    const MONTHS = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
 
-        let hour = d.getHours();
-        let minutes = d.getMinutes();
-        let day = d.getDate();
-        let monthIndex = d.getMonth();
-        let year = d.getFullYear();
+    const d = new Date(Number(tx.timeStamp) * 1000);
 
-        const currentYear = (new Date()).getFullYear()
+    let hour = d.getHours();
+    let minutes = d.getMinutes();
+    let day = d.getDate();
+    let monthIndex = d.getMonth();
+    let year = d.getFullYear();
 
-        return `${MONTHS[monthIndex]} ${day}${year !== currentYear ? `, ${year}` : ""} at ${hour}:${minutes}${hour >= 0 && hour < 12 ? ' am' : ' pm'}`
+    const currentYear = new Date().getFullYear();
+
+    return `${MONTHS[monthIndex]} ${day}${year !== currentYear ? `, ${year}` : ""} at ${hour}:${minutes}${hour >= 0 && hour < 12 ? " am" : " pm"}`;
+  };
+
+  const calcGasFee = () => {
+    const estimatedGasFee = ethers.getBigInt(tx.gasUsed) * ethers.getBigInt(tx.gasPrice);
+    return parseFloat(
+      ethers.formatEther(estimatedGasFee).toString(),
+      5,
+    );
+  };
+
+  const calcTotalAmount = () => {
+    const estimatedGasFee = ethers.getBigInt(tx.gasUsed) * ethers.getBigInt(tx.gasPrice);
+    const totalAmount = estimatedGasFee + ethers.getBigInt(tx.value);
+
+    return parseFloat(
+      ethers.formatEther(totalAmount).toString(),
+      5,
+    );
+  };
+
+  const viewOnBlockExplorer = async () => {
+    if (!connectedNetwork.blockExplorer) return;
+
+    try {
+      await Linking.openURL(`${connectedNetwork.blockExplorer}/tx/${tx.hash}`);
+    } catch (error) {
+      toast.show("Cannot open url", {
+        type: "danger",
+      });
     }
+  };
 
-    const calcGasFee = () => {
-        const estimatedGasFee = BigNumber.from(tx.gasUsed).mul(BigNumber.from(tx.gasPrice))
-        return parseFloat(Number(ethers.utils.formatEther(estimatedGasFee)).toString(), 5)
-    }
+  return (
+    <Modal
+      isVisible={isVisible}
+      animationIn="zoomIn"
+      animationOut="zoomOut"
+      onBackButtonPress={onClose}
+      onBackdropPress={onClose}
+    >
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Text variant="headlineSmall" style={styles.title}>
+            {renderAction()}
+          </Text>
+          <IconButton
+            icon="close"
+            size={24}
+            onPress={onClose}
+          />
+        </View>
 
-    const calcTotalAmount = () => {
-        const estimatedGasFee = BigNumber.from(tx.gasUsed).mul(BigNumber.from(tx.gasPrice))
+        <Divider style={styles.divider} />
 
-        return parseFloat(Number(ethers.utils.formatEther(estimatedGasFee.add(tx.value))).toString(), 5)
-    }
+        <View style={styles.row}>
+          <View>
+            <Text variant="labelMedium">From</Text>
+            <Text variant="bodyLarge">
+              {truncateAddress(tx.from)}
+            </Text>
+          </View>
 
-    const viewOnBlockExplorer = async () => {
-        if (!connectedNetwork.blockExplorer) return
+          <View style={styles.alignRight}>
+            <Text variant="labelMedium">To</Text>
+            <Text variant="bodyLarge">
+              {truncateAddress(tx.to || tx.contractAddress)}
+            </Text>
+          </View>
+        </View>
 
-        try {
-            await Linking.openURL(`${connectedNetwork.blockExplorer}/tx/${tx.hash}`)
-        } catch (error) {
-            toast.show("Cannot open url", {
-                type: "danger"
-            })
-        }
-    }
+        <Divider style={styles.divider} />
 
-    return (
-        <Modal isVisible={isVisible} animationIn="zoomIn" animationOut="zoomOut" onBackButtonPress={onClose} onBackdropPress={onClose}>
-            <VStack bgColor="white" borderRadius="20" p="5" space={2}>
-                <HStack alignItems="center" justifyContent="space-between">
-                    <Text fontSize={FONT_SIZE['xl']} bold>{renderAction()}</Text>
-                    <Pressable onPress={onClose} _pressed={{ opacity: 0.4 }}>
-                        <Icon as={<Ionicons name="close-outline" />} size={1.5 * FONT_SIZE['xl']} />
-                    </Pressable>
-                </HStack>
+        <View style={styles.row}>
+          <View>
+            <Text variant="labelMedium">Nonce</Text>
+            <Text variant="bodyLarge">
+              #{tx.nonce}
+            </Text>
+          </View>
 
-                <Divider bgColor="muted.300" my="2" />
+          <View style={styles.alignRight}>
+            <Text variant="labelMedium">Date</Text>
+            <Text variant="bodyLarge">
+              {renderTimestamp()}
+            </Text>
+          </View>
+        </View>
 
-                <HStack alignItems="center" justifyContent="space-between">
-                    <VStack>
-                        <Text fontSize={FONT_SIZE['sm']}>From</Text>
-                        <Text fontSize={FONT_SIZE['md']} fontWeight="medium">{truncateAddress(tx.from)}</Text>
-                    </VStack>
+        <View style={styles.detailsBox}>
+          <View style={styles.row}>
+            <Text variant="bodyLarge">Amount</Text>
+            <Text variant="bodyLarge">
+              {parseFloat(
+                ethers.formatEther(ethers.getBigInt(tx.value)),
+                5,
+              )}{" "}
+              {connectedNetwork.currencySymbol}
+            </Text>
+          </View>
 
-                    <VStack alignItems="flex-end">
-                        <Text fontSize={FONT_SIZE['sm']}>To</Text>
-                        <Text fontSize={FONT_SIZE['md']} fontWeight="medium">{truncateAddress(tx.to || tx.contractAddress)}</Text>
-                    </VStack>
-                </HStack>
+          <View style={styles.row}>
+            <Text variant="bodyLarge">Estimated gas fee</Text>
+            <Text variant="bodyLarge">
+              {calcGasFee()} {connectedNetwork.currencySymbol}
+            </Text>
+          </View>
 
-                <Divider bgColor="muted.300" my="2" />
+          <Divider style={styles.divider} />
 
-                <HStack alignItems="center" justifyContent="space-between">
-                    <VStack>
-                        <Text fontSize={FONT_SIZE['sm']}>Nonce</Text>
-                        <Text fontSize={FONT_SIZE['md']} fontWeight="medium">#{tx.nonce}</Text>
-                    </VStack>
+          <View style={styles.row}>
+            <Text variant="bodyLarge" style={styles.bold}>
+              Total amount
+            </Text>
+            <Text variant="bodyLarge" style={styles.bold}>
+              {calcTotalAmount()} {connectedNetwork.currencySymbol}
+            </Text>
+          </View>
+        </View>
 
-                    <VStack alignItems="flex-end">
-                        <Text fontSize={FONT_SIZE['sm']}>Date</Text>
-                        <Text fontSize={FONT_SIZE['md']} fontWeight="medium">{renderTimestamp()}</Text>
-                    </VStack>
-                </HStack>
-
-                <VStack borderWidth={0.5} mt="5" borderRadius={10} p="5" space={2}>
-                    <HStack alignItems="center" justifyContent="space-between">
-                        <Text fontSize={FONT_SIZE['md']}>Amount</Text>
-                        <Text fontSize={FONT_SIZE['md']}>{parseFloat(ethers.utils.formatEther(BigNumber.from(tx.value)), 5)} {connectedNetwork.currencySymbol}</Text>
-                    </HStack>
-
-                    <HStack alignItems="center" justifyContent="space-between">
-                        <Text fontSize={FONT_SIZE['md']}>Estimated gas fee</Text>
-                        <Text fontSize={FONT_SIZE['md']}>{calcGasFee()} {connectedNetwork.currencySymbol}</Text>
-                    </HStack>
-
-                    <Divider bgColor="muted.300" my="2" />
-
-                    <HStack alignItems="center" justifyContent="space-between">
-                        <Text fontSize={FONT_SIZE['md']} bold>Total amount</Text>
-                        <Text fontSize={FONT_SIZE['md']} bold>{calcTotalAmount()} {connectedNetwork.currencySymbol}</Text>
-                    </HStack>
-                </VStack>
-
-                {connectedNetwork.blockExplorer && <Pressable onPress={viewOnBlockExplorer} _pressed={{ opacity: 0.4 }}><Text textAlign="center" mt="2" fontSize={FONT_SIZE['lg']} fontWeight="semibold" color={COLORS.primary}>View on block explorer</Text></Pressable>}
-            </VStack>
-        </Modal>
-    )
+        {connectedNetwork.blockExplorer && (
+          <Text
+            variant="titleMedium"
+            style={styles.link}
+            onPress={viewOnBlockExplorer}
+          >
+            View on block explorer
+          </Text>
+        )}
+      </View>
+    </Modal>
+  );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 20,
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  title: {
+    flex: 1,
+  },
+  divider: {
+    marginVertical: 8,
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginVertical: 4,
+  },
+  alignRight: {
+    alignItems: 'flex-end',
+  },
+  detailsBox: {
+    borderWidth: 0.5,
+    borderRadius: 10,
+    padding: 20,
+    marginTop: 20,
+  },
+  bold: {
+    fontWeight: 'bold',
+  },
+  link: {
+    textAlign: 'center',
+    marginTop: 8,
+    color: COLORS.primary,
+  }
+});

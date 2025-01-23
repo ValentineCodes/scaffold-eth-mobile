@@ -1,5 +1,5 @@
-import {ethers} from 'ethers';
-import { ALCHEMY_KEY } from './constants';
+import { ethers } from "ethers";
+import { ALCHEMY_KEY } from "./constants";
 export interface Providers {
   localhost: string;
   ethereum: string;
@@ -13,7 +13,7 @@ export interface Providers {
   polygonMumbai: string;
 }
 const providers = {
-  localhost: 'http://127.0.0.1:8545/',
+  localhost: "http://127.0.0.1:8545/",
   ethereum: `https://eth-mainnet.alchemyapi.io/v2/${ALCHEMY_KEY}`,
   sepolia: `https://eth-sepolia.g.alchemy.com/v2/${ALCHEMY_KEY}`,
   goerli: `https://eth-goerli.alchemyapi.io/v2/${ALCHEMY_KEY}`,
@@ -26,9 +26,9 @@ const providers = {
 };
 
 export const getProviderWithName = (name: keyof typeof providers) => {
-  return new ethers.providers.JsonRpcProvider(providers[name]);
+  return new ethers.JsonRpcProvider(providers[name]);
 };
 
 export const getProviderWithURL = (rpc_url: string) => {
-  return new ethers.providers.JsonRpcProvider(rpc_url);
+  return new ethers.JsonRpcProvider(rpc_url);
 };

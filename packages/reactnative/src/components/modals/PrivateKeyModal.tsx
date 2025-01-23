@@ -1,151 +1,238 @@
-import { HStack, VStack, Icon, Text, Input, Pressable, Button as RNButton } from 'native-base'
-import React, { useState } from 'react'
-import Modal from 'react-native-modal';
-import Ionicons from "react-native-vector-icons/dist/Ionicons"
-import { FONT_SIZE } from '../../utils/styles';
-import { COLORS } from '../../utils/constants';
-import Blockie from '../Blockie';
-import CopyableText from '../CopyableText';
-import { useSelector } from 'react-redux';
-import { Account } from '../../store/reducers/Accounts';
-import { truncateAddress } from '../../utils/helperFunctions'
-import SInfo from "react-native-sensitive-info";
-import Button from '../Button';
-import Clipboard from '@react-native-clipboard/clipboard';
-import { useToast } from 'react-native-toast-notifications';
-import { StyleSheet } from 'react-native';
+import React, { useState } from "react";
+import { StyleSheet, View } from "react-native";
+import { Modal, Portal, Text, TextInput, IconButton } from "react-native-paper";
+import { FONT_SIZE } from "../../utils/styles";
+import { COLORS } from "../../utils/constants";
+import Blockie from "../Blockie";
+import CopyableText from "../CopyableText";
+import { useSelector } from "react-redux";
+import { Account } from "../../store/reducers/Accounts";
+import { truncateAddress } from "../../utils/helperFunctions";
+import Clipboard from "@react-native-clipboard/clipboard";
+import { useToast } from "react-native-toast-notifications";
+import { useSecureStorage } from "../../hooks/useSecureStorage";
+import Button from "../Button";
 
 type Props = {
-    isVisible: boolean;
-    onClose: () => void;
-}
+  isVisible: boolean;
+  onClose: () => void;
+};
 
 export default function PrivateKeyModal({ isVisible, onClose }: Props) {
-    const connectedAccount: Account = useSelector(state => state.accounts.find((account: Account) => account.isConnected))
+  const connectedAccount: Account = useSelector((state) =>
+    state.accounts.find((account: Account) => account.isConnected),
+  );
 
-    const toast = useToast()
+  const { getItem } = useSecureStorage();
+  const toast = useToast();
 
-    const [password, setPassword] = useState("")
-    const [error, setError] = useState("")
-    const [privateKey, setPrivateKey] = useState("")
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [privateKey, setPrivateKey] = useState("");
 
-    const showPrivateKey = async () => {
-        if (!password) {
-            setError("Password cannot be empty")
-            return
-        }
-
-        const _security = await SInfo.getItem("security", {
-            sharedPreferencesName: "sern.android.storage",
-            keychainService: "sern.ios.storage",
-        });
-        const security = JSON.parse(_security!)
-
-        if (password !== security.password) {
-            setError("Incorrect password!")
-            return
-        }
-
-        const accounts = await SInfo.getItem("accounts", {
-            sharedPreferencesName: "sern.android.storage",
-            keychainService: "sern.ios.storage",
-        })
-
-        const wallet: Wallet = Array.from(JSON.parse(accounts)).find(wallet => wallet.address == connectedAccount.address)
-
-        setPrivateKey(wallet.privateKey)
+  const showPrivateKey = async () => {
+    if (!password) {
+      setError("Password cannot be empty");
+      return;
     }
 
-    const handleInputChange = (value: string) => {
-        setPassword(value)
-        if (error) {
-            setError("")
-        }
+    const security = await getItem("security");
+
+    if (password !== security.password) {
+      setError("Incorrect password!");
+      return;
     }
 
-    const copyPrivateKey = () => {
-        Clipboard.setString(privateKey)
-        toast.show("Copied to clipboard", {
-            type: 'success'
-        })
+    const accounts = await getItem("accounts");
+    const wallet = Array.from(accounts).find(
+      (wallet) => wallet.address === connectedAccount.address,
+    );
+
+    setPrivateKey(wallet.privateKey);
+  };
+
+  const handleInputChange = (value: string) => {
+    setPassword(value);
+    if (error) {
+      setError("");
     }
+  };
 
-    const handleOnClose = () => {
-        onClose()
-        setPrivateKey("")
-        setPassword("")
-    }
+  const copyPrivateKey = () => {
+    Clipboard.setString(privateKey);
+    toast.show("Copied to clipboard", {
+      type: "success",
+    });
+  };
 
-    return (
-        <Modal isVisible={isVisible} animationIn="slideInLeft" animationOut="slideOutRight" onBackButtonPress={handleOnClose} onBackdropPress={handleOnClose}>
-            <VStack bgColor="white" borderRadius="30" p="5" alignItems="center" space="4" w="full">
-                <HStack alignItems="center" justifyContent="space-between" space="2" w="full">
-                    <Text fontSize={1.1 * FONT_SIZE['xl']} bold>Show private key</Text>
-                    <Pressable onPress={handleOnClose} _pressed={{ opacity: 0.4 }}>
-                        <Icon as={<Ionicons name="close-outline" />} size={1.5 * FONT_SIZE['xl']} color="black" />
-                    </Pressable>
-                </HStack>
+  const handleOnClose = () => {
+    onClose();
+    setPrivateKey("");
+    setPassword("");
+  };
 
-                <VStack alignItems="center" space="1">
-                    <Blockie address={connectedAccount.address} size={2.5 * FONT_SIZE['xl']} />
-                    <Text fontSize={FONT_SIZE['xl']} fontWeight="medium">{connectedAccount.name}</Text>
-                    <CopyableText value={connectedAccount.address} displayText={truncateAddress(connectedAccount.address)} containerStyle={styles.addressContainer} textStyle={styles.addressText} iconStyle={{ color: COLORS.primary }} />
-                </VStack>
+  return (
+    <Portal>
+      <Modal
+        visible={isVisible}
+        onDismiss={handleOnClose}
+        contentContainerStyle={styles.container}
+      >
+        <View style={styles.header}>
+          <Text variant="titleLarge">Show private key</Text>
+          <IconButton icon="close" onPress={handleOnClose} />
+        </View>
 
-                {privateKey ? (
-                    <HStack alignItems="center" w="full" borderWidth="1" borderColor={COLORS.primary} borderRadius={10} p="4">
-                        <Text fontSize={FONT_SIZE['lg']} w="90%" mr="2">{privateKey}</Text>
-                        <Pressable onPress={copyPrivateKey} _pressed={{ opacity: 0.4 }}><Icon as={<Ionicons name="copy" />} size={5} color={COLORS.primary} /></Pressable>
-                    </HStack>
-                ) : (
-                    <VStack w="full" space={2}>
-                        <Text fontSize={FONT_SIZE["xl"]} fontWeight="medium">Enter your password</Text>
-                        <Input
-                            value={password}
-                            borderRadius="lg"
-                            variant="filled"
-                            fontSize="md"
-                            focusOutlineColor={COLORS.primary}
-                            secureTextEntry
-                            placeholder="Password"
-                            onChangeText={handleInputChange}
-                            onSubmitEditing={showPrivateKey}
-                            _input={{
-                                selectionColor: COLORS.primary,
-                                cursorColor: COLORS.primary,
-                            }}
-                        />
-                        {error && <Text fontSize="sm" color="red.400">{error}</Text>}
-                    </VStack>
-                )}
+        <View style={styles.accountInfo}>
+          <Blockie
+            address={connectedAccount.address}
+            size={2.5 * FONT_SIZE.xl}
+          />
+          <Text variant="titleMedium" style={styles.accountName}>
+            {connectedAccount.name}
+          </Text>
+          <View style={styles.addressContainer}>
+            <Text style={styles.addressText}>
+              {truncateAddress(connectedAccount.address)}
+            </Text>
+          </View>
+        </View>
 
+        {privateKey ? (
+          <View style={styles.privateKeyContainer}>
+            <Text style={styles.privateKeyText}>{privateKey}</Text>
+            <IconButton 
+              icon="content-copy" 
+              onPress={copyPrivateKey}
+              iconColor={COLORS.primary}
+            />
+          </View>
+        ) : (
+          <View style={styles.passwordContainer}>
+            <Text variant="titleMedium">Enter your password</Text>
+            <TextInput
+              value={password}
+              onChangeText={handleInputChange}
+              onSubmitEditing={showPrivateKey}
+              mode="outlined"
+              secureTextEntry
+              placeholder="Password"
+              error={!!error}
+            />
+            {error && (
+              <Text variant="bodySmall" style={styles.errorText}>
+                {error}
+              </Text>
+            )}
+          </View>
+        )}
 
-                <HStack alignItems="center" w="full" borderWidth="1" borderColor="red.400" borderRadius={10} p="4" bgColor="red.100">
-                    <Icon as={<Ionicons name="eye-off" />} size={1.3 * FONT_SIZE['xl']} color="red.400" />
-                    <Text fontSize={FONT_SIZE["md"]} mx="4">Never disclose this key. Anyone with your private key can fully control your account, including transferring away any of your funds.</Text>
-                </HStack>
+        <View style={styles.warningContainer}>
+          <IconButton 
+            icon="eye-off" 
+            size={24}
+            iconColor="red"
+          />
+          <Text style={styles.warningText}>
+            Never disclose this key. Anyone with your private key can fully
+            control your account, including transferring away any of your funds.
+          </Text>
+        </View>
 
-                {privateKey ? (
-                    <Button text="Done" onPress={handleOnClose} />
-                ) : (<HStack w="full" alignItems="center" justifyContent="space-between">
-                    <RNButton py="4" bgColor="red.100" w="50%" onPress={handleOnClose} _pressed={{ backgroundColor: 'red.200' }}><Text color="red.400" bold fontSize="md">Cancel</Text></RNButton>
-                    <Button text="Reveal" onPress={showPrivateKey} style={{ width: "50%", borderRadius: 0 }} />
-                </HStack>)}
-            </VStack>
-        </Modal>
-    )
+        {privateKey ? (
+          <Button text="Done" onPress={handleOnClose} />
+        ) : (
+          <View style={styles.buttonContainer}>
+            <Button
+              type="outline"
+              text="Cancel"
+              onPress={handleOnClose}
+              style={styles.cancelButton}
+            />
+            <Button
+              text="Reveal"
+              onPress={showPrivateKey}
+              style={styles.revealButton}
+            />
+          </View>
+        )}
+      </Modal>
+    </Portal>
+  );
 }
 
 const styles = StyleSheet.create({
-    addressContainer: {
-        paddingHorizontal: 15,
-        paddingVertical: 5,
-        backgroundColor: COLORS.primaryLight,
-        borderRadius: 15
-    },
-    addressText: {
-        fontWeight: '700',
-        fontSize: FONT_SIZE['md'],
-        color: COLORS.primary
-    }
-})
+  container: {
+    backgroundColor: "white",
+    borderRadius: 30,
+    padding: 20,
+    margin: 20,
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  accountInfo: {
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  accountName: {
+    marginTop: 10,
+  },
+  addressContainer: {
+    paddingHorizontal: 15,
+    paddingVertical: 5,
+    backgroundColor: COLORS.primaryLight,
+    borderRadius: 15,
+    marginTop: 5,
+  },
+  addressText: {
+    fontWeight: "700",
+    fontSize: FONT_SIZE.md,
+    color: COLORS.primary,
+  },
+  privateKeyContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: COLORS.primary,
+    borderRadius: 10,
+    padding: 15,
+    marginBottom: 20,
+  },
+  privateKeyText: {
+    flex: 1,
+    marginRight: 10,
+  },
+  passwordContainer: {
+    gap: 8,
+    marginBottom: 20,
+  },
+  errorText: {
+    color: "red",
+  },
+  warningContainer: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    backgroundColor: "#ffebee",
+    borderRadius: 10,
+    padding: 15,
+    marginBottom: 20,
+  },
+  warningText: {
+    flex: 1,
+    marginLeft: 10,
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    gap: 16,
+  },
+  cancelButton: {
+    flex: 1,
+  },
+  revealButton: {
+    flex: 1,
+  },
+});

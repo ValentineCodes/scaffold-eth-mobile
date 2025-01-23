@@ -1,23 +1,22 @@
-
 import React from "react";
 import { View } from "react-native";
-import { WebView } from 'react-native-webview';
+import { WebView } from "react-native-webview";
 
 type Props = {
-    address: string;
-    size: number;
-}
+  address: string;
+  size: number;
+};
 const Blockie = ({ address, size }: Props) => {
-    const iconScale = 0.4 * size
-    const iconSize = 10
-    return (
-        <View style={{ width: size, height: size }}>
-            {/* EXTREMELY HACKY SOLUTION, LOAD WEBVIEW SO WE CAN GENERATE BLOCKIE ON A CANVAS*/}
-            <WebView
-                style={{ width: size, height: size, }}
-                scrollEnabled={false}
-                source={{
-                    html: `
+  const iconScale = 0.4 * size;
+  const iconSize = 10;
+  return (
+    <View style={{ width: size, height: size }}>
+      {/* EXTREMELY HACKY SOLUTION, LOAD WEBVIEW SO WE CAN GENERATE BLOCKIE ON A CANVAS*/}
+      <WebView
+        style={{ width: size, height: size }}
+        scrollEnabled={false}
+        source={{
+          html: `
                     <!DOCTYPE html>
                         <head>
                         <style>
@@ -150,10 +149,10 @@ const Blockie = ({ address, size }: Props) => {
                             document.body.appendChild(canvas);
                         </script>
                         </body>
-                    `
-                }}
-            />
-        </View>
-    )
-}
-export default React.memo(Blockie)
+                    `,
+        }}
+      />
+    </View>
+  );
+};
+export default React.memo(Blockie);

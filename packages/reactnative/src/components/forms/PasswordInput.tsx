@@ -1,9 +1,9 @@
-import { Text, VStack, Input, Icon, HStack } from 'native-base'
-import React, { useState } from 'react'
-import MaterialIcons from "react-native-vector-icons/dist/MaterialIcons"
-import { COLORS } from '../../utils/constants';
-import { FONT_SIZE } from '../../utils/styles';
-import { TouchableOpacity } from 'react-native';
+import { View } from "react-native";
+import { Text, TextInput, IconButton } from "react-native-paper";
+import React, { useState } from "react";
+import { COLORS } from "../../utils/constants";
+import { FONT_SIZE } from "../../utils/styles";
+import { TouchableOpacity } from "react-native";
 
 type Props = {
   label: string;
@@ -13,54 +13,81 @@ type Props = {
   infoText?: string | boolean | null;
   errorText?: string | boolean | null;
   onChange: (value: string) => void;
-}
+};
 
-function PasswordInput({ label, value, suggestion, defaultValue, infoText, errorText, onChange }: Props) {
-  const [show, setShow] = useState(false)
+function PasswordInput({
+  label,
+  value,
+  suggestion,
+  defaultValue,
+  infoText,
+  errorText,
+  onChange,
+}: Props) {
+  const [show, setShow] = useState(false);
 
   const useSuggestion = () => {
-    onChange(suggestion)
-  }
+    onChange(suggestion);
+  };
 
   return (
-    <VStack space={2}>
-      <Text fontSize={FONT_SIZE["xl"]} bold>{label}</Text>
-      <Input
+    <View style={{gap: 8}}>
+      <Text variant="headlineSmall" style={{fontWeight: 'bold'}}>
+        {label}
+      </Text>
+      <TextInput
         defaultValue={defaultValue}
         value={value}
-        borderRadius="lg"
-        variant="filled"
-        fontSize="md"
-        focusOutlineColor={COLORS.primary}
-        InputLeftElement={
-          <Icon as={<MaterialIcons name="lock" />} size={5} ml="4" color="muted.400" />
+        mode="outlined"
+        outlineColor={COLORS.primary}
+        activeOutlineColor={COLORS.primary}
+        style={{fontSize: FONT_SIZE.md}}
+        left={
+          <TextInput.Icon
+            icon="lock"
+            color="#a3a3a3"
+          />
         }
-        InputRightElement={
+        right={
           value || !suggestion ? (
-            <HStack space={1}>
+            <View style={{flexDirection: 'row'}}>
               {value && (
-                <TouchableOpacity activeOpacity={0.4} onPress={() => onChange("")}>
-                  <Icon as={<MaterialIcons name="close" />} size={5} mr="2" color="muted.400" />
-                </TouchableOpacity>
+                <TextInput.Icon
+                  icon="close"
+                  color="#a3a3a3"
+                  onPress={() => onChange("")}
+                />
               )}
-              <TouchableOpacity activeOpacity={0.4} onPress={() => setShow(!show)} mr="2">
-                <Icon as={<MaterialIcons name={show ? "visibility" : "visibility-off"} />} size={5} mr="2" color="muted.400" />
-              </TouchableOpacity>
-            </HStack>
+              <TextInput.Icon
+                icon={show ? "eye" : "eye-off"}
+                color="#a3a3a3"
+                onPress={() => setShow(!show)}
+              />
+            </View>
           ) : (
-            <TouchableOpacity activeOpacity={0.4} onPress={useSuggestion}>
-              <Text fontSize={FONT_SIZE['lg']} color={COLORS.primary} mr="2">Use Suggestion</Text>
-            </TouchableOpacity>
+            <TextInput.Affix
+              text="Use Suggestion"
+              textStyle={{color: COLORS.primary, fontSize: FONT_SIZE.lg}}
+              onPress={useSuggestion}
+            />
           )
         }
         secureTextEntry={!show}
         placeholder={suggestion ? `Suggestion: ${suggestion}` : "Password"}
         onChangeText={onChange}
       />
-      {infoText ? <Text fontSize="sm" color="muted.400">{infoText}</Text> : null}
-      {errorText ? <Text fontSize="sm" color="red.400">{errorText}</Text> : null}
-    </VStack>
-  )
+      {infoText ? (
+        <Text variant="bodySmall" style={{color: '#a3a3a3'}}>
+          {infoText}
+        </Text>
+      ) : null}
+      {errorText ? (
+        <Text variant="bodySmall" style={{color: '#ef4444'}}>
+          {errorText}
+        </Text>
+      ) : null}
+    </View>
+  );
 }
 
-export default PasswordInput
+export default PasswordInput;

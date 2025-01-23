@@ -1,58 +1,104 @@
-import React, { useEffect } from 'react'
-import { StyleSheet, BackHandler, NativeEventSubscription } from 'react-native'
-import { ScrollView, Image, Text, VStack } from 'native-base'
+import React, { useEffect } from "react";
+import { StyleSheet, BackHandler, NativeEventSubscription, ScrollView, View } from "react-native";
+import { Text, Button } from "react-native-paper";
+import { Image } from "react-native";
 
-import Button from '../../components/Button'
-import { COLORS } from '../../utils/constants'
-import { FONT_SIZE, WINDOW_WIDTH } from '../../utils/styles'
-import { useFocusEffect, useNavigation } from '@react-navigation/native'
+import { COLORS } from "../../utils/constants";
+import { FONT_SIZE, WINDOW_WIDTH } from "../../utils/styles";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 
 let backHandler: NativeEventSubscription;
 
-type Props = {}
+type Props = {};
 
-export default function Onboarding({ }: Props) {
-    const navigation = useNavigation()
+export default function Onboarding({}: Props) {
+  const navigation = useNavigation();
 
-    const handleNav = () => {
-        navigation.navigate("WalletSetup")
-        backHandler?.remove()
-    }
+  const handleNav = () => {
+    // @ts-ignore
+    navigation.navigate("WalletSetup");
+    backHandler?.remove();
+  };
 
-    useFocusEffect(() => {
-        backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
-            BackHandler.exitApp();
+  useFocusEffect(() => {
+    backHandler = BackHandler.addEventListener("hardwareBackPress", () => {
+      BackHandler.exitApp();
 
-            return true;
-        });
-    })
+      return true;
+    });
+  });
 
-    useEffect(() => {
-        return () => {
-            backHandler?.remove();
-        };
-    }, [])
+  useEffect(() => {
+    return () => {
+      backHandler?.remove();
+    };
+  }, []);
 
-    return (
-        <ScrollView contentContainerStyle={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center"
-        }} style={styles.container}>
-            <Image source={require("../../assets/images/logo.png")} alt='Scaffold-ETH' width={WINDOW_WIDTH * 0.3} height={WINDOW_WIDTH * 0.3} />
-            <VStack w="full" mt="10">
-                <Text textAlign="center" color={COLORS.primary} fontSize={2 * FONT_SIZE["xl"]} bold>Welcome to Scaffold-ETH</Text>
-                <Text textAlign="center" fontSize={FONT_SIZE["lg"]} my="4">First, we'll need to setup a wallet. This will be unique to you and will be used to sign transactions, messages, and manage funds</Text>
+  return (
+    <ScrollView
+      contentContainerStyle={{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+      style={styles.container}
+    >
+      <Image
+        source={require("../../assets/images/logo.png")}
+        style={{
+          width: WINDOW_WIDTH * 0.3,
+          height: WINDOW_WIDTH * 0.3
+        }}
+      />
+      <View style={styles.content}>
+        <Text
+          variant="headlineLarge"
+          style={styles.title}
+        >
+          Welcome to Scaffold-ETH
+        </Text>
+        <Text
+          variant="bodyLarge"
+          style={styles.subtitle}
+        >
+          First, we'll need to setup a wallet. This will be unique to you and
+          will be used to sign transactions, messages, and manage funds
+        </Text>
 
-                <Button text="Get Started" onPress={handleNav} style={{ marginTop: 40, marginBottom: 50 }} />
-            </VStack>
-        </ScrollView >
-    )
+        <Button
+          mode="contained"
+          onPress={handleNav}
+          style={styles.button}
+        >
+          Get Started
+        </Button>
+      </View>
+    </ScrollView>
+  );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        paddingHorizontal: 15,
-        backgroundColor: 'white'
-    }
-})
+  container: {
+    paddingHorizontal: 15,
+    backgroundColor: "white",
+  },
+  content: {
+    width: "100%",
+    marginTop: 40,
+  },
+  title: {
+    textAlign: "center",
+    color: COLORS.primary,
+    fontSize: 2 * FONT_SIZE["xl"],
+    fontWeight: "bold"
+  },
+  subtitle: {
+    textAlign: "center",
+    fontSize: FONT_SIZE["lg"],
+    marginVertical: 16
+  },
+  button: {
+    marginTop: 40,
+    marginBottom: 50
+  }
+});

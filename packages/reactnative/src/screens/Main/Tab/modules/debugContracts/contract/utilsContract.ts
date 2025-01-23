@@ -3,9 +3,15 @@ import { AbiFunction, AbiParameter } from "abitype";
 /**
  * Generates a key based on function metadata
  */
-const getFunctionInputKey = (functionName: string, input: AbiParameter, inputIndex: number): string => {
+const getFunctionInputKey = (
+  functionName: string,
+  input: AbiParameter,
+  inputIndex: number,
+): string => {
   const name = input?.name || `input_${inputIndex}_`;
-  return functionName + "_" + name + "_" + input.internalType + "_" + input.type;
+  return (
+    functionName + "_" + name + "_" + input.internalType + "_" + input.type
+  );
 };
 
 // This regex is used to identify array types in the form of `type[size]`
@@ -16,7 +22,7 @@ const ARRAY_TYPE_REGEX = /\[.*\]$/;
  */
 const getParsedContractFunctionArgs = (form: Record<string, any>) => {
   const keys = Object.keys(form);
-  const parsedArguments = keys.map(key => {
+  const parsedArguments = keys.map((key) => {
     try {
       const keySplitArray = key.split("_");
       const baseTypeOfArg = keySplitArray[keySplitArray.length - 1];
@@ -49,4 +55,8 @@ const getInitialFormState = (abiFunction: AbiFunction) => {
   return initialForm;
 };
 
-export { getFunctionInputKey, getInitialFormState, getParsedContractFunctionArgs };
+export {
+  getFunctionInputKey,
+  getInitialFormState,
+  getParsedContractFunctionArgs,
+};

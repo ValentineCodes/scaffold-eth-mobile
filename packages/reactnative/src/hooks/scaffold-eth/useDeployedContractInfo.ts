@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { useIsMounted } from "usehooks-ts";
-import { ContractCodeStatus, contracts } from "../../../utils/scaffold-eth/contract";
+import {
+  ContractCodeStatus,
+  contracts,
+} from "../../../utils/scaffold-eth/contract";
 import scaffoldConfig from "../../../scaffold.config";
 
 /**
@@ -11,7 +14,9 @@ export const useDeployedContractInfo = (contractName) => {
   const isMounted = useIsMounted();
   const { targetNetworks } = scaffoldConfig;
   const deployedContract = contracts?.[targetNetworks[0].id]?.[contractName];
-  const [status, setStatus] = useState<ContractCodeStatus>(ContractCodeStatus.LOADING);
+  const [status, setStatus] = useState<ContractCodeStatus>(
+    ContractCodeStatus.LOADING,
+  );
 
   useEffect(() => {
     const checkContractDeployment = async () => {
