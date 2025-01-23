@@ -15,13 +15,14 @@ import Auth from './reducers/Auth';
 import Balance from './reducers/Balance';
 import Networks from './reducers/Networks';
 import Recipients from './reducers/Recipients';
+import Tokens from './reducers/Tokens';
 import Transactions from './reducers/Transactions';
 
 const persistConfig = {
   key: 'root',
   version: 1,
   storage: AsyncStorage,
-  blacklist: ['balance', 'activeSessions', 'networks']
+  blacklist: ['balance', 'networks']
 };
 
 const reducers = combineReducers({
@@ -30,7 +31,8 @@ const reducers = combineReducers({
   accounts: Accounts,
   transactions: Transactions,
   balance: Balance,
-  recipients: Recipients
+  recipients: Recipients,
+  tokens: Tokens
 });
 
 const persistedReducer = persistReducer(persistConfig, reducers);
