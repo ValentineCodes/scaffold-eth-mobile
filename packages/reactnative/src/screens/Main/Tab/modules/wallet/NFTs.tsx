@@ -5,13 +5,13 @@ import { TextInput, Text, Divider, Surface } from "react-native-paper";
 
 type Props = {};
 
-function Tokens({}: Props) {
+function NFTs({}: Props) {
   return (
     <Surface style={{paddingTop: 75, padding: 2}}>
       <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingVertical: 8 }}>
         <TextInput
           mode="outlined"
-          placeholder="Search tokens"
+          placeholder="Search NFTs"
           style={{ width: "85%" }}
         />
         <Icon
@@ -24,4 +24,4 @@ function Tokens({}: Props) {
   );
 }
 
-export default Tokens;
+export default NFTs;
