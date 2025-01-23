@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Address, erc20Abi } from 'viem';
-import { useAccount } from 'wagmi';
+import useAccount from './scaffold-eth/useAccount';
 import useContractRead from './scaffold-eth/useContractRead';
 
 /**
