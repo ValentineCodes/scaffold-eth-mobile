@@ -3,6 +3,7 @@ import { FlatList, Pressable, ScrollView, View } from 'react-native';
 import { useModal } from 'react-native-modalfy';
 import { Divider, Surface, Text, TextInput } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Ionicons';
+import Token from '../../../../../components/asset/Token';
 
 type Props = {};
 
@@ -30,6 +31,8 @@ function Tokens({}: Props) {
           onPress={() => openModal('ImportTokenModal')}
         />
       </View>
+
+      <Token />
     </Surface>
   );
 }
