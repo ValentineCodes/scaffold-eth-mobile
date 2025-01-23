@@ -1,10 +1,9 @@
-import React from "react";
-import { StyleSheet, View } from "react-native";
-import { Text } from "react-native-paper";
-import { Address } from "viem";
-import useNetwork from "../../hooks/scaffold-eth/useNetwork";
-import useBalance from "../../hooks/scaffold-eth/useBalance";
-import { TextStyle } from "react-native";
+import React from 'react';
+import { StyleSheet, TextStyle, View } from 'react-native';
+import { Text } from 'react-native-paper';
+import { Address } from 'viem';
+import useBalance from '../../hooks/scaffold-eth/useBalance';
+import useNetwork from '../../hooks/scaffold-eth/useNetwork';
 
 type Props = {
   address: string;
@@ -28,6 +27,6 @@ export default function Balance({ address, style }: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: "center",
-  },
+    alignItems: 'center'
+  }
 });

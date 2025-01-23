@@ -1,16 +1,15 @@
-import React, { useState } from "react";
-import { Dimensions, StyleSheet, View } from "react-native";
-import { Modal, Portal, Text, Button, IconButton } from "react-native-paper";
-import QRCode from "react-native-qrcode-svg";
-import { useDispatch, useSelector } from "react-redux";
-
-import { Account, removeAccount } from "../../store/reducers/Accounts";
-import EditAccountNameForm from "../forms/EditAccountNameForm";
-import CopyableText from "../CopyableText";
-import Blockie from "../Blockie";
-import { FONT_SIZE } from "../../utils/styles";
-import { COLORS } from "../../utils/constants";
-import PrivateKeyModal from "./PrivateKeyModal";
+import React, { useState } from 'react';
+import { Dimensions, StyleSheet, View } from 'react-native';
+import { Button, IconButton, Modal, Portal, Text } from 'react-native-paper';
+import QRCode from 'react-native-qrcode-svg';
+import { useDispatch, useSelector } from 'react-redux';
+import { Account, removeAccount } from '../../store/reducers/Accounts';
+import { COLORS } from '../../utils/constants';
+import { FONT_SIZE } from '../../utils/styles';
+import Blockie from '../Blockie';
+import CopyableText from '../CopyableText';
+import EditAccountNameForm from '../forms/EditAccountNameForm';
+import PrivateKeyModal from './PrivateKeyModal';
 
 type Props = {
   isVisible: boolean;
@@ -20,9 +19,9 @@ type Props = {
 export default function AccountDetailsModal({ isVisible, onClose }: Props) {
   const dispatch = useDispatch();
 
-  const accounts: Account[] = useSelector((state) => state.accounts);
-  const connectedAccount: Account = useSelector((state) =>
-    state.accounts.find((account: Account) => account.isConnected),
+  const accounts: Account[] = useSelector(state => state.accounts);
+  const connectedAccount: Account = useSelector(state =>
+    state.accounts.find((account: Account) => account.isConnected)
   );
 
   const [isEditingAccountName, setIsEditingAccountName] = useState(false);
@@ -45,7 +44,7 @@ export default function AccountDetailsModal({ isVisible, onClose }: Props) {
         <View style={styles.content}>
           <Blockie
             address={connectedAccount.address}
-            size={2.5 * FONT_SIZE["xl"]}
+            size={2.5 * FONT_SIZE['xl']}
           />
           {isEditingAccountName ? (
             <EditAccountNameForm close={() => setIsEditingAccountName(false)} />
@@ -60,7 +59,10 @@ export default function AccountDetailsModal({ isVisible, onClose }: Props) {
             </View>
           )}
 
-          <QRCode value={connectedAccount.address} size={12 * FONT_SIZE["xl"]} />
+          <QRCode
+            value={connectedAccount.address}
+            size={12 * FONT_SIZE['xl']}
+          />
 
           <CopyableText
             value={connectedAccount.address}
@@ -100,11 +102,7 @@ export default function AccountDetailsModal({ isVisible, onClose }: Props) {
             contentContainerStyle={styles.consentModal}
           >
             <View style={styles.consentContent}>
-              <IconButton
-                icon="alert"
-                size={50}
-                iconColor={COLORS.error}
-              />
+              <IconButton icon="alert" size={50} iconColor={COLORS.error} />
               <Text variant="headlineSmall" style={styles.warningText}>
                 Remove account
               </Text>
@@ -138,58 +136,58 @@ export default function AccountDetailsModal({ isVisible, onClose }: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     padding: 20,
     margin: 20,
-    borderRadius: 30,
+    borderRadius: 30
   },
   content: {
-    alignItems: "center",
-    gap: 16,
+    alignItems: 'center',
+    gap: 16
   },
   nameContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8
   },
   addressContainer: {
     paddingHorizontal: 15,
     paddingVertical: 5,
-    backgroundColor: "#F5F5F5",
-    borderRadius: 25,
+    backgroundColor: '#F5F5F5',
+    borderRadius: 25
   },
   addressText: {
-    fontWeight: "500",
-    fontSize: FONT_SIZE["xl"],
-    width: "92%",
+    fontWeight: '500',
+    fontSize: FONT_SIZE['xl'],
+    width: '92%'
   },
   button: {
-    width: "100%",
-    marginTop: 8,
+    width: '100%',
+    marginTop: 8
   },
   dangerButton: {
-    backgroundColor: COLORS.error,
+    backgroundColor: COLORS.error
   },
   consentModal: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     padding: 20,
     margin: 20,
-    borderRadius: 30,
+    borderRadius: 30
   },
   consentContent: {
-    alignItems: "center",
-    gap: 16,
+    alignItems: 'center',
+    gap: 16
   },
   warningText: {
     color: COLORS.error,
-    textAlign: "center",
+    textAlign: 'center'
   },
   warningDescription: {
-    textAlign: "center",
+    textAlign: 'center'
   },
   buttonContainer: {
-    flexDirection: "row",
+    flexDirection: 'row',
     gap: 16,
-    marginTop: 16,
-  },
+    marginTop: 16
+  }
 });

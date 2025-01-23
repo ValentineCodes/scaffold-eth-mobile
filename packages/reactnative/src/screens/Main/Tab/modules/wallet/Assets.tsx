@@ -1,6 +1,6 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { StyleSheet, View } from 'react-native';
 import React from 'react';
+import { StyleSheet, View } from 'react-native';
 import { COLORS } from '../../../../../utils/constants';
 import { FONT_SIZE } from '../../../../../utils/styles';
 import NFTs from './NFTs';
@@ -47,8 +47,8 @@ export default function Assets({}: Props) {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: COLORS.background
-    }
-})
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.background
+  }
+});

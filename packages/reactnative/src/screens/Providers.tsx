@@ -1,23 +1,23 @@
-import React from "react";
-import { Provider as PaperProvider } from "react-native-paper";
-import { Provider as ReduxProvider } from "react-redux";
-import { MenuProvider } from "react-native-popup-menu";
-import { store } from "../store";
-import { ToastProvider } from "react-native-toast-notifications";
-
-import { SafeAreaProvider } from "react-native-safe-area-context";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
+import React from 'react';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import {
-  ModalOptions,
-  ModalProvider,
   createModalStack,
-} from "react-native-modalfy";
-
-import SignTransactionModal from "../components/modals/SignTransactionModal";
-import SignMessageModal from "../components/modals/SignMessageModal";
-import TxReceiptModal from "../components/modals/TxReceiptModal";
-import SignTransferModal from "../components/modals/SignTransferModal";
-import ChangePasswordModal from "../components/modals/ChangePasswordModal";
+  ModalOptions,
+  ModalProvider
+} from 'react-native-modalfy';
+import { Provider as PaperProvider } from 'react-native-paper';
+import { MenuProvider } from 'react-native-popup-menu';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { ToastProvider } from 'react-native-toast-notifications';
+import { Provider as ReduxProvider } from 'react-redux';
+import ChangePasswordModal from '../components/modals/ChangePasswordModal';
+import ImportNFTModal from '../components/modals/ImportNFTModal';
+import ImportTokenModal from '../components/modals/ImportTokenModal';
+import SignMessageModal from '../components/modals/SignMessageModal';
+import SignTransactionModal from '../components/modals/SignTransactionModal';
+import SignTransferModal from '../components/modals/SignTransferModal';
+import TxReceiptModal from '../components/modals/TxReceiptModal';
+import { store } from '../store';
 
 const theme = {
   colors: {
@@ -25,8 +25,8 @@ const theme = {
     accent: '#f1c40f',
     background: '#ffffff',
     surface: '#ffffff',
-    error: '#B00020',
-  },
+    error: '#B00020'
+  }
 };
 
 type Props = {
@@ -34,15 +34,17 @@ type Props = {
 };
 
 const modalConfig = {
+  ImportTokenModal,
+  ImportNFTModal,
   ChangePasswordModal,
   SignTransactionModal,
   SignMessageModal,
   TxReceiptModal,
-  SignTransferModal,
+  SignTransferModal
 };
 const defaultOptions: ModalOptions = {
   backdropOpacity: 0.6,
-  disableFlingGesture: true,
+  disableFlingGesture: true
 };
 
 const modalStack = createModalStack(modalConfig, defaultOptions);
@@ -53,9 +55,11 @@ export default function Providers({ children }: Props) {
       <PaperProvider theme={theme}>
         <MenuProvider>
           <ToastProvider>
-            <SafeAreaProvider>
-              <ModalProvider stack={modalStack}>{children}</ModalProvider>
-            </SafeAreaProvider>
+            <GestureHandlerRootView style={{ flex: 1 }}>
+              <SafeAreaProvider>
+                <ModalProvider stack={modalStack}>{children}</ModalProvider>
+              </SafeAreaProvider>
+            </GestureHandlerRootView>
           </ToastProvider>
         </MenuProvider>
       </PaperProvider>

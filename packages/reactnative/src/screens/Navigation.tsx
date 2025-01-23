@@ -1,18 +1,17 @@
-import React from "react";
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-
-import Onboarding from "./Authentication/Onboarding";
-import WalletSetup from "./Authentication/WalletSetup";
-import GenerateSeedPhrase from "./Authentication/GenerateSeedPhrase";
-import ConfirmSeedPhrase from "./Authentication/ConfirmSeedPhrase";
-import ImportWallet from "./Authentication/ImportWallet";
-import SecureWallet from "./Authentication/SecureWallet";
-import CreatePassword from "./Authentication/CreatePassword";
-import Login from "./Authentication/Login";
-import Main from "./Main";
-import Transfer from "./Transfer";
-import { useSelector } from "react-redux";
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import React from 'react';
+import { useSelector } from 'react-redux';
+import ConfirmSeedPhrase from './Authentication/ConfirmSeedPhrase';
+import CreatePassword from './Authentication/CreatePassword';
+import GenerateSeedPhrase from './Authentication/GenerateSeedPhrase';
+import ImportWallet from './Authentication/ImportWallet';
+import Login from './Authentication/Login';
+import Onboarding from './Authentication/Onboarding';
+import SecureWallet from './Authentication/SecureWallet';
+import WalletSetup from './Authentication/WalletSetup';
+import Main from './Main';
+import Transfer from './Transfer';
 
 type Props = {};
 
@@ -39,7 +38,7 @@ export default function Navigation({}: Props) {
       <AppStack.Navigator
         screenOptions={{
           headerShown: false,
-          animation: "slide_from_right",
+          animation: 'slide_from_right'
         }}
       >
         {!auth.isLoggedIn && (

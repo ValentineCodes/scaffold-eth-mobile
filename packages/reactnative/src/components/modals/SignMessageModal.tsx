@@ -1,13 +1,19 @@
-import React from "react";
-import { StyleSheet, View, ScrollView } from "react-native";
-import { Modal, Portal, Text, IconButton, Button as PaperButton } from "react-native-paper";
-import { COLORS } from "../../utils/constants";
-import { FONT_SIZE, WINDOW_HEIGHT } from "../../utils/styles";
-import useNetwork from "../../hooks/scaffold-eth/useNetwork";
-import useAccount from "../../hooks/scaffold-eth/useAccount";
-import Blockie from "../Blockie";
-import Button from "../Button";
-import useBalance from "../../hooks/scaffold-eth/useBalance";
+import React from 'react';
+import { ScrollView, StyleSheet, View } from 'react-native';
+import {
+  IconButton,
+  Modal,
+  Button as PaperButton,
+  Portal,
+  Text
+} from 'react-native-paper';
+import useAccount from '../../hooks/scaffold-eth/useAccount';
+import useBalance from '../../hooks/scaffold-eth/useBalance';
+import useNetwork from '../../hooks/scaffold-eth/useNetwork';
+import { COLORS } from '../../utils/constants';
+import { FONT_SIZE, WINDOW_HEIGHT } from '../../utils/styles';
+import Blockie from '../Blockie';
+import Button from '../Button';
 
 type Props = {
   modal: {
@@ -21,14 +27,14 @@ type Props = {
 };
 
 export default function SignMessageModal({
-  modal: { closeModal, params },
+  modal: { closeModal, params }
 }: Props) {
   const account = useAccount();
   const network = useNetwork();
   const { balance } = useBalance({ address: account.address });
 
   const sign = () => {
-    closeModal("SignMessageModal", params.onConfirm);
+    closeModal('SignMessageModal', params.onConfirm);
   };
 
   const reject = () => {
@@ -38,7 +44,11 @@ export default function SignMessageModal({
 
   return (
     <Portal>
-      <Modal visible={true} onDismiss={closeModal} contentContainerStyle={styles.container}>
+      <Modal
+        visible={true}
+        onDismiss={closeModal}
+        contentContainerStyle={styles.container}
+      >
         <View style={styles.header}>
           <View style={styles.accountInfo}>
             <Blockie address={account.address} size={1.8 * FONT_SIZE.xl} />
@@ -65,8 +75,8 @@ export default function SignMessageModal({
             </Text>
 
             <Text variant="bodyMedium" style={styles.subtitle}>
-              Only sign this message if you fully understand the content and trust
-              this platform
+              Only sign this message if you fully understand the content and
+              trust this platform
             </Text>
 
             <Text variant="bodyMedium" style={styles.label}>
@@ -93,11 +103,7 @@ export default function SignMessageModal({
           >
             Reject
           </PaperButton>
-          <Button
-            text="Sign"
-            onPress={sign}
-            style={styles.signButton}
-          />
+          <Button text="Sign" onPress={sign} style={styles.signButton} />
         </View>
       </Modal>
     </Portal>
@@ -106,75 +112,75 @@ export default function SignMessageModal({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderRadius: 30,
     padding: 20,
-    margin: 20,
+    margin: 20
   },
   header: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     paddingBottom: 16,
     borderBottomWidth: 1,
-    borderBottomColor: "#E0E0E0",
+    borderBottomColor: '#E0E0E0'
   },
   accountInfo: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8
   },
   accountName: {
-    fontWeight: "500",
+    fontWeight: '500'
   },
   balanceInfo: {
-    alignItems: "flex-end",
+    alignItems: 'flex-end'
   },
   balance: {
-    fontWeight: "500",
+    fontWeight: '500'
   },
   content: {
-    maxHeight: WINDOW_HEIGHT * 0.5,
+    maxHeight: WINDOW_HEIGHT * 0.5
   },
   titleContainer: {
-    alignItems: "center",
+    alignItems: 'center',
     padding: 8,
-    gap: 16,
+    gap: 16
   },
   title: {
-    textAlign: "center",
-    fontWeight: "600",
+    textAlign: 'center',
+    fontWeight: '600'
   },
   subtitle: {
-    textAlign: "center",
-    color: "gray",
+    textAlign: 'center',
+    color: 'gray'
   },
   label: {
-    color: "gray",
+    color: 'gray'
   },
   messageContainer: {
     padding: 16,
     gap: 8,
     borderTopWidth: 1,
     borderBottomWidth: 1,
-    borderColor: "#E0E0E0",
+    borderColor: '#E0E0E0'
   },
   messageLabel: {
-    color: "gray",
+    color: 'gray'
   },
   message: {
-    color: "gray",
+    color: 'gray'
   },
   buttonContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between'
   },
   rejectButton: {
-    width: "50%",
+    width: '50%'
   },
   signButton: {
-    width: "50%",
-    borderRadius: 0,
-  },
+    width: '50%',
+    borderRadius: 0
+  }
 });

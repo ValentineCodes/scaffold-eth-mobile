@@ -1,21 +1,21 @@
-import React, { useState } from "react";
-import { StyleSheet, View, ScrollView, Dimensions } from "react-native";
-import { Modal, Portal, Text, IconButton, Divider } from "react-native-paper";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState } from 'react';
+import { Dimensions, ScrollView, StyleSheet, View } from 'react-native';
+import { Divider, IconButton, Modal, Portal, Text } from 'react-native-paper';
+import { useToast } from 'react-native-toast-notifications';
+import { useDispatch, useSelector } from 'react-redux';
+import { useSecureStorage } from '../../hooks/useSecureStorage';
+import useWallet from '../../hooks/useWallet';
 import {
   Account,
   addAccount,
-  switchAccount,
-} from "../../store/reducers/Accounts";
-import Button from "../Button";
-import Blockie from "../Blockie";
-import { COLORS } from "../../utils/constants";
-import { FONT_SIZE } from "../../utils/styles";
-import ImportAccountModal from "./ImportAccountModal";
-import { useToast } from "react-native-toast-notifications";
-import { useSecureStorage } from "../../hooks/useSecureStorage";
-import useWallet from "../../hooks/useWallet";
-import { truncateAddress } from "../../utils/helperFunctions";
+  switchAccount
+} from '../../store/reducers/Accounts';
+import { COLORS } from '../../utils/constants';
+import { truncateAddress } from '../../utils/helperFunctions';
+import { FONT_SIZE } from '../../utils/styles';
+import Blockie from '../Blockie';
+import Button from '../Button';
+import ImportAccountModal from './ImportAccountModal';
 
 type Props = {
   isVisible: boolean;
@@ -26,16 +26,16 @@ type Props = {
 export default function AccountsModal({
   isVisible,
   setVisibility,
-  onClose,
+  onClose
 }: Props) {
   const dispatch = useDispatch();
   const toast = useToast();
   const { importWallet } = useWallet();
   const { getItem, saveItem } = useSecureStorage();
 
-  const accounts: Account[] = useSelector((state) => state.accounts);
-  const connectedAccount: Account = useSelector((state) =>
-    state.accounts.find((account: Account) => account.isConnected),
+  const accounts: Account[] = useSelector(state => state.accounts);
+  const connectedAccount: Account = useSelector(state =>
+    state.accounts.find((account: Account) => account.isConnected)
   );
 
   const [showImportAccountModal, setShowImportAccountModal] = useState(false);
@@ -48,32 +48,32 @@ export default function AccountsModal({
   };
 
   const createAccount = async () => {
-    const mnemonic = (await getItem("mnemonic")) as string;
+    const mnemonic = (await getItem('mnemonic')) as string;
     let newAccount;
 
     for (let i = 0; i < Infinity; i++) {
       const wallet = await importWallet(mnemonic, i);
-      if (!accounts.find((account) => account.address == wallet.address)) {
+      if (!accounts.find(account => account.address == wallet.address)) {
         newAccount = {
           address: wallet.address,
-          privateKey: wallet.privateKey,
+          privateKey: wallet.privateKey
         };
         break;
       }
     }
 
     if (!newAccount) {
-      toast.show("Failed to create account!", { type: "danger" });
+      toast.show('Failed to create account!', { type: 'danger' });
       return;
     }
 
-    const createdAccounts = await getItem("accounts");
+    const createdAccounts = await getItem('accounts');
     await saveItem(
-      "accounts",
+      'accounts',
       JSON.stringify([
         ...createdAccounts,
-        { privateKey: newAccount.privateKey, address: newAccount.address },
-      ]),
+        { privateKey: newAccount.privateKey, address: newAccount.address }
+      ])
     );
 
     dispatch(addAccount({ address: newAccount.address, isImported: false }));
@@ -97,7 +97,7 @@ export default function AccountsModal({
 
         <ScrollView style={styles.scrollView}>
           {accounts.map((account, index) => (
-            <View 
+            <View
               key={account.address}
               style={[
                 styles.accountItem,
@@ -105,18 +105,17 @@ export default function AccountsModal({
               ]}
             >
               <View style={styles.accountInfo}>
-                <Blockie
-                  address={account.address}
-                  size={1.7 * FONT_SIZE.xl}
-                />
+                <Blockie address={account.address} size={1.7 * FONT_SIZE.xl} />
                 <View style={styles.accountDetails}>
                   <Text variant="titleMedium">{account.name}</Text>
-                  <Text variant="bodyMedium">{truncateAddress(account.address)}</Text>
+                  <Text variant="bodyMedium">
+                    {truncateAddress(account.address)}
+                  </Text>
                 </View>
               </View>
               {account.isConnected && (
-                <IconButton 
-                  icon="check-circle" 
+                <IconButton
+                  icon="check-circle"
                   iconColor={COLORS.primary}
                   size={24}
                 />
@@ -126,11 +125,7 @@ export default function AccountsModal({
         </ScrollView>
 
         <View style={styles.buttonContainer}>
-          <Button
-            text="Create"
-            onPress={createAccount}
-            style={styles.button}
-          />
+          <Button text="Create" onPress={createAccount} style={styles.button} />
           <Button
             type="outline"
             text="Import"
@@ -154,44 +149,44 @@ export default function AccountsModal({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderRadius: 30,
     padding: 20,
-    margin: 20,
+    margin: 20
   },
   header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 16,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16
   },
   scrollView: {
-    maxHeight: Dimensions.get("window").height / 4.8,
+    maxHeight: Dimensions.get('window').height / 4.8
   },
   accountItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingVertical: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 12
   },
   accountDivider: {
     borderBottomWidth: 1,
-    borderBottomColor: "#e5e5e5",
+    borderBottomColor: '#e5e5e5'
   },
   accountInfo: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 16
   },
   accountDetails: {
-    gap: 4,
+    gap: 4
   },
   buttonContainer: {
-    flexDirection: "row",
+    flexDirection: 'row',
     marginTop: 20,
-    gap: 16,
+    gap: 16
   },
   button: {
-    flex: 1,
-  },
+    flex: 1
+  }
 });

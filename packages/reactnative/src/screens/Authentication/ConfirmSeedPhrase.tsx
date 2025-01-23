@@ -1,25 +1,25 @@
-import React, { useState, useEffect } from "react";
+import { useNavigation } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
 import {
-  ScrollView,
-  View,
   ActivityIndicator,
+  ScrollView,
   StyleSheet,
   TouchableOpacity,
-} from "react-native";
-import { Text, Button, Divider, TextInput } from "react-native-paper";
-import ProgressIndicatorHeader from "../../components/headers/ProgressIndicatorHeader";
-import { COLORS } from "../../utils/constants";
-import { FONT_SIZE } from "../../utils/styles";
-import Modal from "react-native-modal";
-import { useNavigation } from "@react-navigation/native";
-import { useDispatch } from "react-redux";
-import { loginUser } from "../../store/reducers/Auth";
-import { useToast } from "react-native-toast-notifications";
-import { shuffleArray } from "../../utils/helperFunctions";
-import AccountsCountModal from "../../components/modals/AccountsCountModal";
-import { initAccounts } from "../../store/reducers/Accounts";
-import { useSecureStorage } from "../../hooks/useSecureStorage";
-import useWallet from "../../hooks/useWallet";
+  View
+} from 'react-native';
+import Modal from 'react-native-modal';
+import { Button, Divider, Text, TextInput } from 'react-native-paper';
+import { useToast } from 'react-native-toast-notifications';
+import { useDispatch } from 'react-redux';
+import ProgressIndicatorHeader from '../../components/headers/ProgressIndicatorHeader';
+import AccountsCountModal from '../../components/modals/AccountsCountModal';
+import { useSecureStorage } from '../../hooks/useSecureStorage';
+import useWallet from '../../hooks/useWallet';
+import { initAccounts } from '../../store/reducers/Accounts';
+import { loginUser } from '../../store/reducers/Auth';
+import { COLORS } from '../../utils/constants';
+import { shuffleArray } from '../../utils/helperFunctions';
+import { FONT_SIZE } from '../../utils/styles';
 
 type Props = {};
 
@@ -46,10 +46,10 @@ export default function ConfirmSeedPhrase({}: Props) {
     let _seedPhrase = seedPhrase.slice();
 
     if (isWordSelected(word)) {
-      _seedPhrase = _seedPhrase.filter((el) => el !== word);
+      _seedPhrase = _seedPhrase.filter(el => el !== word);
     } else if (seedPhrase.length >= 12) {
-      toast.show("Invalid seed phrase input", {
-        type: "danger",
+      toast.show('Invalid seed phrase input', {
+        type: 'danger'
       });
       return;
     } else {
@@ -67,26 +67,26 @@ export default function ConfirmSeedPhrase({}: Props) {
 
   const validateInput = async () => {
     if (seedPhrase.length !== 12) {
-      toast.show("Please complete seed phrase", {
-        type: "warning",
+      toast.show('Please complete seed phrase', {
+        type: 'warning'
       });
       return;
     }
 
     try {
-      const _seedPhrase = await getItem("seedPhrase");
-      const selectedSeedPhrase = seedPhrase.join(" ");
+      const _seedPhrase = await getItem('seedPhrase');
+      const selectedSeedPhrase = seedPhrase.join(' ');
 
       if (_seedPhrase !== selectedSeedPhrase) {
-        toast.show("Incorrect seed phrase order", {
-          type: "danger",
+        toast.show('Incorrect seed phrase order', {
+          type: 'danger'
         });
         return;
       }
       setShowAccountsCountModal(true);
     } catch (error) {
-      toast.show("Failed to get mnemonic. Please try again.", {
-        type: "danger",
+      toast.show('Failed to get mnemonic. Please try again.', {
+        type: 'danger'
       });
     }
   };
@@ -94,30 +94,28 @@ export default function ConfirmSeedPhrase({}: Props) {
   const confirm = async (accountsCount: number) => {
     try {
       setIsConfirming(true);
-      const seedPhrase = (await getItem("seedPhrase")) as string;
+      const seedPhrase = (await getItem('seedPhrase')) as string;
 
       let wallets = [];
       for (let i = 0; i < accountsCount; i++) {
         const newWallet = await importWallet(seedPhrase, i);
         wallets.push({
           address: newWallet.address,
-          privateKey: newWallet.privateKey,
+          privateKey: newWallet.privateKey
         });
       }
 
-      await saveItem("accounts", wallets);
+      await saveItem('accounts', wallets);
       dispatch(
-        initAccounts(
-          wallets.map((wallet) => ({ ...wallet, isImported: false })),
-        ),
+        initAccounts(wallets.map(wallet => ({ ...wallet, isImported: false })))
       );
       setShowSuccessModal(true);
     } catch (error) {
       toast.show(
-        "Failed to create wallet. Please ensure you have a stable network connection and try again.",
+        'Failed to create wallet. Please ensure you have a stable network connection and try again.',
         {
-          type: "danger",
-        },
+          type: 'danger'
+        }
       );
     } finally {
       setIsConfirming(false);
@@ -128,14 +126,14 @@ export default function ConfirmSeedPhrase({}: Props) {
     setShowSuccessModal(false);
     dispatch(loginUser());
     // @ts-ignore
-    navigation.navigate("Main");
+    navigation.navigate('Main');
   };
 
   useEffect(() => {
     (async () => {
-      const seedPhrase = await getItem("seedPhrase");
+      const seedPhrase = await getItem('seedPhrase');
       if (seedPhrase) {
-        const _seedPhrase: string[] = seedPhrase.split(" ");
+        const _seedPhrase: string[] = seedPhrase.split(' ');
         const shuffledSeedPhrase = shuffleArray(_seedPhrase);
         setShuffledSeedPhrase(shuffledSeedPhrase);
         setIsLoading(false);
@@ -150,16 +148,10 @@ export default function ConfirmSeedPhrase({}: Props) {
       <Divider style={{ marginTop: 32, marginBottom: 16 }} />
 
       <ScrollView style={{ flex: 1 }}>
-        <Text
-          variant="headlineMedium"
-          style={styles.title}
-        >
+        <Text variant="headlineMedium" style={styles.title}>
           Confirm Seed Phrase
         </Text>
-        <Text
-          variant="bodyLarge"
-          style={styles.subtitle}
-        >
+        <Text variant="bodyLarge" style={styles.subtitle}>
           Select each word in the order it was presented to you.
         </Text>
 
@@ -174,12 +166,12 @@ export default function ConfirmSeedPhrase({}: Props) {
             contentContainerStyle={styles.seedPhraseWrapper}
             style={styles.seedPhraseContainer}
           >
-            {shuffledSeedPhrase.map((word) => (
+            {shuffledSeedPhrase.map(word => (
               <TouchableOpacity
                 key={word}
                 activeOpacity={0.4}
                 onPress={() => handleWordSelection(word)}
-                style={{ width: "45%" }}
+                style={{ width: '45%' }}
               >
                 <Text
                   style={[
@@ -187,9 +179,9 @@ export default function ConfirmSeedPhrase({}: Props) {
                     {
                       backgroundColor: isWordSelected(word)
                         ? COLORS.primary
-                        : "#F5F5F5",
-                      color: isWordSelected(word) ? "white" : "black",
-                    },
+                        : '#F5F5F5',
+                      color: isWordSelected(word) ? 'white' : 'black'
+                    }
                   ]}
                 >
                   {word}
@@ -209,12 +201,12 @@ export default function ConfirmSeedPhrase({}: Props) {
                   backgroundColor:
                     index <=
                     seedPhrase.filter(
-                      (word) => word && shuffledSeedPhrase.includes(word),
+                      word => word && shuffledSeedPhrase.includes(word)
                     ).length -
                       1
                       ? COLORS.primary
-                      : "#E5E5E5",
-                },
+                      : '#E5E5E5'
+                }
               ]}
             />
           ))}
@@ -229,7 +221,7 @@ export default function ConfirmSeedPhrase({}: Props) {
                 mode="outlined"
                 style={styles.input}
                 value={seedPhrase[index]}
-                onChangeText={(value) => handleValueChange(value, index)}
+                onChangeText={value => handleValueChange(value, index)}
                 left={<TextInput.Affix text={`${index + 1}.`} />}
                 outlineColor={COLORS.primary}
                 activeOutlineColor={COLORS.primary}
@@ -257,8 +249,8 @@ export default function ConfirmSeedPhrase({}: Props) {
               Congratulations
             </Text>
             <Text variant="bodyLarge" style={styles.modalText}>
-              You've successfully protected your wallet. Remember to keep your seed
-              phrase safe, it's your responsibility!
+              You've successfully protected your wallet. Remember to keep your
+              seed phrase safe, it's your responsibility!
             </Text>
             <Button
               mode="contained"
@@ -288,13 +280,13 @@ export default function ConfirmSeedPhrase({}: Props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
-    padding: 15,
+    backgroundColor: 'white',
+    padding: 15
   },
   title: {
     textAlign: 'center',
     color: COLORS.primary,
-    fontSize: 1.7 * FONT_SIZE["xl"],
+    fontSize: 1.7 * FONT_SIZE['xl'],
     fontWeight: 'bold',
     lineHeight: 40
   },
@@ -304,30 +296,30 @@ const styles = StyleSheet.create({
   },
   loader: {
     height: 280,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   seedPhraseContainer: {
-    width: "100%",
+    width: '100%',
     borderWidth: 2,
     borderColor: COLORS.primary,
     borderRadius: 40,
-    padding: 15,
+    padding: 15
   },
   seedPhraseWrapper: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-between",
-    alignItems: "center",
-    width: "100%",
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%'
   },
   word: {
-    width: "100%",
+    width: '100%',
     padding: 10,
     borderRadius: 25,
-    textAlign: "center",
-    fontWeight: "bold",
-    marginBottom: 10,
+    textAlign: 'center',
+    fontWeight: 'bold',
+    marginBottom: 10
   },
   progressContainer: {
     flexDirection: 'row',

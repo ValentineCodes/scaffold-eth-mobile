@@ -1,9 +1,9 @@
-import React from "react";
-import { StyleSheet, View, Dimensions, Image } from "react-native";
-import { Modal, Portal, Text } from "react-native-paper";
-import { FONT_SIZE } from "../../../utils/styles";
-import { COLORS } from "../../../utils/constants";
-import Button from "../../Button";
+import React from 'react';
+import { Dimensions, Image, StyleSheet, View } from 'react-native';
+import { Modal, Portal, Text } from 'react-native-paper';
+import { COLORS } from '../../../utils/constants';
+import { FONT_SIZE } from '../../../utils/styles';
+import Button from '../../Button';
 
 type Props = {
   isVisible: boolean;
@@ -14,10 +14,14 @@ type Props = {
 export default function Success({ isVisible, onClose, onViewDetails }: Props) {
   return (
     <Portal>
-      <Modal visible={isVisible} onDismiss={onClose} contentContainerStyle={styles.container}>
+      <Modal
+        visible={isVisible}
+        onDismiss={onClose}
+        contentContainerStyle={styles.container}
+      >
         <View style={styles.content}>
           <Image
-            source={require("../../../assets/images/success_transfer.png")}
+            source={require('../../../assets/images/success_transfer.png')}
             style={styles.image}
           />
           <Text variant="headlineSmall" style={styles.successText}>
@@ -38,22 +42,22 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
     borderRadius: 40,
-    margin: 20,
+    margin: 20
   },
   content: {
     padding: 20,
     alignItems: 'center',
-    gap: 16,
+    gap: 16
   },
   image: {
-    width: Dimensions.get("window").height * 0.25,
-    height: Dimensions.get("window").height * 0.25,
+    width: Dimensions.get('window').height * 0.25,
+    height: Dimensions.get('window').height * 0.25
   },
   successText: {
     color: COLORS.primary,
-    fontWeight: 'bold',
+    fontWeight: 'bold'
   },
   message: {
-    textAlign: 'center',
-  },
+    textAlign: 'center'
+  }
 });

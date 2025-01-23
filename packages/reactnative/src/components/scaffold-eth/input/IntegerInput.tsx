@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useState } from "react";
-import InputBase from "./InputBase";
-import { CommonInputProps, IntegerVariant, isValidInteger } from "./utils";
-import { TouchableRipple, Text } from "react-native-paper";
+import { useCallback, useEffect, useState } from 'react';
+import { Text, TouchableRipple } from 'react-native-paper';
+import InputBase from './InputBase';
+import { CommonInputProps, IntegerVariant, isValidInteger } from './utils';
 
 type IntegerInputProps = CommonInputProps<string | bigint> & {
   variant?: IntegerVariant;
@@ -15,14 +15,14 @@ export default function IntegerInput({
   placeholder,
   disabled,
   variant = IntegerVariant.UINT256,
-  disableMultiplyBy1e18 = false,
+  disableMultiplyBy1e18 = false
 }: IntegerInputProps) {
   const [inputError, setInputError] = useState(false);
   const multiplyBy1e18 = useCallback(() => {
     if (!value) {
       return;
     }
-    if (typeof value === "bigint") {
+    if (typeof value === 'bigint') {
       return onChange(value * 10n ** 18n);
     }
     return onChange(BigInt(Math.round(Number(value) * 10 ** 18)));

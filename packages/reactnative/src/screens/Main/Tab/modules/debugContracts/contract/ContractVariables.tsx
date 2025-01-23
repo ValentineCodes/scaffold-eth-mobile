@@ -1,16 +1,16 @@
-import { Abi, AbiFunction } from "abitype";
+import { Abi, AbiFunction } from 'abitype';
+import { Text } from 'react-native-paper';
 import {
   Contract,
   ContractName,
   GenericContract,
-  InheritedFunctions,
-} from "../../../../../../../utils/scaffold-eth/contract";
-import { Text } from "react-native-paper";
-import DisplayVariable from "./DisplayVariable";
+  InheritedFunctions
+} from '../../../../../../../utils/scaffold-eth/contract';
+import DisplayVariable from './DisplayVariable';
 
 export default function ContractVariables({
   refreshDisplayVariables,
-  deployedContractData,
+  deployedContractData
 }: {
   refreshDisplayVariables: boolean;
   deployedContractData: Contract<ContractName>;
@@ -21,26 +21,26 @@ export default function ContractVariables({
 
   const functionsToDisplay = (
     (deployedContractData.abi as Abi).filter(
-      (part) => part.type === "function",
+      part => part.type === 'function'
     ) as AbiFunction[]
   )
-    .filter((fn) => {
+    .filter(fn => {
       const isQueryableWithNoParams =
-        (fn.stateMutability === "view" || fn.stateMutability === "pure") &&
+        (fn.stateMutability === 'view' || fn.stateMutability === 'pure') &&
         fn.inputs.length === 0;
       return isQueryableWithNoParams;
     })
-    .map((fn) => {
+    .map(fn => {
       return {
         fn,
         inheritedFrom: (
           (deployedContractData as GenericContract)
             ?.inheritedFunctions as InheritedFunctions
-        )?.[fn.name],
+        )?.[fn.name]
       };
     })
     .sort((a, b) =>
-      b.inheritedFrom ? b.inheritedFrom.localeCompare(a.inheritedFrom) : 1,
+      b.inheritedFrom ? b.inheritedFrom.localeCompare(a.inheritedFrom) : 1
     );
 
   if (!functionsToDisplay.length) {

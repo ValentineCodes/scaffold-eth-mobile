@@ -1,19 +1,21 @@
+import Clipboard from '@react-native-clipboard/clipboard';
+import React, { useState } from 'react';
+import { Pressable, StyleSheet, View } from 'react-native';
+import Modal from 'react-native-modal';
 import {
-  View,
-  StyleSheet,
-  Pressable
-} from "react-native";
-import React, { useState } from "react";
-import Modal from "react-native-modal";
+  IconButton,
+  Portal,
+  Surface,
+  Text,
+  TextInput
+} from 'react-native-paper';
+import { useToast } from 'react-native-toast-notifications';
 // @ts-ignore
-import Ionicons from "react-native-vector-icons/dist/Ionicons";
-import { FONT_SIZE } from "../../utils/styles";
-import { COLORS } from "../../utils/constants";
-import { useSecureStorage } from "../../hooks/useSecureStorage";
-import Button from "../Button";
-import Clipboard from "@react-native-clipboard/clipboard";
-import { useToast } from "react-native-toast-notifications";
-import { Text, TextInput, IconButton, Portal, Surface } from "react-native-paper";
+import Ionicons from 'react-native-vector-icons/dist/Ionicons';
+import { useSecureStorage } from '../../hooks/useSecureStorage';
+import { COLORS } from '../../utils/constants';
+import { FONT_SIZE } from '../../utils/styles';
+import Button from '../Button';
 
 type Props = {
   isVisible: boolean;
@@ -24,26 +26,26 @@ export default function SeedPhraseModal({ isVisible, onClose }: Props) {
   const toast = useToast();
   const { getItem } = useSecureStorage();
 
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [seedPhrase, setSeedPhrase] = useState("");
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [seedPhrase, setSeedPhrase] = useState('');
 
   const showSeedPhrase = async () => {
     if (!password) {
-      setError("Password cannot be empty");
+      setError('Password cannot be empty');
       return;
     }
 
     // verify password
-    const security = await getItem("security");
+    const security = await getItem('security');
 
     if (password !== security.password) {
-      setError("Incorrect password!");
+      setError('Incorrect password!');
       return;
     }
 
     // retrieve seed phrase
-    const seedPhrase = await getItem("seedPhrase");
+    const seedPhrase = await getItem('seedPhrase');
     if (seedPhrase) {
       setSeedPhrase(seedPhrase);
     }
@@ -52,21 +54,21 @@ export default function SeedPhraseModal({ isVisible, onClose }: Props) {
   const handleInputChange = (value: string) => {
     setPassword(value);
     if (error) {
-      setError("");
+      setError('');
     }
   };
 
   const copySeedPhrase = () => {
     Clipboard.setString(seedPhrase);
-    toast.show("Copied to clipboard", {
-      type: "success",
+    toast.show('Copied to clipboard', {
+      type: 'success'
     });
   };
 
   const handleOnClose = () => {
     onClose();
-    setSeedPhrase("");
-    setPassword("");
+    setSeedPhrase('');
+    setPassword('');
   };
 
   return (
@@ -80,11 +82,7 @@ export default function SeedPhraseModal({ isVisible, onClose }: Props) {
       <Surface style={styles.container}>
         <View style={styles.header}>
           <Text variant="headlineMedium">Show seed phrase</Text>
-          <IconButton
-            icon="close"
-            size={24}
-            onPress={handleOnClose}
-          />
+          <IconButton icon="close" size={24} onPress={handleOnClose} />
         </View>
 
         {seedPhrase ? (
@@ -111,7 +109,9 @@ export default function SeedPhraseModal({ isVisible, onClose }: Props) {
               activeOutlineColor={COLORS.primary}
             />
             {error && (
-              <Text style={styles.errorText} variant="bodySmall">{error}</Text>
+              <Text style={styles.errorText} variant="bodySmall">
+                {error}
+              </Text>
             )}
           </View>
         )}
@@ -134,10 +134,7 @@ export default function SeedPhraseModal({ isVisible, onClose }: Props) {
           <Button text="Done" onPress={handleOnClose} />
         ) : (
           <View style={styles.buttonContainer}>
-            <Pressable
-              style={styles.cancelButton}
-              onPress={handleOnClose}
-            >
+            <Pressable style={styles.cancelButton} onPress={handleOnClose}>
               <Text style={styles.cancelButtonText}>Cancel</Text>
             </Pressable>
             <Button
@@ -230,11 +227,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     paddingVertical: 5,
     backgroundColor: COLORS.primaryLight,
-    borderRadius: 15,
+    borderRadius: 15
   },
   addressText: {
-    fontWeight: "700",
-    fontSize: FONT_SIZE["md"],
-    color: COLORS.primary,
-  },
+    fontWeight: '700',
+    fontSize: FONT_SIZE['md'],
+    color: COLORS.primary
+  }
 });

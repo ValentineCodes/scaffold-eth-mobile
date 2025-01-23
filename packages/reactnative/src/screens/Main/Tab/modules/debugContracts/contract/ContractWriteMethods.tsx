@@ -1,16 +1,16 @@
-import { Abi, AbiFunction } from "abitype";
-import { Text } from "react-native-paper";
+import { Abi, AbiFunction } from 'abitype';
+import { Text } from 'react-native-paper';
 import {
   Contract,
   ContractName,
   GenericContract,
-  InheritedFunctions,
-} from "../../../../../../../utils/scaffold-eth/contract";
-import WriteOnlyFunctionForm from "./WriteOnlyFunctionForm";
+  InheritedFunctions
+} from '../../../../../../../utils/scaffold-eth/contract';
+import WriteOnlyFunctionForm from './WriteOnlyFunctionForm';
 
 export default function ContractWriteMethods({
   onChange,
-  deployedContractData,
+  deployedContractData
 }: {
   onChange: () => void;
   deployedContractData: Contract<ContractName>;
@@ -21,25 +21,25 @@ export default function ContractWriteMethods({
 
   const functionsToDisplay = (
     (deployedContractData.abi as Abi).filter(
-      (part) => part.type === "function",
+      part => part.type === 'function'
     ) as AbiFunction[]
   )
-    .filter((fn) => {
+    .filter(fn => {
       const isWriteableFunction =
-        fn.stateMutability !== "view" && fn.stateMutability !== "pure";
+        fn.stateMutability !== 'view' && fn.stateMutability !== 'pure';
       return isWriteableFunction;
     })
-    .map((fn) => {
+    .map(fn => {
       return {
         fn,
         inheritedFrom: (
           (deployedContractData as GenericContract)
             ?.inheritedFunctions as InheritedFunctions
-        )?.[fn.name],
+        )?.[fn.name]
       };
     })
     .sort((a, b) =>
-      b.inheritedFrom ? b.inheritedFrom.localeCompare(a.inheritedFrom) : 1,
+      b.inheritedFrom ? b.inheritedFrom.localeCompare(a.inheritedFrom) : 1
     );
 
   if (!functionsToDisplay.length) {

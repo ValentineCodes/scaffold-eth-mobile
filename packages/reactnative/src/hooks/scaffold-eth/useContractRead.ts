@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
-import useNetwork from "./useNetwork";
-import "react-native-get-random-values";
-import "@ethersproject/shims";
-import { Contract, JsonRpcProvider, Wallet } from "ethers";
-import useAccount from "./useAccount";
-import { useSecureStorage } from "../useSecureStorage";
-import { Abi } from "abitype";
+import { useEffect, useState } from 'react';
+import useNetwork from './useNetwork';
+import 'react-native-get-random-values';
+import '@ethersproject/shims';
+import { Abi } from 'abitype';
+import { Contract, JsonRpcProvider, Wallet } from 'ethers';
+import { useSecureStorage } from '../useSecureStorage';
+import useAccount from './useAccount';
 
 interface UseContractReadConfig {
   abi: Abi;
@@ -22,7 +22,7 @@ export default function useContractRead({
   functionName,
   args,
   enabled,
-  onError,
+  onError
 }: UseContractReadConfig) {
   const network = useNetwork();
   const connectedAccount = useAccount();
@@ -37,12 +37,12 @@ export default function useContractRead({
       setIsLoading(true);
       const provider = new JsonRpcProvider(network.provider);
 
-      const accounts = await getItem("accounts");
+      const accounts = await getItem('accounts');
 
       const activeAccount = Array.from(accounts).find(
-        (account) =>
+        account =>
           account.address.toLowerCase() ===
-          connectedAccount.address.toLowerCase(),
+          connectedAccount.address.toLowerCase()
       );
 
       const wallet = new Wallet(activeAccount.privateKey, provider);
@@ -78,6 +78,6 @@ export default function useContractRead({
     data,
     isLoading,
     error,
-    refetch: fetchData,
+    refetch: fetchData
   };
 }

@@ -1,17 +1,22 @@
-import { View, StyleSheet, ScrollView, RefreshControl, Image } from "react-native";
-import { Text, Divider, IconButton } from "react-native-paper";
-import React, { useState, useMemo } from "react";
-import Ionicons from "react-native-vector-icons/dist/Ionicons";
-import { useNavigation } from "@react-navigation/native";
-
-import CopyableText from "../../../../../components/CopyableText";
-import { truncateAddress } from "../../../../../utils/helperFunctions";
-import { FONT_SIZE } from "../../../../../utils/styles";
-import { COLORS } from "../../../../../utils/constants";
-import ReceiveModal from "../../../../../components/modals/ReceiveModal";
-import useBalance from "../../../../../hooks/scaffold-eth/useBalance";
-import useAccount from "../../../../../hooks/scaffold-eth/useAccount";
-import useNetwork from "../../../../../hooks/scaffold-eth/useNetwork";
+import { useNavigation } from '@react-navigation/native';
+import React, { useMemo, useState } from 'react';
+import {
+  Image,
+  RefreshControl,
+  ScrollView,
+  StyleSheet,
+  View
+} from 'react-native';
+import { Divider, IconButton, Text } from 'react-native-paper';
+import Ionicons from 'react-native-vector-icons/dist/Ionicons';
+import CopyableText from '../../../../../components/CopyableText';
+import ReceiveModal from '../../../../../components/modals/ReceiveModal';
+import useAccount from '../../../../../hooks/scaffold-eth/useAccount';
+import useBalance from '../../../../../hooks/scaffold-eth/useBalance';
+import useNetwork from '../../../../../hooks/scaffold-eth/useNetwork';
+import { COLORS } from '../../../../../utils/constants';
+import { truncateAddress } from '../../../../../utils/helperFunctions';
+import { FONT_SIZE } from '../../../../../utils/styles';
 
 type Props = {
   backHandler: any;
@@ -21,7 +26,7 @@ function MainBalance({ backHandler }: Props) {
   const network = useNetwork();
   const account = useAccount();
   const { balance, isRefetching, refetch } = useBalance({
-    address: account.address,
+    address: account.address
   });
 
   const [showReceiveModal, setShowReceiveModal] = useState(false);
@@ -29,14 +34,14 @@ function MainBalance({ backHandler }: Props) {
   const navigation = useNavigation();
 
   const logo = useMemo(() => {
-    let _logo = require("../../../../../assets/images/eth-icon.png");
+    let _logo = require('../../../../../assets/images/eth-icon.png');
 
-    if (["Polygon", "Mumbai"].includes(network.name)) {
-      _logo = require("../../../../../assets/images/polygon-icon.png");
-    } else if (["Arbitrum", "Arbitrum Goerli"].includes(network.name)) {
-      _logo = require("../../../../../assets/images/arbitrum-icon.png");
-    } else if (["Optimism", "Optimism Goerli"].includes(network.name)) {
-      _logo = require("../../../../../assets/images/optimism-icon.png");
+    if (['Polygon', 'Mumbai'].includes(network.name)) {
+      _logo = require('../../../../../assets/images/polygon-icon.png');
+    } else if (['Arbitrum', 'Arbitrum Goerli'].includes(network.name)) {
+      _logo = require('../../../../../assets/images/arbitrum-icon.png');
+    } else if (['Optimism', 'Optimism Goerli'].includes(network.name)) {
+      _logo = require('../../../../../assets/images/optimism-icon.png');
     }
 
     return (
@@ -47,7 +52,7 @@ function MainBalance({ backHandler }: Props) {
   }, [network]);
 
   const handleNav = () => {
-    navigation.navigate("Transfer");
+    navigation.navigate('Transfer');
     backHandler?.remove();
   };
 
@@ -67,7 +72,7 @@ function MainBalance({ backHandler }: Props) {
         <Text variant="headlineMedium" style={styles.nameText}>
           {account.name}
         </Text>
-        
+
         <CopyableText
           displayText={truncateAddress(account.address)}
           value={account.address}
@@ -75,12 +80,12 @@ function MainBalance({ backHandler }: Props) {
           textStyle={styles.addressText}
           iconStyle={{ color: COLORS.primary }}
         />
-        
+
         {logo}
-        
+
         <View style={styles.balanceContainer}>
           <Text variant="headlineLarge" style={styles.balanceText}>
-            {balance !== "" && `${balance} ${network.currencySymbol}`}
+            {balance !== '' && `${balance} ${network.currencySymbol}`}
           </Text>
         </View>
 
@@ -89,24 +94,32 @@ function MainBalance({ backHandler }: Props) {
         <View style={styles.actionContainer}>
           <View style={styles.actionButton}>
             <IconButton
-              icon={() => <Ionicons name="paper-plane" size={24} color={COLORS.primary} />}
+              icon={() => (
+                <Ionicons name="paper-plane" size={24} color={COLORS.primary} />
+              )}
               mode="contained"
               containerColor={COLORS.primaryLight}
               size={48}
               onPress={handleNav}
             />
-            <Text variant="titleMedium" style={styles.actionText}>Send</Text>
+            <Text variant="titleMedium" style={styles.actionText}>
+              Send
+            </Text>
           </View>
 
           <View style={styles.actionButton}>
             <IconButton
-              icon={() => <Ionicons name="download" size={24} color={COLORS.primary} />}
+              icon={() => (
+                <Ionicons name="download" size={24} color={COLORS.primary} />
+              )}
               mode="contained"
               containerColor={COLORS.primaryLight}
               size={48}
               onPress={() => setShowReceiveModal(true)}
             />
-            <Text variant="titleMedium" style={styles.actionText}>Receive</Text>
+            <Text variant="titleMedium" style={styles.actionText}>
+              Receive
+            </Text>
           </View>
         </View>
 
@@ -135,19 +148,19 @@ const styles = StyleSheet.create({
     marginVertical: 8
   },
   networkLogo: {
-    width: 4 * FONT_SIZE["xl"],
-    height: 4 * FONT_SIZE["xl"],
+    width: 4 * FONT_SIZE['xl'],
+    height: 4 * FONT_SIZE['xl']
   },
   addressContainer: {
     paddingHorizontal: 15,
     paddingVertical: 5,
     backgroundColor: COLORS.primaryLight,
-    borderRadius: 15,
+    borderRadius: 15
   },
   addressText: {
-    fontWeight: "700",
-    fontSize: FONT_SIZE["md"],
-    color: COLORS.primary,
+    fontWeight: '700',
+    fontSize: FONT_SIZE['md'],
+    color: COLORS.primary
   },
   balanceContainer: {
     alignItems: 'center'

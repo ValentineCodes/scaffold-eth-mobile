@@ -1,9 +1,8 @@
-import { View } from "react-native";
-import React, { useState } from "react";
-import { TextInput, Text, IconButton } from "react-native-paper";
-import { COLORS } from "../../utils/constants";
-import { FONT_SIZE } from "../../utils/styles";
-import { TouchableOpacity } from "react-native";
+import React, { useState } from 'react';
+import { TouchableOpacity, View } from 'react-native';
+import { IconButton, Text, TextInput } from 'react-native-paper';
+import { COLORS } from '../../utils/constants';
+import { FONT_SIZE } from '../../utils/styles';
 
 type Props = {
   value?: string;
@@ -18,12 +17,12 @@ export default function SeedPhraseInput({
   infoText,
   errorText,
   onChange,
-  onBlur,
+  onBlur
 }: Props) {
   const [show, setShow] = useState(false);
   return (
     <View style={{ gap: 8 }}>
-      <Text style={{ fontSize: FONT_SIZE["xl"], fontWeight: "bold" }}>
+      <Text style={{ fontSize: FONT_SIZE['xl'], fontWeight: 'bold' }}>
         Seed Phrase
       </Text>
       <TextInput
@@ -34,23 +33,27 @@ export default function SeedPhraseInput({
           paddingLeft: 16,
           paddingRight: 80,
           paddingBottom: 48,
-          fontSize: 16,
+          fontSize: 16
         }}
         outlineColor={COLORS.primary}
         activeOutlineColor={COLORS.primary}
         value={value}
         right={
-          <View style={{ flexDirection: "row", gap: 4, position: "absolute", right: 8, top: 20 }}>
+          <View
+            style={{
+              flexDirection: 'row',
+              gap: 4,
+              position: 'absolute',
+              right: 8,
+              top: 20
+            }}
+          >
             {value && (
               <TouchableOpacity
                 activeOpacity={0.4}
-                onPress={() => onChange("")}
+                onPress={() => onChange('')}
               >
-                <IconButton
-                  icon="close"
-                  size={20}
-                  iconColor="#a3a3a3"
-                />
+                <IconButton icon="close" size={20} iconColor="#a3a3a3" />
               </TouchableOpacity>
             )}
             <TouchableOpacity
@@ -58,7 +61,7 @@ export default function SeedPhraseInput({
               onPress={() => setShow(!show)}
             >
               <IconButton
-                icon={show ? "eye" : "eye-off"}
+                icon={show ? 'eye' : 'eye-off'}
                 size={20}
                 iconColor="#a3a3a3"
               />
@@ -74,14 +77,10 @@ export default function SeedPhraseInput({
         cursorColor="#303030"
       />
       {infoText ? (
-        <Text style={{ fontSize: 14, color: "#a3a3a3" }}>
-          {infoText}
-        </Text>
+        <Text style={{ fontSize: 14, color: '#a3a3a3' }}>{infoText}</Text>
       ) : null}
       {errorText ? (
-        <Text style={{ fontSize: 14, color: "#ef4444" }}>
-          {errorText}
-        </Text>
+        <Text style={{ fontSize: 14, color: '#ef4444' }}>{errorText}</Text>
       ) : null}
     </View>
   );

@@ -1,17 +1,17 @@
-import React, { useState } from "react";
-import { StyleSheet, View } from "react-native";
-import { Modal, Portal, Text, TextInput, IconButton } from "react-native-paper";
-import { FONT_SIZE } from "../../utils/styles";
-import { COLORS } from "../../utils/constants";
-import Blockie from "../Blockie";
-import CopyableText from "../CopyableText";
-import { useSelector } from "react-redux";
-import { Account } from "../../store/reducers/Accounts";
-import { truncateAddress } from "../../utils/helperFunctions";
-import Clipboard from "@react-native-clipboard/clipboard";
-import { useToast } from "react-native-toast-notifications";
-import { useSecureStorage } from "../../hooks/useSecureStorage";
-import Button from "../Button";
+import Clipboard from '@react-native-clipboard/clipboard';
+import React, { useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { IconButton, Modal, Portal, Text, TextInput } from 'react-native-paper';
+import { useToast } from 'react-native-toast-notifications';
+import { useSelector } from 'react-redux';
+import { useSecureStorage } from '../../hooks/useSecureStorage';
+import { Account } from '../../store/reducers/Accounts';
+import { COLORS } from '../../utils/constants';
+import { truncateAddress } from '../../utils/helperFunctions';
+import { FONT_SIZE } from '../../utils/styles';
+import Blockie from '../Blockie';
+import Button from '../Button';
+import CopyableText from '../CopyableText';
 
 type Props = {
   isVisible: boolean;
@@ -19,33 +19,33 @@ type Props = {
 };
 
 export default function PrivateKeyModal({ isVisible, onClose }: Props) {
-  const connectedAccount: Account = useSelector((state) =>
-    state.accounts.find((account: Account) => account.isConnected),
+  const connectedAccount: Account = useSelector(state =>
+    state.accounts.find((account: Account) => account.isConnected)
   );
 
   const { getItem } = useSecureStorage();
   const toast = useToast();
 
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [privateKey, setPrivateKey] = useState("");
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [privateKey, setPrivateKey] = useState('');
 
   const showPrivateKey = async () => {
     if (!password) {
-      setError("Password cannot be empty");
+      setError('Password cannot be empty');
       return;
     }
 
-    const security = await getItem("security");
+    const security = await getItem('security');
 
     if (password !== security.password) {
-      setError("Incorrect password!");
+      setError('Incorrect password!');
       return;
     }
 
-    const accounts = await getItem("accounts");
+    const accounts = await getItem('accounts');
     const wallet = Array.from(accounts).find(
-      (wallet) => wallet.address === connectedAccount.address,
+      wallet => wallet.address === connectedAccount.address
     );
 
     setPrivateKey(wallet.privateKey);
@@ -54,21 +54,21 @@ export default function PrivateKeyModal({ isVisible, onClose }: Props) {
   const handleInputChange = (value: string) => {
     setPassword(value);
     if (error) {
-      setError("");
+      setError('');
     }
   };
 
   const copyPrivateKey = () => {
     Clipboard.setString(privateKey);
-    toast.show("Copied to clipboard", {
-      type: "success",
+    toast.show('Copied to clipboard', {
+      type: 'success'
     });
   };
 
   const handleOnClose = () => {
     onClose();
-    setPrivateKey("");
-    setPassword("");
+    setPrivateKey('');
+    setPassword('');
   };
 
   return (
@@ -101,8 +101,8 @@ export default function PrivateKeyModal({ isVisible, onClose }: Props) {
         {privateKey ? (
           <View style={styles.privateKeyContainer}>
             <Text style={styles.privateKeyText}>{privateKey}</Text>
-            <IconButton 
-              icon="content-copy" 
+            <IconButton
+              icon="content-copy"
               onPress={copyPrivateKey}
               iconColor={COLORS.primary}
             />
@@ -128,11 +128,7 @@ export default function PrivateKeyModal({ isVisible, onClose }: Props) {
         )}
 
         <View style={styles.warningContainer}>
-          <IconButton 
-            icon="eye-off" 
-            size={24}
-            iconColor="red"
-          />
+          <IconButton icon="eye-off" size={24} iconColor="red" />
           <Text style={styles.warningText}>
             Never disclose this key. Anyone with your private key can fully
             control your account, including transferring away any of your funds.
@@ -163,76 +159,76 @@ export default function PrivateKeyModal({ isVisible, onClose }: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderRadius: 30,
     padding: 20,
-    margin: 20,
+    margin: 20
   },
   header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 20
   },
   accountInfo: {
-    alignItems: "center",
-    marginBottom: 20,
+    alignItems: 'center',
+    marginBottom: 20
   },
   accountName: {
-    marginTop: 10,
+    marginTop: 10
   },
   addressContainer: {
     paddingHorizontal: 15,
     paddingVertical: 5,
     backgroundColor: COLORS.primaryLight,
     borderRadius: 15,
-    marginTop: 5,
+    marginTop: 5
   },
   addressText: {
-    fontWeight: "700",
+    fontWeight: '700',
     fontSize: FONT_SIZE.md,
-    color: COLORS.primary,
+    color: COLORS.primary
   },
   privateKeyContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     borderWidth: 1,
     borderColor: COLORS.primary,
     borderRadius: 10,
     padding: 15,
-    marginBottom: 20,
+    marginBottom: 20
   },
   privateKeyText: {
     flex: 1,
-    marginRight: 10,
+    marginRight: 10
   },
   passwordContainer: {
     gap: 8,
-    marginBottom: 20,
+    marginBottom: 20
   },
   errorText: {
-    color: "red",
+    color: 'red'
   },
   warningContainer: {
-    flexDirection: "row",
-    alignItems: "flex-start",
-    backgroundColor: "#ffebee",
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    backgroundColor: '#ffebee',
     borderRadius: 10,
     padding: 15,
-    marginBottom: 20,
+    marginBottom: 20
   },
   warningText: {
     flex: 1,
-    marginLeft: 10,
+    marginLeft: 10
   },
   buttonContainer: {
-    flexDirection: "row",
-    gap: 16,
+    flexDirection: 'row',
+    gap: 16
   },
   cancelButton: {
-    flex: 1,
+    flex: 1
   },
   revealButton: {
-    flex: 1,
-  },
+    flex: 1
+  }
 });

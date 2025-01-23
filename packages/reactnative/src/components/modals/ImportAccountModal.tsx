@@ -1,14 +1,18 @@
-import React, { useState } from "react";
-import { StyleSheet, View } from "react-native";
-import { Modal, Portal, Text, TextInput, IconButton } from "react-native-paper";
-import { useDispatch, useSelector } from "react-redux";
-import { COLORS } from "../../utils/constants";
-import { FONT_SIZE } from "../../utils/styles";
-import Button from "../Button";
-import QRCodeScanner from "./QRCodeScanner";
-import { ethers } from "ethers";
-import { Account, addAccount, switchAccount } from "../../store/reducers/Accounts";
-import { useSecureStorage } from "../../hooks/useSecureStorage";
+import { ethers } from 'ethers';
+import React, { useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { IconButton, Modal, Portal, Text, TextInput } from 'react-native-paper';
+import { useDispatch, useSelector } from 'react-redux';
+import { useSecureStorage } from '../../hooks/useSecureStorage';
+import {
+  Account,
+  addAccount,
+  switchAccount
+} from '../../store/reducers/Accounts';
+import { COLORS } from '../../utils/constants';
+import { FONT_SIZE } from '../../utils/styles';
+import Button from '../Button';
+import QRCodeScanner from './QRCodeScanner';
 
 type Props = {
   isVisible: boolean;
@@ -19,32 +23,32 @@ type Props = {
 export default function ImportAccountModal({
   isVisible,
   onClose,
-  onImport,
+  onImport
 }: Props) {
-  const [privateKey, setPrivateKey] = useState("");
+  const [privateKey, setPrivateKey] = useState('');
   const [showScanner, setShowScanner] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
 
   const { saveItem, getItem } = useSecureStorage();
   const dispatch = useDispatch();
-  const accounts: Account[] = useSelector((state) => state.accounts);
+  const accounts: Account[] = useSelector(state => state.accounts);
 
   const importWallet = async () => {
     try {
       const wallet = new ethers.Wallet(privateKey);
 
-      if (accounts.find((account) => account.address == wallet.address)) {
-        setError("Account already exists");
+      if (accounts.find(account => account.address == wallet.address)) {
+        setError('Account already exists');
         return;
       }
 
-      const createdAccounts = await getItem("accounts");
+      const createdAccounts = await getItem('accounts');
       await saveItem(
-        "accounts",
+        'accounts',
         JSON.stringify([
           ...createdAccounts,
-          { privateKey: privateKey, address: wallet.address },
-        ]),
+          { privateKey: privateKey, address: wallet.address }
+        ])
       );
 
       dispatch(addAccount({ address: wallet.address, isImported: true }));
@@ -52,14 +56,14 @@ export default function ImportAccountModal({
 
       onImport();
     } catch (error) {
-      setError("Invalid private key");
+      setError('Invalid private key');
     }
   };
 
   const handleInputChange = (value: string) => {
     setPrivateKey(value);
     if (error) {
-      setError("");
+      setError('');
     }
   };
 
@@ -126,7 +130,7 @@ export default function ImportAccountModal({
           <QRCodeScanner
             isOpen={showScanner}
             onClose={() => setShowScanner(false)}
-            onReadCode={(privateKey) => {
+            onReadCode={privateKey => {
               setPrivateKey(privateKey);
               setShowScanner(false);
             }}
@@ -139,35 +143,35 @@ export default function ImportAccountModal({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderRadius: 30,
     padding: 28,
-    margin: 20,
+    margin: 20
   },
   content: {
-    alignItems: "center",
-    gap: 16,
+    alignItems: 'center',
+    gap: 16
   },
   title: {
     color: COLORS.primary,
-    fontWeight: "bold",
+    fontWeight: 'bold'
   },
   subtitle: {
-    textAlign: "center",
+    textAlign: 'center'
   },
   inputContainer: {
-    width: "100%",
-    gap: 4,
+    width: '100%',
+    gap: 4
   },
   errorText: {
-    color: COLORS.error,
+    color: COLORS.error
   },
   buttonContainer: {
-    flexDirection: "row",
+    flexDirection: 'row',
     gap: 16,
-    width: "100%",
+    width: '100%'
   },
   button: {
-    flex: 1,
-  },
+    flex: 1
+  }
 });

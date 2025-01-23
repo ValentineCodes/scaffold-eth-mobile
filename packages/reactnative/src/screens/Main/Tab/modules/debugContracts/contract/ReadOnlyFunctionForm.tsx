@@ -1,17 +1,17 @@
-import { AbiFunction, Abi } from "abitype";
-import { Address } from "viem";
-import React, { useState } from "react";
-import useContractRead from "../../../../../../hooks/scaffold-eth/useContractRead";
-import { useToast } from "react-native-toast-notifications";
+import { Abi, AbiFunction } from 'abitype';
+import React, { useState } from 'react';
+import { View } from 'react-native';
+import { Button, Card, Text } from 'react-native-paper';
+import { useToast } from 'react-native-toast-notifications';
+import { Address } from 'viem';
+import useContractRead from '../../../../../../hooks/scaffold-eth/useContractRead';
+import { COLORS } from '../../../../../../utils/constants';
+import ContractInput from './ContractInput';
 import {
   getFunctionInputKey,
   getInitialFormState,
-  getParsedContractFunctionArgs,
-} from "./utilsContract";
-import ContractInput from "./ContractInput";
-import { View } from "react-native";
-import { Button, Card, Text } from "react-native-paper";
-import { COLORS } from "../../../../../../utils/constants";
+  getParsedContractFunctionArgs
+} from './utilsContract';
 
 type Props = {
   contractAddress: Address;
@@ -22,10 +22,10 @@ type Props = {
 export default function ReadOnlyFunctionForm({
   contractAddress,
   abiFunction,
-  abi,
+  abi
 }: Props) {
   const [form, setForm] = useState<Record<string, any>>(() =>
-    getInitialFormState(abiFunction),
+    getInitialFormState(abiFunction)
   );
   const [result, setResult] = useState<unknown>();
   const toast = useToast();
@@ -38,9 +38,9 @@ export default function ReadOnlyFunctionForm({
     enabled: false,
     onError: (error: any) => {
       toast.show(JSON.stringify(error), {
-        type: "danger",
+        type: 'danger'
       });
-    },
+    }
   });
 
   const inputElements = abiFunction.inputs.map((input, inputIndex) => {
@@ -48,7 +48,7 @@ export default function ReadOnlyFunctionForm({
     return (
       <ContractInput
         key={key}
-        setForm={(updatedFormValue) => {
+        setForm={updatedFormValue => {
           setResult(undefined);
           setForm(updatedFormValue);
         }}
@@ -71,7 +71,7 @@ export default function ReadOnlyFunctionForm({
             <Text variant="titleMedium">Result:</Text>
             {result.map((data: any) => (
               <Text key={Math.random().toString()} variant="bodyMedium">
-                {typeof data == "object" && isNaN(data)
+                {typeof data == 'object' && isNaN(data)
                   ? JSON.stringify(data)
                   : data.toString()}
               </Text>

@@ -1,15 +1,22 @@
-import React from "react";
-import { StyleSheet, View } from "react-native";
-import { Modal, Portal, Text, IconButton, Surface, Button } from "react-native-paper";
-import { useSelector } from "react-redux";
-import { Account } from "../../store/reducers/Accounts";
-import { Network } from "../../store/reducers/Networks";
-import QRCode from "react-native-qrcode-svg";
-import { COLORS } from "../../utils/constants";
-import { FONT_SIZE } from "../../utils/styles";
-import Clipboard from "@react-native-clipboard/clipboard";
-import { useToast } from "react-native-toast-notifications";
-import Share from "react-native-share";
+import Clipboard from '@react-native-clipboard/clipboard';
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
+import {
+  Button,
+  IconButton,
+  Modal,
+  Portal,
+  Surface,
+  Text
+} from 'react-native-paper';
+import QRCode from 'react-native-qrcode-svg';
+import Share from 'react-native-share';
+import { useToast } from 'react-native-toast-notifications';
+import { useSelector } from 'react-redux';
+import { Account } from '../../store/reducers/Accounts';
+import { Network } from '../../store/reducers/Networks';
+import { COLORS } from '../../utils/constants';
+import { FONT_SIZE } from '../../utils/styles';
 
 type Props = {
   isVisible: boolean;
@@ -17,18 +24,18 @@ type Props = {
 };
 
 export default function ReceiveModal({ isVisible, onClose }: Props) {
-  const connectedAccount: Account = useSelector((state) =>
-    state.accounts.find((account: Account) => account.isConnected),
+  const connectedAccount: Account = useSelector(state =>
+    state.accounts.find((account: Account) => account.isConnected)
   );
   const connectedNetwork: Network = useSelector((state: any) =>
-    state.networks.find((network: Network) => network.isConnected),
+    state.networks.find((network: Network) => network.isConnected)
   );
 
   const toast = useToast();
 
   const copyAddress = () => {
     Clipboard.setString(connectedAccount.address);
-    toast.show("Copied to clipboard", { type: "success" });
+    toast.show('Copied to clipboard', { type: 'success' });
   };
 
   const shareAddress = async () => {
@@ -41,7 +48,11 @@ export default function ReceiveModal({ isVisible, onClose }: Props) {
 
   return (
     <Portal>
-      <Modal visible={isVisible} onDismiss={onClose} contentContainerStyle={styles.container}>
+      <Modal
+        visible={isVisible}
+        onDismiss={onClose}
+        contentContainerStyle={styles.container}
+      >
         <View style={styles.header}>
           <Text variant="headlineMedium">
             Receive {connectedNetwork.currencySymbol}
@@ -58,8 +69,9 @@ export default function ReceiveModal({ isVisible, onClose }: Props) {
 
         <Surface style={styles.warning} elevation={0}>
           <Text variant="bodyMedium" style={styles.warningText}>
-            Send only {connectedNetwork.name} ({connectedNetwork.currencySymbol})
-            to this address. Sending any other coins may result in permanent loss.
+            Send only {connectedNetwork.name} ({connectedNetwork.currencySymbol}
+            ) to this address. Sending any other coins may result in permanent
+            loss.
           </Text>
         </Surface>
 
@@ -89,41 +101,41 @@ export default function ReceiveModal({ isVisible, onClose }: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderRadius: 30,
     padding: 20,
-    margin: 20,
+    margin: 20
   },
   header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 20
   },
   content: {
-    alignItems: "center",
+    alignItems: 'center',
     gap: 16,
-    marginBottom: 20,
+    marginBottom: 20
   },
   address: {
-    textAlign: "center",
+    textAlign: 'center'
   },
   warning: {
     backgroundColor: COLORS.primaryLight,
     padding: 16,
     borderRadius: 12,
-    marginBottom: 20,
+    marginBottom: 20
   },
   warningText: {
-    textAlign: "center",
+    textAlign: 'center'
   },
   buttonContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    gap: 40,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: 40
   },
   buttonContent: {
-    flexDirection: "column",
-    height: 80,
-  },
+    flexDirection: 'column',
+    height: 80
+  }
 });

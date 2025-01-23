@@ -1,8 +1,8 @@
-import { View } from "react-native";
-import { TextInput } from "react-native-paper";
-import React, { useCallback } from "react";
-import { CommonInputProps } from "./utils";
-import { COLORS } from "../../../utils/constants";
+import React, { useCallback } from 'react';
+import { View } from 'react-native';
+import { TextInput } from 'react-native-paper';
+import { COLORS } from '../../../utils/constants';
+import { CommonInputProps } from './utils';
 
 type Props<T> = CommonInputProps<T> & {
   error?: boolean;
@@ -11,7 +11,7 @@ type Props<T> = CommonInputProps<T> & {
 };
 
 export default function InputBase<
-  T extends { toString: () => string } | undefined = string,
+  T extends { toString: () => string } | undefined = string
 >({
   name,
   value,
@@ -20,13 +20,13 @@ export default function InputBase<
   error,
   disabled,
   prefix,
-  suffix,
+  suffix
 }: Props<T>) {
   const handleChange = useCallback(
     (value: string) => {
       onChange(value as unknown as T);
     },
-    [onChange],
+    [onChange]
   );
 
   return (
@@ -36,7 +36,7 @@ export default function InputBase<
         mode="outlined"
         style={{
           borderRadius: 24,
-          marginTop: 4,
+          marginTop: 4
         }}
         outlineColor={COLORS.primary}
         activeOutlineColor={COLORS.primary}

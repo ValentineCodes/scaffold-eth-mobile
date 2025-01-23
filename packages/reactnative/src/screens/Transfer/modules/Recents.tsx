@@ -1,11 +1,11 @@
-import React from "react";
-import { View, FlatList, TouchableOpacity, StyleSheet } from "react-native";
-import { Text } from "react-native-paper";
-import { FONT_SIZE } from "../../../utils/styles";
-import { useSelector } from "react-redux";
-import { COLORS } from "../../../utils/constants";
-import Blockie from "../../../components/Blockie";
-import { truncateAddress } from "../../../utils/helperFunctions";
+import React from 'react';
+import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Text } from 'react-native-paper';
+import { useSelector } from 'react-redux';
+import Blockie from '../../../components/Blockie';
+import { COLORS } from '../../../utils/constants';
+import { truncateAddress } from '../../../utils/helperFunctions';
+import { FONT_SIZE } from '../../../utils/styles';
 
 type Props = {};
 
@@ -27,12 +27,12 @@ export default function Recents({}: Props) {
         </View>
 
         <FlatList
-          keyExtractor={(item) => item}
+          keyExtractor={item => item}
           data={recipients}
           renderItem={({ item }) => (
             <TouchableOpacity onPress={() => null}>
               <View style={styles.recipientRow}>
-                <Blockie address={item} size={1.7 * FONT_SIZE["xl"]} />
+                <Blockie address={item} size={1.7 * FONT_SIZE['xl']} />
                 <Text variant="titleLarge" style={styles.address}>
                   {truncateAddress(item)}
                 </Text>

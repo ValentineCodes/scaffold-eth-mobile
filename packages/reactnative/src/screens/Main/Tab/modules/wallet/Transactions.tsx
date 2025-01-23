@@ -1,16 +1,22 @@
-import React, { useEffect, useState } from "react";
-import { View, FlatList, ActivityIndicator, RefreshControl, StyleSheet } from "react-native";
-import { Text, Divider, IconButton } from "react-native-paper";
-import Transaction from "../../../../../components/Transaction";
-import { COLORS } from "../../../../../utils/constants";
-import { FONT_SIZE } from "../../../../../utils/styles";
-import TransactionsAPI from "../../../../../apis/transactions";
-import useAccount from "../../../../../hooks/scaffold-eth/useAccount";
-import useNetwork from "../../../../../hooks/scaffold-eth/useNetwork";
-import { ethers } from "ethers";
-import { useToast } from "react-native-toast-notifications";
+import { ethers } from 'ethers';
+import React, { useEffect, useState } from 'react';
+import {
+  ActivityIndicator,
+  FlatList,
+  RefreshControl,
+  StyleSheet,
+  View
+} from 'react-native';
+import { Divider, IconButton, Text } from 'react-native-paper';
+import { useToast } from 'react-native-toast-notifications';
+import TransactionsAPI from '../../../../../apis/transactions';
+import Transaction from '../../../../../components/Transaction';
+import useAccount from '../../../../../hooks/scaffold-eth/useAccount';
+import useNetwork from '../../../../../hooks/scaffold-eth/useNetwork';
+import { COLORS } from '../../../../../utils/constants';
+import { FONT_SIZE } from '../../../../../utils/styles';
 
-export type LoadingTxStatusProps = "loading" | "success" | "error";
+export type LoadingTxStatusProps = 'loading' | 'success' | 'error';
 
 export default function Transactions() {
   const account = useAccount();
@@ -19,7 +25,7 @@ export default function Transactions() {
 
   const [transactions, setTransactions] = useState([]);
   const [loadingStatus, setLoadingStatus] =
-    useState<LoadingTxStatusProps>("loading");
+    useState<LoadingTxStatusProps>('loading');
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [currentTxPage, setCurrentTxPage] = useState(1);
@@ -28,8 +34,8 @@ export default function Transactions() {
     const newTransactions = txResults.filter(
       (result: any) =>
         !transactions.some(
-          (transaction: any) => transaction.hash === result.hash,
-        ),
+          (transaction: any) => transaction.hash === result.hash
+        )
     );
     return newTransactions;
   };
@@ -54,16 +60,16 @@ export default function Transactions() {
         network.txApiDomain,
         network.txApiKey,
         account.address,
-        currentTxPage,
+        currentTxPage
       );
 
       const newTransactions = removeDuplicateTx(transactions);
 
       if (newTransactions.length > 0) {
-        setTransactions((oldTransactions) =>
-          sortTx([...oldTransactions, ...newTransactions]),
+        setTransactions(oldTransactions =>
+          sortTx([...oldTransactions, ...newTransactions])
         );
-        setCurrentTxPage((currentPage) => currentPage + 1);
+        setCurrentTxPage(currentPage => currentPage + 1);
       }
     } catch (error) {
       return;
@@ -83,14 +89,14 @@ export default function Transactions() {
         network.txApiDomain,
         network.txApiKey,
         account.address,
-        1,
+        1
       );
 
       setTransactions(sortTx(transactions));
       setCurrentTxPage(2);
     } catch (error) {
-      toast.show("Failed to get transactions", {
-        type: "danger",
+      toast.show('Failed to get transactions', {
+        type: 'danger'
       });
     } finally {
       setIsRefreshing(false);
@@ -98,8 +104,8 @@ export default function Transactions() {
   };
 
   const getTransactions = async () => {
-    if (loadingStatus == "error") {
-      setLoadingStatus("loading");
+    if (loadingStatus == 'error') {
+      setLoadingStatus('loading');
     }
 
     try {
@@ -107,27 +113,27 @@ export default function Transactions() {
         network.txApiDomain!,
         network.txApiKey!,
         account.address,
-        1,
+        1
       );
 
       const newTransactions = removeDuplicateTx(transactions);
 
-      setTransactions((oldTransactions) =>
-        sortTx([...newTransactions, ...oldTransactions]),
+      setTransactions(oldTransactions =>
+        sortTx([...newTransactions, ...oldTransactions])
       );
 
-      setLoadingStatus("success");
+      setLoadingStatus('success');
 
       if (newTransactions.length > 0) {
         setCurrentTxPage(2);
       }
     } catch (error) {
-      setLoadingStatus("error");
+      setLoadingStatus('error');
     }
   };
 
   useEffect(() => {
-    setLoadingStatus("loading");
+    setLoadingStatus('loading');
 
     if (transactions.length > 0) {
       setTransactions([]);
@@ -136,45 +142,55 @@ export default function Transactions() {
 
   useEffect(() => {
     if (!network.txApiDomain || !network.txApiKey) {
-      setLoadingStatus("error");
+      setLoadingStatus('error');
       return;
     }
 
     const provider = new ethers.JsonRpcProvider(network.provider);
 
-    provider.off("block");
+    provider.off('block');
 
-    provider.on("block", (blockNumber) => {
+    provider.on('block', blockNumber => {
       getTransactions();
     });
 
     return () => {
-      provider.off("block");
+      provider.off('block');
     };
   }, [account, network, transactions]);
 
   return (
     <View style={{ flex: 1 }}>
-      {loadingStatus === "loading" ? (
+      {loadingStatus === 'loading' ? (
         <View
-          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+          style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
         >
           <ActivityIndicator
-            size={3 * FONT_SIZE["xl"]}
+            size={3 * FONT_SIZE['xl']}
             color={COLORS.primary}
           />
         </View>
-      ) : loadingStatus === "error" ? (
-        <View style={{ flex: 1, justifyContent: "center", alignItems: "center", gap: 16 }}>
+      ) : loadingStatus === 'error' ? (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: 16
+          }}
+        >
           <IconButton
             icon="alert"
-            size={7 * FONT_SIZE["xl"]}
+            size={7 * FONT_SIZE['xl']}
             iconColor={COLORS.primary}
             style={styles.failedIcon}
           />
           <Text variant="titleLarge">
-            Failed to load transactions.{" "}
-            <Text onPress={getTransactions} style={{color: COLORS.primary, fontWeight: 'bold'}}>
+            Failed to load transactions.{' '}
+            <Text
+              onPress={getTransactions}
+              style={{ color: COLORS.primary, fontWeight: 'bold' }}
+            >
               Retry
             </Text>
           </Text>
@@ -182,13 +198,15 @@ export default function Transactions() {
       ) : transactions.length > 0 ? (
         <>
           <FlatList
-            keyExtractor={(item) => item.timeStamp}
+            keyExtractor={item => item.timeStamp}
             data={transactions}
             renderItem={({ item }) => <Transaction tx={item} />}
-            ItemSeparatorComponent={() => <Divider style={{marginVertical: 8}} />}
+            ItemSeparatorComponent={() => (
+              <Divider style={{ marginVertical: 8 }} />
+            )}
             ListFooterComponent={
               isLoadingMore ? (
-                <View style={{paddingVertical: 16}}>
+                <View style={{ paddingVertical: 16 }}>
                   <ActivityIndicator
                     size="small"
                     color={COLORS.primary}
@@ -210,14 +228,24 @@ export default function Transactions() {
           />
         </>
       ) : (
-        <View style={{ flex: 1, justifyContent: "center", alignItems: "center", gap: 16 }}>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: 16
+          }}
+        >
           <IconButton
             icon="swap-horizontal"
-            size={3 * FONT_SIZE["xl"]}
+            size={3 * FONT_SIZE['xl']}
             iconColor={COLORS.primary}
-            style={{backgroundColor: COLORS.primaryLight, borderRadius: 50}}
+            style={{ backgroundColor: COLORS.primaryLight, borderRadius: 50 }}
           />
-          <Text variant="headlineSmall" style={{color: '#a1a1aa', fontWeight: 'bold'}}>
+          <Text
+            variant="headlineSmall"
+            style={{ color: '#a1a1aa', fontWeight: 'bold' }}
+          >
             No Transactions
           </Text>
         </View>
@@ -229,7 +257,7 @@ export default function Transactions() {
 const styles = StyleSheet.create({
   loadingIndicator: {},
   failedIcon: {
-    width: 7 * FONT_SIZE["xl"],
-    height: 7 * FONT_SIZE["xl"],
-  },
+    width: 7 * FONT_SIZE['xl'],
+    height: 7 * FONT_SIZE['xl']
+  }
 });

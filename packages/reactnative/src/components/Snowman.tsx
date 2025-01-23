@@ -1,13 +1,13 @@
-import React, { useEffect, useRef, useState } from "react";
-import { StyleSheet, View, Animated, Easing } from "react-native";
-import { Text } from "react-native-paper";
-import { COLORS } from "../utils/constants";
-import { SvgXml } from "react-native-svg";
-import base64 from "base-64";
-import { WINDOW_WIDTH } from "../utils/styles";
-import { useDeployedContractInfo } from "../hooks/scaffold-eth/useDeployedContractInfo";
-import { ethers } from "ethers";
-import useNetwork from "../hooks/scaffold-eth/useNetwork";
+import base64 from 'base-64';
+import { ethers } from 'ethers';
+import React, { useEffect, useRef, useState } from 'react';
+import { Animated, Easing, StyleSheet, View } from 'react-native';
+import { Text } from 'react-native-paper';
+import { SvgXml } from 'react-native-svg';
+import { useDeployedContractInfo } from '../hooks/scaffold-eth/useDeployedContractInfo';
+import useNetwork from '../hooks/scaffold-eth/useNetwork';
+import { COLORS } from '../utils/constants';
+import { WINDOW_WIDTH } from '../utils/styles';
 
 type Props = {
   id: number;
@@ -22,13 +22,13 @@ interface Metadata {
 export default function Snowman({ id, remove }: Props) {
   const [metadata, setMetadata] = useState<Metadata>();
   const [isLoading, setIsLoading] = useState(true);
-  const [dots, setDots] = useState("");
+  const [dots, setDots] = useState('');
   const spinValue = useRef(new Animated.Value(0)).current;
 
   const ISnowman = useRef(null);
   const network = useNetwork();
   const { data: snowmanContract, isLoading: isLoadingSnowmanContract } =
-    useDeployedContractInfo("Snowman");
+    useDeployedContractInfo('Snowman');
 
   useEffect(() => {
     if (isLoading) {
@@ -37,13 +37,13 @@ export default function Snowman({ id, remove }: Props) {
           toValue: 1,
           duration: 1000,
           easing: Easing.linear,
-          useNativeDriver: true,
+          useNativeDriver: true
         })
       );
       animation.start();
 
       const interval = setInterval(() => {
-        setDots((prev) => (prev.length >= 3 ? "" : prev + "."));
+        setDots(prev => (prev.length >= 3 ? '' : prev + '.'));
       }, 500);
 
       return () => {
@@ -55,7 +55,7 @@ export default function Snowman({ id, remove }: Props) {
 
   const spin = spinValue.interpolate({
     inputRange: [0, 1],
-    outputRange: ["0deg", "360deg"],
+    outputRange: ['0deg', '360deg']
   });
 
   const getDetails = async () => {
@@ -68,15 +68,15 @@ export default function Snowman({ id, remove }: Props) {
       ISnowman.current = new ethers.Contract(
         snowmanContract?.address,
         snowmanContract?.abi,
-        provider,
+        provider
       );
 
       const tokenURI: string = await ISnowman.current.tokenURI(id);
       const metadata = JSON.parse(
-        base64.decode(tokenURI.replace("data:applicaton/json;base64,", "")),
+        base64.decode(tokenURI.replace('data:applicaton/json;base64,', ''))
       );
       const decodedMetadataImage = base64.decode(
-        metadata.image.replace("data:image/svg+xml;base64,", ""),
+        metadata.image.replace('data:image/svg+xml;base64,', '')
       );
       metadata.image = decodedMetadataImage;
 
@@ -101,8 +101,8 @@ export default function Snowman({ id, remove }: Props) {
             {
               width: 40,
               height: 40,
-              transform: [{ rotate: spin }],
-            },
+              transform: [{ rotate: spin }]
+            }
           ]}
         />
         <Text variant="bodyLarge" style={styles.text}>
@@ -132,29 +132,29 @@ export default function Snowman({ id, remove }: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: "center",
-    gap: 8,
+    alignItems: 'center',
+    gap: 8
   },
   spinner: {
     borderWidth: 3,
     borderRadius: 100,
     borderColor: COLORS.primary,
-    borderTopColor: "transparent",
+    borderTopColor: 'transparent'
   },
   text: {
     minWidth: 80,
-    textAlign: "center",
-    color: COLORS.primary,
+    textAlign: 'center',
+    color: COLORS.primary
   },
   nameContainer: {
-    position: "absolute",
+    position: 'absolute',
     top: 7,
     left: 2,
     backgroundColor: COLORS.primaryLight,
     paddingHorizontal: 8,
-    borderRadius: 6,
+    borderRadius: 6
   },
   name: {
-    fontWeight: "500",
-  },
+    fontWeight: '500'
+  }
 });

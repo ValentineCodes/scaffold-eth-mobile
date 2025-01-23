@@ -1,6 +1,6 @@
-import React from "react";
-import { View } from "react-native";
-import { WebView } from "react-native-webview";
+import React from 'react';
+import { View } from 'react-native';
+import { WebView } from 'react-native-webview';
 
 type Props = {
   address: string;
@@ -149,7 +149,7 @@ const Blockie = ({ address, size }: Props) => {
                             document.body.appendChild(canvas);
                         </script>
                         </body>
-                    `,
+                    `
         }}
       />
     </View>

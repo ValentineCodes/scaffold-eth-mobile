@@ -1,10 +1,10 @@
-import React from "react";
-import { StyleSheet, View, Linking } from "react-native";
-import { Modal, Portal, Text, IconButton } from "react-native-paper";
-import { useSelector } from "react-redux";
-import { Network } from "../../store/reducers/Networks";
-import { COLORS } from "../../utils/constants";
-import Button from "../Button";
+import React from 'react';
+import { Linking, StyleSheet, View } from 'react-native';
+import { IconButton, Modal, Portal, Text } from 'react-native-paper';
+import { useSelector } from 'react-redux';
+import { Network } from '../../store/reducers/Networks';
+import { COLORS } from '../../utils/constants';
+import Button from '../Button';
 
 type Props = {
   modal: {
@@ -19,11 +19,11 @@ type Props = {
 export default function TxReceiptModal({
   modal: {
     closeModal,
-    params: { hash, isError },
-  },
+    params: { hash, isError }
+  }
 }: Props) {
   const connectedNetwork: Network = useSelector((state: any) =>
-    state.networks.find((network: Network) => network.isConnected),
+    state.networks.find((network: Network) => network.isConnected)
   );
 
   const openExplorer = () => {
@@ -39,21 +39,21 @@ export default function TxReceiptModal({
       >
         <View style={styles.header}>
           <Text variant="titleLarge">
-            {isError ? "Transaction Failed" : "Transaction Sent"}
+            {isError ? 'Transaction Failed' : 'Transaction Sent'}
           </Text>
           <IconButton icon="close" onPress={closeModal} />
         </View>
 
         <View style={styles.content}>
           <IconButton
-            icon={isError ? "close-circle" : "check-circle"}
+            icon={isError ? 'close-circle' : 'check-circle'}
             size={64}
             iconColor={isError ? COLORS.error : COLORS.primary}
           />
           <Text variant="bodyLarge" style={styles.message}>
             {isError
-              ? "Something went wrong while sending your transaction."
-              : "Your transaction has been sent to the network."}
+              ? 'Something went wrong while sending your transaction.'
+              : 'Your transaction has been sent to the network.'}
           </Text>
           {!isError && (
             <Button
@@ -70,25 +70,25 @@ export default function TxReceiptModal({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderRadius: 30,
     padding: 20,
-    margin: 20,
+    margin: 20
   },
   header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 20
   },
   content: {
-    alignItems: "center",
-    gap: 16,
+    alignItems: 'center',
+    gap: 16
   },
   message: {
-    textAlign: "center",
+    textAlign: 'center'
   },
   button: {
-    marginTop: 10,
-  },
+    marginTop: 10
+  }
 });

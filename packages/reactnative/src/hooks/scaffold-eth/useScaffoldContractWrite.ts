@@ -1,16 +1,14 @@
-import { useModal } from "react-native-modalfy";
-import useNetwork from "./useNetwork";
-import { useDeployedContractInfo } from "./useDeployedContractInfo";
-import { useToast } from "react-native-toast-notifications";
-import useTargetNetwork from "./useTargetNetwork";
-import { useSecureStorage } from "../useSecureStorage";
-import { Contract, JsonRpcProvider, Wallet } from "ethers";
-
-import "react-native-get-random-values";
-import "@ethersproject/shims";
-
-import { TransactionReceipt } from "viem";
-import useAccount from "./useAccount";
+import { Contract, JsonRpcProvider, Wallet } from 'ethers';
+import { useModal } from 'react-native-modalfy';
+import { useToast } from 'react-native-toast-notifications';
+import { useSecureStorage } from '../useSecureStorage';
+import { useDeployedContractInfo } from './useDeployedContractInfo';
+import useNetwork from './useNetwork';
+import useTargetNetwork from './useTargetNetwork';
+import 'react-native-get-random-values';
+import '@ethersproject/shims';
+import { TransactionReceipt } from 'viem';
+import useAccount from './useAccount';
 
 interface UseScaffoldWriteConfig {
   contractName: string;
@@ -43,7 +41,7 @@ export default function useScaffoldContractWrite({
   args,
   value,
   blockConfirmations,
-  gasLimit,
+  gasLimit
 }: UseScaffoldWriteConfig) {
   const writeArgs = args;
   const writeValue = value;
@@ -66,7 +64,7 @@ export default function useScaffoldContractWrite({
   const sendTransaction = async (
     config: SendTxConfig = {
       args: undefined,
-      value: undefined,
+      value: undefined
     }
   ): Promise<TransactionReceipt> => {
     const { args, value } = config;
@@ -76,19 +74,19 @@ export default function useScaffoldContractWrite({
 
     if (!deployedContractData) {
       throw new Error(
-        "Target Contract is not deployed, did you forget to run `yarn deploy`?"
+        'Target Contract is not deployed, did you forget to run `yarn deploy`?'
       );
     }
     if (network.id !== targetNetwork.id) {
-      throw new Error("You are on the wrong network");
+      throw new Error('You are on the wrong network');
     }
 
     return new Promise(async (resolve, reject) => {
       try {
         const provider = new JsonRpcProvider(network.provider);
-        const accounts = await getItem("accounts");
+        const accounts = await getItem('accounts');
         const activeAccount = Array.from(accounts).find(
-          (account) =>
+          account =>
             account.address.toLowerCase() ===
             connectedAccount.address.toLowerCase()
         );
@@ -100,7 +98,7 @@ export default function useScaffoldContractWrite({
           wallet
         );
 
-        openModal("SignTransactionModal", {
+        openModal('SignTransactionModal', {
           contract,
           contractAddress: deployedContractData.address,
           functionName,
@@ -108,22 +106,22 @@ export default function useScaffoldContractWrite({
           value: _value,
           gasLimit: _gasLimit,
           onConfirm,
-          onReject,
+          onReject
         });
       } catch (error) {
         reject(error);
       }
 
       function onReject() {
-        reject("Transaction Rejected!");
+        reject('Transaction Rejected!');
       }
 
       async function onConfirm() {
         try {
           const provider = new JsonRpcProvider(network.provider);
-          const accounts = await getItem("accounts");
+          const accounts = await getItem('accounts');
           const activeAccount = Array.from(accounts).find(
-            (account) =>
+            account =>
               account.address.toLowerCase() ===
               connectedAccount.address.toLowerCase()
           );
@@ -137,11 +135,11 @@ export default function useScaffoldContractWrite({
 
           const tx = await contract[functionName](..._args, {
             value: _value,
-            gasLimit: _gasLimit,
+            gasLimit: _gasLimit
           });
           const receipt = await tx.wait(blockConfirmations || 1);
-          toast.show("Transaction Successful!", {
-            type: "success",
+          toast.show('Transaction Successful!', {
+            type: 'success'
           });
           resolve(receipt);
         } catch (error) {
@@ -152,6 +150,6 @@ export default function useScaffoldContractWrite({
   };
 
   return {
-    write: sendTransaction,
+    write: sendTransaction
   };
 }

@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { useDeployedContractInfo } from "./useDeployedContractInfo";
-import useNetwork from "./useNetwork";
-import "react-native-get-random-values";
-import "@ethersproject/shims";
-import { Contract, JsonRpcProvider, Wallet } from "ethers";
-import useAccount from "./useAccount";
-import { useSecureStorage } from "../useSecureStorage";
+import React, { useEffect, useState } from 'react';
+import { useDeployedContractInfo } from './useDeployedContractInfo';
+import useNetwork from './useNetwork';
+import 'react-native-get-random-values';
+import '@ethersproject/shims';
+import { Contract, JsonRpcProvider, Wallet } from 'ethers';
+import { useSecureStorage } from '../useSecureStorage';
+import useAccount from './useAccount';
 
 type Props = {
   contractName: string;
@@ -24,13 +24,13 @@ type Props = {
 export default function useScaffoldContractRead({
   contractName,
   functionName,
-  args: _args,
+  args: _args
 }: Props) {
   const args = _args || [];
 
   const {
     data: deployedContractData,
-    isLoading: isLoadingDeployedContractData,
+    isLoading: isLoadingDeployedContractData
   } = useDeployedContractInfo(contractName);
   const network = useNetwork();
   const connectedAccount = useAccount();
@@ -47,9 +47,9 @@ export default function useScaffoldContractRead({
       setIsLoading(true);
       const provider = new JsonRpcProvider(network.provider);
 
-      const accounts = await getItem("accounts");
+      const accounts = await getItem('accounts');
       const activeAccount = Array.from(accounts).find(
-        (account) =>
+        account =>
           account.address.toLowerCase() ===
           connectedAccount.address.toLowerCase()
       );
@@ -82,6 +82,6 @@ export default function useScaffoldContractRead({
     data,
     isLoading,
     error,
-    refetch: fetchData,
+    refetch: fetchData
   };
 }

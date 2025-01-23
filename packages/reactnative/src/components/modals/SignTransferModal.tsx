@@ -1,30 +1,26 @@
-import React, { useEffect, useState } from "react";
-import { View } from "react-native";
-import { Text, Button as PaperButton, Divider } from "react-native-paper";
-import { FONT_SIZE, WINDOW_WIDTH } from "../../utils/styles";
-import { parseFloat, truncateAddress } from "../../utils/helperFunctions";
-import { useDispatch } from "react-redux";
-import { Account } from "../../store/reducers/Accounts";
-import Blockie from "../../components/Blockie";
-
-import "react-native-get-random-values";
-import "@ethersproject/shims";
-import { Wallet, JsonRpcProvider, formatEther, parseEther } from "ethers";
-
-import Button from "../../components/Button";
-
-import { getProviderWithName, Providers } from "../../utils/providers";
-
-import Success from "./modules/Success";
-import Fail from "./modules/Fail";
-import { Linking } from "react-native";
-import { useToast } from "react-native-toast-notifications";
-import { addRecipient } from "../../store/reducers/Recipients";
-import useNetwork from "../../hooks/scaffold-eth/useNetwork";
-import { Address } from "viem";
-import useBalance from "../../hooks/scaffold-eth/useBalance";
-import useAccount from "../../hooks/scaffold-eth/useAccount";
-import { useSecureStorage } from "../../hooks/useSecureStorage";
+import React, { useEffect, useState } from 'react';
+import { View } from 'react-native';
+import { Divider, Button as PaperButton, Text } from 'react-native-paper';
+import { useDispatch } from 'react-redux';
+import Blockie from '../../components/Blockie';
+import { Account } from '../../store/reducers/Accounts';
+import { parseFloat, truncateAddress } from '../../utils/helperFunctions';
+import { FONT_SIZE, WINDOW_WIDTH } from '../../utils/styles';
+import 'react-native-get-random-values';
+import '@ethersproject/shims';
+import { formatEther, JsonRpcProvider, parseEther, Wallet } from 'ethers';
+import { Linking } from 'react-native';
+import { useToast } from 'react-native-toast-notifications';
+import { Address } from 'viem';
+import Button from '../../components/Button';
+import useAccount from '../../hooks/scaffold-eth/useAccount';
+import useBalance from '../../hooks/scaffold-eth/useBalance';
+import useNetwork from '../../hooks/scaffold-eth/useNetwork';
+import { useSecureStorage } from '../../hooks/useSecureStorage';
+import { addRecipient } from '../../store/reducers/Recipients';
+import { getProviderWithName, Providers } from '../../utils/providers';
+import Fail from './modules/Fail';
+import Success from './modules/Success';
 
 type Props = {
   modal: {
@@ -43,7 +39,7 @@ interface GasCost {
 }
 
 export default function SignTransferModal({
-  modal: { closeModal, params },
+  modal: { closeModal, params }
 }: Props) {
   const { from, to, value } = params;
 
@@ -62,7 +58,7 @@ export default function SignTransferModal({
   const [txReceipt, setTxReceipt] = useState<any | null>(null);
   const [estimatedGasCost, setEstimatedGasCost] = useState<GasCost>({
     min: null,
-    max: null,
+    max: null
   });
 
   const { getItem } = useSecureStorage();
@@ -76,18 +72,18 @@ export default function SignTransferModal({
       parseFloat(formatEther(value + estimatedGasCost.max), 8).toString();
     return {
       min: minAmount,
-      max: maxAmount,
+      max: maxAmount
     };
   };
 
   const transfer = async () => {
-    const accounts = await getItem("accounts");
+    const accounts = await getItem('accounts');
     const activeAccount = Array.from(accounts).find(
-      (account) => account.address.toLowerCase() === from.address.toLowerCase(),
+      account => account.address.toLowerCase() === from.address.toLowerCase()
     );
 
     const provider = getProviderWithName(
-      network.name.toLowerCase() as keyof Providers,
+      network.name.toLowerCase() as keyof Providers
     );
     const wallet = new Wallet(activeAccount.privateKey, provider);
 
@@ -97,7 +93,7 @@ export default function SignTransferModal({
       const tx = await wallet.sendTransaction({
         from: from.address,
         to: to,
-        value: parseEther(value.toString()),
+        value: parseEther(value.toString())
       });
 
       const txReceipt = await tx.wait(1);
@@ -118,12 +114,10 @@ export default function SignTransferModal({
     if (!network.blockExplorer || !txReceipt) return;
 
     try {
-      await Linking.openURL(
-        `${network.blockExplorer}/tx/${txReceipt.hash}`,
-      );
+      await Linking.openURL(`${network.blockExplorer}/tx/${txReceipt.hash}`);
     } catch (error) {
-      toast.show("Cannot open url", {
-        type: "danger",
+      toast.show('Cannot open url', {
+        type: 'danger'
       });
     }
   };
@@ -137,7 +131,7 @@ export default function SignTransferModal({
 
     const gasCost: GasCost = {
       min: null,
-      max: null,
+      max: null
     };
 
     if (feeData.gasPrice) {
@@ -154,33 +148,37 @@ export default function SignTransferModal({
   useEffect(() => {
     const provider = new JsonRpcProvider(network.provider);
 
-    provider.off("block");
+    provider.off('block');
 
-    provider.on("block", (blockNumber) => estimateGasCost());
+    provider.on('block', blockNumber => estimateGasCost());
 
     return () => {
-      provider.off("block");
+      provider.off('block');
     };
   }, []);
 
   return (
     <>
-      <View style={{
-        backgroundColor: 'white',
-        borderRadius: 30,
-        padding: 20,
-      }}>
-        <View style={{marginBottom: 16}}>
-          <View style={{
-            backgroundColor: '#F5F5F5',
-            borderRadius: 10,
-            padding: 12,
-            flexDirection: 'row',
-            alignItems: 'center',
-            marginBottom: 16
-          }}>
+      <View
+        style={{
+          backgroundColor: 'white',
+          borderRadius: 30,
+          padding: 20
+        }}
+      >
+        <View style={{ marginBottom: 16 }}>
+          <View
+            style={{
+              backgroundColor: '#F5F5F5',
+              borderRadius: 10,
+              padding: 12,
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginBottom: 16
+            }}
+          >
             <Blockie address={from.address} size={1.8 * FONT_SIZE.xl} />
-            <View style={{marginLeft: 12}}>
+            <View style={{ marginLeft: 12 }}>
               <Text variant="titleMedium">{from.name}</Text>
               <Text variant="bodyMedium">
                 Balance: {balance && `${balance} ${network.currencySymbol}`}
@@ -188,44 +186,60 @@ export default function SignTransferModal({
             </View>
           </View>
 
-          <View style={{
-            backgroundColor: '#F5F5F5',
-            borderRadius: 10,
-            padding: 12,
-            flexDirection: 'row',
-            alignItems: 'center'
-          }}>
+          <View
+            style={{
+              backgroundColor: '#F5F5F5',
+              borderRadius: 10,
+              padding: 12,
+              flexDirection: 'row',
+              alignItems: 'center'
+            }}
+          >
             <Blockie address={to} size={1.8 * FONT_SIZE.xl} />
-            <Text variant="titleMedium" style={{marginLeft: 12}}>
+            <Text variant="titleMedium" style={{ marginLeft: 12 }}>
               {truncateAddress(to)}
             </Text>
           </View>
         </View>
 
-        <Text variant="headlineMedium" style={{textAlign: 'center', marginBottom: 16}}>
+        <Text
+          variant="headlineMedium"
+          style={{ textAlign: 'center', marginBottom: 16 }}
+        >
           {formatEther(value)} {network.currencySymbol}
         </Text>
 
-        <View style={{
-          borderWidth: 1,
-          borderColor: '#E0E0E0',
-          borderRadius: 10,
-          marginBottom: 16
-        }}>
-          <View style={{padding: 12}}>
-            <View style={{flexDirection: 'row', justifyContent: 'space-between', marginBottom: 8}}>
+        <View
+          style={{
+            borderWidth: 1,
+            borderColor: '#E0E0E0',
+            borderRadius: 10,
+            marginBottom: 16
+          }}
+        >
+          <View style={{ padding: 12 }}>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                marginBottom: 8
+              }}
+            >
               <Text variant="titleMedium">Estimated Gas Fee</Text>
               <Text variant="titleMedium">
                 {estimatedGasCost.min &&
                   `${formatEther(estimatedGasCost.min)} ${network.currencySymbol}`}
               </Text>
             </View>
-            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-              <Text variant="bodySmall" style={{color: 'green'}}>
+            <View
+              style={{ flexDirection: 'row', justifyContent: 'space-between' }}
+            >
+              <Text variant="bodySmall" style={{ color: 'green' }}>
                 Likely in {'<'} 30 seconds
               </Text>
-              <Text variant="bodySmall" style={{color: 'gray'}}>
-                Max: {estimatedGasCost.max &&
+              <Text variant="bodySmall" style={{ color: 'gray' }}>
+                Max:{' '}
+                {estimatedGasCost.max &&
                   `${formatEther(estimatedGasCost.max)} ${network.currencySymbol}`}
               </Text>
             </View>
@@ -233,35 +247,45 @@ export default function SignTransferModal({
 
           <Divider />
 
-          <View style={{padding: 12}}>
-            <View style={{flexDirection: 'row', justifyContent: 'space-between', marginBottom: 8}}>
+          <View style={{ padding: 12 }}>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                marginBottom: 8
+              }}
+            >
               <Text variant="titleMedium">Total</Text>
               <Text variant="titleMedium">
                 {calcTotal().min} {network.currencySymbol}
               </Text>
             </View>
-            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-              <Text variant="bodySmall" style={{color: 'green'}}>Amount + Gas Fee</Text>
-              <Text variant="bodySmall" style={{color: 'gray'}}>
+            <View
+              style={{ flexDirection: 'row', justifyContent: 'space-between' }}
+            >
+              <Text variant="bodySmall" style={{ color: 'green' }}>
+                Amount + Gas Fee
+              </Text>
+              <Text variant="bodySmall" style={{ color: 'gray' }}>
                 Max: {calcTotal().max} {network.currencySymbol}
               </Text>
             </View>
           </View>
         </View>
 
-        <View style={{flexDirection: 'row', gap: 12}}>
+        <View style={{ flexDirection: 'row', gap: 12 }}>
           <PaperButton
             mode="contained"
             onPress={closeModal}
             buttonColor="#FFCDD2"
-            style={{flex: 1}}
+            style={{ flex: 1 }}
           >
             Reject
           </PaperButton>
           <Button
             text="Confirm"
             onPress={transfer}
-            style={{flex: 1, borderRadius: 0}}
+            style={{ flex: 1, borderRadius: 0 }}
             loading={isTransferring}
           />
         </View>

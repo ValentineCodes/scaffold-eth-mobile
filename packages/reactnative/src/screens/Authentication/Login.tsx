@@ -1,23 +1,23 @@
+import { useNavigation } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
 import {
   Image,
-  StyleSheet,
   ScrollView,
-  View,
+  StyleSheet,
   TouchableOpacity,
-} from "react-native";
-import React, { useState, useEffect } from "react";
-import { useToast } from "react-native-toast-notifications";
-import { useNavigation } from "@react-navigation/native";
-import { FONT_SIZE, WINDOW_WIDTH } from "../../utils/styles";
-import { COLORS } from "../../utils/constants";
-import MaterialIcons from "react-native-vector-icons/dist/MaterialIcons";
-import { Text, TextInput, Button } from "react-native-paper";
-import { useDispatch, useSelector } from "react-redux";
-import { loginUser, logoutUser } from "../../store/reducers/Auth";
-import ConsentModal from "../../components/modals/ConsentModal";
-import { clearRecipients } from "../../store/reducers/Recipients";
-import ReactNativeBiometrics from "react-native-biometrics";
-import { useSecureStorage } from "../../hooks/useSecureStorage";
+  View
+} from 'react-native';
+import ReactNativeBiometrics from 'react-native-biometrics';
+import { Button, Text, TextInput } from 'react-native-paper';
+import { useToast } from 'react-native-toast-notifications';
+import MaterialIcons from 'react-native-vector-icons/dist/MaterialIcons';
+import { useDispatch, useSelector } from 'react-redux';
+import ConsentModal from '../../components/modals/ConsentModal';
+import { useSecureStorage } from '../../hooks/useSecureStorage';
+import { loginUser, logoutUser } from '../../store/reducers/Auth';
+import { clearRecipients } from '../../store/reducers/Recipients';
+import { COLORS } from '../../utils/constants';
+import { FONT_SIZE, WINDOW_WIDTH } from '../../utils/styles';
 
 type Props = {};
 
@@ -27,9 +27,9 @@ export default function Login({}: Props) {
   const dispatch = useDispatch();
   const { getItem, removeItem } = useSecureStorage();
 
-  const auth = useSelector((state) => state.auth);
+  const auth = useSelector(state => state.auth);
 
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState('');
   const [isInitializing, setIsInitializing] = useState(false);
   const [isBiometricsEnabled, setIsBiometricsEnabled] = useState(false);
   const [showResetWalletConsentModal, setShowResetWalletConsentModal] =
@@ -45,13 +45,13 @@ export default function Login({}: Props) {
       }
 
       if (password) {
-        setPassword("");
+        setPassword('');
       }
 
-      navigation.navigate("Main");
+      navigation.navigate('Main');
     } catch (error) {
-      toast.show("Failed to initialize wallet", {
-        type: "danger",
+      toast.show('Failed to initialize wallet', {
+        type: 'danger'
       });
     } finally {
       setIsInitializing(false);
@@ -60,16 +60,16 @@ export default function Login({}: Props) {
 
   const unlockWithPassword = async () => {
     if (!password) {
-      toast.show("Password cannot be empty!", {
-        type: "danger",
+      toast.show('Password cannot be empty!', {
+        type: 'danger'
       });
       return;
     }
 
-    const security = await getItem("security");
+    const security = await getItem('security');
     if (password !== security.password) {
-      toast.show("Incorrect password!", {
-        type: "danger",
+      toast.show('Incorrect password!', {
+        type: 'danger'
       });
       return;
     }
@@ -83,14 +83,14 @@ export default function Login({}: Props) {
     try {
       const signInWithBio = async () => {
         let epochTimeSeconds = Math.round(
-          new Date().getTime() / 1000,
+          new Date().getTime() / 1000
         ).toString();
-        let payload = epochTimeSeconds + "some message";
+        let payload = epochTimeSeconds + 'some message';
 
         try {
           const response = await rnBiometrics.createSignature({
-            promptMessage: "Sign in",
-            payload: payload,
+            promptMessage: 'Sign in',
+            payload: payload
           });
 
           if (response.success) {
@@ -113,26 +113,26 @@ export default function Login({}: Props) {
         signInWithBio();
       }
     } catch (error) {
-      toast.show("Could not sign in with biometrics", {
-        type: "danger",
+      toast.show('Could not sign in with biometrics', {
+        type: 'danger'
       });
     }
   };
 
   const resetWallet = async () => {
-    await removeItem("seedPhrase");
-    await removeItem("accounts");
-    await removeItem("security");
+    await removeItem('seedPhrase');
+    await removeItem('accounts');
+    await removeItem('security');
     dispatch(clearRecipients());
     dispatch(logoutUser());
     setTimeout(() => {
-      navigation.navigate("Onboarding");
+      navigation.navigate('Onboarding');
     }, 100);
   };
 
   useEffect(() => {
     (async () => {
-      const security = await getItem("security");
+      const security = await getItem('security');
       setIsBiometricsEnabled(security.isBiometricsEnabled);
       if (security.isBiometricsEnabled) {
         unlockWithBiometrics();
@@ -143,22 +143,22 @@ export default function Login({}: Props) {
     <ScrollView
       contentContainerStyle={{
         flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
+        justifyContent: 'center',
+        alignItems: 'center'
       }}
       style={styles.container}
     >
       <Image
-        source={require("../../assets/images/logo.png")}
+        source={require('../../assets/images/logo.png')}
         style={{
           width: WINDOW_WIDTH * 0.3,
           height: WINDOW_WIDTH * 0.3,
           marginBottom: 40
         }}
       />
-      <Text 
-        variant="headlineLarge" 
-        style={{ 
+      <Text
+        variant="headlineLarge"
+        style={{
           color: COLORS.primary,
           fontWeight: 'bold'
         }}
@@ -194,24 +194,21 @@ export default function Login({}: Props) {
         loading={isInitializing}
         style={styles.button}
       >
-        {isBiometricsEnabled && !password ? "SIGN IN WITH BIOMETRICS" : "SIGN IN"}
+        {isBiometricsEnabled && !password
+          ? 'SIGN IN WITH BIOMETRICS'
+          : 'SIGN IN'}
       </Button>
 
-      <Text 
-        variant="bodyLarge" 
-        style={styles.resetText}
-      >
-        Wallet won't unlock? You can ERASE your current wallet and setup a new one
+      <Text variant="bodyLarge" style={styles.resetText}>
+        Wallet won't unlock? You can ERASE your current wallet and setup a new
+        one
       </Text>
 
       <TouchableOpacity
         onPress={() => setShowResetWalletConsentModal(true)}
         style={{ opacity: 0.8 }}
       >
-        <Text 
-          variant="titleLarge" 
-          style={{ color: COLORS.primary }}
-        >
+        <Text variant="titleLarge" style={{ color: COLORS.primary }}>
           Reset Wallet
         </Text>
       </TouchableOpacity>
@@ -233,7 +230,7 @@ export default function Login({}: Props) {
 const styles = StyleSheet.create({
   container: {
     padding: 15,
-    backgroundColor: "white",
+    backgroundColor: 'white'
   },
   inputContainer: {
     width: '100%',
@@ -241,7 +238,7 @@ const styles = StyleSheet.create({
     gap: 8
   },
   input: {
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#f5f5f5'
   },
   button: {
     marginTop: 20,

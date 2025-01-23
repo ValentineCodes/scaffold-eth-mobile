@@ -1,14 +1,13 @@
-import { View, StyleSheet } from "react-native";
-import { Text, Switch } from "react-native-paper";
-import React, { useLayoutEffect, useState } from "react";
-import { FONT_SIZE } from "../../../utils/styles";
-import { COLORS } from "../../../utils/constants";
-import ReactNativeBiometrics from "react-native-biometrics";
-import { useToast } from "react-native-toast-notifications";
-import { useModal } from "react-native-modalfy";
-import { useIsFocused } from "@react-navigation/native";
-import { useSecureStorage } from "../../../hooks/useSecureStorage";
-import { TouchableOpacity } from "react-native";
+import { useIsFocused } from '@react-navigation/native';
+import React, { useLayoutEffect, useState } from 'react';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import ReactNativeBiometrics from 'react-native-biometrics';
+import { useModal } from 'react-native-modalfy';
+import { Switch, Text } from 'react-native-paper';
+import { useToast } from 'react-native-toast-notifications';
+import { useSecureStorage } from '../../../hooks/useSecureStorage';
+import { COLORS } from '../../../utils/constants';
+import { FONT_SIZE } from '../../../utils/styles';
 
 type Props = {};
 
@@ -27,19 +26,19 @@ export default function Settings({}: Props) {
     try {
       const signInWithBio = async () => {
         let epochTimeSeconds = Math.round(
-          new Date().getTime() / 1000,
+          new Date().getTime() / 1000
         ).toString();
-        let payload = epochTimeSeconds + "some message";
+        let payload = epochTimeSeconds + 'some message';
 
         try {
           const response = await rnBiometrics.createSignature({
-            promptMessage: "Authenticate",
-            payload: payload,
+            promptMessage: 'Authenticate',
+            payload: payload
           });
 
           if (response.success) {
-            const security = await getItem("security");
-            await saveItem("security", { ...security, isBiometricsEnabled });
+            const security = await getItem('security');
+            await saveItem('security', { ...security, isBiometricsEnabled });
             setIsBiometricsEnabled(isBiometricsEnabled);
           }
         } catch (error) {
@@ -58,11 +57,11 @@ export default function Settings({}: Props) {
 
         signInWithBio();
       } else {
-        toast.show("Biometrics is not available on this device");
+        toast.show('Biometrics is not available on this device');
       }
     } catch (error) {
-      toast.show("Could not sign in with biometrics", {
-        type: "danger",
+      toast.show('Could not sign in with biometrics', {
+        type: 'danger'
       });
     }
   };
@@ -76,7 +75,7 @@ export default function Settings({}: Props) {
       setIsBiometricsAvailable(available);
 
       if (available) {
-        const security = await getItem("security");
+        const security = await getItem('security');
         setIsBiometricsEnabled(security.isBiometricsEnabled);
       }
     })();
@@ -96,8 +95,8 @@ export default function Settings({}: Props) {
         </View>
       )}
 
-      <TouchableOpacity 
-        onPress={() => openModal("ChangePasswordModal")}
+      <TouchableOpacity
+        onPress={() => openModal('ChangePasswordModal')}
         style={styles.button}
       >
         <Text variant="titleLarge">Change Password</Text>

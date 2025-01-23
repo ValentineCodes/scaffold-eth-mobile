@@ -1,12 +1,12 @@
-import { useCallback, useEffect, useState } from "react";
-import { blo } from "blo";
-import { useDebounceValue } from "usehooks-ts";
-import { Address, isAddress } from "viem";
-import { useEnsAddress, useEnsAvatar, useEnsName } from "wagmi";
-import InputBase from "./InputBase";
-import { CommonInputProps, isENS } from "./utils";
-import { Image, View } from "react-native";
-import { Text } from "react-native-paper";
+import { blo } from 'blo';
+import { useCallback, useEffect, useState } from 'react';
+import { Image, View } from 'react-native';
+import { Text } from 'react-native-paper';
+import { useDebounceValue } from 'usehooks-ts';
+import { Address, isAddress } from 'viem';
+import { useEnsAddress, useEnsAvatar, useEnsName } from 'wagmi';
+import InputBase from './InputBase';
+import { CommonInputProps, isENS } from './utils';
 
 /**
  * Address input with ENS name resolution
@@ -16,7 +16,7 @@ export default function AddressInput({
   name,
   placeholder,
   onChange,
-  disabled,
+  disabled
 }: CommonInputProps<Address | string>) {
   // Debounce the input to keep clean RPC calls when resolving ENS names
   // If the input is an address, we don't need to debounce it
@@ -31,7 +31,7 @@ export default function AddressInput({
     name: settledValue,
     enabled: isENS(debouncedValue),
     chainId: 1,
-    cacheTime: 30_000,
+    cacheTime: 30_000
   });
 
   const [enteredEnsName, setEnteredEnsName] = useState<string>();
@@ -39,14 +39,14 @@ export default function AddressInput({
     address: settledValue as Address,
     enabled: isAddress(debouncedValue),
     chainId: 1,
-    cacheTime: 30_000,
+    cacheTime: 30_000
   });
 
   const { data: ensAvatar } = useEnsAvatar({
     name: ensName,
     enabled: Boolean(ensName),
     chainId: 1,
-    cacheTime: 30_000,
+    cacheTime: 30_000
   });
 
   // ens => address
@@ -63,7 +63,7 @@ export default function AddressInput({
       setEnteredEnsName(undefined);
       onChange(newValue);
     },
-    [onChange],
+    [onChange]
   );
 
   return (
@@ -76,7 +76,14 @@ export default function AddressInput({
       disabled={isEnsAddressLoading || isEnsNameLoading || disabled}
       prefix={
         ensName && (
-          <View style={{ flexDirection: 'row', alignItems: 'center', borderTopLeftRadius: 24, borderBottomLeftRadius: 24 }}>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              borderTopLeftRadius: 24,
+              borderBottomLeftRadius: 24
+            }}
+          >
             {ensAvatar ? (
               <View style={{ width: 35 }}>
                 <Image

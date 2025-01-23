@@ -1,16 +1,15 @@
-import { ScrollView, View } from "react-native";
-import { ActivityIndicator, Card, Text, useTheme } from "react-native-paper";
-import React, { useReducer } from "react";
-
-import { useDeployedContractInfo } from "../../../../../../hooks/scaffold-eth/useDeployedContractInfo";
-import useTargetNetwork from "../../../../../../hooks/scaffold-eth/useTargetNetwork";
-import { COLORS } from "../../../../../../utils/constants";
-import Address from "../../../../../../components/scaffold-eth/Address";
-import Balance from "../../../../../../components/scaffold-eth/Balance";
-import ContractReadMethods from "./ContractReadMethods";
-import ContractVariables from "./ContractVariables";
-import ContractWriteMethods from "./ContractWriteMethods";
-import { useIsFocused, useRoute } from "@react-navigation/native";
+import { useIsFocused, useRoute } from '@react-navigation/native';
+import React, { useReducer } from 'react';
+import { ScrollView, View } from 'react-native';
+import { ActivityIndicator, Card, Text, useTheme } from 'react-native-paper';
+import Address from '../../../../../../components/scaffold-eth/Address';
+import Balance from '../../../../../../components/scaffold-eth/Balance';
+import { useDeployedContractInfo } from '../../../../../../hooks/scaffold-eth/useDeployedContractInfo';
+import useTargetNetwork from '../../../../../../hooks/scaffold-eth/useTargetNetwork';
+import { COLORS } from '../../../../../../utils/constants';
+import ContractReadMethods from './ContractReadMethods';
+import ContractVariables from './ContractVariables';
+import ContractWriteMethods from './ContractWriteMethods';
 
 export default function ContractUI() {
   const route = useRoute();
@@ -18,8 +17,8 @@ export default function ContractUI() {
   const theme = useTheme();
   const contractName = route.name;
   const [refreshDisplayVariables, triggerRefreshDisplayVariables] = useReducer(
-    (value) => !value,
-    false,
+    value => !value,
+    false
   );
   const targetNetwork = useTargetNetwork();
   const { data: deployedContractData, isLoading: isDeployedContractLoading } =
@@ -28,14 +27,21 @@ export default function ContractUI() {
   if (isDeployedContractLoading || !isFocused) {
     return (
       <View style={{ marginTop: 48 }}>
-        <ActivityIndicator animating={true} color={COLORS.primary} size="large" />
+        <ActivityIndicator
+          animating={true}
+          color={COLORS.primary}
+          size="large"
+        />
       </View>
     );
   }
 
   if (!deployedContractData) {
     return (
-      <Text variant="headlineSmall" style={{ marginTop: 48, fontWeight: '300' }}>
+      <Text
+        variant="headlineSmall"
+        style={{ marginTop: 48, fontWeight: '300' }}
+      >
         {`No contract found by the name of "${contractName}" on chain "${targetNetwork.name}"!`}
       </Text>
     );
@@ -45,16 +51,33 @@ export default function ContractUI() {
     <ScrollView style={{ flex: 1, backgroundColor: 'white', padding: 16 }}>
       <Card style={{ marginBottom: 24 }}>
         <Card.Content>
-          <Text variant="titleLarge" style={{ marginBottom: 8 }}>{contractName}</Text>
+          <Text variant="titleLarge" style={{ marginBottom: 8 }}>
+            {contractName}
+          </Text>
           <Address address={deployedContractData.address} />
-          <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 4 }}>
-            <Text variant="bodyMedium" style={{ fontWeight: '600' }}>Balance: </Text>
+          <View
+            style={{ flexDirection: 'row', alignItems: 'center', marginTop: 4 }}
+          >
+            <Text variant="bodyMedium" style={{ fontWeight: '600' }}>
+              Balance:{' '}
+            </Text>
             <Balance address={deployedContractData.address} />
           </View>
           {targetNetwork && (
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 4 }}>
-              <Text variant="bodyMedium" style={{ fontWeight: '600' }}>Network: </Text>
-              <Text variant="bodyMedium" style={{ color: theme.colors.primary }}>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginTop: 4
+              }}
+            >
+              <Text variant="bodyMedium" style={{ fontWeight: '600' }}>
+                Network:{' '}
+              </Text>
+              <Text
+                variant="bodyMedium"
+                style={{ color: theme.colors.primary }}
+              >
                 {targetNetwork.name}
               </Text>
             </View>
@@ -72,12 +95,14 @@ export default function ContractUI() {
       </Card>
 
       <View style={{ marginBottom: 24 }}>
-        <Card style={{ 
-          backgroundColor: COLORS.primaryLight, 
-          alignSelf: 'flex-start',
-          marginBottom: -32,
-          zIndex: 1
-        }}>
+        <Card
+          style={{
+            backgroundColor: COLORS.primaryLight,
+            alignSelf: 'flex-start',
+            marginBottom: -32,
+            zIndex: 1
+          }}
+        >
           <Card.Content>
             <Text variant="titleLarge">Read</Text>
           </Card.Content>
@@ -90,12 +115,14 @@ export default function ContractUI() {
       </View>
 
       <View style={{ marginBottom: 24 }}>
-        <Card style={{ 
-          backgroundColor: COLORS.primaryLight, 
-          alignSelf: 'flex-start',
-          marginBottom: -32,
-          zIndex: 1
-        }}>
+        <Card
+          style={{
+            backgroundColor: COLORS.primaryLight,
+            alignSelf: 'flex-start',
+            marginBottom: -32,
+            zIndex: 1
+          }}
+        >
           <Card.Content>
             <Text variant="titleLarge">Write</Text>
           </Card.Content>

@@ -1,9 +1,9 @@
-import React from "react";
-import { StyleSheet, View, Dimensions } from "react-native";
-import { Modal, Portal, Text, IconButton } from "react-native-paper";
-import { COLORS } from "../../utils/constants";
-import { FONT_SIZE } from "../../utils/styles";
-import Button from "../Button";
+import React from 'react';
+import { Dimensions, StyleSheet, View } from 'react-native';
+import { IconButton, Modal, Portal, Text } from 'react-native-paper';
+import { COLORS } from '../../utils/constants';
+import { FONT_SIZE } from '../../utils/styles';
+import Button from '../Button';
 
 type Props = {
   isVisible: boolean;
@@ -28,7 +28,7 @@ export default function ConsentModal({
   isOkLoading,
   isCancelLoading,
   onAccept,
-  onClose,
+  onClose
 }: Props) {
   return (
     <Portal>
@@ -41,7 +41,7 @@ export default function ConsentModal({
           {icon || (
             <IconButton
               icon="alert"
-              size={Dimensions.get("window").height * 0.17}
+              size={Dimensions.get('window').height * 0.17}
               iconColor={COLORS.primary}
             />
           )}
@@ -55,13 +55,13 @@ export default function ConsentModal({
           <View style={styles.buttonContainer}>
             <Button
               type="outline"
-              text={cancelText || "Cancel"}
+              text={cancelText || 'Cancel'}
               onPress={onClose}
               loading={isCancelLoading}
               style={styles.button}
             />
             <Button
-              text={okText || "Ok"}
+              text={okText || 'Ok'}
               onPress={onAccept}
               loading={isOkLoading}
               style={styles.button}
@@ -75,30 +75,30 @@ export default function ConsentModal({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderRadius: 30,
     padding: 28,
-    margin: 20,
+    margin: 20
   },
   content: {
-    alignItems: "center",
-    gap: 16,
+    alignItems: 'center',
+    gap: 16
   },
   title: {
     color: COLORS.primary,
-    fontWeight: "bold",
-    textAlign: "center",
+    fontWeight: 'bold',
+    textAlign: 'center'
   },
   subtitle: {
-    textAlign: "center",
+    textAlign: 'center'
   },
   buttonContainer: {
-    flexDirection: "row",
+    flexDirection: 'row',
     marginTop: 20,
     gap: 16,
-    width: "100%",
+    width: '100%'
   },
   button: {
-    flex: 1,
-  },
+    flex: 1
+  }
 });
