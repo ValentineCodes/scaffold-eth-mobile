@@ -4,11 +4,14 @@ import { useModal } from 'react-native-modalfy';
 import { Divider, Surface, Text, TextInput } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Token from '../../../../../components/asset/Token';
+import { useTokens } from '../../../../../hooks/useTokens';
 
 type Props = {};
 
 function Tokens({}: Props) {
   const { openModal } = useModal();
+  const {tokens} = useTokens()
+
   return (
     <Surface style={{ paddingTop: 75, padding: 2 }}>
       <View
