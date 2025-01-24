@@ -7,7 +7,7 @@ import { GenericContractsDeclaration } from "../utils/scaffold-eth/contract";
 const deployedContracts = {
   1337: {
     DiseaseToken: {
-      address: "0x83b0eCA869b0F90855D8002cc89698B031FB75ab",
+      address: "0x7Bc42870772Df5D4F79dF300a3D9d7B4D26CaCC4",
       abi: [
         {
           inputs: [],
@@ -132,18 +132,7 @@ const deployedContracts = {
           type: "function",
         },
         {
-          inputs: [
-            {
-              internalType: "address",
-              name: "from",
-              type: "address",
-            },
-            {
-              internalType: "uint256",
-              name: "amount",
-              type: "uint256",
-            },
-          ],
+          inputs: [],
           name: "burn",
           outputs: [],
           stateMutability: "nonpayable",
@@ -211,18 +200,7 @@ const deployedContracts = {
           type: "function",
         },
         {
-          inputs: [
-            {
-              internalType: "address",
-              name: "to",
-              type: "address",
-            },
-            {
-              internalType: "uint256",
-              name: "amount",
-              type: "uint256",
-            },
-          ],
+          inputs: [],
           name: "mint",
           outputs: [],
           stateMutability: "nonpayable",

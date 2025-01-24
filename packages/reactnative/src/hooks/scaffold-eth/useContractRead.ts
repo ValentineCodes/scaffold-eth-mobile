@@ -32,7 +32,7 @@ export default function useContractRead({
   const connectedAccount = useAccount();
   const { getItem } = useSecureStorage();
 
-  const [data, setData] = useState<any[] | null>(null);
+  const [data, setData] = useState<any | null>(null);
   const [isLoading, setIsLoading] = useState(enabled);
   const [error, setError] = useState<any>(null);
 

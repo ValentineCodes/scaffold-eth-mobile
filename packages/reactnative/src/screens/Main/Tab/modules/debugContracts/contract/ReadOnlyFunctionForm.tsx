@@ -12,11 +12,11 @@ import {
   getInitialFormState,
   getParsedContractFunctionArgs
 } from './utilsContract';
-
+import { InterfaceAbi } from 'ethers';
 type Props = {
   contractAddress: Address;
   abiFunction: AbiFunction;
-  abi: Abi;
+  abi: InterfaceAbi;
 };
 
 export default function ReadOnlyFunctionForm({
@@ -27,7 +27,7 @@ export default function ReadOnlyFunctionForm({
   const [form, setForm] = useState<Record<string, any>>(() =>
     getInitialFormState(abiFunction)
   );
-  const [result, setResult] = useState<unknown>();
+  const [result, setResult] = useState<any>();
   const toast = useToast();
 
   const { isLoading: isFetching, refetch } = useContractRead({
@@ -58,6 +58,25 @@ export default function ReadOnlyFunctionForm({
       />
     );
   });
+
+  function renderResult() {
+    if (result.map)
+      return result.map((data: any) => (
+        <Text key={Math.random().toString()} variant="bodyMedium">
+          {typeof data == 'object' && isNaN(data)
+            ? JSON.stringify(data)
+            : data.toString()}
+        </Text>
+      ));
+
+    return (
+      <Text variant="bodyMedium">
+        {typeof result == 'object' && isNaN(result)
+          ? JSON.stringify(result)
+          : result.toString()}
+      </Text>
+    );
+  }
 
   return (
     <View>

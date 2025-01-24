@@ -7,7 +7,7 @@ import {
   InheritedFunctions
 } from '../../../../../../../utils/scaffold-eth/contract';
 import DisplayVariable from './DisplayVariable';
-
+import { InterfaceAbi } from 'ethers';
 export default function ContractVariables({
   refreshDisplayVariables,
   deployedContractData
@@ -55,7 +55,7 @@ export default function ContractVariables({
     <>
       {functionsToDisplay.map(({ fn, inheritedFrom }) => (
         <DisplayVariable
-          abi={deployedContractData.abi as Abi}
+          abi={deployedContractData.abi as InterfaceAbi}
           abiFunction={fn}
           contractAddress={deployedContractData.address}
           key={fn.name}

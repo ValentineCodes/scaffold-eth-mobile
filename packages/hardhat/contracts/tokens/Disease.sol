@@ -6,11 +6,11 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 contract DiseaseToken is ERC20 {
     constructor() ERC20("Disease", "AIDS") {}
 
-    function mint(address to, uint256 amount) public {
-        _mint(to, amount);
+    function mint() public {
+        _mint(msg.sender, 1 ether);
     }
 
-    function burn(address from, uint256 amount) public {
-        _burn(from, amount);
+    function burn() public {
+        _burn(msg.sender, 1 ether);
     }
 }
