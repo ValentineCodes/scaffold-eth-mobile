@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { FlatList, Pressable, ScrollView, View } from 'react-native';
 import { useModal } from 'react-native-modalfy';
@@ -12,6 +13,7 @@ type Props = {};
 function Tokens({}: Props) {
   const { openModal } = useModal();
   const { tokens } = useTokens();
+  const navigation = useNavigation();
 
   return (
     <Surface style={{ paddingTop: 75, padding: 2 }}>
@@ -40,7 +42,12 @@ function Tokens({}: Props) {
         data={tokens}
         keyExtractor={item => item.address}
         renderItem={({ item }) => (
-          <Token address={item.address} name={item.name} symbol={item.symbol} />
+          <Token
+            address={item.address}
+            name={item.name}
+            symbol={item.symbol}
+            onPress={() => navigation.navigate('TokenDetails', { token: item })}
+          />
         )}
       />
     </Surface>
