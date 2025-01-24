@@ -33,7 +33,7 @@ export const tokenSlice = createSlice({
 
       return {
         ...state,
-        key: [...state[key], tokenMetadata]
+        [key]: !state[key] ? [tokenMetadata] : [...state[key], tokenMetadata]
       };
     },
     removeToken: (state, action) => {
