@@ -1,4 +1,5 @@
 import { Abi, AbiFunction } from 'abitype';
+import { InterfaceAbi } from 'ethers';
 import { Text } from 'react-native-paper';
 import {
   Contract,
@@ -55,7 +56,7 @@ export default function ContractVariables({
     <>
       {functionsToDisplay.map(({ fn, inheritedFrom }) => (
         <DisplayVariable
-          abi={deployedContractData.abi as Abi}
+          abi={deployedContractData.abi as InterfaceAbi}
           abiFunction={fn}
           contractAddress={deployedContractData.address}
           key={fn.name}

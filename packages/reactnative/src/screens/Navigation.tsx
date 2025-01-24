@@ -11,6 +11,7 @@ import Onboarding from './Authentication/Onboarding';
 import SecureWallet from './Authentication/SecureWallet';
 import WalletSetup from './Authentication/WalletSetup';
 import Main from './Main';
+import TokenDetails from './TokenDetails';
 import Transfer from './Transfer';
 
 type Props = {};
@@ -26,6 +27,7 @@ type AppStackParamsList = {
   Login: undefined;
   Main: undefined;
   Transfer: undefined;
+  TokenDetails: undefined;
 };
 
 const AppStack = createNativeStackNavigator<AppStackParamsList>();
@@ -61,6 +63,7 @@ export default function Navigation({}: Props) {
         <AppStack.Screen name="Login" component={Login} />
         <AppStack.Screen name="Main" component={Main} />
         <AppStack.Screen name="Transfer" component={Transfer} />
+        <AppStack.Screen name="TokenDetails" component={TokenDetails} />
       </AppStack.Navigator>
     </NavigationContainer>
   );

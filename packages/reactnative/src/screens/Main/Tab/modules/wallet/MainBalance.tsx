@@ -8,6 +8,7 @@ import {
   View
 } from 'react-native';
 import { Divider, IconButton, Text } from 'react-native-paper';
+// @ts-ignore
 import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 import CopyableText from '../../../../../components/CopyableText';
 import ReceiveModal from '../../../../../components/modals/ReceiveModal';

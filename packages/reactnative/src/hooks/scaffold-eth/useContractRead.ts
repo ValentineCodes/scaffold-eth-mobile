@@ -1,19 +1,23 @@
+import { Contract, InterfaceAbi, JsonRpcProvider, Wallet } from 'ethers';
 import { useEffect, useState } from 'react';
-import useNetwork from './useNetwork';
-import 'react-native-get-random-values';
-import '@ethersproject/shims';
-import { Abi } from 'abitype';
-import { Contract, JsonRpcProvider, Wallet } from 'ethers';
 import { useSecureStorage } from '../useSecureStorage';
 import useAccount from './useAccount';
+import useNetwork from './useNetwork';
 
 interface UseContractReadConfig {
-  abi: Abi;
-  address: string;
-  functionName: string;
+  abi?: InterfaceAbi;
+  address?: string;
+  functionName?: string;
   args?: any[];
   enabled?: boolean;
   onError?: (error: any) => void;
+}
+
+interface ReadContractConfig {
+  abi: InterfaceAbi;
+  address: string;
+  functionName: string;
+  args?: any[];
 }
 
 export default function useContractRead({
@@ -21,18 +25,25 @@ export default function useContractRead({
   address,
   functionName,
   args,
-  enabled,
+  enabled = true,
   onError
-}: UseContractReadConfig) {
+}: Partial<UseContractReadConfig> = {}) {
   const network = useNetwork();
   const connectedAccount = useAccount();
   const { getItem } = useSecureStorage();
 
-  const [data, setData] = useState<any[] | null>(null);
-  const [isLoading, setIsLoading] = useState(enabled || false);
+  const [data, setData] = useState<any | null>(null);
+  const [isLoading, setIsLoading] = useState(enabled);
   const [error, setError] = useState<any>(null);
 
   async function fetchData() {
+    if (!abi || !address || !functionName) {
+      console.warn(
+        'Missing required parameters: abi, address, or functionName'
+      );
+      return;
+    }
+
     try {
       setIsLoading(true);
       const provider = new JsonRpcProvider(network.provider);
@@ -68,8 +79,40 @@ export default function useContractRead({
     }
   }
 
+  async function readContract({
+    abi,
+    address,
+    functionName,
+    args
+  }: ReadContractConfig) {
+    try {
+      setIsLoading(true);
+      const provider = new JsonRpcProvider(network.provider);
+
+      const accounts = await getItem('accounts');
+
+      const activeAccount = Array.from(accounts).find(
+        account =>
+          account.address.toLowerCase() ===
+          connectedAccount.address.toLowerCase()
+      );
+
+      const wallet = new Wallet(activeAccount.privateKey, provider);
+
+      const contract = new Contract(address, abi, wallet);
+
+      const result = await contract[functionName](...(args || []));
+
+      return result;
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
   useEffect(() => {
-    if (enabled !== false) {
+    if (enabled) {
       fetchData();
     }
   }, [enabled]);
@@ -78,6 +121,7 @@ export default function useContractRead({
     data,
     isLoading,
     error,
-    refetch: fetchData
+    refetch: fetchData,
+    readContract
   };
 }

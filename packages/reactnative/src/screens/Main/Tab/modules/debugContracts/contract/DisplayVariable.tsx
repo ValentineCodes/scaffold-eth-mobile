@@ -1,8 +1,10 @@
-import { Abi, AbiFunction } from 'abitype';
+import { AbiFunction } from 'abitype';
+import { InterfaceAbi } from 'ethers';
 import React, { useEffect } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import { ActivityIndicator, Text } from 'react-native-paper';
 import { useToast } from 'react-native-toast-notifications';
+// @ts-ignore
 import MaterialIcons from 'react-native-vector-icons/dist/MaterialIcons';
 import { Address, isAddress } from 'viem';
 import AddressComp from '../../../../../../components/scaffold-eth/Address';
@@ -13,7 +15,7 @@ import { FONT_SIZE } from '../../../../../../utils/styles';
 type Props = {
   contractAddress: Address;
   abiFunction: AbiFunction;
-  abi: Abi;
+  abi: InterfaceAbi;
   refreshDisplayVariables: boolean;
 };
 
@@ -44,6 +46,22 @@ export default function DisplayVariable({
     refetch();
   }, [refreshDisplayVariables]);
 
+  const renderResult = () => {
+    if (result === null || result === undefined) return;
+
+    if (typeof result == 'object' && isNaN(result)) {
+      return <Text variant="titleMedium">{JSON.stringify(result)}</Text>;
+    }
+    if (typeof result == 'object' && isNaN(result)) {
+      return <Text variant="titleMedium">{JSON.stringify(result)}</Text>;
+    }
+    if (isAddress(result.toString())) {
+      return <AddressComp address={result.toString()} />;
+    }
+
+    return <Text variant="titleMedium">{result.toString()}</Text>;
+  };
+
   return (
     <View style={{ marginBottom: 16 }}>
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
@@ -63,32 +81,7 @@ export default function DisplayVariable({
           )}
         </TouchableOpacity>
       </View>
-      {result !== null &&
-        result !== undefined &&
-        result.map(data => {
-          if (typeof data == 'object' && isNaN(data)) {
-            return (
-              <Text key={Math.random().toString()} variant="bodyMedium">
-                {JSON.stringify(data)}
-              </Text>
-            );
-          }
-
-          if (isAddress(data.toString())) {
-            return (
-              <AddressComp
-                key={Math.random().toString()}
-                address={data.toString()}
-              />
-            );
-          }
-
-          return (
-            <Text key={Math.random().toString()} variant="bodyMedium">
-              {data.toString()}
-            </Text>
-          );
-        })}
+      {renderResult()}
     </View>
   );
 }
