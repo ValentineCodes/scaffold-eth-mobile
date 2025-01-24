@@ -2,6 +2,7 @@ import React from 'react';
 import { FlatList, Pressable, ScrollView, View } from 'react-native';
 import { useModal } from 'react-native-modalfy';
 import { Divider, Surface, Text, TextInput } from 'react-native-paper';
+// @ts-ignore
 import Icon from 'react-native-vector-icons/Ionicons';
 import Token from '../../../../../components/asset/Token';
 import { useTokens } from '../../../../../hooks/useTokens';
@@ -10,7 +11,7 @@ type Props = {};
 
 function Tokens({}: Props) {
   const { openModal } = useModal();
-  const {tokens} = useTokens()
+  const { tokens } = useTokens();
 
   return (
     <Surface style={{ paddingTop: 75, padding: 2 }}>
@@ -35,7 +36,13 @@ function Tokens({}: Props) {
         />
       </View>
 
-      <Token />
+      <FlatList
+        data={tokens}
+        keyExtractor={item => item.address}
+        renderItem={({ item }) => (
+          <Token address={item.address} name={item.name} symbol={item.symbol} />
+        )}
+      />
     </Surface>
   );
 }

@@ -1,26 +1,39 @@
-import React from 'react';
+import { Address } from 'abitype';
+import { ethers } from 'ethers';
+import React, { useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
+import { useTokenBalance } from '../../hooks/useTokenBalance';
+import { useTokenMetadata } from '../../hooks/useTokenMetadata';
 import { FONT_SIZE } from '../../utils/styles';
 import Blockie from '../Blockie';
 
-type Props = {};
+type Props = {
+  address: Address;
+  name: string;
+  symbol: string;
+  onPress?: () => void;
+};
 
-export default function Token({}: Props) {
+export default function Token({ address, name, symbol, onPress }: Props) {
+  const { tokenMetadata } = useTokenMetadata({ token: address });
+  const { balance } = useTokenBalance({ token: address });
+
+  const [dollarValue, setDollarValue] = useState();
+
   return (
-    <Pressable style={styles.container}>
+    <Pressable onPress={onPress} style={styles.container}>
       <View style={[styles.tokenTitle, { width: '70%' }]}>
-        <Blockie
-          address={'0x98b12DD3419507BE069167E1D7c2cFC819859706'}
-          size={2.5 * FONT_SIZE['xl']}
-        />
-        <Text style={styles.name}>Ethereum</Text>
+        <Blockie address={address} size={2.5 * FONT_SIZE['xl']} />
+        <Text style={styles.name}>{name}</Text>
       </View>
 
-      <View style={styles.balance}>
-        <Text>$0.00</Text>
-        <Text>0 DAI</Text>
-      </View>
+      <Text>
+        {tokenMetadata && balance
+          ? ethers.formatUnits(balance, tokenMetadata.decimals)
+          : null}{' '}
+        {symbol}
+      </Text>
     </Pressable>
   );
 }
@@ -36,9 +49,6 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   name: {
-    marginLeft: 12
-  },
-  balance: {
     marginLeft: 12
   }
 });

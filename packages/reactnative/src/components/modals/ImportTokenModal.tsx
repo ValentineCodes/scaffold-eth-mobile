@@ -31,7 +31,7 @@ export default function ImportTokenModal({ modal: { closeModal } }: Props) {
   const [balance, setBalance] = useState<string>();
 
   const account = useAccount();
-const network = useNetwork()
+  const network = useNetwork();
 
   const { getTokenMetadata } = useTokenMetadata();
   const { getTokenBalance } = useTokenBalance();
@@ -65,7 +65,7 @@ const network = useNetwork()
       setToken(token);
       setBalance(ethers.formatUnits(tokenBalance, tokenMetadata?.decimals));
     } catch (error) {
-      console.error(error)
+      console.error(error);
     } finally {
       setIsImporting(false);
     }
@@ -76,7 +76,7 @@ const network = useNetwork()
       networkId: network.id,
       accountAddress: account.address,
       token
-    }
+    };
     dispatch(addToken(payload));
     closeModal();
   };

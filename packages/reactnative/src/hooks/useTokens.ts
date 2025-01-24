@@ -23,7 +23,7 @@ export function useTokens() {
 
   useEffect(() => {
     setTokens();
-  }, []);
+  }, [network, account, tokens]);
   return {
     tokens: importedTokens
   };

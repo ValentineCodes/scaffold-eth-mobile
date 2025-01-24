@@ -1,4 +1,5 @@
 import { AbiFunction } from 'abitype';
+import { InterfaceAbi } from 'ethers';
 import React, { useEffect } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import { ActivityIndicator, Text } from 'react-native-paper';
@@ -10,7 +11,6 @@ import AddressComp from '../../../../../../components/scaffold-eth/Address';
 import useContractRead from '../../../../../../hooks/scaffold-eth/useContractRead';
 import { COLORS } from '../../../../../../utils/constants';
 import { FONT_SIZE } from '../../../../../../utils/styles';
-import { InterfaceAbi } from 'ethers';
 
 type Props = {
   contractAddress: Address;
@@ -50,16 +50,16 @@ export default function DisplayVariable({
     if (result === null || result === undefined) return;
 
     if (typeof result == 'object' && isNaN(result)) {
-      return <Text  variant="titleMedium">{JSON.stringify(result)}</Text>;
+      return <Text variant="titleMedium">{JSON.stringify(result)}</Text>;
     }
     if (typeof result == 'object' && isNaN(result)) {
-      return <Text  variant="titleMedium">{JSON.stringify(result)}</Text>;
+      return <Text variant="titleMedium">{JSON.stringify(result)}</Text>;
     }
     if (isAddress(result.toString())) {
       return <AddressComp address={result.toString()} />;
     }
 
-    return <Text  variant="titleMedium">{result.toString()}</Text>;
+    return <Text variant="titleMedium">{result.toString()}</Text>;
   };
 
   return (

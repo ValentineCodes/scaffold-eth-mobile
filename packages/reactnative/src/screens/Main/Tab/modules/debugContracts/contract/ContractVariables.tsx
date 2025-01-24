@@ -1,4 +1,5 @@
 import { Abi, AbiFunction } from 'abitype';
+import { InterfaceAbi } from 'ethers';
 import { Text } from 'react-native-paper';
 import {
   Contract,
@@ -7,7 +8,7 @@ import {
   InheritedFunctions
 } from '../../../../../../../utils/scaffold-eth/contract';
 import DisplayVariable from './DisplayVariable';
-import { InterfaceAbi } from 'ethers';
+
 export default function ContractVariables({
   refreshDisplayVariables,
   deployedContractData

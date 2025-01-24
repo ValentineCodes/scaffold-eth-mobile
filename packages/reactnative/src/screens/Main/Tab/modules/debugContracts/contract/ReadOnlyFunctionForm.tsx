@@ -1,4 +1,5 @@
 import { Abi, AbiFunction } from 'abitype';
+import { InterfaceAbi } from 'ethers';
 import React, { useState } from 'react';
 import { View } from 'react-native';
 import { Button, Card, Text } from 'react-native-paper';
@@ -12,7 +13,7 @@ import {
   getInitialFormState,
   getParsedContractFunctionArgs
 } from './utilsContract';
-import { InterfaceAbi } from 'ethers';
+
 type Props = {
   contractAddress: Address;
   abiFunction: AbiFunction;
