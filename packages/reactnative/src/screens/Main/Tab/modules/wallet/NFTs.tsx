@@ -3,11 +3,14 @@ import { FlatList, Pressable, ScrollView, View } from 'react-native';
 import { useModal } from 'react-native-modalfy';
 import { Divider, Surface, Text, TextInput } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { useNFTs } from '../../../../../hooks/useNFTs';
 
 type Props = {};
 
 function NFTs({}: Props) {
   const { openModal } = useModal();
+  const { nfts } = useNFTs();
+
   return (
     <Surface style={{ paddingTop: 75, padding: 2 }}>
       <View

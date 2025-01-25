@@ -4,6 +4,13 @@ import { IconButton, Modal, Portal, Text, TextInput } from 'react-native-paper';
 import { COLORS } from '../../utils/constants';
 import { FONT_SIZE, WINDOW_WIDTH } from '../../utils/styles';
 import Button from '../Button';
+import useAccount from '../../hooks/scaffold-eth/useAccount';
+import useNetwork from '../../hooks/scaffold-eth/useNetwork';
+import { useNFTMetadata } from '../../hooks/useNFTMetadata';
+import { ethers } from 'ethers';
+import { Address } from 'abitype';
+import { useDispatch } from 'react-redux';
+import { addNFT } from '../../store/reducers/NFTs';
 
 type Props = {
   modal: {
@@ -16,6 +23,60 @@ export default function ImportNFTModal({ modal: { closeModal } }: Props) {
   const [tokenId, setTokenId] = useState<string | undefined>(undefined);
   const [addressError, setAddressError] = useState<string | null>(null);
   const [tokenIdError, setTokenIdError] = useState<string | null>(null);
+  const [isImporting, setIsImporting] = useState<boolean>(false);
+
+  const account = useAccount();
+  const network = useNetwork();
+
+  const dispatch = useDispatch();
+
+  const { getNFTMetadata } = useNFTMetadata();
+
+  const importNFT = async () => {
+    try {
+      if (!ethers.isAddress(address)) {
+        setAddressError('Invalid address');
+        return;
+      }
+
+      if (!tokenId) {
+        setTokenIdError('Invalid token id');
+        return;
+      }
+
+      if (addressError || tokenIdError) {
+        setAddressError(null);
+        setTokenIdError(null);
+      }
+
+      setIsImporting(true);
+
+      const nftMetadata = await getNFTMetadata(
+        address as Address,
+        tokenId as Address
+      );
+
+      const payload = {
+        networkId: network.id,
+        accountAddress: account.address,
+        nft: {
+          address: address as Address,
+          name: nftMetadata?.name,
+          symbol: nftMetadata?.symbol,
+          tokenId: tokenId as Address,
+          tokenURI: nftMetadata?.tokenURI
+        }
+      };
+
+      dispatch(addNFT(payload));
+      closeModal();
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsImporting(false);
+    }
+  };
+
   return (
     <Portal>
       <Modal
@@ -76,7 +137,7 @@ export default function ImportNFTModal({ modal: { closeModal } }: Props) {
               onPress={closeModal}
               style={styles.button}
             />
-            <Button text="Import" onPress={() => null} style={styles.button} />
+            <Button text="Import" onPress={importNFT} style={styles.button} />
           </View>
         </View>
       </Modal>

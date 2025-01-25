@@ -7,7 +7,7 @@ import useNetwork from './scaffold-eth/useNetwork';
 
 export function useNFTs() {
   // @ts-ignore
-  const nfts = useSelector(state => state.nfts);
+  const state = useSelector(state => state.nfts);
 
   const network = useNetwork();
   const account = useAccount();
@@ -18,12 +18,12 @@ export function useNFTs() {
     const key = keccak256(
       toUtf8Bytes(`${network.id}${account.address.toLowerCase()}`)
     );
-    setImportedNFTs(nfts[key]);
+    setImportedNFTs(state.nfts[key]);
   }
 
   useEffect(() => {
     setNFTs();
-  }, [network, account, nfts]);
+  }, [network, account, state]);
 
   return {
     nfts: importedNFTs

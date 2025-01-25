@@ -11,8 +11,7 @@ contract Ogre is ERC721 {
     constructor() ERC721("OGRE", "OG") {}
 
     function mint() public returns (uint256) {
-        _safeMint(msg.sender, s_tokenCounter);
-        s_tokenCounter = s_tokenCounter + 1;
+        _safeMint(msg.sender, ++s_tokenCounter);
         return s_tokenCounter;
     }
 

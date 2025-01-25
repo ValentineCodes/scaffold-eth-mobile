@@ -66,6 +66,9 @@ export const nftSlice = createSlice({
 
       if (!state.nfts[key]) {
         state.nfts[key] = [_nft];
+        state.nftIndexes[key] = {};
+        state.nftTokenIndexes[key] = {};
+
         state.nftIndexes[key][nft.address.toLowerCase()] = 0;
         state.nftTokenIndexes[key][nft.tokenId] = 0;
       } else if (!state.nftIndexes[key][nft.address.toLowerCase()]) {
@@ -73,12 +76,11 @@ export const nftSlice = createSlice({
         state.nftTokenIndexes[key][nft.tokenId] = 0;
         state.nfts[key].push(_nft);
       } else {
-        state.nfts[key][
-          state.nftIndexes[key][nft.address.toLowerCase()]
-        ].tokens.push(_nftToken);
-        state.nftTokenIndexes[key][nft.tokenId] =
-          state.nfts[key][state.nftIndexes[key][nft.address.toLowerCase()]]
-            .tokens.length - 1;
+        const nftIndex = state.nftIndexes[key][nft.address.toLowerCase()];
+        const nftTokensLength = state.nfts[key][nftIndex].tokens.length;
+
+        state.nfts[key][nftIndex].tokens.push(_nftToken);
+        state.nftTokenIndexes[key][nft.tokenId] = nftTokensLength - 1;
       }
 
       return state;
