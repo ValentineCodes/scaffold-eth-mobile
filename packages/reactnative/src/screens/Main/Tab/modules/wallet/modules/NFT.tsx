@@ -1,22 +1,35 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import React, { useState } from 'react';
+import { Image, StyleSheet, View } from 'react-native';
 import { List } from 'react-native-paper';
 import {
   NFTToken,
   NFT as NFTType
 } from '../../../../../../store/reducers/NFTs';
+import { WINDOW_WIDTH } from '../../../../../../utils/styles';
 import NFTCard from './NFTCard';
 
 type Props = {
-  item: NFTType;
+  nft: NFTType;
 };
 
-export default function NFT({ item }: Props) {
+export default function NFT({ nft }: Props) {
+  const [expanded, setExpanded] = useState(true);
   return (
-    <List.Accordion title={`${item.name} (${item.symbol})`} onPress={() => {}}>
+    <List.Accordion
+      title={`${nft.name} (${nft.symbol})`}
+      expanded={expanded}
+      onPress={() => setExpanded(!expanded)}
+    >
       <View style={styles.nftContainer}>
-        {item.tokens.map((token: NFTToken) => (
-          <NFTCard token={token} />
+        {nft.tokens.map((token: NFTToken) => (
+          <NFTCard
+            token={{
+              address: nft.address,
+              name: nft.name,
+              symbol: nft.symbol,
+              ...token
+            }}
+          />
         ))}
       </View>
     </List.Accordion>
@@ -27,6 +40,6 @@ const styles = StyleSheet.create({
   nftContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    alignItems: 'flex-start'
+    gap: 10
   }
 });

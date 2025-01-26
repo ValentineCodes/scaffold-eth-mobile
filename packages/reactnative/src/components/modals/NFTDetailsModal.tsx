@@ -13,6 +13,7 @@ type Props = {
       nft: {
         address: Address;
         name: string;
+        symbol: string;
         id: number;
         uri: string;
       };
@@ -21,7 +22,10 @@ type Props = {
 };
 
 export default function NFTDetailsModal({
-  modal: { closeModal, params }
+  modal: {
+    closeModal,
+    params: { nft }
+  }
 }: Props) {
   return (
     <Pressable onPress={closeModal} style={styles.container}>
@@ -34,7 +38,9 @@ export default function NFTDetailsModal({
       </View>
 
       <View style={styles.nftInfoContainer}>
-        <Text style={styles.nftTitle}>Token name #123</Text>
+        <Text style={styles.nftTitle}>
+          {nft.name} #{nft.id}
+        </Text>
 
         <View style={styles.actionButtonsContainer}>
           <Button

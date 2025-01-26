@@ -1,11 +1,18 @@
+import { Address } from 'abitype';
 import React, { useEffect, useState } from 'react';
 import { Image, Pressable, StyleSheet } from 'react-native';
 import { useModal } from 'react-native-modalfy';
-import { NFTToken } from '../../../../../../store/reducers/NFTs';
 import { parseIPFS } from '../../../../../../utils/helperFunctions';
+import { WINDOW_WIDTH } from '../../../../../../utils/styles';
 
 type Props = {
-  token: NFTToken;
+  token: {
+    address: Address;
+    name: string;
+    symbol: string;
+    id: number;
+    uri: string;
+  };
 };
 
 export default function NFTCard({ token }: Props) {
@@ -31,23 +38,25 @@ export default function NFTCard({ token }: Props) {
   }, [token]);
   return (
     <Pressable
-      onPress={() => openModal('NFTDetailsModal')}
+      onPress={() =>
+        openModal('NFTDetailsModal', {
+          nft: token
+        })
+      }
       style={styles.nftImage}
     >
-      {image ? (
-        <Image
-          source={{ uri: image }}
-          style={{ width: '100%', height: '100%' }}
-        />
-      ) : null}
+      <Image
+        source={require('../../../../../../assets/images/nft.webp')}
+        style={{ width: '100%', height: '100%' }}
+      />
     </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
   nftImage: {
-    width: 100,
-    height: 100,
+    width: WINDOW_WIDTH * 0.25,
+    height: WINDOW_WIDTH * 0.25,
     backgroundColor: 'cyan',
     borderRadius: 10
   }

@@ -49,7 +49,7 @@ function NFTs({}: Props) {
         <FlatList
           data={nfts}
           renderItem={({ item }) => {
-            return <NFT item={item} />;
+            return <NFT nft={item} />;
           }}
         />
       </ScrollView>
