@@ -1,16 +1,16 @@
+import { Address } from 'abitype';
+import { ethers } from 'ethers';
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { IconButton, Modal, Portal, Text, TextInput } from 'react-native-paper';
-import { COLORS } from '../../utils/constants';
-import { FONT_SIZE, WINDOW_WIDTH } from '../../utils/styles';
-import Button from '../Button';
+import { useDispatch } from 'react-redux';
 import useAccount from '../../hooks/scaffold-eth/useAccount';
 import useNetwork from '../../hooks/scaffold-eth/useNetwork';
 import { useNFTMetadata } from '../../hooks/useNFTMetadata';
-import { ethers } from 'ethers';
-import { Address } from 'abitype';
-import { useDispatch } from 'react-redux';
 import { addNFT } from '../../store/reducers/NFTs';
+import { COLORS } from '../../utils/constants';
+import { FONT_SIZE, WINDOW_WIDTH } from '../../utils/styles';
+import Button from '../Button';
 
 type Props = {
   modal: {

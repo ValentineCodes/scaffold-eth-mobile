@@ -1,9 +1,13 @@
 import React from 'react';
-import { FlatList, Pressable, ScrollView, View } from 'react-native';
+import { FlatList, Image, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { useModal } from 'react-native-modalfy';
-import { Divider, Surface, Text, TextInput } from 'react-native-paper';
+import { Divider, List, Surface, Text, TextInput } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNFTs } from '../../../../../hooks/useNFTs';
+import { COLORS } from '../../../../../utils/constants';
+import NFTCard from './modules/NFTCard';
+import { NFTToken } from '../../../../../store/reducers/NFTs';
+import NFT from './modules/NFT';
 
 type Props = {};
 
@@ -13,7 +17,8 @@ function NFTs({}: Props) {
 
   return (
     <Surface style={{ paddingTop: 75, padding: 2 }}>
-      <View
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View
         style={{
           flexDirection: 'row',
           alignItems: 'center',
@@ -33,8 +38,27 @@ function NFTs({}: Props) {
           onPress={() => openModal('ImportNFTModal')}
         />
       </View>
+
+      <FlatList
+        data={nfts}
+        renderItem={({ item }) => {
+          return (
+            <NFT item={item} />
+          );
+        }}
+      />
+      </ScrollView>
     </Surface>
   );
 }
+
+const styles = StyleSheet.create({
+  nftImage: {
+    width: 100,
+    height: 100,
+    backgroundColor: COLORS.primaryLight,
+    borderRadius: 10,
+  }
+});
 
 export default NFTs;

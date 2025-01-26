@@ -126,3 +126,7 @@ export function parseFloat(str: string, val: number) {
 
 export const isENS = (name = '') =>
   name.endsWith('.eth') || name.endsWith('.xyz');
+
+export const parseIPFS = (uri: string) => {
+  return uri.replace('ipfs://', 'https://ipfs.io/ipfs/');
+};
