@@ -68,8 +68,8 @@ export default function ImportNFTModal({ modal: { closeModal } }: Props) {
         }
       };
 
-      dispatch(addNFT(payload));
       closeModal();
+      dispatch(addNFT(payload));
     } catch (error) {
       console.error(error);
     } finally {

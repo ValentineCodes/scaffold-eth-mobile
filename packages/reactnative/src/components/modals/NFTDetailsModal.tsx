@@ -2,6 +2,10 @@ import { Address } from 'abitype';
 import React from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
 import { IconButton, Modal, Portal, Text } from 'react-native-paper';
+import { useDispatch } from 'react-redux';
+import useAccount from '../../hooks/scaffold-eth/useAccount';
+import useNetwork from '../../hooks/scaffold-eth/useNetwork';
+import { removeNFT } from '../../store/reducers/NFTs';
 import { COLORS } from '../../utils/constants';
 import { WINDOW_WIDTH } from '../../utils/styles';
 import Button from '../Button';
@@ -27,6 +31,21 @@ export default function NFTDetailsModal({
     params: { nft }
   }
 }: Props) {
+  const dispatch = useDispatch();
+  const network = useNetwork();
+  const account = useAccount();
+
+  const remove = () => {
+    closeModal();
+    dispatch(
+      removeNFT({
+        networkId: network.id,
+        accountAddress: account.address,
+        nftAddress: nft.address,
+        tokenId: nft.id
+      })
+    );
+  };
   return (
     <Pressable onPress={closeModal} style={styles.container}>
       <View style={styles.nftImageContainer}>
@@ -53,7 +72,7 @@ export default function NFTDetailsModal({
             icon="trash-can-outline"
             size={WINDOW_WIDTH * 0.07}
             iconColor={COLORS.primary}
-            onPress={() => null}
+            onPress={remove}
           />
         </View>
       </View>
