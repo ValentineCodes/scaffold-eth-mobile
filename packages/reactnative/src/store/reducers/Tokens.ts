@@ -43,13 +43,11 @@ export const tokenSlice = createSlice({
         toUtf8Bytes(`${networkId}${accountAddress.toLowerCase()}`)
       );
 
-      const newState = state;
-
-      newState[key] = newState[key].filter(
+      state[key] = state[key].filter(
         token => token.address.toLowerCase() !== tokenAddress.toLowerCase()
       );
 
-      return newState;
+      return state;
     }
   }
 });

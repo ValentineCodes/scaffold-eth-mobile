@@ -13,6 +13,7 @@ import { Provider as ReduxProvider } from 'react-redux';
 import ChangePasswordModal from '../components/modals/ChangePasswordModal';
 import ImportNFTModal from '../components/modals/ImportNFTModal';
 import ImportTokenModal from '../components/modals/ImportTokenModal';
+import NFTDetailsModal from '../components/modals/NFTDetailsModal';
 import SignMessageModal from '../components/modals/SignMessageModal';
 import SignTransactionModal from '../components/modals/SignTransactionModal';
 import SignTransferModal from '../components/modals/SignTransferModal';
@@ -40,7 +41,8 @@ const modalConfig = {
   SignTransactionModal,
   SignMessageModal,
   TxReceiptModal,
-  SignTransferModal
+  SignTransferModal,
+  NFTDetailsModal
 };
 const defaultOptions: ModalOptions = {
   backdropOpacity: 0.6,
