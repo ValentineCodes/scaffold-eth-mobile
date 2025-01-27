@@ -1,15 +1,9 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import Modal from 'react-native-modal';
 import { Button, Divider, Text } from 'react-native-paper';
-import { useDispatch, useSelector } from 'react-redux';
-import Blockie from '../../../components/Blockie';
-import { Account } from '../../../store/reducers/Accounts';
-import { parseFloat, truncateAddress } from '../../../utils/helperFunctions';
-import { FONT_SIZE } from '../../../utils/styles';
+import { useDispatch } from 'react-redux';
 import 'react-native-get-random-values';
 import '@ethersproject/shims';
-import { Network } from '../../../store/reducers/Networks';
 import 'react-native-get-random-values';
 import '@ethersproject/shims';
 import {
@@ -17,42 +11,50 @@ import {
   formatEther,
   JsonRpcProvider,
   parseEther,
+  TransactionReceipt,
   Wallet
 } from 'ethers';
 import { Linking } from 'react-native';
 import { useToast } from 'react-native-toast-notifications';
-import CustomButton from '../../../components/Button';
-import Fail from '../../../components/modals/modules/Fail';
-import Success from '../../../components/modals/modules/Success';
-import { useSecureStorage } from '../../../hooks/useSecureStorage';
-import { addRecipient } from '../../../store/reducers/Recipients';
+import useNetwork from '../../hooks/scaffold-eth/useNetwork';
+import { useSecureStorage } from '../../hooks/useSecureStorage';
+import { Account } from '../../store/reducers/Accounts';
+import { addRecipient } from '../../store/reducers/Recipients';
+import { parseFloat, truncateAddress } from '../../utils/helperFunctions';
+import { FONT_SIZE } from '../../utils/styles';
+import Blockie from '../Blockie';
+import CustomButton from '../Button';
+import Fail from './modules/Fail';
+import Success from './modules/Success';
 
 interface TxData {
   from: Account;
   to: string;
   amount: number;
-  fromBalance: bigint | null;
+  balance: bigint | null;
 }
 type Props = {
-  isVisible: boolean;
-  onClose: () => void;
-  txData: TxData;
-  estimateGasCost: bigint | null;
+  modal: {
+    closeModal: (modal?: string, callback?: () => void) => void;
+    params: {
+      txData: TxData;
+      estimateGasCost: bigint | null;
+      token: string;
+      isNativeToken: boolean;
+      onTransfer: () => Promise<TransactionReceipt | undefined>;
+    };
+  };
 };
 
-export default function ConfirmationModal({
-  isVisible,
-  onClose,
-  txData,
-  estimateGasCost
+export default function TransferConfirmationModal({
+  modal: {
+    closeModal,
+    params: { txData, estimateGasCost, token, isNativeToken, onTransfer }
+  }
 }: Props) {
-  const dispatch = useDispatch();
-
   const toast = useToast();
 
-  const connectedNetwork: Network = useSelector((state: any) =>
-    state.networks.find((network: Network) => network.isConnected)
-  );
+  const network = useNetwork();
 
   const [isTransferring, setIsTransferring] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -61,50 +63,34 @@ export default function ConfirmationModal({
     null
   );
 
-  const { getItem } = useSecureStorage();
-
   const formatBalance = () => {
-    return txData.fromBalance && Number(formatEther(txData.fromBalance))
-      ? parseFloat(Number(formatEther(txData.fromBalance)).toString(), 4)
+    return txData.balance && Number(formatEther(txData.balance))
+      ? parseFloat(Number(formatEther(txData.balance)).toString(), 4)
       : 0;
   };
 
   const calcTotal = () => {
-    return (
+    return String(
       estimateGasCost &&
-      parseFloat(
-        (txData.amount + Number(formatEther(estimateGasCost))).toString(),
-        8
-      )
+        parseFloat(
+          (txData.amount + Number(formatEther(estimateGasCost))).toString(),
+          8
+        )
     );
   };
 
   const transfer = async () => {
-    const accounts = await getItem('accounts');
-    const activeAccount = Array.from(accounts).find(
-      account =>
-        account.address.toLowerCase() === txData.from.address.toLowerCase()
-    );
-
-    const provider = new JsonRpcProvider(connectedNetwork.provider);
-    const wallet = new Wallet(activeAccount.privateKey, provider);
-
     try {
       setIsTransferring(true);
 
-      const tx = await wallet.sendTransaction({
-        from: txData.from.address,
-        to: txData.to,
-        value: parseEther(txData.amount.toString())
-      });
+      const txReceipt = await onTransfer();
 
-      const txReceipt = await tx.wait(1);
+      if (!txReceipt) return;
 
       setTxReceipt(txReceipt);
       setShowSuccessModal(true);
-
-      dispatch(addRecipient(txData.to));
     } catch (error) {
+      console.error(error);
       setShowFailModal(true);
       return;
     } finally {
@@ -113,12 +99,10 @@ export default function ConfirmationModal({
   };
 
   const viewTxDetails = async () => {
-    if (!connectedNetwork.blockExplorer || !txReceipt) return;
+    if (!network.blockExplorer || !txReceipt) return;
 
     try {
-      await Linking.openURL(
-        `${connectedNetwork.blockExplorer}/tx/${txReceipt.hash}`
-      );
+      await Linking.openURL(`${network.blockExplorer}/tx/${txReceipt.hash}`);
     } catch (error) {
       toast.show('Cannot open url', {
         type: 'danger'
@@ -127,13 +111,7 @@ export default function ConfirmationModal({
   };
 
   return (
-    <Modal
-      isVisible={isVisible}
-      animationIn="slideInUp"
-      animationOut="zoomOut"
-      onBackButtonPress={onClose}
-      onBackdropPress={onClose}
-    >
+    <View>
       <View style={styles.container}>
         <View style={styles.section}>
           <Text variant="titleMedium" style={styles.sectionTitle}>
@@ -152,7 +130,7 @@ export default function ConfirmationModal({
                   {txData.from.name}
                 </Text>
                 <Text variant="bodyMedium">
-                  Balance: {formatBalance()} {connectedNetwork.currencySymbol}
+                  Balance: {formatBalance()} {token}
                 </Text>
               </View>
             </View>
@@ -176,7 +154,7 @@ export default function ConfirmationModal({
           AMOUNT
         </Text>
         <Text variant="headlineLarge" style={styles.amount}>
-          {txData.amount} {connectedNetwork.currencySymbol}
+          {txData.amount} {token}
         </Text>
 
         <View style={styles.detailsContainer}>
@@ -188,20 +166,26 @@ export default function ConfirmationModal({
               </Text>
             </View>
             <Text variant="titleMedium" style={styles.detailsValue}>
-              {estimateGasCost &&
-                parseFloat(ethers.formatEther(estimateGasCost), 8)}{' '}
-              {connectedNetwork.currencySymbol}
+              {String(
+                estimateGasCost &&
+                  parseFloat(ethers.formatEther(estimateGasCost), 8)
+              )}{' '}
+              {token}
             </Text>
           </View>
 
-          <Divider />
+          {isNativeToken && (
+            <>
+              <Divider />
 
-          <View style={styles.detailsRow}>
-            <Text variant="titleMedium">Total</Text>
-            <Text variant="titleMedium" style={styles.detailsValue}>
-              {calcTotal()} {connectedNetwork.currencySymbol}
-            </Text>
-          </View>
+              <View style={styles.detailsRow}>
+                <Text variant="titleMedium">Total</Text>
+                <Text variant="titleMedium" style={styles.detailsValue}>
+                  {calcTotal()} {token}
+                </Text>
+              </View>
+            </>
+          )}
         </View>
 
         <View style={styles.buttonContainer}>
@@ -209,7 +193,7 @@ export default function ConfirmationModal({
             mode="contained"
             buttonColor="#ffebee"
             style={styles.cancelButton}
-            onPress={onClose}
+            onPress={() => closeModal()}
           >
             <Text style={styles.cancelButtonText}>Cancel</Text>
           </Button>
@@ -226,7 +210,7 @@ export default function ConfirmationModal({
         isVisible={showSuccessModal}
         onClose={() => {
           setShowSuccessModal(false);
-          onClose();
+          closeModal();
         }}
         onViewDetails={viewTxDetails}
       />
@@ -239,7 +223,7 @@ export default function ConfirmationModal({
           transfer();
         }}
       />
-    </Modal>
+    </View>
   );
 }
 

@@ -12,7 +12,7 @@ import SecureWallet from './Authentication/SecureWallet';
 import WalletSetup from './Authentication/WalletSetup';
 import Main from './Main';
 import TokenDetails from './TokenDetails';
-import Transfer from './Transfer';
+import NetworkTokenTransfer from './Transfer/NetworkTokenTransfer';
 
 type Props = {};
 
@@ -26,7 +26,7 @@ type AppStackParamsList = {
   CreatePassword: undefined;
   Login: undefined;
   Main: undefined;
-  Transfer: undefined;
+  NetworkTokenTransfer: undefined;
   TokenDetails: undefined;
 };
 
@@ -62,7 +62,10 @@ export default function Navigation({}: Props) {
         )}
         <AppStack.Screen name="Login" component={Login} />
         <AppStack.Screen name="Main" component={Main} />
-        <AppStack.Screen name="Transfer" component={Transfer} />
+        <AppStack.Screen
+          name="NetworkTokenTransfer"
+          component={NetworkTokenTransfer}
+        />
         <AppStack.Screen name="TokenDetails" component={TokenDetails} />
       </AppStack.Navigator>
     </NavigationContainer>

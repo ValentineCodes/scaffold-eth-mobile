@@ -1,47 +1,60 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Camera } from 'react-native-camera-kit';
-import { IconButton, Modal } from 'react-native-paper';
+import { IconButton } from 'react-native-paper';
 import { useToast } from 'react-native-toast-notifications';
 import { Camera as VCamera } from 'react-native-vision-camera';
+import { WINDOW_HEIGHT, WINDOW_WIDTH } from '../../utils/styles';
 
 type Props = {
-  isOpen: boolean;
-  onClose: () => void;
-  onReadCode: (value: string) => void;
+  modal: {
+    closeModal: () => void;
+    params: {
+      onScan: (value: string) => void;
+    };
+  };
 };
 
-export default function QRCodeScanner({ isOpen, onClose, onReadCode }: Props) {
+export default function QRCodeScanner({
+  modal: { closeModal, params }
+}: Props) {
   const [isCameraPermitted, setIsCameraPermitted] = useState(false);
+
   const toast = useToast();
 
   const requestCameraPermission = async () => {
+    // check permission
     const cameraPermission = await VCamera.getCameraPermissionStatus();
 
     if (cameraPermission === 'restricted') {
-      toast.show('Cannot use camera', { type: 'danger' });
-      onClose();
+      toast.show('Cannot use camera', {
+        type: 'danger'
+      });
+      closeModal();
     } else if (
       cameraPermission === 'not-determined' ||
       cameraPermission === 'denied'
     ) {
       try {
         const newCameraPermission = await VCamera.requestCameraPermission();
+
         if (newCameraPermission === 'granted') {
           setIsCameraPermitted(true);
         } else {
           toast.show(
             'Camera permission denied. Go to your device settings to Enable Camera',
-            { type: 'warning' }
+            {
+              type: 'warning'
+            }
           );
-          onClose();
+          closeModal();
         }
       } catch (error) {
         toast.show('Go to your device settings to Enable Camera', {
           type: 'normal',
           duration: 5000
         });
-        onClose();
+        closeModal();
       }
     } else {
       setIsCameraPermitted(true);
@@ -49,38 +62,40 @@ export default function QRCodeScanner({ isOpen, onClose, onReadCode }: Props) {
   };
 
   useEffect(() => {
-    requestCameraPermission();
+    (async () => {
+      await requestCameraPermission();
+    })();
   }, []);
 
-  if (!isOpen || !isCameraPermitted) return null;
-
   return (
-    <Modal visible={true} onDismiss={onClose} style={styles.modal}>
-      <Camera
-        scanBarcode={true}
-        onReadCode={event => {
-          onReadCode(event.nativeEvent.codeStringValue);
-        }}
-        showFrame={true}
-        laserColor="blue"
-        frameColor="white"
-        style={styles.scanner}
-      />
-      <IconButton
-        icon="close"
-        size={24}
-        iconColor="white"
-        onPress={onClose}
-        style={styles.closeIcon}
-      />
-    </Modal>
+    isCameraPermitted && (
+      <View style={styles.container}>
+        <Camera
+          scanBarcode={true}
+          onReadCode={(event: { nativeEvent: { codeStringValue: string } }) => {
+            params.onScan(event.nativeEvent.codeStringValue);
+          }}
+          showFrame={true}
+          laserColor="blue"
+          frameColor="white"
+          style={styles.scanner}
+        />
+        <IconButton
+          icon="close"
+          size={24}
+          iconColor="white"
+          onPress={closeModal}
+          style={styles.closeIcon}
+        />
+      </View>
+    )
   );
 }
 
 const styles = StyleSheet.create({
-  modal: {
-    margin: 0,
-    backgroundColor: 'black'
+  container: {
+    width: WINDOW_WIDTH,
+    height: WINDOW_HEIGHT
   },
   scanner: {
     width: '100%',
@@ -88,7 +103,7 @@ const styles = StyleSheet.create({
   },
   closeIcon: {
     position: 'absolute',
-    top: 50,
+    top: 45,
     right: 15
   }
 });

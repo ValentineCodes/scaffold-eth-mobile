@@ -53,7 +53,8 @@ function MainBalance({ backHandler }: Props) {
   }, [network]);
 
   const handleNav = () => {
-    navigation.navigate('Transfer');
+    // @ts-ignore
+    navigation.navigate('NetworkTokenTransfer');
     backHandler?.remove();
   };
 
