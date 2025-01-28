@@ -11,24 +11,20 @@ import { Account } from '../../store/reducers/Accounts';
 import 'react-native-get-random-values';
 import '@ethersproject/shims';
 import {
+  Contract,
   isAddress,
   JsonRpcProvider,
-  parseEther,
   TransactionReceipt,
   Wallet
 } from 'ethers';
 import { useModal } from 'react-native-modalfy';
 import { useToast } from 'react-native-toast-notifications';
 import { useDispatch } from 'react-redux';
+import { erc721Abi } from 'viem';
 import useAccount from '../../hooks/scaffold-eth/useAccount';
 import useNetwork from '../../hooks/scaffold-eth/useNetwork';
-import { useNFTMetadata } from '../../hooks/useNFTMetadata';
 import { useSecureStorage } from '../../hooks/useSecureStorage';
-import { useTokenBalance } from '../../hooks/useTokenBalance';
 import { addRecipient } from '../../store/reducers/Recipients';
-import { parseFloat } from '../../utils/helperFunctions';
-import { FONT_SIZE } from '../../utils/styles';
-import Amount from './modules/Amount';
 import Header from './modules/Header';
 import PastRecipients from './modules/PastRecipients';
 import Recipient from './modules/Recipient';
@@ -42,12 +38,6 @@ export default function NFTTokenTransfer() {
 
   // @ts-ignore
   const token = route.params.token;
-
-  const { nftMetadata } = useNFTMetadata({
-    nft: token.address,
-    tokenId: token.id
-  });
-  const { balance } = useTokenBalance({ token: token.address });
 
   const toast = useToast();
 
@@ -87,6 +77,20 @@ export default function NFTTokenTransfer() {
 
     const provider = new JsonRpcProvider(network.provider);
     const wallet = new Wallet(activeAccount.privateKey, provider);
+
+    const tokenContract = new Contract(token.address, erc721Abi, wallet);
+
+    const tx = await tokenContract.safeTransferFrom(
+      sender.address,
+      recipient,
+      token.id
+    );
+
+    const txReceipt = await tx.wait(1);
+
+    dispatch(addRecipient(recipient));
+
+    return txReceipt;
   };
 
   const confirm = () => {

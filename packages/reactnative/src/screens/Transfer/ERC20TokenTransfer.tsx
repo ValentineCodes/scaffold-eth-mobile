@@ -11,17 +11,18 @@ import { Account } from '../../store/reducers/Accounts';
 import 'react-native-get-random-values';
 import '@ethersproject/shims';
 import {
-  ethers,
-  formatEther,
+  Contract,
+  formatUnits,
   isAddress,
   JsonRpcProvider,
-  parseEther,
+  parseUnits,
   TransactionReceipt,
   Wallet
 } from 'ethers';
 import { useModal } from 'react-native-modalfy';
 import { useToast } from 'react-native-toast-notifications';
 import { useDispatch } from 'react-redux';
+import { erc20Abi } from 'viem';
 import useAccount from '../../hooks/scaffold-eth/useAccount';
 import useNetwork from '../../hooks/scaffold-eth/useNetwork';
 import { useSecureStorage } from '../../hooks/useSecureStorage';
@@ -87,11 +88,12 @@ export default function ERC20TokenTransfer() {
     const provider = new JsonRpcProvider(network.provider);
     const wallet = new Wallet(activeAccount.privateKey, provider);
 
-    const tx = await wallet.sendTransaction({
-      from: sender.address,
-      to: recipient,
-      value: parseEther(amount.toString())
-    });
+    const tokenContract = new Contract(token.address, erc20Abi, wallet);
+
+    const tx = await tokenContract.transfer(
+      recipient,
+      parseUnits(amount, tokenMetadata?.decimals)
+    );
 
     const txReceipt = await tx.wait(1);
 
@@ -161,7 +163,7 @@ export default function ERC20TokenTransfer() {
         account={sender}
         balance={
           tokenMetadata && balance
-            ? ethers.formatUnits(balance, tokenMetadata?.decimals)
+            ? formatUnits(balance, tokenMetadata?.decimals)
             : null
         }
         onChange={setSender}
