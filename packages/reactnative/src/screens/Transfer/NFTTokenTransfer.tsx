@@ -1,13 +1,16 @@
-import { useIsFocused, useNavigation } from '@react-navigation/native';
+import {
+  useIsFocused,
+  useNavigation,
+  useRoute
+} from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { BackHandler, StyleSheet, View } from 'react-native';
-import { Divider } from 'react-native-paper';
+import { Divider, Text } from 'react-native-paper';
 import Button from '../../components/Button';
 import { Account } from '../../store/reducers/Accounts';
 import 'react-native-get-random-values';
 import '@ethersproject/shims';
 import {
-  formatEther,
   isAddress,
   JsonRpcProvider,
   parseEther,
@@ -19,18 +22,32 @@ import { useToast } from 'react-native-toast-notifications';
 import { useDispatch } from 'react-redux';
 import useAccount from '../../hooks/scaffold-eth/useAccount';
 import useNetwork from '../../hooks/scaffold-eth/useNetwork';
+import { useNFTMetadata } from '../../hooks/useNFTMetadata';
 import { useSecureStorage } from '../../hooks/useSecureStorage';
+import { useTokenBalance } from '../../hooks/useTokenBalance';
 import { addRecipient } from '../../store/reducers/Recipients';
-import { parseBalance, parseFloat } from '../../utils/helperFunctions';
+import { parseFloat } from '../../utils/helperFunctions';
+import { FONT_SIZE } from '../../utils/styles';
 import Amount from './modules/Amount';
 import Header from './modules/Header';
 import PastRecipients from './modules/PastRecipients';
 import Recipient from './modules/Recipient';
 import Sender from './modules/Sender';
 
-export default function NetworkTokenTransfer() {
+export default function NFTTokenTransfer() {
   const navigation = useNavigation();
   const isFocused = useIsFocused();
+
+  const route = useRoute();
+
+  // @ts-ignore
+  const token = route.params.token;
+
+  const { nftMetadata } = useNFTMetadata({
+    nft: token.address,
+    tokenId: token.id
+  });
+  const { balance } = useTokenBalance({ token: token.address });
 
   const toast = useToast();
 
@@ -41,25 +58,21 @@ export default function NetworkTokenTransfer() {
 
   const dispatch = useDispatch();
 
-  const [balance, setBalance] = useState<bigint | null>(null);
   const [gasCost, setGasCost] = useState<bigint | null>(null);
 
   const [sender, setSender] = useState<Account>(account);
   const [recipient, setRecipient] = useState('');
-  const [amount, setAmount] = useState('');
 
   const { getItem } = useSecureStorage();
 
-  const getBalance = async () => {
+  const getGasCost = async () => {
     try {
       const provider = new JsonRpcProvider(network.provider);
-      const balance = await provider.getBalance(sender.address);
       const gasPrice = await provider.getFeeData();
 
       const gasCost = gasPrice.gasPrice! * BigInt(21000);
 
       setGasCost(gasCost);
-      setBalance(balance);
     } catch (error) {
       return;
     }
@@ -74,18 +87,6 @@ export default function NetworkTokenTransfer() {
 
     const provider = new JsonRpcProvider(network.provider);
     const wallet = new Wallet(activeAccount.privateKey, provider);
-
-    const tx = await wallet.sendTransaction({
-      from: sender.address,
-      to: recipient,
-      value: parseEther(amount.toString())
-    });
-
-    const txReceipt = await tx.wait(1);
-
-    dispatch(addRecipient(recipient));
-
-    return txReceipt;
   };
 
   const confirm = () => {
@@ -96,37 +97,14 @@ export default function NetworkTokenTransfer() {
       return;
     }
 
-    if (isNaN(Number(amount)) || Number(amount) < 0) {
-      toast.show('Invalid amount', {
-        type: 'danger'
-      });
-      return;
-    }
-
-    if (amount.trim() && balance && gasCost && !isNaN(Number(amount))) {
-      if (Number(amount) >= Number(formatEther(balance))) {
-        toast.show('Insufficient amount', {
-          type: 'danger'
-        });
-        return;
-      } else if (Number(formatEther(balance - gasCost)) < Number(amount)) {
-        toast.show('Insufficient amount for gas', {
-          type: 'danger'
-        });
-        return;
-      }
-    }
-
-    openModal('TransferConfirmationModal', {
+    openModal('NFTTransferConfirmationModal', {
       txData: {
         from: sender,
         to: recipient,
-        amount: parseFloat(amount, 8),
-        balance: balance
+        id: token.id
       },
       estimateGasCost: gasCost,
-      token: network.currencySymbol,
-      isNativeToken: true,
+      token: token.symbol,
       onTransfer: transfer
     });
   };
@@ -144,7 +122,7 @@ export default function NetworkTokenTransfer() {
     provider.removeAllListeners();
 
     provider.on('block', () => {
-      getBalance();
+      getGasCost();
     });
 
     return () => {
@@ -157,17 +135,9 @@ export default function NetworkTokenTransfer() {
 
   return (
     <View style={styles.container}>
-      <Header token={network.currencySymbol} />
+      <Header token={token.symbol} />
 
-      <Sender
-        account={sender}
-        balance={
-          balance !== null
-            ? `${parseBalance(balance)} ${network.currencySymbol}`
-            : null
-        }
-        onChange={setSender}
-      />
+      <Sender account={sender} onChange={setSender} hideBalance />
 
       <Recipient
         recipient={recipient}
@@ -175,14 +145,12 @@ export default function NetworkTokenTransfer() {
         onSubmit={confirm}
       />
 
-      <Amount
-        amount={amount}
-        token={network.currencySymbol}
-        balance={balance}
-        gasCost={gasCost}
-        onChange={setAmount}
-        onConfirm={confirm}
-      />
+      <Text variant="titleMedium" style={styles.tokenIdTitle}>
+        TOKEN ID
+      </Text>
+      <Text variant="headlineLarge" style={styles.tokenId}>
+        {token.id}
+      </Text>
 
       <Divider style={styles.divider} />
 
@@ -198,6 +166,14 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     padding: 15
+  },
+  tokenIdTitle: {
+    textAlign: 'center',
+    fontWeight: '500'
+  },
+  tokenId: {
+    textAlign: 'center',
+    fontWeight: 'bold'
   },
   divider: {
     backgroundColor: '#e0e0e0',

@@ -30,8 +30,7 @@ import Success from './modules/Success';
 interface TxData {
   from: Account;
   to: string;
-  amount: number;
-  balance: bigint | null;
+  id: number;
 }
 type Props = {
   modal: {
@@ -40,16 +39,15 @@ type Props = {
       txData: TxData;
       estimateGasCost: bigint | null;
       token: string;
-      isNativeToken: boolean;
       onTransfer: () => Promise<TransactionReceipt | undefined>;
     };
   };
 };
 
-export default function TransferConfirmationModal({
+export default function NFTTransferConfirmationModal({
   modal: {
     closeModal,
-    params: { txData, estimateGasCost, token, isNativeToken, onTransfer }
+    params: { txData, estimateGasCost, token, onTransfer }
   }
 }: Props) {
   const toast = useToast();
@@ -63,19 +61,10 @@ export default function TransferConfirmationModal({
     null
   );
 
-  const formatBalance = () => {
-    return txData.balance && Number(formatEther(txData.balance))
-      ? parseFloat(Number(formatEther(txData.balance)).toString(), 4)
-      : 0;
-  };
-
   const calcTotal = () => {
     return String(
       estimateGasCost &&
-        parseFloat(
-          (txData.amount + Number(formatEther(estimateGasCost))).toString(),
-          8
-        )
+        parseFloat(Number(formatEther(estimateGasCost)).toString(), 8)
     );
   };
 
@@ -129,9 +118,6 @@ export default function TransferConfirmationModal({
                 <Text variant="titleLarge" style={styles.accountName}>
                   {txData.from.name}
                 </Text>
-                <Text variant="bodyMedium">
-                  Balance: {formatBalance()} {token}
-                </Text>
               </View>
             </View>
           </View>
@@ -151,10 +137,10 @@ export default function TransferConfirmationModal({
         </View>
 
         <Text variant="titleMedium" style={styles.amountLabel}>
-          AMOUNT
+          TOKEN ID
         </Text>
         <Text variant="headlineLarge" style={styles.amount}>
-          {txData.amount} {token}
+          1
         </Text>
 
         <View style={styles.detailsContainer}>
@@ -173,19 +159,6 @@ export default function TransferConfirmationModal({
               {network.currencySymbol}
             </Text>
           </View>
-
-          {isNativeToken && (
-            <>
-              <Divider />
-
-              <View style={styles.detailsRow}>
-                <Text variant="titleMedium">Total</Text>
-                <Text variant="titleMedium" style={styles.detailsValue}>
-                  {calcTotal()} {network.currencySymbol}
-                </Text>
-              </View>
-            </>
-          )}
         </View>
 
         <View style={styles.buttonContainer}>

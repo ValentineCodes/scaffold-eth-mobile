@@ -19,8 +19,6 @@ export default function Token({ address, name, symbol, onPress }: Props) {
   const { tokenMetadata } = useTokenMetadata({ token: address });
   const { balance } = useTokenBalance({ token: address });
 
-  const [dollarValue, setDollarValue] = useState();
-
   return (
     <Pressable onPress={onPress} style={styles.container}>
       <View style={[styles.tokenTitle, { width: '70%' }]}>

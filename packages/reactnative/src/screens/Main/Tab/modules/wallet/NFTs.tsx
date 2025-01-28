@@ -57,13 +57,4 @@ function NFTs({}: Props) {
   );
 }
 
-const styles = StyleSheet.create({
-  nftImage: {
-    width: 100,
-    height: 100,
-    backgroundColor: COLORS.primaryLight,
-    borderRadius: 10
-  }
-});
-
 export default NFTs;

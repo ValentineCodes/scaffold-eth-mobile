@@ -80,7 +80,10 @@ export default function TokenDetails({}: Props) {
               mode="contained"
               containerColor={COLORS.primaryLight}
               size={48}
-              onPress={() => {}}
+              onPress={() => {
+                // @ts-ignore
+                navigation.navigate('ERC20TokenTransfer', { token });
+              }}
             />
             <Text variant="titleMedium" style={styles.actionText}>
               Send
@@ -118,7 +121,7 @@ export default function TokenDetails({}: Props) {
       <View style={styles.tokenDetailContainer}>
         <Text style={styles.tokenDetailTitle}>Token decimal</Text>
         <Text style={styles.tokenDetailDecimals}>
-          {tokenMetadata?.decimals.toString()}
+          {tokenMetadata?.decimals?.toString()}
         </Text>
       </View>
     </View>

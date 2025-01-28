@@ -1,4 +1,8 @@
-import { useIsFocused, useNavigation } from '@react-navigation/native';
+import {
+  useIsFocused,
+  useNavigation,
+  useRoute
+} from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { BackHandler, StyleSheet, View } from 'react-native';
 import { Divider } from 'react-native-paper';
@@ -7,6 +11,7 @@ import { Account } from '../../store/reducers/Accounts';
 import 'react-native-get-random-values';
 import '@ethersproject/shims';
 import {
+  ethers,
   formatEther,
   isAddress,
   JsonRpcProvider,
@@ -20,17 +25,27 @@ import { useDispatch } from 'react-redux';
 import useAccount from '../../hooks/scaffold-eth/useAccount';
 import useNetwork from '../../hooks/scaffold-eth/useNetwork';
 import { useSecureStorage } from '../../hooks/useSecureStorage';
+import { useTokenBalance } from '../../hooks/useTokenBalance';
+import { useTokenMetadata } from '../../hooks/useTokenMetadata';
 import { addRecipient } from '../../store/reducers/Recipients';
-import { parseBalance, parseFloat } from '../../utils/helperFunctions';
+import { parseFloat } from '../../utils/helperFunctions';
 import Amount from './modules/Amount';
 import Header from './modules/Header';
 import PastRecipients from './modules/PastRecipients';
 import Recipient from './modules/Recipient';
 import Sender from './modules/Sender';
 
-export default function NetworkTokenTransfer() {
+export default function ERC20TokenTransfer() {
   const navigation = useNavigation();
   const isFocused = useIsFocused();
+
+  const route = useRoute();
+
+  // @ts-ignore
+  const token = route.params.token;
+
+  const { tokenMetadata } = useTokenMetadata({ token: token.address });
+  const { balance } = useTokenBalance({ token: token.address });
 
   const toast = useToast();
 
@@ -41,7 +56,6 @@ export default function NetworkTokenTransfer() {
 
   const dispatch = useDispatch();
 
-  const [balance, setBalance] = useState<bigint | null>(null);
   const [gasCost, setGasCost] = useState<bigint | null>(null);
 
   const [sender, setSender] = useState<Account>(account);
@@ -50,16 +64,14 @@ export default function NetworkTokenTransfer() {
 
   const { getItem } = useSecureStorage();
 
-  const getBalance = async () => {
+  const getGasCost = async () => {
     try {
       const provider = new JsonRpcProvider(network.provider);
-      const balance = await provider.getBalance(sender.address);
       const gasPrice = await provider.getFeeData();
 
       const gasCost = gasPrice.gasPrice! * BigInt(21000);
 
       setGasCost(gasCost);
-      setBalance(balance);
     } catch (error) {
       return;
     }
@@ -103,20 +115,6 @@ export default function NetworkTokenTransfer() {
       return;
     }
 
-    if (amount.trim() && balance && gasCost && !isNaN(Number(amount))) {
-      if (Number(amount) >= Number(formatEther(balance))) {
-        toast.show('Insufficient amount', {
-          type: 'danger'
-        });
-        return;
-      } else if (Number(formatEther(balance - gasCost)) < Number(amount)) {
-        toast.show('Insufficient amount for gas', {
-          type: 'danger'
-        });
-        return;
-      }
-    }
-
     openModal('TransferConfirmationModal', {
       txData: {
         from: sender,
@@ -125,7 +123,7 @@ export default function NetworkTokenTransfer() {
         balance: balance
       },
       estimateGasCost: gasCost,
-      token: network.currencySymbol,
+      token: tokenMetadata?.symbol,
       isNativeToken: true,
       onTransfer: transfer
     });
@@ -144,7 +142,7 @@ export default function NetworkTokenTransfer() {
     provider.removeAllListeners();
 
     provider.on('block', () => {
-      getBalance();
+      getGasCost();
     });
 
     return () => {
@@ -157,13 +155,13 @@ export default function NetworkTokenTransfer() {
 
   return (
     <View style={styles.container}>
-      <Header token={network.currencySymbol} />
+      <Header token={tokenMetadata?.symbol} />
 
       <Sender
         account={sender}
         balance={
-          balance !== null
-            ? `${parseBalance(balance)} ${network.currencySymbol}`
+          tokenMetadata && balance
+            ? ethers.formatUnits(balance, tokenMetadata?.decimals)
             : null
         }
         onChange={setSender}
@@ -177,7 +175,7 @@ export default function NetworkTokenTransfer() {
 
       <Amount
         amount={amount}
-        token={network.currencySymbol}
+        token={tokenMetadata?.symbol}
         balance={balance}
         gasCost={gasCost}
         onChange={setAmount}

@@ -15,6 +15,7 @@ import ChangePasswordModal from '../components/modals/ChangePasswordModal';
 import ImportNFTModal from '../components/modals/ImportNFTModal';
 import ImportTokenModal from '../components/modals/ImportTokenModal';
 import NFTDetailsModal from '../components/modals/NFTDetailsModal';
+import NFTTransferConfirmationModal from '../components/modals/NFTTransferConfirmationModal';
 import QRCodeScanner from '../components/modals/QRCodeScanner';
 import SignMessageModal from '../components/modals/SignMessageModal';
 import SignTransactionModal from '../components/modals/SignTransactionModal';
@@ -48,7 +49,8 @@ const modalConfig = {
   NFTDetailsModal,
   QRCodeScanner,
   TransferConfirmationModal,
-  AccountsSelectionModal
+  AccountsSelectionModal,
+  NFTTransferConfirmationModal
 };
 const defaultOptions: ModalOptions = {
   backdropOpacity: 0.6,

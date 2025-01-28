@@ -9,11 +9,17 @@ import { FONT_SIZE } from '../../../utils/styles';
 
 type Props = {
   account: Account;
-  balance: string | null;
+  balance?: string | null;
+  hideBalance?: boolean;
   onChange: (account: Account) => void;
 };
 
-export default function Sender({ account, balance, onChange }: Props) {
+export default function Sender({
+  account,
+  balance,
+  hideBalance,
+  onChange
+}: Props) {
   const accounts: Account[] = useSelector((state: any) => state.accounts);
 
   const { openModal } = useModal();
@@ -43,7 +49,9 @@ export default function Sender({ account, balance, onChange }: Props) {
 
           <View style={styles.accountDetails}>
             <Text variant="titleMedium">{account.name}</Text>
-            <Text variant="bodyMedium">Balance: {balance?.toString()}</Text>
+            {!hideBalance && (
+              <Text variant="bodyMedium">Balance: {balance?.toString()}</Text>
+            )}
           </View>
         </View>
 
