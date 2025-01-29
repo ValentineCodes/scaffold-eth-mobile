@@ -54,15 +54,16 @@ export default function NetworkTokenTransfer() {
 
   const { getItem } = useSecureStorage();
 
-  const getGasCost = async () => {
+  const estimateGasCost = async () => {
     try {
       const provider = new JsonRpcProvider(network.provider);
-      const gasPrice = await provider.getFeeData();
+      const feeData = await provider.getFeeData();
 
-      const gasCost = gasPrice.gasPrice! * BigInt(21000);
+      const gasCost = feeData.gasPrice! * BigInt(21000);
 
       setGasCost(gasCost);
     } catch (error) {
+      console.error('Error estimating gas cost: ', error);
       return;
     }
   };
@@ -145,8 +146,10 @@ export default function NetworkTokenTransfer() {
 
     provider.removeAllListeners();
 
+    estimateGasCost();
+
     provider.on('block', () => {
-      getGasCost();
+      estimateGasCost();
     });
 
     return () => {

@@ -24,6 +24,7 @@ function NFTs({}: Props) {
 
       <FlatList
         data={nfts}
+        keyExtractor={item => item.address}
         renderItem={({ item }) => {
           return <NFT nft={item} />;
         }}

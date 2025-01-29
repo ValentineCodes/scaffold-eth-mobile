@@ -65,15 +65,31 @@ export default function ERC20TokenTransfer() {
 
   const { getItem } = useSecureStorage();
 
-  const getGasCost = async () => {
+  const estimateGasCost = async () => {
     try {
-      const provider = new JsonRpcProvider(network.provider);
-      const gasPrice = await provider.getFeeData();
+      // @ts-ignore
+      const accounts: any[] = await getItem('accounts');
+      const activeAccount = Array.from(accounts).find(
+        account =>
+          account.address.toLowerCase() === sender.address.toLowerCase()
+      );
 
-      const gasCost = gasPrice.gasPrice! * BigInt(21000);
+      const provider = new JsonRpcProvider(network.provider);
+      const wallet = new Wallet(activeAccount.privateKey, provider);
+
+      const tokenContract = new Contract(token.address, erc20Abi, wallet);
+
+      const gasEstimate = await tokenContract.transfer.estimateGas(
+        '0x2B0BC5225b6bB4E6C8B1A8e0d5454198C3269b1D',
+        parseUnits('0', 18)
+      );
+      const feeData = await provider.getFeeData();
+
+      const gasCost = feeData.gasPrice! * gasEstimate;
 
       setGasCost(gasCost);
     } catch (error) {
+      console.error('Error estimating gas cost: ', error);
       return;
     }
   };
@@ -143,8 +159,10 @@ export default function ERC20TokenTransfer() {
 
     provider.removeAllListeners();
 
+    estimateGasCost();
+
     provider.on('block', () => {
-      getGasCost();
+      estimateGasCost();
     });
 
     return () => {

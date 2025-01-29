@@ -55,15 +55,32 @@ export default function NFTTokenTransfer() {
 
   const { getItem } = useSecureStorage();
 
-  const getGasCost = async () => {
+  const estimateGasCost = async () => {
     try {
+      // @ts-ignore
+      const accounts: any[] = await getItem('accounts');
+      const activeAccount = Array.from(accounts).find(
+        account =>
+          account.address.toLowerCase() === sender.address.toLowerCase()
+      );
+
       const provider = new JsonRpcProvider(network.provider);
+      const wallet = new Wallet(activeAccount.privateKey, provider);
+
+      const tokenContract = new Contract(token.address, erc721Abi, wallet);
+
+      const gasEstimate = await tokenContract.safeTransferFrom.estimateGas(
+        sender.address,
+        '0x2B0BC5225b6bB4E6C8B1A8e0d5454198C3269b1D',
+        token.id
+      );
       const gasPrice = await provider.getFeeData();
 
-      const gasCost = gasPrice.gasPrice! * BigInt(21000);
+      const gasCost = gasPrice.gasPrice! * gasEstimate;
 
       setGasCost(gasCost);
     } catch (error) {
+      console.error('Error estimating gas cost: ', error);
       return;
     }
   };
@@ -125,8 +142,10 @@ export default function NFTTokenTransfer() {
 
     provider.removeAllListeners();
 
+    estimateGasCost();
+
     provider.on('block', () => {
-      getGasCost();
+      estimateGasCost();
     });
 
     return () => {
