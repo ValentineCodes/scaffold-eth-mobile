@@ -130,3 +130,11 @@ export const isENS = (name = '') =>
 export const parseIPFS = (uri: string) => {
   return uri.replace('ipfs://', 'https://ipfs.io/ipfs/');
 };
+
+export const parseBalance = (value: bigint, decimals: number = 18): string => {
+  const balance = Number(ethers.formatUnits(value, decimals))
+    ? parseFloat(Number(ethers.formatUnits(value, decimals)).toString(), 4)
+    : 0;
+
+  return balance.toString();
+};

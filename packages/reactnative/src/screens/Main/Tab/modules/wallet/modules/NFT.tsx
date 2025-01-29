@@ -23,6 +23,7 @@ export default function NFT({ nft }: Props) {
       <View style={styles.nftContainer}>
         {nft.tokens.map((token: NFTToken) => (
           <NFTCard
+            key={token.id.toString()}
             token={{
               address: nft.address,
               name: nft.name,

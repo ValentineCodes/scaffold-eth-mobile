@@ -4,8 +4,12 @@ import { Divider, Button as PaperButton, Text } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
 import Blockie from '../../components/Blockie';
 import { Account } from '../../store/reducers/Accounts';
-import { parseFloat, truncateAddress } from '../../utils/helperFunctions';
-import { FONT_SIZE, WINDOW_WIDTH } from '../../utils/styles';
+import {
+  parseBalance,
+  parseFloat,
+  truncateAddress
+} from '../../utils/helperFunctions';
+import { FONT_SIZE } from '../../utils/styles';
 import 'react-native-get-random-values';
 import '@ethersproject/shims';
 import { formatEther, JsonRpcProvider, parseEther, Wallet } from 'ethers';
@@ -13,7 +17,6 @@ import { Linking } from 'react-native';
 import { useToast } from 'react-native-toast-notifications';
 import { Address } from 'viem';
 import Button from '../../components/Button';
-import useAccount from '../../hooks/scaffold-eth/useAccount';
 import useBalance from '../../hooks/scaffold-eth/useBalance';
 import useNetwork from '../../hooks/scaffold-eth/useNetwork';
 import { useSecureStorage } from '../../hooks/useSecureStorage';
@@ -48,7 +51,6 @@ export default function SignTransferModal({
   const toast = useToast();
 
   const network = useNetwork();
-  const account = useAccount();
 
   const { balance } = useBalance({ address: from.address });
 
@@ -181,7 +183,10 @@ export default function SignTransferModal({
             <View style={{ marginLeft: 12 }}>
               <Text variant="titleMedium">{from.name}</Text>
               <Text variant="bodyMedium">
-                Balance: {balance && `${balance} ${network.currencySymbol}`}
+                Balance:{' '}
+                {balance !== null
+                  ? `${parseBalance(balance)} ${network.currencySymbol}`
+                  : null}
               </Text>
             </View>
           </View>

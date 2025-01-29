@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import { Address } from 'abitype';
 import React from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
@@ -21,6 +22,7 @@ type Props = {
         id: number;
         uri: string;
       };
+      onSend: () => void;
     };
   };
 };
@@ -28,12 +30,17 @@ type Props = {
 export default function NFTDetailsModal({
   modal: {
     closeModal,
-    params: { nft }
+    params: { nft, onSend }
   }
 }: Props) {
   const dispatch = useDispatch();
   const network = useNetwork();
   const account = useAccount();
+
+  const send = () => {
+    closeModal();
+    onSend();
+  };
 
   const remove = () => {
     closeModal();
@@ -65,7 +72,7 @@ export default function NFTDetailsModal({
           <Button
             type="outline"
             text="Send"
-            onPress={() => null}
+            onPress={send}
             style={styles.sendBtn}
           />
           <IconButton

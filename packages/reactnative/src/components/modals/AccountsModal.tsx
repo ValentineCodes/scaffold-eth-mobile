@@ -53,6 +53,7 @@ export default function AccountsModal({
 
     for (let i = 0; i < Infinity; i++) {
       const wallet = await importWallet(mnemonic, i);
+
       if (!accounts.find(account => account.address == wallet.address)) {
         newAccount = {
           address: wallet.address,

@@ -1,12 +1,12 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { FlatList, Pressable, ScrollView, View } from 'react-native';
+import { FlatList, Pressable, StyleSheet } from 'react-native';
 import { useModal } from 'react-native-modalfy';
-import { Divider, Surface, Text, TextInput } from 'react-native-paper';
-// @ts-ignore
-import Icon from 'react-native-vector-icons/Ionicons';
+import { Surface, Text } from 'react-native-paper';
 import Token from '../../../../../components/asset/Token';
 import { useTokens } from '../../../../../hooks/useTokens';
+import { COLORS } from '../../../../../utils/constants';
+import { FONT_SIZE } from '../../../../../utils/styles';
 
 type Props = {};
 
@@ -17,26 +17,12 @@ function Tokens({}: Props) {
 
   return (
     <Surface style={{ paddingTop: 75, padding: 2 }}>
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          paddingVertical: 8
-        }}
+      <Pressable
+        onPress={() => openModal('ImportTokenModal')}
+        style={styles.importTokenBtnContainer}
       >
-        <TextInput
-          mode="outlined"
-          placeholder="Search tokens"
-          style={{ width: '85%' }}
-        />
-        <Icon
-          name="add"
-          size={30}
-          style={{ color: 'white', backgroundColor: 'blue', padding: 5 }}
-          onPress={() => openModal('ImportTokenModal')}
-        />
-      </View>
+        <Text style={styles.importTokenBtn}>Import Token</Text>
+      </Pressable>
 
       <FlatList
         data={tokens}
@@ -46,7 +32,10 @@ function Tokens({}: Props) {
             address={item.address}
             name={item.name}
             symbol={item.symbol}
-            onPress={() => navigation.navigate('TokenDetails', { token: item })}
+            onPress={() => {
+              //@ts-ignore
+              navigation.navigate('TokenDetails', { token: item });
+            }}
           />
         )}
       />
@@ -55,3 +44,16 @@ function Tokens({}: Props) {
 }
 
 export default Tokens;
+
+const styles = StyleSheet.create({
+  importTokenBtnContainer: {
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    marginBottom: 10
+  },
+  importTokenBtn: {
+    fontSize: FONT_SIZE['lg'],
+    fontWeight: 'bold',
+    color: COLORS.primary
+  }
+});

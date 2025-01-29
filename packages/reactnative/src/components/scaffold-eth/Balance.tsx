@@ -1,9 +1,9 @@
 import React from 'react';
 import { StyleSheet, TextStyle, View } from 'react-native';
 import { Text } from 'react-native-paper';
-import { Address } from 'viem';
 import useBalance from '../../hooks/scaffold-eth/useBalance';
 import useNetwork from '../../hooks/scaffold-eth/useNetwork';
+import { parseBalance } from '../../utils/helperFunctions';
 
 type Props = {
   address: string;
@@ -19,7 +19,9 @@ export default function Balance({ address, style }: Props) {
   return (
     <View style={styles.container}>
       <Text style={style}>
-        {balance} {network.currencySymbol}
+        {balance !== null
+          ? `${parseBalance(balance)} ${network.currencySymbol}`
+          : null}
       </Text>
     </View>
   );

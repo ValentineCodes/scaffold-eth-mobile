@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import { Address } from 'abitype';
 import React, { useEffect, useState } from 'react';
 import { Image, Pressable, StyleSheet } from 'react-native';
@@ -16,6 +17,7 @@ type Props = {
 };
 
 export default function NFTCard({ token }: Props) {
+  const navigation = useNavigation();
   const [image, setImage] = useState<string | null>(null);
 
   const { openModal } = useModal();
@@ -40,7 +42,16 @@ export default function NFTCard({ token }: Props) {
     <Pressable
       onPress={() =>
         openModal('NFTDetailsModal', {
-          nft: token
+          nft: token,
+          onSend: () => {
+            navigation.navigate('NFTTokenTransfer', {
+              token: {
+                address: token.address,
+                id: token.id,
+                symbol: token.symbol
+              }
+            });
+          }
         })
       }
       style={styles.nftImage}

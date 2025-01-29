@@ -16,7 +16,10 @@ import useAccount from '../../../../../hooks/scaffold-eth/useAccount';
 import useBalance from '../../../../../hooks/scaffold-eth/useBalance';
 import useNetwork from '../../../../../hooks/scaffold-eth/useNetwork';
 import { COLORS } from '../../../../../utils/constants';
-import { truncateAddress } from '../../../../../utils/helperFunctions';
+import {
+  parseBalance,
+  truncateAddress
+} from '../../../../../utils/helperFunctions';
 import { FONT_SIZE } from '../../../../../utils/styles';
 
 type Props = {
@@ -53,7 +56,8 @@ function MainBalance({ backHandler }: Props) {
   }, [network]);
 
   const handleNav = () => {
-    navigation.navigate('Transfer');
+    // @ts-ignore
+    navigation.navigate('NetworkTokenTransfer');
     backHandler?.remove();
   };
 
@@ -86,7 +90,9 @@ function MainBalance({ backHandler }: Props) {
 
         <View style={styles.balanceContainer}>
           <Text variant="headlineLarge" style={styles.balanceText}>
-            {balance !== '' && `${balance} ${network.currencySymbol}`}
+            {balance !== null
+              ? `${parseBalance(balance)} ${network.currencySymbol}`
+              : null}
           </Text>
         </View>
 

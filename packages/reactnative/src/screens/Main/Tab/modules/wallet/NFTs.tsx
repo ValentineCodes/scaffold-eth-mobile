@@ -1,20 +1,11 @@
 import React from 'react';
-import {
-  FlatList,
-  Image,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  View
-} from 'react-native';
+import { FlatList, Pressable, ScrollView, StyleSheet } from 'react-native';
 import { useModal } from 'react-native-modalfy';
-import { Divider, List, Surface, Text, TextInput } from 'react-native-paper';
-import Icon from 'react-native-vector-icons/Ionicons';
+import { Surface, Text } from 'react-native-paper';
 import { useNFTs } from '../../../../../hooks/useNFTs';
-import { NFTToken } from '../../../../../store/reducers/NFTs';
 import { COLORS } from '../../../../../utils/constants';
+import { FONT_SIZE } from '../../../../../utils/styles';
 import NFT from './modules/NFT';
-import NFTCard from './modules/NFTCard';
 
 type Props = {};
 
@@ -24,46 +15,35 @@ function NFTs({}: Props) {
 
   return (
     <Surface style={{ paddingTop: 75, padding: 2 }}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            paddingVertical: 8
-          }}
-        >
-          <TextInput
-            mode="outlined"
-            placeholder="Search NFTs"
-            style={{ width: '85%' }}
-          />
-          <Icon
-            name="add"
-            size={30}
-            style={{ color: 'white', backgroundColor: 'blue', padding: 5 }}
-            onPress={() => openModal('ImportNFTModal')}
-          />
-        </View>
+      <Pressable
+        onPress={() => openModal('ImportNFTModal')}
+        style={styles.importNFTBtnContainer}
+      >
+        <Text style={styles.importNFTBtn}>Import NFT</Text>
+      </Pressable>
 
-        <FlatList
-          data={nfts}
-          renderItem={({ item }) => {
-            return <NFT nft={item} />;
-          }}
-        />
-      </ScrollView>
+      <FlatList
+        data={nfts}
+        keyExtractor={item => item.address}
+        renderItem={({ item }) => {
+          return <NFT nft={item} />;
+        }}
+      />
     </Surface>
   );
 }
 
+export default NFTs;
+
 const styles = StyleSheet.create({
-  nftImage: {
-    width: 100,
-    height: 100,
-    backgroundColor: COLORS.primaryLight,
-    borderRadius: 10
+  importNFTBtnContainer: {
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    marginBottom: 10
+  },
+  importNFTBtn: {
+    fontSize: FONT_SIZE['lg'],
+    fontWeight: 'bold',
+    color: COLORS.primary
   }
 });
-
-export default NFTs;

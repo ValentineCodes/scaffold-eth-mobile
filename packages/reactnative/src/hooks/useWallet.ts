@@ -82,7 +82,7 @@ export default function useWallet() {
 
     const hdnode = ethers.HDNodeWallet.fromPhrase(
       mnemonic,
-      'mnemonicPassword',
+      undefined,
       "m/44'/60'/0'/0/0"
     );
 
@@ -96,7 +96,7 @@ export default function useWallet() {
   async function importWallet(_mnemonic: string, _index: number) {
     const hdnode = ethers.HDNodeWallet.fromPhrase(
       mnemonic,
-      'mnemonicPassword',
+      undefined,
       `m/44'/60'/0'/0/${_index}`
     );
 

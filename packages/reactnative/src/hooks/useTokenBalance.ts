@@ -1,7 +1,9 @@
+import { ethers } from 'ethers';
 import { useCallback, useEffect, useState } from 'react';
 import { Address, erc20Abi } from 'viem';
 import useAccount from './scaffold-eth/useAccount';
 import useContractRead from './scaffold-eth/useContractRead';
+import useNetwork from './scaffold-eth/useNetwork';
 
 /**
  * Hook to retrieve the balance of a specified ERC20 token for a user.
@@ -31,7 +33,7 @@ export function useTokenBalance({
   userAddress: defaultUserAddress
 }: UseTokenBalanceOptions = {}): UseTokenBalanceResult {
   const { address: connectedAddress } = useAccount();
-
+  const network = useNetwork();
   const { readContract } = useContractRead();
 
   const [balance, setBalance] = useState<bigint | null>(null);
@@ -84,9 +86,23 @@ export function useTokenBalance({
 
   // Automatically fetch the balance when the token or userAddress changes
   useEffect(() => {
+    const provider = new ethers.JsonRpcProvider(network.provider);
+
+    provider.off('block');
+
     if (defaultToken) {
       getTokenBalance();
     }
+
+    provider.on('block', blockNumber => {
+      if (defaultToken) {
+        getTokenBalance();
+      }
+    });
+
+    return () => {
+      provider.off('block');
+    };
   }, [defaultToken, defaultUserAddress, connectedAddress, getTokenBalance]);
 
   return {
