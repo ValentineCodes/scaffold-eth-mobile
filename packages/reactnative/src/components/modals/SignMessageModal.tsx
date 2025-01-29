@@ -1,16 +1,10 @@
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import {
-  IconButton,
-  Modal,
-  Button as PaperButton,
-  Portal,
-  Text
-} from 'react-native-paper';
+import { Modal, Button as PaperButton, Portal, Text } from 'react-native-paper';
 import useAccount from '../../hooks/scaffold-eth/useAccount';
 import useBalance from '../../hooks/scaffold-eth/useBalance';
 import useNetwork from '../../hooks/scaffold-eth/useNetwork';
-import { COLORS } from '../../utils/constants';
+import { parseBalance } from '../../utils/helperFunctions';
 import { FONT_SIZE, WINDOW_HEIGHT } from '../../utils/styles';
 import Blockie from '../Blockie';
 import Button from '../Button';
@@ -63,7 +57,9 @@ export default function SignMessageModal({
           <View style={styles.balanceInfo}>
             <Text variant="bodyMedium">Balance</Text>
             <Text variant="bodyMedium" style={styles.balance}>
-              {balance && `${balance} ${network.currencySymbol}`}
+              {balance !== null
+                ? `${parseBalance(balance)} ${network.currencySymbol}`
+                : null}
             </Text>
           </View>
         </View>

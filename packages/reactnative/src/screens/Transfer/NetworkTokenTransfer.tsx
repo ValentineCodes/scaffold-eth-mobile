@@ -18,10 +18,11 @@ import { useModal } from 'react-native-modalfy';
 import { useToast } from 'react-native-toast-notifications';
 import { useDispatch } from 'react-redux';
 import useAccount from '../../hooks/scaffold-eth/useAccount';
+import useBalance from '../../hooks/scaffold-eth/useBalance';
 import useNetwork from '../../hooks/scaffold-eth/useNetwork';
 import { useSecureStorage } from '../../hooks/useSecureStorage';
 import { addRecipient } from '../../store/reducers/Recipients';
-import { parseFloat } from '../../utils/helperFunctions';
+import { parseBalance, parseFloat } from '../../utils/helperFunctions';
 import Amount from './modules/Amount';
 import Header from './modules/Header';
 import PastRecipients from './modules/PastRecipients';
@@ -41,7 +42,10 @@ export default function NetworkTokenTransfer() {
 
   const dispatch = useDispatch();
 
-  const [balance, setBalance] = useState<bigint | null>(null);
+  const { balance } = useBalance({
+    address: account.address
+  });
+
   const [gasCost, setGasCost] = useState<bigint | null>(null);
 
   const [sender, setSender] = useState<Account>(account);
@@ -50,16 +54,14 @@ export default function NetworkTokenTransfer() {
 
   const { getItem } = useSecureStorage();
 
-  const getBalance = async () => {
+  const getGasCost = async () => {
     try {
       const provider = new JsonRpcProvider(network.provider);
-      const balance = await provider.getBalance(sender.address);
       const gasPrice = await provider.getFeeData();
 
       const gasCost = gasPrice.gasPrice! * BigInt(21000);
 
       setGasCost(gasCost);
-      setBalance(balance);
     } catch (error) {
       return;
     }
@@ -144,7 +146,7 @@ export default function NetworkTokenTransfer() {
     provider.removeAllListeners();
 
     provider.on('block', () => {
-      getBalance();
+      getGasCost();
     });
 
     return () => {
@@ -163,7 +165,7 @@ export default function NetworkTokenTransfer() {
         account={sender}
         balance={
           balance !== null
-            ? `${formatEther(balance)} ${network.currencySymbol}`
+            ? `${parseBalance(balance)} ${network.currencySymbol}`
             : null
         }
         onChange={setSender}

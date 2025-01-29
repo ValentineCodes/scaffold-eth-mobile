@@ -3,7 +3,11 @@ import { View } from 'react-native';
 import { Divider, Button as PaperButton, Text } from 'react-native-paper';
 import useAccount from '../../hooks/scaffold-eth/useAccount';
 import useNetwork from '../../hooks/scaffold-eth/useNetwork';
-import { parseFloat, truncateAddress } from '../../utils/helperFunctions';
+import {
+  parseBalance,
+  parseFloat,
+  truncateAddress
+} from '../../utils/helperFunctions';
 import { FONT_SIZE } from '../../utils/styles';
 import Blockie from '../Blockie';
 import Button from '../Button';
@@ -38,7 +42,7 @@ export default function SignTransactionModal({
 }: Props) {
   const account = useAccount();
   const network = useNetwork();
-  const { balance, isLoading: isLoadingBalance } = useBalance({
+  const { balance } = useBalance({
     address: account.address
   });
 
@@ -142,7 +146,10 @@ export default function SignTransactionModal({
           <View style={{ marginLeft: 12 }}>
             <Text variant="titleLarge">{account.name}</Text>
             <Text variant="bodyMedium">
-              Balance: {balance && `${balance} ${network.currencySymbol}`}
+              Balance:{' '}
+              {balance !== null
+                ? `${parseBalance(balance)} ${network.currencySymbol}`
+                : null}
             </Text>
           </View>
         </View>
