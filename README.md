@@ -39,14 +39,12 @@ git clone https://github.com/ValentineCodes/scaffold-eth-mobile.git
 
 cd scaffold-eth-mobile
 
-yarn install && yarn patch-ethers
+yarn install
 
 cd packages/reactnative
 
 npx pod-install
 ```
-
-Remember to run `yarn patch-ethers` to patch ethers after installing any package
 
 2. Connect your device to your computer via WIFI-HOTSPOT
 
