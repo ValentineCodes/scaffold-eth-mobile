@@ -1,20 +1,17 @@
+import { ethers } from 'ethers';
 import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
-import { Divider, Button as PaperButton, Text } from 'react-native-paper';
+import { Button, Divider, Text } from 'react-native-paper';
 import useAccount from '../../hooks/scaffold-eth/useAccount';
+import useBalance from '../../hooks/scaffold-eth/useBalance';
 import useNetwork from '../../hooks/scaffold-eth/useNetwork';
 import {
   parseBalance,
   parseFloat,
   truncateAddress
 } from '../../utils/helperFunctions';
-import { FONT_SIZE } from '../../utils/styles';
+import { FONT_SIZE, WINDOW_WIDTH } from '../../utils/styles';
 import Blockie from '../Blockie';
-import Button from '../Button';
-import 'react-native-get-random-values';
-import '@ethersproject/shims';
-import { ethers } from 'ethers';
-import useBalance from '../../hooks/scaffold-eth/useBalance';
 
 type Props = {
   modal: {
@@ -102,6 +99,8 @@ export default function SignTransactionModal({
 
     provider.removeAllListeners('block');
 
+    estimateGasCost();
+
     provider.on('block', (blockNumber: number) => estimateGasCost());
 
     return () => {
@@ -119,12 +118,17 @@ export default function SignTransactionModal({
     params.onReject();
   }
 
+  function parseGasCost(value: bigint) {
+    return parseFloat(ethers.formatEther(value), 8);
+  }
+
   return (
     <View
       style={{
         backgroundColor: 'white',
         borderRadius: 30,
-        padding: 20
+        padding: 20,
+        width: WINDOW_WIDTH * 0.9
       }}
     >
       <View style={{ marginBottom: 16 }}>
@@ -173,6 +177,39 @@ export default function SignTransactionModal({
         </View>
       </View>
 
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          alignSelf: 'flex-start',
+          borderWidth: 1,
+          borderColor: '#ccc',
+          borderRadius: 5,
+          paddingHorizontal: 2,
+          paddingVertical: 1,
+          marginBottom: 10
+        }}
+      >
+        <Text
+          style={{
+            fontSize: 15,
+            fontWeight: 'bold',
+            color: 'blue'
+          }}
+        >
+          {truncateAddress(params.contractAddress)}
+        </Text>
+        <Text
+          style={{
+            fontSize: 15,
+            fontWeight: 'bold'
+          }}
+        >
+          {' '}
+          : {params.functionName.toUpperCase()}
+        </Text>
+      </View>
+
       <Text
         variant="headlineMedium"
         style={{ textAlign: 'center', marginBottom: 16 }}
@@ -201,8 +238,9 @@ export default function SignTransactionModal({
             </View>
             <View>
               <Text variant="titleMedium" style={{ textAlign: 'right' }}>
-                {estimatedGasCost.min &&
-                  ethers.formatEther(estimatedGasCost.min)}{' '}
+                {estimatedGasCost.min
+                  ? parseGasCost(estimatedGasCost.min)
+                  : null}{' '}
                 {network.currencySymbol}
               </Text>
               <Text
@@ -210,8 +248,9 @@ export default function SignTransactionModal({
                 style={{ color: 'gray', textAlign: 'right' }}
               >
                 Max:{' '}
-                {estimatedGasCost.max &&
-                  ethers.formatEther(estimatedGasCost.max)}{' '}
+                {estimatedGasCost.max
+                  ? parseGasCost(estimatedGasCost.max)
+                  : null}{' '}
                 {network.currencySymbol}
               </Text>
             </View>
@@ -233,13 +272,13 @@ export default function SignTransactionModal({
             </View>
             <View>
               <Text variant="titleMedium" style={{ textAlign: 'right' }}>
-                {calcTotal().min} {network.currencySymbol}
+                {calcTotal().min || ''} {network.currencySymbol}
               </Text>
               <Text
                 variant="bodySmall"
                 style={{ color: 'gray', textAlign: 'right' }}
               >
-                Max: {calcTotal().max} {network.currencySymbol}
+                Max: {calcTotal().max || ''} {network.currencySymbol}
               </Text>
             </View>
           </View>
@@ -247,17 +286,17 @@ export default function SignTransactionModal({
       </View>
 
       <View style={{ flexDirection: 'row', gap: 12 }}>
-        <PaperButton
+        <Button
           mode="contained"
           onPress={reject}
           buttonColor="#FFCDD2"
           style={{ flex: 1 }}
         >
           Reject
-        </PaperButton>
-        <PaperButton mode="contained" onPress={confirm} style={{ flex: 1 }}>
+        </Button>
+        <Button mode="contained" onPress={confirm} style={{ flex: 1 }}>
           Confirm
-        </PaperButton>
+        </Button>
       </View>
     </View>
   );
