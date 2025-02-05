@@ -1,10 +1,11 @@
 import { Address } from 'abitype';
 import { ethers } from 'ethers';
-import React, { useState } from 'react';
+import React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import { useTokenBalance } from '../../hooks/useTokenBalance';
 import { useTokenMetadata } from '../../hooks/useTokenMetadata';
+import { parseFloat } from '../../utils/helperFunctions';
 import { FONT_SIZE } from '../../utils/styles';
 import Blockie from '../Blockie';
 
@@ -28,7 +29,7 @@ export default function Token({ address, name, symbol, onPress }: Props) {
 
       <Text>
         {tokenMetadata && balance
-          ? ethers.formatUnits(balance, tokenMetadata.decimals)
+          ? parseFloat(ethers.formatUnits(balance, tokenMetadata.decimals), 4)
           : null}{' '}
         {symbol}
       </Text>

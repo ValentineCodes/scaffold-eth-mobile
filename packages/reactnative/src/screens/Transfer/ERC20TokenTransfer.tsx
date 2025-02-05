@@ -3,13 +3,6 @@ import {
   useNavigation,
   useRoute
 } from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
-import { BackHandler, StyleSheet, View } from 'react-native';
-import { Divider } from 'react-native-paper';
-import Button from '../../components/Button';
-import { Account } from '../../store/reducers/Accounts';
-import 'react-native-get-random-values';
-import '@ethersproject/shims';
 import {
   Contract,
   formatUnits,
@@ -19,15 +12,20 @@ import {
   TransactionReceipt,
   Wallet
 } from 'ethers';
+import React, { useEffect, useState } from 'react';
+import { BackHandler, StyleSheet, View } from 'react-native';
 import { useModal } from 'react-native-modalfy';
+import { Divider } from 'react-native-paper';
 import { useToast } from 'react-native-toast-notifications';
 import { useDispatch } from 'react-redux';
 import { erc20Abi } from 'viem';
+import Button from '../../components/Button';
 import useAccount from '../../hooks/scaffold-eth/useAccount';
 import useNetwork from '../../hooks/scaffold-eth/useNetwork';
 import { useSecureStorage } from '../../hooks/useSecureStorage';
 import { useTokenBalance } from '../../hooks/useTokenBalance';
 import { useTokenMetadata } from '../../hooks/useTokenMetadata';
+import { Account } from '../../store/reducers/Accounts';
 import { addRecipient } from '../../store/reducers/Recipients';
 import { parseFloat } from '../../utils/helperFunctions';
 import Amount from './modules/Amount';
@@ -157,7 +155,7 @@ export default function ERC20TokenTransfer() {
     if (!isFocused) return;
     const provider = new JsonRpcProvider(network.provider);
 
-    provider.removeAllListeners('block');
+    provider.removeAllListeners();
 
     estimateGasCost();
 
@@ -181,7 +179,10 @@ export default function ERC20TokenTransfer() {
         account={sender}
         balance={
           tokenMetadata && balance
-            ? formatUnits(balance, tokenMetadata?.decimals)
+            ? parseFloat(
+                formatUnits(balance, tokenMetadata?.decimals),
+                4
+              ).toString()
             : null
         }
         onChange={setSender}
