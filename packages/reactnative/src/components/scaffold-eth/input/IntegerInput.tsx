@@ -45,18 +45,17 @@ export default function IntegerInput({
       onChange={onChange}
       disabled={disabled}
       suffix={
-        !inputError &&
-        !disableMultiplyBy1e18 && (
-          <TouchableRipple
-            onPress={multiplyBy1e18}
-            disabled={disabled}
-            style={{ paddingHorizontal: 16, marginTop: 4 }}
-          >
-            <Text variant="headlineSmall" style={{ fontWeight: '600' }}>
-              *
-            </Text>
-          </TouchableRipple>
-        )
+        // !inputError &&
+        // !disableMultiplyBy1e18 &&
+        <TouchableRipple
+          onPress={multiplyBy1e18}
+          disabled={disabled}
+          style={{ paddingHorizontal: 16, marginTop: 4 }}
+        >
+          <Text variant="headlineSmall" style={{ fontWeight: '600' }}>
+            *
+          </Text>
+        </TouchableRipple>
       }
     />
   );

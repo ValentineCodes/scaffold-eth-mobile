@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import { COLORS } from '../../../utils/constants';
 import { CommonInputProps } from './utils';
@@ -30,25 +30,34 @@ export default function InputBase<
   );
 
   return (
-    <View>
+    <View style={styles.container}>
+      {prefix}
       <TextInput
         value={value?.toString()}
         mode="outlined"
         style={{
           borderRadius: 24,
-          marginTop: 4
+          marginTop: 4,
+          flex: 1
         }}
-        outlineColor={COLORS.primary}
-        activeOutlineColor={COLORS.primary}
+        outlineStyle={{ borderWidth: 0 }}
         selectionColor={COLORS.primary}
         cursorColor={COLORS.primary}
         disabled={disabled}
         placeholder={placeholder}
         onChangeText={handleChange}
-        left={prefix}
-        right={suffix}
         error={error}
       />
+      {suffix}
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: COLORS.primary
+  }
+});
