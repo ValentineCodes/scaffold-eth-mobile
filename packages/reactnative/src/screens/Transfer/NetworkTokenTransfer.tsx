@@ -1,11 +1,4 @@
 import { useIsFocused, useNavigation } from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
-import { BackHandler, StyleSheet, View } from 'react-native';
-import { Divider } from 'react-native-paper';
-import Button from '../../components/Button';
-import { Account } from '../../store/reducers/Accounts';
-import 'react-native-get-random-values';
-import '@ethersproject/shims';
 import {
   formatEther,
   isAddress,
@@ -14,13 +7,18 @@ import {
   TransactionReceipt,
   Wallet
 } from 'ethers';
+import React, { useEffect, useState } from 'react';
+import { BackHandler, StyleSheet, View } from 'react-native';
 import { useModal } from 'react-native-modalfy';
+import { Divider } from 'react-native-paper';
 import { useToast } from 'react-native-toast-notifications';
 import { useDispatch } from 'react-redux';
+import Button from '../../components/Button';
 import useAccount from '../../hooks/scaffold-eth/useAccount';
 import useBalance from '../../hooks/scaffold-eth/useBalance';
 import useNetwork from '../../hooks/scaffold-eth/useNetwork';
 import { useSecureStorage } from '../../hooks/useSecureStorage';
+import { Account } from '../../store/reducers/Accounts';
 import { addRecipient } from '../../store/reducers/Recipients';
 import { parseBalance, parseFloat } from '../../utils/helperFunctions';
 import Amount from './modules/Amount';
@@ -144,7 +142,7 @@ export default function NetworkTokenTransfer() {
     if (!isFocused) return;
     const provider = new JsonRpcProvider(network.provider);
 
-    provider.removeAllListeners();
+    provider.off('block');
 
     estimateGasCost();
 
@@ -153,7 +151,7 @@ export default function NetworkTokenTransfer() {
     });
 
     return () => {
-      provider.removeAllListeners();
+      provider.off('block');
       backHandler.remove();
     };
   }, [sender]);

@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { useDeployedContractInfo } from './useDeployedContractInfo';
-import useNetwork from './useNetwork';
-import 'react-native-get-random-values';
-import '@ethersproject/shims';
 import { Contract, JsonRpcProvider, Wallet } from 'ethers';
+import { useEffect, useState } from 'react';
 import { useSecureStorage } from '../useSecureStorage';
 import useAccount from './useAccount';
+import { useDeployedContractInfo } from './useDeployedContractInfo';
+import useNetwork from './useNetwork';
 
 type Props = {
   contractName: string;

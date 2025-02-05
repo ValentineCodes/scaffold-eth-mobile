@@ -1,17 +1,15 @@
 import Clipboard from '@react-native-clipboard/clipboard';
 import { BlurView } from '@react-native-community/blur';
+import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, ScrollView, StyleSheet, View } from 'react-native';
 import { Button, Divider, IconButton, Text } from 'react-native-paper';
-import ProgressIndicatorHeader from '../../components/headers/ProgressIndicatorHeader';
-import { COLORS } from '../../utils/constants';
-import { FONT_SIZE } from '../../utils/styles';
-import 'react-native-get-random-values';
-import '@ethersproject/shims';
-import { useNavigation } from '@react-navigation/native';
 import { useToast } from 'react-native-toast-notifications';
+import ProgressIndicatorHeader from '../../components/headers/ProgressIndicatorHeader';
 import { useSecureStorage } from '../../hooks/useSecureStorage';
 import useWallet from '../../hooks/useWallet';
+import { COLORS } from '../../utils/constants';
+import { FONT_SIZE } from '../../utils/styles';
 
 interface Wallet {
   mnemonic: string;

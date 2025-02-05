@@ -1,10 +1,8 @@
-import { useModal } from 'react-native-modalfy';
-import useNetwork from './useNetwork';
-import 'react-native-get-random-values';
-import '@ethersproject/shims';
 import { JsonRpcProvider, Wallet } from 'ethers';
+import { useModal } from 'react-native-modalfy';
 import { useSecureStorage } from '../useSecureStorage';
 import useAccount from './useAccount';
+import useNetwork from './useNetwork';
 
 interface UseSignMessageConfig {
   message?: string;

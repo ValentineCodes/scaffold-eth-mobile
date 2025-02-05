@@ -1,25 +1,10 @@
+import { ethers, formatEther, TransactionReceipt } from 'ethers';
 import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Linking, StyleSheet, View } from 'react-native';
 import { Button, Divider, Text } from 'react-native-paper';
-import { useDispatch } from 'react-redux';
-import 'react-native-get-random-values';
-import '@ethersproject/shims';
-import 'react-native-get-random-values';
-import '@ethersproject/shims';
-import {
-  ethers,
-  formatEther,
-  JsonRpcProvider,
-  parseEther,
-  TransactionReceipt,
-  Wallet
-} from 'ethers';
-import { Linking } from 'react-native';
 import { useToast } from 'react-native-toast-notifications';
 import useNetwork from '../../hooks/scaffold-eth/useNetwork';
-import { useSecureStorage } from '../../hooks/useSecureStorage';
 import { Account } from '../../store/reducers/Accounts';
-import { addRecipient } from '../../store/reducers/Recipients';
 import { parseFloat, truncateAddress } from '../../utils/helperFunctions';
 import { FONT_SIZE } from '../../utils/styles';
 import Blockie from '../Blockie';
