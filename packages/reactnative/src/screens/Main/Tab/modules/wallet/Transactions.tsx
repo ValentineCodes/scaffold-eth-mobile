@@ -148,7 +148,7 @@ export default function Transactions() {
 
     const provider = new ethers.JsonRpcProvider(network.provider);
 
-    provider.off('block');
+    provider.removeAllListeners('block');
 
     provider.on('block', blockNumber => {
       getTransactions();
