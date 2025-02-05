@@ -142,7 +142,7 @@ export default function NetworkTokenTransfer() {
     if (!isFocused) return;
     const provider = new JsonRpcProvider(network.provider);
 
-    provider.removeAllListeners('block');
+    provider.off('block');
 
     estimateGasCost();
 
@@ -151,7 +151,7 @@ export default function NetworkTokenTransfer() {
     });
 
     return () => {
-      provider.removeAllListeners();
+      provider.off('block');
       backHandler.remove();
     };
   }, [sender]);

@@ -147,7 +147,7 @@ export default function SignTransferModal({
   useEffect(() => {
     const provider = new JsonRpcProvider(network.provider);
 
-    provider.removeAllListeners('block');
+    provider.off('block');
 
     estimateGasCost();
 

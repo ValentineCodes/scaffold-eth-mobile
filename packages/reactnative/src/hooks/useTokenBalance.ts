@@ -88,7 +88,7 @@ export function useTokenBalance({
   useEffect(() => {
     const provider = new ethers.JsonRpcProvider(network.provider);
 
-    provider.removeAllListeners('block');
+    provider.off('block');
 
     if (defaultToken) {
       getTokenBalance();
