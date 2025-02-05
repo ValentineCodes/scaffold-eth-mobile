@@ -1,27 +1,24 @@
+import { formatEther, JsonRpcProvider, parseEther, Wallet } from 'ethers';
 import React, { useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { Linking, View } from 'react-native';
 import { Divider, Button as PaperButton, Text } from 'react-native-paper';
+import { useToast } from 'react-native-toast-notifications';
 import { useDispatch } from 'react-redux';
+import { Address } from 'viem';
 import Blockie from '../../components/Blockie';
+import Button from '../../components/Button';
+import useBalance from '../../hooks/scaffold-eth/useBalance';
+import useNetwork from '../../hooks/scaffold-eth/useNetwork';
+import { useSecureStorage } from '../../hooks/useSecureStorage';
 import { Account } from '../../store/reducers/Accounts';
+import { addRecipient } from '../../store/reducers/Recipients';
 import {
   parseBalance,
   parseFloat,
   truncateAddress
 } from '../../utils/helperFunctions';
-import { FONT_SIZE } from '../../utils/styles';
-import 'react-native-get-random-values';
-import '@ethersproject/shims';
-import { formatEther, JsonRpcProvider, parseEther, Wallet } from 'ethers';
-import { Linking } from 'react-native';
-import { useToast } from 'react-native-toast-notifications';
-import { Address } from 'viem';
-import Button from '../../components/Button';
-import useBalance from '../../hooks/scaffold-eth/useBalance';
-import useNetwork from '../../hooks/scaffold-eth/useNetwork';
-import { useSecureStorage } from '../../hooks/useSecureStorage';
-import { addRecipient } from '../../store/reducers/Recipients';
 import { getProviderWithName, Providers } from '../../utils/providers';
+import { FONT_SIZE } from '../../utils/styles';
 import Fail from './modules/Fail';
 import Success from './modules/Success';
 

@@ -1,25 +1,10 @@
+import { ethers, TransactionReceipt } from 'ethers';
 import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Button, Divider, Text } from 'react-native-paper';
-import { useDispatch } from 'react-redux';
-import 'react-native-get-random-values';
-import '@ethersproject/shims';
-import 'react-native-get-random-values';
-import '@ethersproject/shims';
-import {
-  ethers,
-  formatEther,
-  JsonRpcProvider,
-  parseEther,
-  TransactionReceipt,
-  Wallet
-} from 'ethers';
-import { Linking } from 'react-native';
+import { Linking, StyleSheet, View } from 'react-native';
+import { Button, Text } from 'react-native-paper';
 import { useToast } from 'react-native-toast-notifications';
 import useNetwork from '../../hooks/scaffold-eth/useNetwork';
-import { useSecureStorage } from '../../hooks/useSecureStorage';
 import { Account } from '../../store/reducers/Accounts';
-import { addRecipient } from '../../store/reducers/Recipients';
 import { parseFloat, truncateAddress } from '../../utils/helperFunctions';
 import { FONT_SIZE } from '../../utils/styles';
 import Blockie from '../Blockie';
@@ -38,7 +23,6 @@ type Props = {
     params: {
       txData: TxData;
       estimateGasCost: bigint | null;
-      token: string;
       onTransfer: () => Promise<TransactionReceipt | undefined>;
     };
   };
@@ -47,7 +31,7 @@ type Props = {
 export default function NFTTransferConfirmationModal({
   modal: {
     closeModal,
-    params: { txData, estimateGasCost, token, onTransfer }
+    params: { txData, estimateGasCost, onTransfer }
   }
 }: Props) {
   const toast = useToast();
@@ -60,13 +44,6 @@ export default function NFTTransferConfirmationModal({
   const [txReceipt, setTxReceipt] = useState<ethers.TransactionReceipt | null>(
     null
   );
-
-  const calcTotal = () => {
-    return String(
-      estimateGasCost &&
-        parseFloat(Number(formatEther(estimateGasCost)).toString(), 8)
-    );
-  };
 
   const transfer = async () => {
     try {

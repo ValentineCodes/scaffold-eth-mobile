@@ -1,15 +1,13 @@
-import { useModal } from 'react-native-modalfy';
-import { useToast } from 'react-native-toast-notifications';
-import useNetwork from './useNetwork';
-import useTargetNetwork from './useTargetNetwork';
-import 'react-native-get-random-values';
-import '@ethersproject/shims';
 import { Abi } from 'abitype';
 import { Contract, JsonRpcProvider, Wallet } from 'ethers';
 import { useState } from 'react';
+import { useModal } from 'react-native-modalfy';
+import { useToast } from 'react-native-toast-notifications';
 import { TransactionReceipt } from 'viem';
 import { useSecureStorage } from '../useSecureStorage';
 import useAccount from './useAccount';
+import useNetwork from './useNetwork';
+import useTargetNetwork from './useTargetNetwork';
 
 interface UseWriteConfig {
   abi: Abi;

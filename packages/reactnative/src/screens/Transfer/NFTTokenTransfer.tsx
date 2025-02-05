@@ -3,13 +3,6 @@ import {
   useNavigation,
   useRoute
 } from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
-import { BackHandler, StyleSheet, View } from 'react-native';
-import { Divider, Text } from 'react-native-paper';
-import Button from '../../components/Button';
-import { Account } from '../../store/reducers/Accounts';
-import 'react-native-get-random-values';
-import '@ethersproject/shims';
 import {
   Contract,
   isAddress,
@@ -17,13 +10,18 @@ import {
   TransactionReceipt,
   Wallet
 } from 'ethers';
+import React, { useEffect, useState } from 'react';
+import { BackHandler, StyleSheet, View } from 'react-native';
 import { useModal } from 'react-native-modalfy';
+import { Divider, Text } from 'react-native-paper';
 import { useToast } from 'react-native-toast-notifications';
 import { useDispatch } from 'react-redux';
 import { erc721Abi } from 'viem';
+import Button from '../../components/Button';
 import useAccount from '../../hooks/scaffold-eth/useAccount';
 import useNetwork from '../../hooks/scaffold-eth/useNetwork';
 import { useSecureStorage } from '../../hooks/useSecureStorage';
+import { Account } from '../../store/reducers/Accounts';
 import { addRecipient } from '../../store/reducers/Recipients';
 import Header from './modules/Header';
 import PastRecipients from './modules/PastRecipients';
@@ -125,7 +123,6 @@ export default function NFTTokenTransfer() {
         id: token.id
       },
       estimateGasCost: gasCost,
-      token: token.symbol,
       onTransfer: transfer
     });
   };
