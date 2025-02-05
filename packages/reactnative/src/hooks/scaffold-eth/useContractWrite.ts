@@ -97,10 +97,15 @@ export default function useContractWrite({
           args: _args,
           value: _value,
           gasLimit: _gasLimit,
-          onConfirm
+          onConfirm,
+          onReject
         });
       } catch (error) {
         reject(error);
+      }
+
+      function onReject() {
+        reject('Transaction Rejected!');
       }
 
       async function onConfirm() {
