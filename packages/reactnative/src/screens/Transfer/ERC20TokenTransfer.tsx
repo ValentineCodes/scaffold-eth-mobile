@@ -155,7 +155,7 @@ export default function ERC20TokenTransfer() {
     if (!isFocused) return;
     const provider = new JsonRpcProvider(network.provider);
 
-    provider.removeAllListeners();
+    provider.off('block');
 
     estimateGasCost();
 
@@ -164,7 +164,7 @@ export default function ERC20TokenTransfer() {
     });
 
     return () => {
-      provider.removeAllListeners();
+      provider.off('block');
       backHandler.remove();
     };
   }, [sender]);

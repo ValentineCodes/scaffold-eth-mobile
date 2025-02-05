@@ -47,7 +47,7 @@ export default function useBalance({ address }: UseBalanceConfig) {
   useEffect(() => {
     const provider = new ethers.JsonRpcProvider(network.provider);
 
-    provider.removeAllListeners('block');
+    provider.off('block');
 
     getBalance();
 

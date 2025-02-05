@@ -97,14 +97,14 @@ export default function SignTransactionModal({
   useEffect(() => {
     const provider = new ethers.JsonRpcProvider(network.provider);
 
-    provider.removeAllListeners('block');
+    provider.off('block');
 
     estimateGasCost();
 
     provider.on('block', (blockNumber: number) => estimateGasCost());
 
     return () => {
-      provider.removeAllListeners('block');
+      provider.off('block');
     };
   }, []);
 

@@ -137,7 +137,7 @@ export default function NFTTokenTransfer() {
     if (!isFocused) return;
     const provider = new JsonRpcProvider(network.provider);
 
-    provider.removeAllListeners('block');
+    provider.off('block');
 
     estimateGasCost();
 
@@ -146,7 +146,7 @@ export default function NFTTokenTransfer() {
     });
 
     return () => {
-      provider.removeAllListeners();
+      provider.off('block');
       backHandler.remove();
     };
   }, [sender]);
