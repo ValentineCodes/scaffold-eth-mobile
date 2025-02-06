@@ -20,6 +20,7 @@ import QRCodeScanner from '../components/modals/QRCodeScanner';
 import SignMessageModal from '../components/modals/SignMessageModal';
 import SignTransactionModal from '../components/modals/SignTransactionModal';
 import SignTransferModal from '../components/modals/SignTransferModal';
+import SwitchNetworkModal from '../components/modals/SwitchNetworkModal';
 import TransferConfirmationModal from '../components/modals/TransferConfirmationModal';
 import TxReceiptModal from '../components/modals/TxReceiptModal';
 import { store } from '../store';
@@ -50,7 +51,8 @@ const modalConfig = {
   QRCodeScanner,
   TransferConfirmationModal,
   AccountsSelectionModal,
-  NFTTransferConfirmationModal
+  NFTTransferConfirmationModal,
+  SwitchNetworkModal
 };
 const defaultOptions: ModalOptions = {
   backdropOpacity: 0.6,
