@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   Image,
   RefreshControl,
@@ -15,6 +15,7 @@ import ReceiveModal from '../../../../../components/modals/ReceiveModal';
 import useAccount from '../../../../../hooks/scaffold-eth/useAccount';
 import useBalance from '../../../../../hooks/scaffold-eth/useBalance';
 import useNetwork from '../../../../../hooks/scaffold-eth/useNetwork';
+import { useCryptoPrice } from '../../../../../hooks/useCryptoPrice';
 import { COLORS } from '../../../../../utils/constants';
 import {
   parseBalance,
@@ -32,6 +33,7 @@ function MainBalance({ backHandler }: Props) {
   const { balance, isRefetching, refetch } = useBalance({
     address: account.address
   });
+  const { price, fetchPrice } = useCryptoPrice({ enabled: false });
 
   const [showReceiveModal, setShowReceiveModal] = useState(false);
 
@@ -60,6 +62,11 @@ function MainBalance({ backHandler }: Props) {
     navigation.navigate('NetworkTokenTransfer');
     backHandler?.remove();
   };
+
+  useEffect(() => {
+    if (!!balance && parseBalance(balance).length > 0) return;
+    fetchPrice();
+  }, [balance]);
 
   return (
     <ScrollView
@@ -93,6 +100,13 @@ function MainBalance({ backHandler }: Props) {
             {balance !== null
               ? `${parseBalance(balance)} ${network.currencySymbol}`
               : null}
+          </Text>
+
+          <Text style={{ color: 'grey', fontSize: FONT_SIZE['lg'] }}>
+            {price &&
+              balance !== null &&
+              parseBalance(balance).length > 0 &&
+              `$${(price * Number(parseBalance(balance))).toFixed(2)}`}
           </Text>
         </View>
 
