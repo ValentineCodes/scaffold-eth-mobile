@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { SafeAreaView, StatusBar, StyleSheet } from 'react-native';
 // import BootSplash from "react-native-bootsplash";
 import changeNavigationBarColor from 'react-native-navigation-bar-color';
-import SwitchNetwork from '../components/SwitchNetwork';
 import Navigation from './Navigation';
 import Providers from './Providers';
 
@@ -23,7 +22,6 @@ function App(): JSX.Element {
       <SafeAreaView style={styles.container}>
         <StatusBar barStyle="dark-content" backgroundColor="white" />
         <Navigation />
-        <SwitchNetwork />
       </SafeAreaView>
     </Providers>
   );

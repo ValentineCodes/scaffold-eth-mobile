@@ -5,6 +5,7 @@ import ReactNativeBiometrics from 'react-native-biometrics';
 import { useModal } from 'react-native-modalfy';
 import { Switch, Text } from 'react-native-paper';
 import { useToast } from 'react-native-toast-notifications';
+import useNetwork from '../../../hooks/scaffold-eth/useNetwork';
 import { useSecureStorage } from '../../../hooks/useSecureStorage';
 import { COLORS } from '../../../utils/constants';
 import { FONT_SIZE } from '../../../utils/styles';
@@ -16,6 +17,8 @@ export default function Settings({}: Props) {
   const { openModal } = useModal();
   const isFocused = useIsFocused();
   const { getItem, saveItem } = useSecureStorage();
+
+  const network = useNetwork();
 
   const [isBiometricsAvailable, setIsBiometricsAvailable] = useState(false);
   const [isBiometricsEnabled, setIsBiometricsEnabled] = useState(false);
@@ -66,6 +69,10 @@ export default function Settings({}: Props) {
     }
   };
 
+  const switchNetwork = () => {
+    openModal('SwitchNetworkModal');
+  };
+
   useLayoutEffect(() => {
     (async () => {
       const rnBiometrics = new ReactNativeBiometrics();
@@ -101,6 +108,10 @@ export default function Settings({}: Props) {
       >
         <Text variant="titleLarge">Change Password</Text>
       </TouchableOpacity>
+
+      <TouchableOpacity onPress={switchNetwork} style={styles.button}>
+        <Text variant="titleLarge">Change Network({network.name})</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -118,5 +129,12 @@ const styles = StyleSheet.create({
   },
   button: {
     paddingVertical: 16
+  },
+  network: {
+    fontSize: FONT_SIZE['lg'],
+    marginBottom: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
+    paddingVertical: 10
   }
 });

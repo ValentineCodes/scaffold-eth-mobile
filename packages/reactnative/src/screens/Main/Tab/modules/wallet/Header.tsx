@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Linking, Pressable, StyleSheet, View } from 'react-native';
-import { Divider, IconButton, Text } from 'react-native-paper';
+import { Linking, StyleSheet, View } from 'react-native';
+import { IconButton, Text } from 'react-native-paper';
 import {
   Menu,
   MenuOption,
@@ -9,26 +9,24 @@ import {
 } from 'react-native-popup-menu';
 import Share from 'react-native-share';
 import { useToast } from 'react-native-toast-notifications';
+// @ts-ignore
 import Ionicons from 'react-native-vector-icons/dist/Ionicons';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import Blockie from '../../../../../components/Blockie';
 import AccountDetailsModal from '../../../../../components/modals/AccountDetailsModal';
 import AccountsModal from '../../../../../components/modals/AccountsModal';
 import SeedPhraseModal from '../../../../../components/modals/SeedPhraseModal';
 import { Account } from '../../../../../store/reducers/Accounts';
-import { Network, switchNetwork } from '../../../../../store/reducers/Networks';
-import { COLORS } from '../../../../../utils/constants';
+import { Network } from '../../../../../store/reducers/Networks';
 import { FONT_SIZE, WINDOW_WIDTH } from '../../../../../utils/styles';
 
 type Props = {};
 
 export default function Header({}: Props) {
-  const dispatch = useDispatch();
   const [isAccountModalVisible, setIsAccountModalVisible] = useState(false);
   const [showAccountDetailsModal, setShowAccountDetailsModal] = useState(false);
   const [showSeedPhraseModal, setShowSeedPhraseModal] = useState(false);
 
-  const networks: Network[] = useSelector(state => state.networks);
   const connectedNetwork: Network = useSelector(state =>
     state.networks.find((network: Network) => network.isConnected)
   );
@@ -38,10 +36,6 @@ export default function Header({}: Props) {
   );
 
   const toast = useToast();
-
-  const handleNetworkSelecttion = (id: string) => {
-    dispatch(switchNetwork(id));
-  };
 
   const shareAddress = async () => {
     try {
@@ -71,37 +65,6 @@ export default function Header({}: Props) {
         icon={require('../../../../../assets/images/logo.png')}
         size={WINDOW_WIDTH * 0.08}
       />
-
-      {/* <Select
-        selectedValue={connectedNetwork.id.toString()}
-        flex="1"
-        borderRadius={25}
-        mx="10"
-        accessibilityLabel="Choose Network"
-        placeholder="Choose Network"
-        _selectedItem={{
-          bg: COLORS.primary,
-          endIcon: <CheckIcon size={5} color="white" />,
-        }}
-        dropdownIcon={
-          <Icon
-            as={<Ionicons name="chevron-down" />}
-            size={1.3 * FONT_SIZE["xl"]}
-            color="black"
-            mr="2"
-          />
-        }
-        fontSize={FONT_SIZE["md"]}
-        onValueChange={handleNetworkSelecttion}
-      >
-        {networks.map((network: Network) => (
-          <Select.Item
-            key={network.id}
-            label={network.name}
-            value={network.id.toString()}
-          />
-        ))}
-      </Select> */}
 
       <Menu>
         <MenuTrigger>
