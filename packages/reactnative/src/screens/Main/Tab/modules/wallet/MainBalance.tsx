@@ -66,7 +66,7 @@ function MainBalance({ backHandler }: Props) {
   useEffect(() => {
     if (!!balance && parseBalance(balance).length > 0) return;
     fetchPrice();
-  }, [balance]);
+  }, [balance, network]);
 
   return (
     <ScrollView
