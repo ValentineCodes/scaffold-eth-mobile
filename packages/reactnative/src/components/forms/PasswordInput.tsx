@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-import { TouchableOpacity, View } from 'react-native';
-import { IconButton, Text, TextInput } from 'react-native-paper';
+import { View } from 'react-native';
+import { Text, TextInput } from 'react-native-paper';
 import { COLORS } from '../../utils/constants';
 import { FONT_SIZE } from '../../utils/styles';
 
 type Props = {
   label: string;
   value?: string;
-  suggestion?: string;
   defaultValue?: string;
   infoText?: string | boolean | null;
   errorText?: string | boolean | null;
@@ -17,17 +16,12 @@ type Props = {
 function PasswordInput({
   label,
   value,
-  suggestion,
   defaultValue,
   infoText,
   errorText,
   onChange
 }: Props) {
   const [show, setShow] = useState(false);
-
-  const useSuggestion = () => {
-    onChange(suggestion);
-  };
 
   return (
     <View style={{ gap: 8 }}>
@@ -43,7 +37,7 @@ function PasswordInput({
         style={{ fontSize: FONT_SIZE.md }}
         left={<TextInput.Icon icon="lock" color="#a3a3a3" />}
         right={
-          value || !suggestion ? (
+          value && (
             <View style={{ flexDirection: 'row' }}>
               {value && (
                 <TextInput.Icon
@@ -58,16 +52,10 @@ function PasswordInput({
                 onPress={() => setShow(!show)}
               />
             </View>
-          ) : (
-            <TextInput.Affix
-              text="Use Suggestion"
-              textStyle={{ color: COLORS.primary, fontSize: FONT_SIZE.lg }}
-              onPress={useSuggestion}
-            />
           )
         }
         secureTextEntry={!show}
-        placeholder={suggestion ? `Suggestion: ${suggestion}` : 'Password'}
+        placeholder="Password"
         onChangeText={onChange}
       />
       {infoText ? (

@@ -74,7 +74,7 @@ export default function useWallet() {
     );
   }
 
-  async function createWallet() {
+  function createWallet() {
     let privateSeed = ethers.randomBytes(16);
 
     //2048 words
@@ -93,7 +93,7 @@ export default function useWallet() {
     };
   }
 
-  async function importWallet(_mnemonic: string, _index: number) {
+  function importWallet(_mnemonic: string, _index: number) {
     const hdnode = ethers.HDNodeWallet.fromPhrase(
       mnemonic,
       undefined,
