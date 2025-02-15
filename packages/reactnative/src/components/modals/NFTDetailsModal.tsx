@@ -1,8 +1,7 @@
-import { useNavigation } from '@react-navigation/native';
 import { Address } from 'abitype';
 import React, { useEffect, useState } from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
-import { IconButton, Modal, Portal, Text } from 'react-native-paper';
+import { IconButton, Text } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
 import useAccount from '../../hooks/scaffold-eth/useAccount';
 import useNetwork from '../../hooks/scaffold-eth/useNetwork';
@@ -77,8 +76,6 @@ export default function NFTDetailsModal({
     };
     fetchImage();
   }, [nft]);
-
-  console.log(image);
 
   return (
     <Pressable onPress={closeModal} style={styles.container}>

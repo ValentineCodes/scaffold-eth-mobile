@@ -14,7 +14,7 @@ export function useNFTs() {
 
   const [importedNFTs, setImportedNFTs] = useState<NFT[]>();
 
-  function setNFTs() {
+  function getNFTs() {
     const key = keccak256(
       toUtf8Bytes(`${network.id}${account.address.toLowerCase()}`)
     );
@@ -22,7 +22,7 @@ export function useNFTs() {
   }
 
   useEffect(() => {
-    setNFTs();
+    getNFTs();
   }, [network, account, state]);
 
   return {

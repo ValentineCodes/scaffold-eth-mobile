@@ -47,21 +47,16 @@ export const nftSlice = createSlice({
         toUtf8Bytes(`${networkId}${accountAddress.toLowerCase()}`)
       );
 
+      const token = {
+        id: nft.tokenId,
+        uri: nft.tokenURI
+      };
+
       const _nft = {
         address: nft.address.toLowerCase(),
         name: nft.name,
         symbol: nft.symbol,
-        tokens: [
-          {
-            id: nft.tokenId,
-            uri: nft.tokenURI
-          }
-        ]
-      };
-
-      const _nftToken = {
-        id: nft.tokenId,
-        uri: nft.tokenURI
+        tokens: [token]
       };
 
       if (!state.nfts[key]) {
@@ -79,7 +74,7 @@ export const nftSlice = createSlice({
         const nftIndex = state.nftIndexes[key][nft.address.toLowerCase()];
         const nftTokensLength = state.nfts[key][nftIndex].tokens.length;
 
-        state.nfts[key][nftIndex].tokens.push(_nftToken);
+        state.nfts[key][nftIndex].tokens.push(token);
         state.nftTokenIndexes[key][nft.tokenId] = nftTokensLength - 1;
       }
 
@@ -103,7 +98,7 @@ export const nftSlice = createSlice({
         delete state.nftTokenIndexes[key][tokenId];
       }
 
-      return state;
+      return initialState;
     }
   }
 });
