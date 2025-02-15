@@ -3,6 +3,7 @@ import { generate } from 'random-words';
 import React, { useCallback, useEffect, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import ReactNativeBiometrics from 'react-native-biometrics';
+import { useModal } from 'react-native-modalfy';
 import { Button, Divider, IconButton, Switch, Text } from 'react-native-paper';
 import { useToast } from 'react-native-toast-notifications';
 import Ionicons from 'react-native-vector-icons/dist/Ionicons';
@@ -11,7 +12,6 @@ import { useDispatch } from 'react-redux';
 import PasswordInput from '../../components/forms/PasswordInput';
 import SeedPhraseInput from '../../components/forms/SeedPhraseInput';
 import AccountsCountModal from '../../components/modals/AccountsCountModal';
-import QRCodeScanner from '../../components/modals/QRCodeScanner';
 import { useSecureStorage } from '../../hooks/useSecureStorage';
 import useWallet from '../../hooks/useWallet';
 import { initAccounts } from '../../store/reducers/Accounts';
@@ -27,12 +27,13 @@ function ImportWallet() {
   const { saveItem } = useSecureStorage();
   const { importWallet: importAccount } = useWallet();
 
+  const { openModal } = useModal();
+
   const [seedPhrase, setSeedPhrase] = useState('');
   const [suggestion, setSuggestion] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isBiometricsEnabled, setIsBiometricsEnabled] = useState(false);
-  const [showScanner, setShowScanner] = useState(false);
   const [showAccountsCountModal, setShowAccountsCountModal] = useState(false);
   const [isImporting, setIsImporting] = useState(false);
   const [isBiometricsAvailable, setIsBiometricsAvailable] = useState(false);
@@ -121,6 +122,12 @@ function ImportWallet() {
     }
   };
 
+  const scanSeedPhrase = () => {
+    openModal('QRCodeScanner', {
+      onScan: setSeedPhrase
+    });
+  };
+
   useEffect(() => {
     (async () => {
       // set suggested password
@@ -166,7 +173,7 @@ function ImportWallet() {
               color="black"
             />
           )}
-          onPress={() => setShowScanner(true)}
+          onPress={scanSeedPhrase}
         />
       </View>
 
@@ -230,17 +237,6 @@ function ImportWallet() {
             onFinish={(accountsCount: number) => {
               importWallet(accountsCount);
               setShowAccountsCountModal(false);
-            }}
-          />
-        )}
-
-        {showScanner && (
-          <QRCodeScanner
-            isOpen={showScanner}
-            onClose={() => setShowScanner(false)}
-            onReadCode={data => {
-              setSeedPhrase(data);
-              setShowScanner(false);
             }}
           />
         )}
