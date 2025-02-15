@@ -1,17 +1,25 @@
 import { useNavigation } from '@react-navigation/native';
-import { generate } from 'random-words';
 import React, { useCallback, useEffect, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import ReactNativeBiometrics from 'react-native-biometrics';
 import { useModal } from 'react-native-modalfy';
-import { Button, Divider, IconButton, Switch, Text } from 'react-native-paper';
+import {
+  ActivityIndicator,
+  Button,
+  Divider,
+  IconButton,
+  Switch,
+  Text
+} from 'react-native-paper';
 import { useToast } from 'react-native-toast-notifications';
+// @ts-ignore
 import Ionicons from 'react-native-vector-icons/dist/Ionicons';
+// @ts-ignore
 import MaterialCommunityIcons from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 import { useDispatch } from 'react-redux';
+import { ethers } from '../../../patches/ethers';
 import PasswordInput from '../../components/forms/PasswordInput';
 import SeedPhraseInput from '../../components/forms/SeedPhraseInput';
-import AccountsCountModal from '../../components/modals/AccountsCountModal';
 import { useSecureStorage } from '../../hooks/useSecureStorage';
 import useWallet from '../../hooks/useWallet';
 import { initAccounts } from '../../store/reducers/Accounts';
@@ -30,16 +38,14 @@ function ImportWallet() {
   const { openModal } = useModal();
 
   const [seedPhrase, setSeedPhrase] = useState('');
-  const [suggestion, setSuggestion] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isBiometricsEnabled, setIsBiometricsEnabled] = useState(false);
-  const [showAccountsCountModal, setShowAccountsCountModal] = useState(false);
   const [isImporting, setIsImporting] = useState(false);
   const [isBiometricsAvailable, setIsBiometricsAvailable] = useState(false);
 
   function isValidMnemonic(seedPhrase: string) {
-    return true;
+    return ethers.Mnemonic.isValidMnemonic(seedPhrase);
   }
 
   const renderSeedPhraseError = useCallback(() => {
@@ -52,60 +58,60 @@ function ImportWallet() {
     }
   }, [seedPhrase]);
 
-  const validateInput = () => {
+  const isInputValid = (): boolean => {
     // input validation
     if (!isValidMnemonic(seedPhrase)) {
       toast.show('Invalid Seed Phrase', {
         type: 'danger'
       });
-      return;
+      return false;
     }
     if (!password) {
       toast.show('Password cannot be empty!', {
         type: 'danger'
       });
-      return;
+      return false;
     }
 
     if (password.length < 8) {
       toast.show('Password must be at least 8 characters', {
         type: 'danger'
       });
-      return;
+      return false;
     }
 
     if (password !== confirmPassword) {
       toast.show('Passwords do not match!', {
         type: 'danger'
       });
-      return;
+      return false;
     }
 
-    setShowAccountsCountModal(true);
+    return true;
   };
 
-  const importWallet = async (accountsCount: number) => {
-    let wallets = [];
+  const importWallet = async () => {
+    if (isImporting) return;
+    if (!isInputValid()) return;
 
     setIsImporting(true);
 
-    for (let i = 0; i < accountsCount; i++) {
-      const wallet = await importAccount(seedPhrase, i);
+    const wallet = await importAccount(seedPhrase, 1);
 
-      wallets.push({
+    console.log('wallet: ', wallet);
+    const initWallet = [
+      {
         address: wallet.address,
         privateKey: wallet.privateKey
-      });
-    }
+      }
+    ];
 
     try {
       await saveItem('seedPhrase', seedPhrase);
-      await saveItem('accounts', wallets);
+      await saveItem('accounts', initWallet);
       await saveItem('security', { password, isBiometricsEnabled });
 
-      dispatch(
-        initAccounts(wallets.map(wallet => ({ ...wallet, isImported: false })))
-      );
+      dispatch(initAccounts([{ ...initWallet[0], isImported: false }]));
       dispatch(loginUser());
 
       // @ts-ignore
@@ -130,11 +136,6 @@ function ImportWallet() {
 
   useEffect(() => {
     (async () => {
-      // set suggested password
-      setSuggestion(
-        generate({ exactly: 2, join: '', minLength: 4, maxLength: 5 })
-      );
-
       // check biometrics availability
       const rnBiometrics = new ReactNativeBiometrics();
 
@@ -187,14 +188,12 @@ function ImportWallet() {
           <PasswordInput
             label="New Password"
             value={password}
-            suggestion={suggestion}
             infoText={password.length < 8 && 'Must be at least 8 characters'}
             onChange={setPassword}
           />
           <PasswordInput
             label="Confirm New Password"
             value={confirmPassword}
-            suggestion={suggestion}
             infoText={
               password &&
               confirmPassword &&
@@ -221,25 +220,10 @@ function ImportWallet() {
 
           <Divider style={{ marginVertical: 16 }} />
 
-          <Button
-            mode="contained"
-            loading={isImporting}
-            onPress={validateInput}
-          >
-            Import
+          <Button mode="contained" onPress={importWallet}>
+            {isImporting ? <ActivityIndicator color="white" /> : 'Import'}
           </Button>
         </View>
-
-        {showAccountsCountModal && (
-          <AccountsCountModal
-            isVisible={showAccountsCountModal}
-            onClose={() => setShowAccountsCountModal(false)}
-            onFinish={(accountsCount: number) => {
-              importWallet(accountsCount);
-              setShowAccountsCountModal(false);
-            }}
-          />
-        )}
       </ScrollView>
     </View>
   );
