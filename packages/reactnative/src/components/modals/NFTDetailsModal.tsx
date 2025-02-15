@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import { Address } from 'abitype';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
 import { IconButton, Modal, Portal, Text } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
@@ -8,6 +8,7 @@ import useAccount from '../../hooks/scaffold-eth/useAccount';
 import useNetwork from '../../hooks/scaffold-eth/useNetwork';
 import { removeNFT } from '../../store/reducers/NFTs';
 import { COLORS } from '../../utils/constants';
+import { parseIPFS } from '../../utils/helperFunctions';
 import { WINDOW_WIDTH } from '../../utils/styles';
 import Button from '../Button';
 
@@ -37,6 +38,8 @@ export default function NFTDetailsModal({
   const network = useNetwork();
   const account = useAccount();
 
+  const [image, setImage] = useState('');
+
   const send = () => {
     closeModal();
     onSend();
@@ -53,14 +56,40 @@ export default function NFTDetailsModal({
       })
     );
   };
+
+  useEffect(() => {
+    const fetchImage = async () => {
+      try {
+        const _nftURI = parseIPFS(nft.uri);
+        const _nft = await (await fetch(_nftURI)).json();
+
+        if (_nft) {
+          const imageURI = _nft.image.replace(
+            'https://ipfs.io/ipfs/',
+            'https://api.universalprofile.cloud/ipfs/'
+          );
+
+          setImage(imageURI);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchImage();
+  }, [nft]);
+
+  console.log(image);
+
   return (
     <Pressable onPress={closeModal} style={styles.container}>
       <View style={styles.nftImageContainer}>
-        <Image
-          source={require('../../assets/images/nft.webp')}
-          style={styles.nftImage}
-          resizeMode="cover"
-        />
+        {image && (
+          <Image
+            source={{ uri: image }}
+            style={styles.nftImage}
+            resizeMode="cover"
+          />
+        )}
       </View>
 
       <View style={styles.nftInfoContainer}>
