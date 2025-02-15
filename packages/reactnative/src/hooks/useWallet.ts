@@ -95,13 +95,13 @@ export default function useWallet() {
 
   function importWallet(_mnemonic: string, _index: number) {
     const hdnode = ethers.HDNodeWallet.fromPhrase(
-      mnemonic,
+      _mnemonic,
       undefined,
       `m/44'/60'/0'/0/${_index}`
     );
 
     return {
-      mnemonic,
+      mnemonic: _mnemonic,
       address: hdnode.address,
       privateKey: hdnode.privateKey
     };
