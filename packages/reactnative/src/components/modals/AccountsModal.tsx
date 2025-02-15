@@ -1,8 +1,15 @@
 import React, { useState } from 'react';
-import { Dimensions, ScrollView, StyleSheet, View } from 'react-native';
+import {
+  Dimensions,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  View
+} from 'react-native';
 import { Divider, IconButton, Modal, Portal, Text } from 'react-native-paper';
 import { useToast } from 'react-native-toast-notifications';
 import { useDispatch, useSelector } from 'react-redux';
+import useAccount from '../../hooks/scaffold-eth/useAccount';
 import { useSecureStorage } from '../../hooks/useSecureStorage';
 import useWallet from '../../hooks/useWallet';
 import {
@@ -10,6 +17,7 @@ import {
   addAccount,
   switchAccount
 } from '../../store/reducers/Accounts';
+import { Wallet } from '../../types/wallet';
 import { COLORS } from '../../utils/constants';
 import { truncateAddress } from '../../utils/helperFunctions';
 import { FONT_SIZE } from '../../utils/styles';
@@ -33,10 +41,8 @@ export default function AccountsModal({
   const { importWallet } = useWallet();
   const { getItem, saveItem } = useSecureStorage();
 
-  const accounts: Account[] = useSelector(state => state.accounts);
-  const connectedAccount: Account = useSelector(state =>
-    state.accounts.find((account: Account) => account.isConnected)
-  );
+  const accounts: Account[] = useSelector((state: any) => state.accounts);
+  const connectedAccount = useAccount();
 
   const [showImportAccountModal, setShowImportAccountModal] = useState(false);
 
@@ -48,11 +54,11 @@ export default function AccountsModal({
   };
 
   const createAccount = async () => {
-    const mnemonic = (await getItem('mnemonic')) as string;
+    const mnemonic = (await getItem('seedPhrase')) as string;
     let newAccount;
 
     for (let i = 0; i < Infinity; i++) {
-      const wallet = await importWallet(mnemonic, i);
+      const wallet = importWallet(mnemonic, i);
 
       if (!accounts.find(account => account.address == wallet.address)) {
         newAccount = {
@@ -68,7 +74,7 @@ export default function AccountsModal({
       return;
     }
 
-    const createdAccounts = await getItem('accounts');
+    const createdAccounts = (await getItem('accounts')) as Wallet[];
     await saveItem(
       'accounts',
       JSON.stringify([
@@ -98,12 +104,13 @@ export default function AccountsModal({
 
         <ScrollView style={styles.scrollView}>
           {accounts.map((account, index) => (
-            <View
+            <Pressable
               key={account.address}
               style={[
                 styles.accountItem,
                 index !== accounts.length - 1 && styles.accountDivider
               ]}
+              onPress={() => handleAccountSelection(account.address)}
             >
               <View style={styles.accountInfo}>
                 <Blockie address={account.address} size={1.7 * FONT_SIZE.xl} />
@@ -121,7 +128,7 @@ export default function AccountsModal({
                   size={24}
                 />
               )}
-            </View>
+            </Pressable>
           ))}
         </ScrollView>
 

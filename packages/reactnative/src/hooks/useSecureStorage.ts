@@ -60,7 +60,13 @@ export function useSecureStorage(): UseSecureStorageReturn {
       setLoading(true);
       setError(null);
       const value = await EncryptedStorage.getItem(key);
-      return value ? (JSON.parse(value) as T) : null;
+      if (!value) return null; // Prevent JSON.parse(null) error
+
+      try {
+        return JSON.parse(value) as T; // Attempt to parse JSON
+      } catch {
+        return value as T; // Return as a plain string if parsing fails
+      }
     } catch (err) {
       setError((err as Error).message || 'Failed to retrieve item.');
       console.error('useSecureStorage getItem error:', err);
