@@ -98,19 +98,17 @@ function ImportWallet() {
 
     const wallet = importWallet(seedPhrase, 0);
 
-    const initWallet = [
-      {
-        address: wallet.address,
-        privateKey: wallet.privateKey
-      }
-    ];
+    const initWallet = {
+      address: wallet.address,
+      privateKey: wallet.privateKey
+    };
 
     try {
       await saveItem('seedPhrase', seedPhrase);
-      await saveItem('accounts', initWallet);
+      await saveItem('accounts', [initWallet]);
       await saveItem('security', { password, isBiometricsEnabled });
 
-      dispatch(initAccounts([{ ...initWallet[0], isImported: false }]));
+      dispatch(initAccounts([{ ...initWallet, isImported: false }]));
       dispatch(loginUser());
 
       // @ts-ignore

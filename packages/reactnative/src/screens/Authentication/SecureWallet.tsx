@@ -84,7 +84,7 @@ export default function SecureWallet({}: Props) {
 
           <Button
             mode="contained"
-            onPress={() => navigation.navigate('GenerateSeedPhrase')}
+            onPress={() => navigation.navigate('CreateWallet')}
           >
             Start
           </Button>

@@ -3,11 +3,14 @@ import { BlurView } from '@react-native-community/blur';
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, ScrollView, StyleSheet, View } from 'react-native';
-import { Button, Divider, IconButton, Text } from 'react-native-paper';
+import { Button, Divider, Text } from 'react-native-paper';
 import { useToast } from 'react-native-toast-notifications';
+import { useDispatch } from 'react-redux';
 import ProgressIndicatorHeader from '../../components/headers/ProgressIndicatorHeader';
 import { useSecureStorage } from '../../hooks/useSecureStorage';
 import useWallet from '../../hooks/useWallet';
+import { initAccounts } from '../../store/reducers/Accounts';
+import { loginUser } from '../../store/reducers/Auth';
 import { COLORS } from '../../utils/constants';
 import { FONT_SIZE } from '../../utils/styles';
 
@@ -19,7 +22,7 @@ interface Wallet {
 
 type Props = {};
 
-export default function GenerateSeedPhrase({}: Props) {
+export default function CreateWallet({}: Props) {
   const navigation = useNavigation();
   const toast = useToast();
   const { createWallet } = useWallet();
@@ -27,6 +30,7 @@ export default function GenerateSeedPhrase({}: Props) {
   const [showSeedPhrase, setShowSeedPhrase] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const { saveItem } = useSecureStorage();
+  const dispatch = useDispatch();
 
   const copySeedPhrase = () => {
     if (!wallet) {
@@ -42,22 +46,36 @@ export default function GenerateSeedPhrase({}: Props) {
 
   const saveWallet = async () => {
     if (!wallet || !showSeedPhrase) {
-      toast.show('Reveal your seed phrase before proceeding to the next step', {
-        type: 'warning'
-      });
+      toast.show(
+        "You haven't even seen your seed phrase. Do you want to lose your funds?🤨",
+        {
+          type: 'warning'
+        }
+      );
       return;
     }
     try {
       await saveItem('seedPhrase', wallet.mnemonic);
-      navigation.navigate('ConfirmSeedPhrase');
+
+      const initWallet = {
+        address: wallet.address,
+        privateKey: wallet.privateKey
+      };
+
+      await saveItem('accounts', [initWallet]);
+
+      dispatch(initAccounts([{ ...initWallet, isImported: false }]));
+      dispatch(loginUser());
+      //@ts-ignore
+      navigation.navigate('Main');
     } catch (error) {
       return;
     }
   };
 
   const generateNewWallet = () => {
-    setTimeout(async () => {
-      const wallet = await createWallet();
+    setTimeout(() => {
+      const wallet = createWallet();
       setWallet(wallet);
       setIsLoading(false);
     }, 100);
@@ -79,8 +97,7 @@ export default function GenerateSeedPhrase({}: Props) {
         </Text>
         <Text variant="bodyLarge" style={styles.subtitle}>
           This is your seed phrase. Write it down on a piece of paper and keep
-          it in a safe place. You'll be asked to re-enter this phrase (in order)
-          on the next step.
+          it in a safe place.
         </Text>
 
         <Divider style={{ marginVertical: 16 }} />
