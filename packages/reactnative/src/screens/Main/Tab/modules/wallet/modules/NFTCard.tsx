@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { Address } from 'abitype';
 import React, { useEffect, useState } from 'react';
-import { Image, Pressable, StyleSheet } from 'react-native';
+import { Image, Pressable, StyleSheet, View } from 'react-native';
 import { useModal } from 'react-native-modalfy';
 import { parseIPFS } from '../../../../../../utils/helperFunctions';
 import { WINDOW_WIDTH } from '../../../../../../utils/styles';
@@ -29,7 +29,11 @@ export default function NFTCard({ token }: Props) {
         const _token = await (await fetch(_tokenURI)).json();
 
         if (_token) {
-          const imageURI = parseIPFS(_token.image);
+          const imageURI = _token.image.replace(
+            'https://ipfs.io/ipfs/',
+            'https://api.universalprofile.cloud/ipfs/'
+          );
+
           setImage(imageURI);
         }
       } catch (error) {
@@ -44,6 +48,7 @@ export default function NFTCard({ token }: Props) {
         openModal('NFTDetailsModal', {
           nft: token,
           onSend: () => {
+            // @ts-ignore
             navigation.navigate('NFTTokenTransfer', {
               token: {
                 address: token.address,
@@ -56,10 +61,12 @@ export default function NFTCard({ token }: Props) {
       }
       style={styles.nftImage}
     >
-      <Image
-        source={require('../../../../../../assets/images/nft.webp')}
-        style={{ width: '100%', height: '100%' }}
-      />
+      {image && (
+        <Image
+          source={{ uri: image }}
+          style={{ width: '100%', height: '100%' }}
+        />
+      )}
     </Pressable>
   );
 }

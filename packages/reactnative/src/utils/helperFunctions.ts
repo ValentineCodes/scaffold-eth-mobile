@@ -128,7 +128,7 @@ export const isENS = (name = '') =>
   name.endsWith('.eth') || name.endsWith('.xyz');
 
 export const parseIPFS = (uri: string) => {
-  return uri.replace('ipfs://', 'https://ipfs.io/ipfs/');
+  return uri.replace('ipfs://', 'https://api.universalprofile.cloud/ipfs/');
 };
 
 export const parseBalance = (value: bigint, decimals: number = 18): string => {
