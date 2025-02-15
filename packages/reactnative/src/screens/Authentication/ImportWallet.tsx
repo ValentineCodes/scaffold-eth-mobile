@@ -33,7 +33,7 @@ function ImportWallet() {
   const dispatch = useDispatch();
   const toast = useToast();
   const { saveItem } = useSecureStorage();
-  const { importWallet: importAccount } = useWallet();
+  const { importWallet } = useWallet();
 
   const { openModal } = useModal();
 
@@ -90,15 +90,14 @@ function ImportWallet() {
     return true;
   };
 
-  const importWallet = async () => {
+  const importAccount = async () => {
     if (isImporting) return;
     if (!isInputValid()) return;
 
     setIsImporting(true);
 
-    const wallet = await importAccount(seedPhrase, 1);
+    const wallet = importWallet(seedPhrase, 0);
 
-    console.log('wallet: ', wallet);
     const initWallet = [
       {
         address: wallet.address,
@@ -220,7 +219,7 @@ function ImportWallet() {
 
           <Divider style={{ marginVertical: 16 }} />
 
-          <Button mode="contained" onPress={importWallet}>
+          <Button mode="contained" onPress={importAccount}>
             {isImporting ? <ActivityIndicator color="white" /> : 'Import'}
           </Button>
         </View>
