@@ -1,7 +1,8 @@
 import { ethers } from 'ethers';
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { IconButton, Modal, Portal, Text, TextInput } from 'react-native-paper';
+import { useModal } from 'react-native-modalfy';
+import { IconButton, Text, TextInput } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSecureStorage } from '../../hooks/useSecureStorage';
 import {
@@ -9,29 +10,25 @@ import {
   addAccount,
   switchAccount
 } from '../../store/reducers/Accounts';
+import { Wallet } from '../../types/wallet';
 import { COLORS } from '../../utils/constants';
-import { FONT_SIZE } from '../../utils/styles';
+import { FONT_SIZE, WINDOW_WIDTH } from '../../utils/styles';
 import Button from '../Button';
-import QRCodeScanner from './QRCodeScanner';
 
 type Props = {
-  isVisible: boolean;
-  onClose: () => void;
-  onImport: () => void;
+  modal: {
+    closeModal: () => void;
+  };
 };
 
-export default function ImportAccountModal({
-  isVisible,
-  onClose,
-  onImport
-}: Props) {
+export default function ImportAccountModal({ modal: { closeModal } }: Props) {
   const [privateKey, setPrivateKey] = useState('');
-  const [showScanner, setShowScanner] = useState(false);
   const [error, setError] = useState('');
 
   const { saveItem, getItem } = useSecureStorage();
   const dispatch = useDispatch();
-  const accounts: Account[] = useSelector(state => state.accounts);
+  const accounts: Account[] = useSelector((state: any) => state.accounts);
+  const { openModal } = useModal();
 
   const importWallet = async () => {
     try {
@@ -42,7 +39,7 @@ export default function ImportAccountModal({
         return;
       }
 
-      const createdAccounts = await getItem('accounts');
+      const createdAccounts = (await getItem('accounts')) as Wallet[];
       await saveItem(
         'accounts',
         JSON.stringify([
@@ -54,7 +51,7 @@ export default function ImportAccountModal({
       dispatch(addAccount({ address: wallet.address, isImported: true }));
       dispatch(switchAccount(wallet.address));
 
-      onImport();
+      closeModal();
     } catch (error) {
       setError('Invalid private key');
     }
@@ -67,77 +64,60 @@ export default function ImportAccountModal({
     }
   };
 
+  const scanPk = () => {
+    openModal('QRCodeScanner', {
+      onScan: setPrivateKey
+    });
+  };
+
   return (
-    <Portal>
-      <Modal
-        visible={isVisible}
-        onDismiss={onClose}
-        contentContainerStyle={styles.container}
-      >
-        <View style={styles.content}>
-          <IconButton
-            icon="cloud-download"
-            size={4 * FONT_SIZE.xl}
-            iconColor={COLORS.primary}
-          />
-          <Text variant="headlineMedium" style={styles.title}>
-            Import Account
+    <View style={styles.container}>
+      <IconButton
+        icon="cloud-download"
+        size={4 * FONT_SIZE.xl}
+        iconColor={COLORS.primary}
+      />
+      <Text variant="headlineMedium" style={styles.title}>
+        Import Account
+      </Text>
+      <Text variant="bodyLarge" style={styles.subtitle}>
+        Imported accounts won't be associated with your Paux Secret Recovery
+        Phrase.
+      </Text>
+
+      <View style={styles.inputContainer}>
+        <TextInput
+          value={privateKey}
+          onChangeText={handleInputChange}
+          mode="outlined"
+          secureTextEntry
+          placeholder="Enter your private key here"
+          right={
+            <TextInput.Icon
+              icon="qrcode-scan"
+              onPress={scanPk}
+              forceTextInputFocus={false}
+            />
+          }
+          error={!!error}
+        />
+        {error && (
+          <Text variant="bodySmall" style={styles.errorText}>
+            {error}
           </Text>
-          <Text variant="bodyLarge" style={styles.subtitle}>
-            Imported accounts won't be associated with your Paux Secret Recovery
-            Phrase.
-          </Text>
-
-          <View style={styles.inputContainer}>
-            <TextInput
-              value={privateKey}
-              onChangeText={handleInputChange}
-              mode="outlined"
-              secureTextEntry
-              placeholder="Enter your private key here"
-              right={
-                <TextInput.Icon
-                  icon="qrcode-scan"
-                  onPress={() => setShowScanner(true)}
-                  forceTextInputFocus={false}
-                />
-              }
-              error={!!error}
-            />
-            {error && (
-              <Text variant="bodySmall" style={styles.errorText}>
-                {error}
-              </Text>
-            )}
-          </View>
-
-          <View style={styles.buttonContainer}>
-            <Button
-              type="outline"
-              text="Cancel"
-              onPress={onClose}
-              style={styles.button}
-            />
-            <Button
-              text="Import"
-              onPress={importWallet}
-              style={styles.button}
-            />
-          </View>
-        </View>
-
-        {showScanner && (
-          <QRCodeScanner
-            isOpen={showScanner}
-            onClose={() => setShowScanner(false)}
-            onReadCode={privateKey => {
-              setPrivateKey(privateKey);
-              setShowScanner(false);
-            }}
-          />
         )}
-      </Modal>
-    </Portal>
+      </View>
+
+      <View style={styles.buttonContainer}>
+        <Button
+          type="outline"
+          text="Cancel"
+          onPress={closeModal}
+          style={styles.button}
+        />
+        <Button text="Import" onPress={importWallet} style={styles.button} />
+      </View>
+    </View>
   );
 }
 
@@ -146,11 +126,10 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 30,
     padding: 28,
-    margin: 20
-  },
-  content: {
+    margin: 20,
     alignItems: 'center',
-    gap: 16
+    gap: 16,
+    width: WINDOW_WIDTH * 0.9
   },
   title: {
     color: COLORS.primary,

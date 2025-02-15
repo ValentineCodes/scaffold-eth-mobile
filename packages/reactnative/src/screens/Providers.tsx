@@ -10,8 +10,10 @@ import { MenuProvider } from 'react-native-popup-menu';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ToastProvider } from 'react-native-toast-notifications';
 import { Provider as ReduxProvider } from 'react-redux';
+import AccountsModal from '../components/modals/AccountsModal';
 import AccountsSelectionModal from '../components/modals/AccountsSelectionModal';
 import ChangePasswordModal from '../components/modals/ChangePasswordModal';
+import ImportAccountModal from '../components/modals/ImportAccountModal';
 import ImportNFTModal from '../components/modals/ImportNFTModal';
 import ImportTokenModal from '../components/modals/ImportTokenModal';
 import NFTDetailsModal from '../components/modals/NFTDetailsModal';
@@ -52,7 +54,9 @@ const modalConfig = {
   TransferConfirmationModal,
   AccountsSelectionModal,
   NFTTransferConfirmationModal,
-  SwitchNetworkModal
+  SwitchNetworkModal,
+  ImportAccountModal,
+  AccountsModal
 };
 const defaultOptions: ModalOptions = {
   backdropOpacity: 0.6,

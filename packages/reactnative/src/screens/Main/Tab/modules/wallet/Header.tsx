@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Linking, StyleSheet, View } from 'react-native';
+import { useModal } from 'react-native-modalfy';
 import { IconButton, Text } from 'react-native-paper';
 import {
   Menu,
@@ -11,11 +12,11 @@ import Share from 'react-native-share';
 import { useToast } from 'react-native-toast-notifications';
 // @ts-ignore
 import Ionicons from 'react-native-vector-icons/dist/Ionicons';
-import { useSelector } from 'react-redux';
 import Blockie from '../../../../../components/Blockie';
 import AccountDetailsModal from '../../../../../components/modals/AccountDetailsModal';
-import AccountsModal from '../../../../../components/modals/AccountsModal';
 import SeedPhraseModal from '../../../../../components/modals/SeedPhraseModal';
+import useAccount from '../../../../../hooks/scaffold-eth/useAccount';
+import useNetwork from '../../../../../hooks/scaffold-eth/useNetwork';
 import { Account } from '../../../../../store/reducers/Accounts';
 import { Network } from '../../../../../store/reducers/Networks';
 import { FONT_SIZE, WINDOW_WIDTH } from '../../../../../utils/styles';
@@ -23,17 +24,14 @@ import { FONT_SIZE, WINDOW_WIDTH } from '../../../../../utils/styles';
 type Props = {};
 
 export default function Header({}: Props) {
-  const [isAccountModalVisible, setIsAccountModalVisible] = useState(false);
   const [showAccountDetailsModal, setShowAccountDetailsModal] = useState(false);
   const [showSeedPhraseModal, setShowSeedPhraseModal] = useState(false);
 
-  const connectedNetwork: Network = useSelector(state =>
-    state.networks.find((network: Network) => network.isConnected)
-  );
+  const { openModal } = useModal();
 
-  const connectedAccount: Account = useSelector(state =>
-    state.accounts.find((account: Account) => account.isConnected)
-  );
+  const connectedNetwork: Network = useNetwork();
+
+  const connectedAccount: Account = useAccount();
 
   const toast = useToast();
 
@@ -75,7 +73,7 @@ export default function Header({}: Props) {
         </MenuTrigger>
         <MenuOptions>
           <MenuOption
-            onSelect={() => setIsAccountModalVisible(true)}
+            onSelect={() => openModal('AccountsModal')}
             style={styles.menuOption}
           >
             <IconButton
@@ -155,12 +153,6 @@ export default function Header({}: Props) {
           )}
         </MenuOptions>
       </Menu>
-
-      <AccountsModal
-        isVisible={isAccountModalVisible}
-        setVisibility={setIsAccountModalVisible}
-        onClose={() => setIsAccountModalVisible(false)}
-      />
 
       {showSeedPhraseModal && (
         <SeedPhraseModal
