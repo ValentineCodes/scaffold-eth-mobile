@@ -3,9 +3,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Token } from '../store/reducers/Tokens';
-import ConfirmSeedPhrase from './Authentication/ConfirmSeedPhrase';
 import CreatePassword from './Authentication/CreatePassword';
-import GenerateSeedPhrase from './Authentication/GenerateSeedPhrase';
+import CreateWallet from './Authentication/CreateWallet';
 import ImportWallet from './Authentication/ImportWallet';
 import Login from './Authentication/Login';
 import Onboarding from './Authentication/Onboarding';
@@ -23,9 +22,8 @@ type AppStackParamsList = {
   Onboarding: undefined;
   WalletSetup: undefined;
   ImportWallet: undefined;
-  GenerateSeedPhrase: undefined;
+  CreateWallet: undefined;
   SecureWallet: undefined;
-  ConfirmSeedPhrase: undefined;
   CreatePassword: undefined;
   Login: undefined;
   Main: undefined;
@@ -64,14 +62,7 @@ export default function Navigation({}: Props) {
             <AppStack.Screen name="WalletSetup" component={WalletSetup} />
             <AppStack.Screen name="ImportWallet" component={ImportWallet} />
             <AppStack.Screen name="SecureWallet" component={SecureWallet} />
-            <AppStack.Screen
-              name="GenerateSeedPhrase"
-              component={GenerateSeedPhrase}
-            />
-            <AppStack.Screen
-              name="ConfirmSeedPhrase"
-              component={ConfirmSeedPhrase}
-            />
+            <AppStack.Screen name="CreateWallet" component={CreateWallet} />
             <AppStack.Screen name="CreatePassword" component={CreatePassword} />
           </>
         )}
