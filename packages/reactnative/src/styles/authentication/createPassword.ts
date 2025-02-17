@@ -21,9 +21,8 @@ export default StyleSheet.create({
   title: {
     textAlign: 'center',
     color: COLORS.primary,
-    fontSize: 1.7 * FONT_SIZE['xl'],
-    fontWeight: 'bold',
-    ...globalStyles.text
+    fontSize: 1.5 * FONT_SIZE['xl'],
+    ...globalStyles.textSemiBold
   },
   subtitle: {
     textAlign: 'center',

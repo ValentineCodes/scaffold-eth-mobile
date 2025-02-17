@@ -20,7 +20,7 @@ const ProgressIndicatorHeader = ({ progress }: Props) => {
         }}
       >
         <ProgressStepIndicator
-          steps={3}
+          steps={2}
           progress={progress}
           width={WINDOW_WIDTH * 0.5}
           size={WINDOW_WIDTH * 0.04}

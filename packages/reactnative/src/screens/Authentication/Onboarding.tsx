@@ -84,9 +84,8 @@ const styles = StyleSheet.create({
   title: {
     textAlign: 'center',
     color: COLORS.primary,
-    fontSize: 2 * FONT_SIZE['xl'],
-    fontWeight: 'bold',
-    ...globalStyles.text
+    fontSize: FONT_SIZE['xl'] * 1.8,
+    ...globalStyles.textBold
   },
   subtitle: {
     textAlign: 'center',

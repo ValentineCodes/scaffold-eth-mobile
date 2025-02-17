@@ -18,7 +18,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     gap: 8
   },
-  headerTitle: { fontWeight: 'bold', ...globalStyles.text },
+  headerTitle: { ...globalStyles.textSemiBold },
   content: {
     marginTop: 24,
     marginBottom: 50,
@@ -28,7 +28,12 @@ export default StyleSheet.create({
   biometricsContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    marginVertical: 10
+  },
+  biometricsTitle: {
+    ...globalStyles.text,
+    fontSize: FONT_SIZE['xl']
   },
   button: {
     paddingVertical: 5

@@ -73,8 +73,7 @@ export default function SeedPhraseInput({
 const styles = StyleSheet.create({
   label: {
     fontSize: FONT_SIZE['xl'],
-    fontWeight: 'bold',
-    ...globalStyles.text
+    ...globalStyles.textSemiBold
   },
   inputContainer: { flexDirection: 'row', alignItems: 'center' },
   inputContent: {

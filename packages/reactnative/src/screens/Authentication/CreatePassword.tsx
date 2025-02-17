@@ -9,7 +9,6 @@ import ProgressIndicatorHeader from '../../components/headers/ProgressIndicatorH
 import { useSecureStorage } from '../../hooks/useSecureStorage';
 import styles from '../../styles/authentication/createPassword';
 import { COLORS } from '../../utils/constants';
-import { FONT_SIZE } from '../../utils/styles';
 
 type Props = {};
 
@@ -104,6 +103,7 @@ function CreatePassword({}: Props) {
             value={password}
             infoText={password.length < 8 && 'Must be at least 8 characters'}
             onChange={setPassword}
+            onSubmit={createPassword}
           />
           <PasswordInput
             label="Confirm New Password"
@@ -115,6 +115,7 @@ function CreatePassword({}: Props) {
               'Password must match'
             }
             onChange={setConfirmPassword}
+            onSubmit={createPassword}
           />
 
           {isBiometricsAvailable && (

@@ -17,5 +17,11 @@ export default StyleSheet.create({
   },
   textBold: {
     fontFamily: 'Poppins-Bold'
+  },
+  textBlack: {
+    fontFamily: 'Poppins-Black'
+  },
+  textSemiBold: {
+    fontFamily: 'Poppins-SemiBold'
   }
 });
