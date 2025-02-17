@@ -29,8 +29,8 @@ export default function AccountsSelectionModal({
   const accounts: Account[] = useSelector((state: any) => state.accounts);
 
   const handleSelection = (account: Account) => {
-    onSelect(account);
     closeModal();
+    onSelect(account);
   };
   return (
     <View

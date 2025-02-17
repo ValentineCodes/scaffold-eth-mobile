@@ -40,15 +40,15 @@ export default function NetworkTokenTransfer() {
 
   const dispatch = useDispatch();
 
-  const { balance } = useBalance({
-    address: account.address
-  });
-
   const [gasCost, setGasCost] = useState<bigint | null>(null);
 
   const [sender, setSender] = useState<Account>(account);
   const [recipient, setRecipient] = useState('');
   const [amount, setAmount] = useState('');
+
+  const { balance } = useBalance({
+    address: sender.address
+  });
 
   const { getItem } = useSecureStorage();
 
@@ -154,7 +154,7 @@ export default function NetworkTokenTransfer() {
       provider.off('block');
       backHandler.remove();
     };
-  }, [sender]);
+  }, []);
 
   if (!isFocused) return;
 
