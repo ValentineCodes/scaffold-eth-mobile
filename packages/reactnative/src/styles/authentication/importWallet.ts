@@ -1,9 +1,11 @@
 import { StyleSheet } from 'react-native';
+import { FONT_SIZE } from '../../utils/styles';
+import globalStyles from '../globalStyles';
 
 export default StyleSheet.create({
   container: {
     flex: 1,
-    padding: 15,
+    paddingVertical: 10,
     backgroundColor: 'white'
   },
   header: {
@@ -16,19 +18,24 @@ export default StyleSheet.create({
     alignItems: 'center',
     gap: 8
   },
+  headerTitle: { fontWeight: 'bold', ...globalStyles.text },
   content: {
     marginTop: 24,
     marginBottom: 50,
-    gap: 24
+    gap: 24,
+    paddingHorizontal: 10
   },
   biometricsContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between'
   },
-  navBtn: {
-    position: 'absolute',
-    top: 15,
-    left: 15
+  button: {
+    paddingVertical: 5
+  },
+  buttonText: {
+    fontSize: FONT_SIZE['lg'],
+    color: 'white',
+    ...globalStyles.text
   }
 });

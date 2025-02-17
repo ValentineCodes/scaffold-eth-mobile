@@ -1,17 +1,11 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import {
-  Dimensions,
-  Image,
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-  View
-} from 'react-native';
-import { Button, IconButton, Text } from 'react-native-paper';
-import Ionicons from 'react-native-vector-icons/dist/Ionicons';
+import { Image, ScrollView, StyleSheet, View } from 'react-native';
+import { Button, Text } from 'react-native-paper';
+import BackButton from '../../components/buttons/BackButton';
+import globalStyles from '../../styles/globalStyles';
 import { COLORS } from '../../utils/constants';
-import { FONT_SIZE } from '../../utils/styles';
+import { FONT_SIZE, WINDOW_WIDTH } from '../../utils/styles';
 
 type Props = {};
 
@@ -19,29 +13,15 @@ export default function WalletSetup({}: Props) {
   const navigation = useNavigation();
   return (
     <ScrollView
-      contentContainerStyle={{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
-      }}
+      contentContainerStyle={styles.scrollViewContentContainer}
       style={styles.container}
     >
-      <IconButton
-        icon={() => (
-          <Ionicons
-            name="arrow-back-outline"
-            size={1.3 * FONT_SIZE['xl']}
-            color="black"
-          />
-        )}
-        onPress={() => navigation.goBack()}
-        style={styles.navBtn}
-      />
+      <BackButton style={styles.navBtn} />
       <Image
         source={require('../../assets/icons/wallet_icon.png')}
         style={{
-          width: Dimensions.get('window').height * 0.3,
-          height: Dimensions.get('window').height * 0.3
+          width: WINDOW_WIDTH * 0.5,
+          height: WINDOW_WIDTH * 0.5
         }}
       />
 
@@ -58,6 +38,7 @@ export default function WalletSetup({}: Props) {
           mode="contained"
           onPress={() => navigation.navigate('CreatePassword')}
           style={styles.createButton}
+          labelStyle={[styles.buttonText, { color: 'white' }]}
         >
           Create a New Wallet
         </Button>
@@ -65,6 +46,7 @@ export default function WalletSetup({}: Props) {
           mode="outlined"
           onPress={() => navigation.navigate('ImportWallet')}
           style={styles.importButton}
+          labelStyle={styles.buttonText}
         >
           Import Using Seed Phrase
         </Button>
@@ -74,14 +56,19 @@ export default function WalletSetup({}: Props) {
 }
 
 const styles = StyleSheet.create({
+  scrollViewContentContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
   container: {
     paddingHorizontal: 15,
     backgroundColor: 'white'
   },
   navBtn: {
     position: 'absolute',
-    top: 15,
-    left: 15
+    top: 10,
+    left: 0
   },
   content: {
     width: '100%',
@@ -92,16 +79,26 @@ const styles = StyleSheet.create({
     color: COLORS.primary,
     fontSize: 2 * FONT_SIZE['xl'],
     fontWeight: 'bold',
-    marginTop: 40
+    marginTop: 40,
+    ...globalStyles.text
   },
   subtitle: {
     textAlign: 'center',
-    marginVertical: 16
+    fontSize: FONT_SIZE['md'],
+    marginVertical: 16,
+    ...globalStyles.text
   },
   createButton: {
-    marginTop: 40
+    marginTop: 40,
+    paddingVertical: 5
   },
   importButton: {
-    marginTop: 20
+    marginTop: 20,
+    paddingVertical: 5,
+    borderColor: COLORS.primary
+  },
+  buttonText: {
+    fontSize: FONT_SIZE['lg'],
+    ...globalStyles.text
   }
 });

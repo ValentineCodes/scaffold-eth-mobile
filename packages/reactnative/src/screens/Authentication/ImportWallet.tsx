@@ -18,6 +18,8 @@ import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 import { useDispatch } from 'react-redux';
 import { ethers } from '../../../patches/ethers';
+import BackButton from '../../components/buttons/BackButton';
+import ScanButton from '../../components/buttons/ScanButton';
 import PasswordInput from '../../components/forms/PasswordInput';
 import SeedPhraseInput from '../../components/forms/SeedPhraseInput';
 import { useSecureStorage } from '../../hooks/useSecureStorage';
@@ -125,12 +127,6 @@ function ImportWallet() {
     }
   };
 
-  const scanSeedPhrase = () => {
-    openModal('QRCodeScanner', {
-      onScan: setSeedPhrase
-    });
-  };
-
   useEffect(() => {
     (async () => {
       // check biometrics availability
@@ -148,31 +144,13 @@ function ImportWallet() {
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.headerLeft}>
-          <IconButton
-            icon={() => (
-              <Ionicons
-                name="arrow-back-outline"
-                size={1.3 * FONT_SIZE['xl']}
-                color="black"
-              />
-            )}
-            onPress={() => navigation.goBack()}
-          />
-          <Text variant="titleLarge" style={{ fontWeight: 'bold' }}>
+          <BackButton />
+          <Text variant="titleLarge" style={styles.headerTitle}>
             Import From Seed
           </Text>
         </View>
 
-        <IconButton
-          icon={() => (
-            <MaterialCommunityIcons
-              name="qrcode-scan"
-              size={1.3 * FONT_SIZE['xl']}
-              color="black"
-            />
-          )}
-          onPress={scanSeedPhrase}
-        />
+        <ScanButton onScan={setSeedPhrase} />
       </View>
 
       <ScrollView style={{ flex: 1 }}>
@@ -180,6 +158,7 @@ function ImportWallet() {
           <SeedPhraseInput
             value={seedPhrase}
             onChange={setSeedPhrase}
+            onSubmit={importAccount}
             errorText={renderSeedPhraseError()}
           />
           <PasswordInput
@@ -187,6 +166,7 @@ function ImportWallet() {
             value={password}
             infoText={password.length < 8 && 'Must be at least 8 characters'}
             onChange={setPassword}
+            onSubmit={importAccount}
           />
           <PasswordInput
             label="Confirm New Password"
@@ -198,6 +178,7 @@ function ImportWallet() {
               'Password must match'
             }
             onChange={setConfirmPassword}
+            onSubmit={importAccount}
           />
 
           {isBiometricsAvailable && (
@@ -217,7 +198,12 @@ function ImportWallet() {
 
           <Divider style={{ marginVertical: 16 }} />
 
-          <Button mode="contained" onPress={importAccount}>
+          <Button
+            mode="contained"
+            onPress={importAccount}
+            style={styles.button}
+            labelStyle={styles.buttonText}
+          >
             {isImporting ? <ActivityIndicator color="white" /> : 'Import'}
           </Button>
         </View>

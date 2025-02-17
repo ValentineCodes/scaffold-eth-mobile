@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
-import { TouchableOpacity, View } from 'react-native';
-import { IconButton, Text, TextInput } from 'react-native-paper';
+import { StyleSheet, View } from 'react-native';
+import { Text, TextInput } from 'react-native-paper';
+// @ts-ignore
+import Ionicons from 'react-native-vector-icons/dist/Ionicons';
+import globalStyles from '../../styles/globalStyles';
 import { COLORS } from '../../utils/constants';
 import { FONT_SIZE } from '../../utils/styles';
 
@@ -9,6 +12,7 @@ type Props = {
   infoText?: string | null;
   errorText?: string | null;
   onChange: (value: string) => void;
+  onSubmit?: () => void;
   onBlur?: () => void;
 };
 
@@ -17,71 +21,78 @@ export default function SeedPhraseInput({
   infoText,
   errorText,
   onChange,
+  onSubmit,
   onBlur
 }: Props) {
   const [show, setShow] = useState(false);
   return (
     <View style={{ gap: 8 }}>
-      <Text style={{ fontSize: FONT_SIZE['xl'], fontWeight: 'bold' }}>
-        Seed Phrase
-      </Text>
-      <TextInput
-        mode="outlined"
-        style={{
-          borderRadius: 8,
-          paddingTop: 16,
-          paddingLeft: 16,
-          paddingRight: 80,
-          paddingBottom: 48,
-          fontSize: 16
-        }}
-        outlineColor={COLORS.primary}
-        activeOutlineColor={COLORS.primary}
-        value={value}
-        right={
-          <View
-            style={{
-              flexDirection: 'row',
-              gap: 4,
-              position: 'absolute',
-              right: 8,
-              top: 20
-            }}
-          >
-            {value && (
-              <TouchableOpacity
-                activeOpacity={0.4}
-                onPress={() => onChange('')}
-              >
-                <IconButton icon="close" size={20} iconColor="#a3a3a3" />
-              </TouchableOpacity>
-            )}
-            <TouchableOpacity
-              activeOpacity={0.4}
-              onPress={() => setShow(!show)}
-            >
-              <IconButton
-                icon={show ? 'eye' : 'eye-off'}
-                size={20}
-                iconColor="#a3a3a3"
-              />
-            </TouchableOpacity>
-          </View>
-        }
-        secureTextEntry={!show}
-        multiline={show}
-        placeholder="Seed Phrase"
-        onChangeText={onChange}
-        onBlur={onBlur}
-        selectionColor={COLORS.primary}
-        cursorColor="#303030"
-      />
-      {infoText ? (
-        <Text style={{ fontSize: 14, color: '#a3a3a3' }}>{infoText}</Text>
-      ) : null}
-      {errorText ? (
-        <Text style={{ fontSize: 14, color: '#ef4444' }}>{errorText}</Text>
-      ) : null}
+      <Text style={styles.label}>Seed Phrase</Text>
+
+      <View style={styles.inputContainer}>
+        <TextInput
+          mode="outlined"
+          style={{ flex: 1, paddingRight: 55, paddingVertical: 5 }}
+          contentStyle={styles.inputContent}
+          outlineColor={COLORS.primary}
+          activeOutlineColor={COLORS.primary}
+          value={value}
+          secureTextEntry={!show}
+          multiline={show}
+          placeholder="Seed Phrase"
+          onChangeText={onChange}
+          onSubmitEditing={onSubmit}
+          onBlur={onBlur}
+          selectionColor={COLORS.primary}
+          cursorColor="#303030"
+        />
+        <View style={styles.actionIconsContainer}>
+          {value && (
+            <Ionicons
+              name="close"
+              color="#a3a3a3"
+              size={FONT_SIZE['xl'] * 1.3}
+              onPress={() => onChange('')}
+            />
+          )}
+          <Ionicons
+            name={show ? 'eye' : 'eye-off'}
+            color="#a3a3a3"
+            size={FONT_SIZE['xl'] * 1.3}
+            onPress={() => setShow(!show)}
+          />
+        </View>
+      </View>
+
+      {infoText ? <Text style={styles.infoText}>{infoText}</Text> : null}
+      {errorText ? <Text style={styles.errorText}>{errorText}</Text> : null}
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  label: {
+    fontSize: FONT_SIZE['xl'],
+    fontWeight: 'bold',
+    ...globalStyles.text
+  },
+  inputContainer: { flexDirection: 'row', alignItems: 'center' },
+  inputContent: {
+    fontSize: FONT_SIZE['lg'],
+    ...globalStyles.text
+  },
+  actionIconsContainer: {
+    flexDirection: 'row',
+    gap: 5,
+    position: 'absolute',
+    right: 10
+  },
+  infoText: {
+    color: '#a3a3a3',
+    ...globalStyles.text
+  },
+  errorText: {
+    color: '#ef4444',
+    ...globalStyles.text
+  }
+});
