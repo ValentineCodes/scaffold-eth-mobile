@@ -14,5 +14,8 @@ export default StyleSheet.create({
   },
   text: {
     fontFamily: 'Poppins-Regular'
+  },
+  textBold: {
+    fontFamily: 'Poppins-Bold'
   }
 });

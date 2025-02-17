@@ -2,20 +2,14 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useEffect, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import ReactNativeBiometrics from 'react-native-biometrics';
-import { useModal } from 'react-native-modalfy';
 import {
   ActivityIndicator,
   Button,
   Divider,
-  IconButton,
   Switch,
   Text
 } from 'react-native-paper';
 import { useToast } from 'react-native-toast-notifications';
-// @ts-ignore
-import Ionicons from 'react-native-vector-icons/dist/Ionicons';
-// @ts-ignore
-import MaterialCommunityIcons from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 import { useDispatch } from 'react-redux';
 import { ethers } from '../../../patches/ethers';
 import BackButton from '../../components/buttons/BackButton';
@@ -28,7 +22,6 @@ import { initAccounts } from '../../store/reducers/Accounts';
 import { loginUser } from '../../store/reducers/Auth';
 import styles from '../../styles/authentication/importWallet';
 import { COLORS } from '../../utils/constants';
-import { FONT_SIZE } from '../../utils/styles';
 
 function ImportWallet() {
   const navigation = useNavigation();
@@ -36,8 +29,6 @@ function ImportWallet() {
   const toast = useToast();
   const { saveItem } = useSecureStorage();
   const { importWallet } = useWallet();
-
-  const { openModal } = useModal();
 
   const [seedPhrase, setSeedPhrase] = useState('');
   const [password, setPassword] = useState('');

@@ -7,6 +7,7 @@ import { Switch, Text } from 'react-native-paper';
 import { useToast } from 'react-native-toast-notifications';
 import useNetwork from '../../../hooks/scaffold-eth/useNetwork';
 import { useSecureStorage } from '../../../hooks/useSecureStorage';
+import { Security } from '../../../types/security';
 import { COLORS } from '../../../utils/constants';
 import { FONT_SIZE } from '../../../utils/styles';
 
@@ -40,7 +41,7 @@ export default function Settings({}: Props) {
           });
 
           if (response.success) {
-            const security = await getItem('security');
+            const security = (await getItem('security')) as Security;
             await saveItem('security', { ...security, isBiometricsEnabled });
             setIsBiometricsEnabled(isBiometricsEnabled);
           }
