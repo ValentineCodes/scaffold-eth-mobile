@@ -11,5 +11,8 @@ export default StyleSheet.create({
   scanIcon: {
     width: DEVICE_WIDTH * 0.07,
     aspectRatio: 1
+  },
+  text: {
+    fontFamily: 'Poppins-Regular'
   }
 });

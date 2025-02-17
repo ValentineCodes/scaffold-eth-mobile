@@ -9,6 +9,7 @@ import {
   View
 } from 'react-native';
 import { Button, Text } from 'react-native-paper';
+import globalStyles from '../../styles/globalStyles';
 import { COLORS } from '../../utils/constants';
 import { FONT_SIZE, WINDOW_WIDTH } from '../../utils/styles';
 
@@ -56,15 +57,24 @@ export default function Onboarding({}: Props) {
         }}
       />
       <View style={styles.content}>
-        <Text variant="headlineLarge" style={styles.title}>
+        <Text variant="headlineLarge" style={[styles.title, globalStyles.text]}>
           Welcome to Scaffold-ETH
         </Text>
-        <Text variant="bodyLarge" style={styles.subtitle}>
+        <Text variant="bodyLarge" style={[styles.subtitle, globalStyles.text]}>
           First, we'll need to setup a wallet. This will be unique to you and
           will be used to sign transactions, messages, and manage funds
         </Text>
 
-        <Button mode="contained" onPress={handleNav} style={styles.button}>
+        <Button
+          mode="contained"
+          onPress={handleNav}
+          style={styles.button}
+          labelStyle={{
+            color: 'white',
+            fontSize: FONT_SIZE['lg'],
+            ...globalStyles.text
+          }}
+        >
           Get Started
         </Button>
       </View>
@@ -93,7 +103,8 @@ const styles = StyleSheet.create({
     marginVertical: 16
   },
   button: {
-    marginTop: 40,
-    marginBottom: 50
+    marginTop: 20,
+    marginBottom: 50,
+    paddingVertical: 5
   }
 });
