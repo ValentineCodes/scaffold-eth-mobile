@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { Button as PaperButton } from 'react-native-paper';
+import globalStyles from '../styles/globalStyles';
 import { COLORS } from '../utils/constants';
 
 type Props = {
@@ -46,7 +47,8 @@ const styles = StyleSheet.create({
     width: '100%'
   },
   outlineButton: {
-    backgroundColor: '#E8F7ED'
+    backgroundColor: '#E8F7ED',
+    borderColor: COLORS.gray
   },
   disabledButton: {
     backgroundColor: '#2A974D'
@@ -56,8 +58,8 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 16,
-    fontWeight: 'bold',
-    color: 'white'
+    color: 'white',
+    ...globalStyles.text
   },
   outlineLabel: {
     color: COLORS.primary

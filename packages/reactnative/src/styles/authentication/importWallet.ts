@@ -28,8 +28,7 @@ export default StyleSheet.create({
   biometricsContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    marginVertical: 10
+    justifyContent: 'space-between'
   },
   biometricsTitle: {
     ...globalStyles.text,

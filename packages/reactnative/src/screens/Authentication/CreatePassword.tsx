@@ -4,8 +4,8 @@ import { ScrollView, View } from 'react-native';
 import ReactNativeBiometrics from 'react-native-biometrics';
 import { Button, Divider, Switch, Text } from 'react-native-paper';
 import { useToast } from 'react-native-toast-notifications';
+import BackButton from '../../components/buttons/BackButton';
 import PasswordInput from '../../components/forms/PasswordInput';
-import ProgressIndicatorHeader from '../../components/headers/ProgressIndicatorHeader';
 import { useSecureStorage } from '../../hooks/useSecureStorage';
 import styles from '../../styles/authentication/createPassword';
 import { COLORS } from '../../utils/constants';
@@ -85,11 +85,9 @@ function CreatePassword({}: Props) {
 
   return (
     <View style={styles.container}>
-      <ProgressIndicatorHeader progress={1} />
+      <BackButton />
 
-      <Divider style={{ marginVertical: 32 }} />
-
-      <ScrollView style={{ flex: 1, paddingHorizontal: 10 }}>
+      <ScrollView style={styles.contentContainer}>
         <Text variant="headlineMedium" style={styles.title}>
           Create Password
         </Text>
@@ -133,7 +131,9 @@ function CreatePassword({}: Props) {
             </>
           )}
 
-          <Divider style={{ marginVertical: 16 }} />
+          <Divider
+            style={{ marginVertical: 16, backgroundColor: COLORS.gray }}
+          />
 
           <Button
             mode="contained"
@@ -142,7 +142,7 @@ function CreatePassword({}: Props) {
             style={styles.button}
             labelStyle={styles.buttonText}
           >
-            Import
+            Continue
           </Button>
         </View>
       </ScrollView>

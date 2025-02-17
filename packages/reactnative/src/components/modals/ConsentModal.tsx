@@ -1,75 +1,78 @@
 import React from 'react';
-import { Dimensions, StyleSheet, View } from 'react-native';
-import { IconButton, Modal, Portal, Text } from 'react-native-paper';
+import { StyleSheet, View } from 'react-native';
+import { IconButton, Text } from 'react-native-paper';
+import globalStyles from '../../styles/globalStyles';
 import { COLORS } from '../../utils/constants';
-import { FONT_SIZE } from '../../utils/styles';
+import { WINDOW_WIDTH } from '../../utils/styles';
 import Button from '../Button';
 
 type Props = {
-  isVisible: boolean;
-  icon?: JSX.Element;
-  title: string;
-  subTitle: string;
-  okText?: string;
-  cancelText?: string;
-  isOkLoading?: boolean;
-  isCancelLoading?: boolean;
-  onAccept: () => void;
-  onClose: () => void;
+  modal: {
+    closeModal: () => void;
+    params: {
+      icon?: JSX.Element;
+      title: string;
+      subTitle: string;
+      okText?: string;
+      cancelText?: string;
+      isOkLoading?: boolean;
+      isCancelLoading?: boolean;
+      onAccept: () => void;
+    };
+  };
 };
 
 export default function ConsentModal({
-  isVisible,
-  icon,
-  title,
-  subTitle,
-  okText,
-  cancelText,
-  isOkLoading,
-  isCancelLoading,
-  onAccept,
-  onClose
+  modal: {
+    closeModal,
+    params: {
+      icon,
+      title,
+      subTitle,
+      okText,
+      cancelText,
+      isOkLoading,
+      isCancelLoading,
+      onAccept
+    }
+  }
 }: Props) {
+  const handleAcceptance = () => {
+    closeModal();
+    onAccept();
+  };
   return (
-    <Portal>
-      <Modal
-        visible={isVisible}
-        onDismiss={onClose}
-        contentContainerStyle={styles.container}
-      >
-        <View style={styles.content}>
-          {icon || (
-            <IconButton
-              icon="alert"
-              size={Dimensions.get('window').height * 0.17}
-              iconColor={COLORS.primary}
-            />
-          )}
-          <Text variant="headlineMedium" style={styles.title}>
-            {title}
-          </Text>
-          <Text variant="bodyLarge" style={styles.subtitle}>
-            {subTitle}
-          </Text>
+    <View style={styles.container}>
+      {icon || (
+        <IconButton
+          icon="alert"
+          size={WINDOW_WIDTH * 0.17}
+          iconColor={COLORS.primary}
+        />
+      )}
+      <Text variant="headlineMedium" style={styles.title}>
+        {title}
+      </Text>
+      <Text variant="bodyLarge" style={styles.subtitle}>
+        {subTitle}
+      </Text>
 
-          <View style={styles.buttonContainer}>
-            <Button
-              type="outline"
-              text={cancelText || 'Cancel'}
-              onPress={onClose}
-              loading={isCancelLoading}
-              style={styles.button}
-            />
-            <Button
-              text={okText || 'Ok'}
-              onPress={onAccept}
-              loading={isOkLoading}
-              style={styles.button}
-            />
-          </View>
-        </View>
-      </Modal>
-    </Portal>
+      <View style={styles.buttonContainer}>
+        <Button
+          type="outline"
+          text={cancelText || 'Cancel'}
+          onPress={closeModal}
+          loading={isCancelLoading}
+          style={styles.button}
+        />
+        <Button
+          text={okText || 'Ok'}
+          onPress={handleAcceptance}
+          loading={isOkLoading}
+          style={styles.button}
+        />
+      </View>
+    </View>
   );
 }
 
@@ -78,7 +81,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 30,
     padding: 28,
-    margin: 20
+    margin: 20,
+    alignItems: 'center',
+    gap: 8
   },
   content: {
     alignItems: 'center',
@@ -86,11 +91,12 @@ const styles = StyleSheet.create({
   },
   title: {
     color: COLORS.primary,
-    fontWeight: 'bold',
-    textAlign: 'center'
+    textAlign: 'center',
+    ...globalStyles.textSemiBold
   },
   subtitle: {
-    textAlign: 'center'
+    textAlign: 'center',
+    ...globalStyles.text
   },
   buttonContainer: {
     flexDirection: 'row',

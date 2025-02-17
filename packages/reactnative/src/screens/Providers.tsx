@@ -13,6 +13,7 @@ import { Provider as ReduxProvider } from 'react-redux';
 import AccountsModal from '../components/modals/AccountsModal';
 import AccountsSelectionModal from '../components/modals/AccountsSelectionModal';
 import ChangePasswordModal from '../components/modals/ChangePasswordModal';
+import ConsentModal from '../components/modals/ConsentModal';
 import ImportAccountModal from '../components/modals/ImportAccountModal';
 import ImportNFTModal from '../components/modals/ImportNFTModal';
 import ImportTokenModal from '../components/modals/ImportTokenModal';
@@ -56,7 +57,8 @@ const modalConfig = {
   NFTTransferConfirmationModal,
   SwitchNetworkModal,
   ImportAccountModal,
-  AccountsModal
+  AccountsModal,
+  ConsentModal
 };
 const defaultOptions: ModalOptions = {
   backdropOpacity: 0.6,

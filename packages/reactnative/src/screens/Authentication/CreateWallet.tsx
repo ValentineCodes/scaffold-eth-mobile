@@ -5,7 +5,7 @@ import { ActivityIndicator, ScrollView, StyleSheet, View } from 'react-native';
 import { Button, Divider, Text } from 'react-native-paper';
 import { useToast } from 'react-native-toast-notifications';
 import { useDispatch } from 'react-redux';
-import ProgressIndicatorHeader from '../../components/headers/ProgressIndicatorHeader';
+import BackButton from '../../components/buttons/BackButton';
 import SeedPhrase from '../../components/SeedPhrase';
 import { useSecureStorage } from '../../hooks/useSecureStorage';
 import useWallet from '../../hooks/useWallet';
@@ -88,11 +88,9 @@ export default function CreateWallet({}: Props) {
 
   return (
     <View style={styles.container}>
-      <ProgressIndicatorHeader progress={2} />
+      <BackButton />
 
-      <Divider style={{ marginTop: 32, marginBottom: 16 }} />
-
-      <ScrollView style={{ flex: 1, paddingHorizontal: 10 }}>
+      <ScrollView style={styles.contentContainer}>
         <Text variant="headlineMedium" style={styles.title}>
           Write Down Your Seed Phrase
         </Text>
@@ -145,6 +143,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     paddingVertical: 15
   },
+  contentContainer: { flex: 1, paddingHorizontal: 10, marginTop: 20 },
   title: {
     textAlign: 'center',
     color: COLORS.primary,

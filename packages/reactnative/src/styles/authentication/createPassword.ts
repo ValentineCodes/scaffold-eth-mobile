@@ -9,6 +9,7 @@ export default StyleSheet.create({
     backgroundColor: 'white',
     paddingVertical: 15
   },
+  contentContainer: { flex: 1, paddingHorizontal: 10, marginTop: 20 },
   logo: {
     position: 'absolute',
     top: 15,

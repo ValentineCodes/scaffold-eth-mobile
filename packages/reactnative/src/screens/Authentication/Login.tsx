@@ -2,12 +2,12 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import ReactNativeBiometrics from 'react-native-biometrics';
+import { useModal } from 'react-native-modalfy';
 import { Button, Text } from 'react-native-paper';
 import { useToast } from 'react-native-toast-notifications';
 import { useDispatch, useSelector } from 'react-redux';
 import PasswordInput from '../../components/forms/PasswordInput';
 import Logo from '../../components/Logo';
-import ConsentModal from '../../components/modals/ConsentModal';
 import { useSecureStorage } from '../../hooks/useSecureStorage';
 import { loginUser, logoutUser } from '../../store/reducers/Auth';
 import { clearRecipients } from '../../store/reducers/Recipients';
@@ -28,8 +28,8 @@ export default function Login({}: Props) {
 
   const [password, setPassword] = useState('');
   const [isBiometricsEnabled, setIsBiometricsEnabled] = useState(false);
-  const [showResetWalletConsentModal, setShowResetWalletConsentModal] =
-    useState(false);
+
+  const { openModal } = useModal();
 
   const initWallet = () => {
     if (!auth.isLoggedIn) {
@@ -173,7 +173,14 @@ export default function Login({}: Props) {
       </Text>
 
       <TouchableOpacity
-        onPress={() => setShowResetWalletConsentModal(true)}
+        onPress={() =>
+          openModal('ConsentModal', {
+            title: 'Reset Wallet',
+            subTitle:
+              'This will erase all your current wallet data. Are you sure you want to go through with this?',
+            onAccept: resetWallet
+          })
+        }
         style={{ opacity: 0.8 }}
       >
         <Text
@@ -183,17 +190,6 @@ export default function Login({}: Props) {
           Reset Wallet
         </Text>
       </TouchableOpacity>
-
-      <ConsentModal
-        isVisible={showResetWalletConsentModal}
-        title="Reset Wallet!"
-        subTitle="This will erase all your current wallet data. Are you sure you want to go through with this?"
-        onClose={() => setShowResetWalletConsentModal(false)}
-        onAccept={() => {
-          setShowResetWalletConsentModal(false);
-          resetWallet();
-        }}
-      />
     </ScrollView>
   );
 }
