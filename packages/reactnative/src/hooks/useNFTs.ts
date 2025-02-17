@@ -1,31 +1,36 @@
 import { keccak256, toUtf8Bytes } from 'ethers';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { NFT } from '../store/reducers/NFTs';
 import useAccount from './scaffold-eth/useAccount';
 import useNetwork from './scaffold-eth/useNetwork';
 
+/**
+ * Custom hook to retrieve imported NFTs for the current account and network.
+ * It listens for changes in the Redux store and updates the NFT list accordingly.
+ *
+ * @returns {Object} An object containing `nfts`, the list of imported NFTs.
+ */
 export function useNFTs() {
-  // @ts-ignore
-  const state = useSelector(state => state.nfts);
-
   const network = useNetwork();
   const account = useAccount();
 
-  const [importedNFTs, setImportedNFTs] = useState<NFT[]>();
+  const nftsState = useSelector((state: any) => state.nfts);
+  const [importedNFTs, setImportedNFTs] = useState<NFT[]>([]);
 
-  function getNFTs() {
-    const key = keccak256(
-      toUtf8Bytes(`${network.id}${account.address.toLowerCase()}`)
+  // Compute the key based on the network ID and account address
+  const storageKey = useMemo(() => {
+    if (!network.id || !account.address) return null;
+    return keccak256(
+      toUtf8Bytes(`${network.id}-${account.address.toLowerCase()}`)
     );
-    setImportedNFTs(state.nfts[key]);
-  }
+  }, [network.id, account.address]);
 
+  // Fetch NFTs based on the computed storage key
   useEffect(() => {
-    getNFTs();
-  }, [network, account, state]);
+    if (!storageKey) return;
+    setImportedNFTs(nftsState[storageKey] || []);
+  }, [storageKey, nftsState]);
 
-  return {
-    nfts: importedNFTs
-  };
+  return { nfts: importedNFTs };
 }
