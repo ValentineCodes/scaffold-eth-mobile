@@ -10,7 +10,7 @@ export const COLORS = {
   success: '#27B858',
   background: '#ffffff',
   surface: '#ffffff',
-  gray: '#cccccc'
+  gray: '#e5e5e5'
 };
 
 // The local IP address via WIFI-HOTSPOT

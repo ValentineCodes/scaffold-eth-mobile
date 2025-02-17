@@ -1,6 +1,5 @@
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { generate } from 'random-words';
-import React, { useCallback, useEffect, useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import ReactNativeBiometrics from 'react-native-biometrics';
 import { Button, Divider, Switch, Text } from 'react-native-paper';
@@ -19,7 +18,6 @@ function CreatePassword({}: Props) {
   const toast = useToast();
   const { saveItem } = useSecureStorage();
 
-  const [suggestion, setSuggestion] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isBiometricsEnabled, setIsBiometricsEnabled] = useState(false);
@@ -63,7 +61,7 @@ function CreatePassword({}: Props) {
       setConfirmPassword('');
       setIsBiometricsEnabled(false);
 
-      navigation.navigate('SecureWallet');
+      navigation.navigate('CreateWallet');
     } catch (error) {
       toast.show('Failed to create password. Please try again', {
         type: 'danger'
@@ -72,15 +70,6 @@ function CreatePassword({}: Props) {
       setIsCreating(false);
     }
   };
-
-  // set suggested password
-  useFocusEffect(
-    useCallback(() => {
-      setSuggestion(
-        generate({ exactly: 2, join: '', minLength: 4, maxLength: 5 })
-      );
-    }, [])
-  );
 
   // check biometrics availability
   useEffect(() => {
@@ -101,7 +90,7 @@ function CreatePassword({}: Props) {
 
       <Divider style={{ marginVertical: 32 }} />
 
-      <ScrollView style={{ flex: 1 }}>
+      <ScrollView style={{ flex: 1, paddingHorizontal: 10 }}>
         <Text variant="headlineMedium" style={styles.title}>
           Create Password
         </Text>
@@ -113,14 +102,12 @@ function CreatePassword({}: Props) {
           <PasswordInput
             label="New Password"
             value={password}
-            suggestion={suggestion}
             infoText={password.length < 8 && 'Must be at least 8 characters'}
             onChange={setPassword}
           />
           <PasswordInput
             label="Confirm New Password"
             value={confirmPassword}
-            suggestion={suggestion}
             infoText={
               password &&
               confirmPassword &&
@@ -151,6 +138,8 @@ function CreatePassword({}: Props) {
             mode="contained"
             loading={isCreating}
             onPress={createPassword}
+            style={styles.button}
+            labelStyle={styles.buttonText}
           >
             Import
           </Button>

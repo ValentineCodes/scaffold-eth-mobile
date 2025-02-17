@@ -62,7 +62,6 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   container: {
-    paddingHorizontal: 15,
     backgroundColor: 'white'
   },
   navBtn: {
@@ -72,7 +71,8 @@ const styles = StyleSheet.create({
   },
   content: {
     width: '100%',
-    marginTop: 40
+    marginTop: 40,
+    paddingHorizontal: 10
   },
   title: {
     textAlign: 'center',

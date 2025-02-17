@@ -74,12 +74,12 @@ export default function Onboarding({}: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 15,
     backgroundColor: 'white'
   },
   content: {
     width: '100%',
-    marginTop: 40
+    marginTop: 40,
+    paddingHorizontal: 10
   },
   title: {
     textAlign: 'center',

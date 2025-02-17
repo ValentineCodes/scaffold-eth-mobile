@@ -33,7 +33,12 @@ export default function ProgressStepIndicator({
           />
         ))}
 
-      <View style={[styles.dotsContainer, { width: '100%' }]}>
+      <View
+        style={[
+          styles.dotsContainer,
+          { width: '100%', position: 'absolute', top: -(size / 2 || 10) }
+        ]}
+      >
         {Array(steps)
           .fill(null)
           .map((_, index) => (
@@ -57,12 +62,10 @@ export default function ProgressStepIndicator({
 
 const styles = StyleSheet.create({
   container: {
-    position: 'relative'
+    flexDirection: 'row'
   },
   divider: {
-    height: 2,
-    position: 'absolute',
-    top: '50%'
+    height: 2
   },
   dotsContainer: {
     flexDirection: 'row',

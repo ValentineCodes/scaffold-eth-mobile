@@ -5,6 +5,7 @@ import Modal from 'react-native-modal';
 import { Button, Divider, Text } from 'react-native-paper';
 import BulletText from '../../components/BulletText';
 import ProgressIndicatorHeader from '../../components/headers/ProgressIndicatorHeader';
+import globalStyles from '../../styles/globalStyles';
 import { COLORS } from '../../utils/constants';
 import { FONT_SIZE } from '../../utils/styles';
 
@@ -22,34 +23,43 @@ export default function SecureWallet({}: Props) {
 
       <Divider style={{ marginTop: 32, marginBottom: 16 }} />
 
-      <ScrollView style={{ flex: 1 }}>
+      <ScrollView style={{ flex: 1, paddingHorizontal: 10 }}>
         <Text variant="headlineLarge" style={styles.title}>
           Secure Your Wallet
         </Text>
         <View style={styles.seedPhraseContainer}>
-          <Text variant="bodyLarge">Secure your wallet's "</Text>
+          <Text variant="bodyLarge" style={globalStyles.text}>
+            Secure your wallet's "
+          </Text>
           <Text
             variant="bodyLarge"
-            style={{ color: COLORS.primary }}
+            style={{ color: COLORS.primary, ...globalStyles.text }}
             onPress={() => setIsSeedPhraseDescriptionVisible(true)}
           >
             Seed Phrase
           </Text>
-          <Text variant="bodyLarge">"</Text>
+          <Text variant="bodyLarge" style={globalStyles.text}>
+            "
+          </Text>
         </View>
 
         <Divider style={{ marginVertical: 16 }} />
 
         <View style={{ marginBottom: 50, gap: 16 }}>
-          <Text variant="titleLarge" style={{ fontWeight: 'bold' }}>
+          <Text
+            variant="titleLarge"
+            style={{ fontWeight: 'bold', ...globalStyles.text }}
+          >
             Manual
           </Text>
-          <Text variant="bodyLarge">
+          <Text variant="bodyLarge" style={globalStyles.text}>
             Write down your seed phrase on a piece of paper and store in a safe
             place.
           </Text>
 
-          <Text variant="bodyLarge">Security level: Very strong</Text>
+          <Text variant="bodyLarge" style={globalStyles.text}>
+            Security level: Very strong
+          </Text>
 
           <View style={styles.securityIndicator}>
             {Array(3)
@@ -63,18 +73,22 @@ export default function SecureWallet({}: Props) {
           </View>
 
           <View style={{ gap: 8 }}>
-            <Text variant="bodyLarge">Risks are:</Text>
+            <Text variant="bodyLarge" style={globalStyles.text}>
+              Risks are:
+            </Text>
             <BulletText text="You lose it" />
             <BulletText text="You forget where you put it" />
             <BulletText text="Someone else finds it" />
           </View>
 
-          <Text variant="bodyLarge">
+          <Text variant="bodyLarge" style={globalStyles.text}>
             Other options: Doesn't have to be paper!
           </Text>
 
           <View style={{ gap: 8 }}>
-            <Text variant="bodyLarge">Tips:</Text>
+            <Text variant="bodyLarge" style={globalStyles.text}>
+              Tips:
+            </Text>
             <BulletText text="Store in bank vault" />
             <BulletText text="Store in a safe" />
             <BulletText text="Store in multiple secret places" />
@@ -140,13 +154,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
-    padding: 15
+    paddingVertical: 15
   },
   title: {
     textAlign: 'center',
     color: COLORS.primary,
     fontSize: 1.7 * FONT_SIZE['xl'],
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    ...globalStyles.text
   },
   seedPhraseContainer: {
     flexDirection: 'row',
@@ -173,6 +188,7 @@ const styles = StyleSheet.create({
   },
   modalTitle: {
     textAlign: 'center',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    ...globalStyles.text
   }
 });

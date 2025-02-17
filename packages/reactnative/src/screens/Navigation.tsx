@@ -8,7 +8,6 @@ import CreateWallet from './Authentication/CreateWallet';
 import ImportWallet from './Authentication/ImportWallet';
 import Login from './Authentication/Login';
 import Onboarding from './Authentication/Onboarding';
-import SecureWallet from './Authentication/SecureWallet';
 import WalletSetup from './Authentication/WalletSetup';
 import Main from './Main';
 import TokenDetails from './TokenDetails';
@@ -23,7 +22,6 @@ type AppStackParamsList = {
   WalletSetup: undefined;
   ImportWallet: undefined;
   CreateWallet: undefined;
-  SecureWallet: undefined;
   CreatePassword: undefined;
   Login: undefined;
   Main: undefined;
@@ -61,7 +59,6 @@ export default function Navigation({}: Props) {
             <AppStack.Screen name="Onboarding" component={Onboarding} />
             <AppStack.Screen name="WalletSetup" component={WalletSetup} />
             <AppStack.Screen name="ImportWallet" component={ImportWallet} />
-            <AppStack.Screen name="SecureWallet" component={SecureWallet} />
             <AppStack.Screen name="CreateWallet" component={CreateWallet} />
             <AppStack.Screen name="CreatePassword" component={CreatePassword} />
           </>
