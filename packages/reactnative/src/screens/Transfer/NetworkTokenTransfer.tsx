@@ -185,6 +185,7 @@ export default function NetworkTokenTransfer() {
         gasCost={gasCost}
         onChange={setAmount}
         onConfirm={confirm}
+        isNativeToken
       />
 
       <Divider style={styles.divider} />

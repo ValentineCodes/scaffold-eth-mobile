@@ -1,15 +1,18 @@
 import { formatEther } from 'ethers';
 import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { Text, TextInput } from 'react-native-paper';
+import { useToast } from 'react-native-toast-notifications';
+import { useCryptoPrice } from '../../../hooks/useCryptoPrice';
+import { COLORS } from '../../../utils/constants';
+import { FONT_SIZE } from '../../../utils/styles';
 
 type Props = {
   amount: string;
-  isNativeToken?: boolean;
   token: string;
   balance: bigint | null;
   gasCost: bigint | null;
-  isToken?: boolean;
+  isNativeToken?: boolean;
   onChange: (value: string) => void;
   onConfirm: () => void;
 };
@@ -19,16 +22,38 @@ export default function Amount({
   token,
   balance,
   gasCost,
-  isToken,
+  isNativeToken,
   onChange,
   onConfirm
 }: Props) {
   const [error, setError] = useState('');
+  const [dollarValue, setDollarValue] = useState('');
+  const [isDollar, setIsDollar] = useState(false);
 
-  const handleInputChange = (value: string) => {
-    onChange(value);
+  const toast = useToast();
 
-    if (isToken) return;
+  const {
+    price: dollarRate,
+    loading: isFetchingDollarRate,
+    fetchPrice: fetchDollarRate
+  } = useCryptoPrice({ enabled: isNativeToken });
+
+  const switchCurrency = () => {
+    if (!dollarRate) {
+      toast.show('Loading exchange rate');
+
+      if (!isFetchingDollarRate) {
+        fetchDollarRate();
+      }
+
+      return;
+    }
+
+    setIsDollar(prev => !prev);
+  };
+
+  const validateInput = (value: string) => {
+    if (!isNativeToken) return;
 
     let amount = Number(value);
 
@@ -45,14 +70,54 @@ export default function Amount({
     }
   };
 
+  const handleInputChange = (value: string) => {
+    if (value.trim() === '') {
+      onChange('');
+      setDollarValue('');
+      setError('');
+      return;
+    }
+
+    // Ensure only valid floating numbers are parsed
+    const numericValue = value.replace(/[^0-9.]/g, ''); // Remove non-numeric characters except `.`
+    if (!/^\d*\.?\d*$/.test(numericValue) || numericValue == '') return; // Ensure valid decimal format
+
+    let nativeValue = numericValue;
+    if (!dollarRate) {
+      onChange(numericValue);
+      return;
+    }
+
+    if (isDollar) {
+      setDollarValue(numericValue);
+      nativeValue = (parseFloat(numericValue) / dollarRate).toString();
+      onChange(nativeValue);
+    } else {
+      onChange(numericValue);
+      setDollarValue((parseFloat(numericValue) * dollarRate).toFixed(2));
+    }
+
+    validateInput(nativeValue);
+  };
+
+  const displayValue = isDollar ? dollarValue : amount;
+  const displayConversion = isDollar ? amount : dollarValue;
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text variant="titleMedium">Amount:</Text>
+        {isNativeToken && (
+          <Pressable onPress={switchCurrency}>
+            <Text style={styles.conversionText}>
+              {isDollar ? 'USD' : token}
+            </Text>
+          </Pressable>
+        )}
       </View>
 
       <TextInput
-        value={amount}
+        value={displayValue}
         mode="outlined"
         style={styles.input}
         placeholder={`0 ${token}`}
@@ -61,6 +126,13 @@ export default function Amount({
         keyboardType="number-pad"
         error={!!error}
       />
+
+      {isNativeToken && (
+        <Text variant="bodySmall">
+          ~{!isDollar && '$'}
+          {displayConversion} {isDollar && token}
+        </Text>
+      )}
 
       {error && (
         <Text variant="bodySmall" style={styles.errorText}>
@@ -75,7 +147,17 @@ const styles = StyleSheet.create({
   container: {
     marginBottom: 24
   },
-  header: {},
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 2,
+    marginBottom: 8
+  },
+  conversionText: {
+    color: COLORS.primary,
+    fontSize: FONT_SIZE['lg'],
+    fontWeight: 'bold'
+  },
   input: {
     backgroundColor: '#f5f5f5'
   },
