@@ -20,6 +20,7 @@ import ImportTokenModal from '../components/modals/ImportTokenModal';
 import NFTDetailsModal from '../components/modals/NFTDetailsModal';
 import NFTTransferConfirmationModal from '../components/modals/NFTTransferConfirmationModal';
 import QRCodeScanner from '../components/modals/QRCodeScanner';
+import ReceiveModal from '../components/modals/ReceiveModal';
 import SignMessageModal from '../components/modals/SignMessageModal';
 import SignTransactionModal from '../components/modals/SignTransactionModal';
 import SignTransferModal from '../components/modals/SignTransferModal';
@@ -58,7 +59,8 @@ const modalConfig = {
   SwitchNetworkModal,
   ImportAccountModal,
   AccountsModal,
-  ConsentModal
+  ConsentModal,
+  ReceiveModal
 };
 const defaultOptions: ModalOptions = {
   backdropOpacity: 0.6,

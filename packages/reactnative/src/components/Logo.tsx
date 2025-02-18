@@ -11,8 +11,8 @@ export default function Logo({ size }: Props) {
     <Image
       source={require('../assets/images/logo.png')}
       style={{
-        width: WINDOW_WIDTH * 0.3 || size,
-        height: WINDOW_WIDTH * 0.3 || size
+        width: size || WINDOW_WIDTH * 0.3,
+        height: size || WINDOW_WIDTH * 0.3
       }}
     />
   );

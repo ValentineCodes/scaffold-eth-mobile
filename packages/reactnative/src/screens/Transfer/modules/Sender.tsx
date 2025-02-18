@@ -1,10 +1,13 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useModal } from 'react-native-modalfy';
-import { IconButton, Text } from 'react-native-paper';
+import { Text } from 'react-native-paper';
+//@ts-ignore
+import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 import { useSelector } from 'react-redux';
 import Blockie from '../../../components/Blockie';
 import { Account } from '../../../store/reducers/Accounts';
+import globalStyles from '../../../styles/globalStyles';
 import { FONT_SIZE } from '../../../utils/styles';
 
 type Props = {
@@ -34,28 +37,33 @@ export default function Sender({
   };
   return (
     <View style={styles.container}>
-      <Text variant="titleMedium">From:</Text>
+      <Text variant="titleMedium" style={globalStyles.text}>
+        From:
+      </Text>
 
       <TouchableOpacity
         onPress={selectAccount}
         disabled={accounts.length === 1}
-        style={[
-          styles.accountContainer,
-          { backgroundColor: accounts.length === 1 ? '#f5f5f5' : '#fff' }
-        ]}
+        style={styles.accountContainer}
       >
         <View style={styles.accountInfo}>
           <Blockie address={account.address} size={1.8 * FONT_SIZE['xl']} />
 
           <View style={styles.accountDetails}>
-            <Text variant="titleMedium">{account.name}</Text>
+            <Text style={{ fontSize: FONT_SIZE['lg'], ...globalStyles.text }}>
+              {account.name}
+            </Text>
             {!hideBalance && (
-              <Text variant="bodyMedium">Balance: {balance?.toString()}</Text>
+              <Text variant="bodyMedium" style={globalStyles.text}>
+                Balance: {balance?.toString()}
+              </Text>
             )}
           </View>
         </View>
 
-        {accounts.length > 1 && <IconButton icon="chevron-down" size={24} />}
+        {accounts.length > 1 && (
+          <Ionicons name="chevron-down-outline" size={FONT_SIZE['xl']} />
+        )}
       </TouchableOpacity>
     </View>
   );
@@ -70,8 +78,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     borderRadius: 10,
-    padding: 10,
-    marginTop: 8
+    padding: 12,
+    marginTop: 8,
+    backgroundColor: '#f5f5f5'
   },
   accountInfo: {
     flexDirection: 'row',

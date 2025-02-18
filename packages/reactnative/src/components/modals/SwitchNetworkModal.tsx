@@ -70,9 +70,9 @@ export default function SwitchNetworkModal({ modal: { closeModal } }: Props) {
             </View>
             {_network.isConnected && (
               <Ionicons
-                name="checkmark-outline"
-                size={24}
+                name="checkmark-done"
                 color={COLORS.primary}
+                size={1.2 * FONT_SIZE['xl']}
               />
             )}
           </Pressable>

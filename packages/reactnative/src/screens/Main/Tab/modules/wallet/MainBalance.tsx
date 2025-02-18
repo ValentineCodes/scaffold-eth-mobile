@@ -7,6 +7,7 @@ import {
   StyleSheet,
   View
 } from 'react-native';
+import { useModal } from 'react-native-modalfy';
 import { Divider, IconButton, Text } from 'react-native-paper';
 // @ts-ignore
 import Ionicons from 'react-native-vector-icons/dist/Ionicons';
@@ -16,6 +17,7 @@ import useAccount from '../../../../../hooks/scaffold-eth/useAccount';
 import useBalance from '../../../../../hooks/scaffold-eth/useBalance';
 import useNetwork from '../../../../../hooks/scaffold-eth/useNetwork';
 import { useCryptoPrice } from '../../../../../hooks/useCryptoPrice';
+import globalStyles from '../../../../../styles/globalStyles';
 import { COLORS } from '../../../../../utils/constants';
 import {
   parseBalance,
@@ -35,9 +37,9 @@ function MainBalance({ backHandler }: Props) {
   });
   const { price, fetchPrice } = useCryptoPrice({ enabled: false });
 
-  const [showReceiveModal, setShowReceiveModal] = useState(false);
-
   const navigation = useNavigation();
+
+  const { openModal } = useModal();
 
   const logo = useMemo(() => {
     let _logo = require('../../../../../assets/images/eth-icon.png');
@@ -102,7 +104,13 @@ function MainBalance({ backHandler }: Props) {
               : null}
           </Text>
 
-          <Text style={{ color: 'grey', fontSize: FONT_SIZE['lg'] }}>
+          <Text
+            style={{
+              color: 'grey',
+              fontSize: FONT_SIZE['lg'],
+              ...globalStyles.text
+            }}
+          >
             {price &&
               balance !== null &&
               parseBalance(balance).length > 0 &&
@@ -136,7 +144,7 @@ function MainBalance({ backHandler }: Props) {
               mode="contained"
               containerColor={COLORS.primaryLight}
               size={48}
-              onPress={() => setShowReceiveModal(true)}
+              onPress={() => openModal('ReceiveModal')}
             />
             <Text variant="titleMedium" style={styles.actionText}>
               Receive
@@ -145,11 +153,6 @@ function MainBalance({ backHandler }: Props) {
         </View>
 
         <Divider style={styles.divider} />
-
-        <ReceiveModal
-          isVisible={showReceiveModal}
-          onClose={() => setShowReceiveModal(false)}
-        />
       </View>
     </ScrollView>
   );
@@ -162,8 +165,8 @@ const styles = StyleSheet.create({
     gap: 8
   },
   nameText: {
-    fontWeight: 'bold',
-    textAlign: 'center'
+    textAlign: 'center',
+    ...globalStyles.textMedium
   },
   logoContainer: {
     marginVertical: 8
@@ -174,25 +177,27 @@ const styles = StyleSheet.create({
   },
   addressContainer: {
     paddingHorizontal: 15,
-    paddingVertical: 5,
+    paddingVertical: 2,
     backgroundColor: COLORS.primaryLight,
-    borderRadius: 15
+    borderRadius: 24
   },
   addressText: {
-    fontWeight: '700',
     fontSize: FONT_SIZE['md'],
+    ...globalStyles.textMedium,
+    marginBottom: -2,
     color: COLORS.primary
   },
   balanceContainer: {
     alignItems: 'center'
   },
   balanceText: {
-    fontWeight: 'bold',
-    textAlign: 'center'
+    textAlign: 'center',
+    ...globalStyles.textMedium
   },
   divider: {
     width: '100%',
-    marginVertical: 8
+    marginVertical: 8,
+    backgroundColor: '#bcbcbc'
   },
   actionContainer: {
     flexDirection: 'row',
@@ -204,7 +209,7 @@ const styles = StyleSheet.create({
   },
   actionText: {
     marginTop: 8,
-    fontWeight: 'bold'
+    ...globalStyles.textMedium
   }
 });
 

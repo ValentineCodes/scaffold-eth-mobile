@@ -1,6 +1,7 @@
 import React from 'react';
 import { Dimensions, Image, StyleSheet, View } from 'react-native';
 import { Modal, Portal, Text } from 'react-native-paper';
+import globalStyles from '../../../styles/globalStyles';
 import { FONT_SIZE } from '../../../utils/styles';
 import Button from '../../Button';
 
@@ -54,9 +55,10 @@ const styles = StyleSheet.create({
   },
   errorText: {
     color: '#F75554',
-    fontWeight: 'bold'
+    ...globalStyles.textMedium
   },
   message: {
-    textAlign: 'center'
+    textAlign: 'center',
+    ...globalStyles.text
   }
 });
