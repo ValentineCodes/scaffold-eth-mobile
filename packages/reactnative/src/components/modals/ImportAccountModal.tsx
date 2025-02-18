@@ -10,6 +10,7 @@ import {
   addAccount,
   switchAccount
 } from '../../store/reducers/Accounts';
+import globalStyles from '../../styles/globalStyles';
 import { Wallet } from '../../types/wallet';
 import { COLORS } from '../../utils/constants';
 import { FONT_SIZE, WINDOW_WIDTH } from '../../utils/styles';
@@ -100,6 +101,8 @@ export default function ImportAccountModal({ modal: { closeModal } }: Props) {
             />
           }
           error={!!error}
+          outlineStyle={{ borderRadius: 12, borderColor: COLORS.gray }}
+          contentStyle={globalStyles.text}
         />
         {error && (
           <Text variant="bodySmall" style={styles.errorText}>
@@ -125,7 +128,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
     borderRadius: 30,
-    padding: 28,
+    padding: 20,
     margin: 20,
     alignItems: 'center',
     gap: 16,
@@ -133,17 +136,20 @@ const styles = StyleSheet.create({
   },
   title: {
     color: COLORS.primary,
-    fontWeight: 'bold'
+    ...globalStyles.textSemiBold
   },
   subtitle: {
-    textAlign: 'center'
+    textAlign: 'center',
+    fontSize: FONT_SIZE['md'],
+    ...globalStyles.text
   },
   inputContainer: {
     width: '100%',
     gap: 4
   },
   errorText: {
-    color: COLORS.error
+    color: COLORS.error,
+    ...globalStyles.text
   },
   buttonContainer: {
     flexDirection: 'row',

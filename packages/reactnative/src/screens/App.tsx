@@ -30,8 +30,7 @@ function App(): JSX.Element {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
-    paddingHorizontal: 5
+    backgroundColor: 'white'
   }
 });
 

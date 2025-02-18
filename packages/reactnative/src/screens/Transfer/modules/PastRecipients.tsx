@@ -4,6 +4,7 @@ import { Text } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import Blockie from '../../../components/Blockie';
 import { clearRecipients } from '../../../store/reducers/Recipients';
+import globalStyles from '../../../styles/globalStyles';
 import { COLORS } from '../../../utils/constants';
 import { truncateAddress } from '../../../utils/helperFunctions';
 import { FONT_SIZE } from '../../../utils/styles';
@@ -25,7 +26,7 @@ export default function PastRecipients({ onSelect }: Props) {
       {recipients.length > 0 && (
         <>
           <View style={styles.header}>
-            <Text variant="titleLarge">Recents</Text>
+            <Text style={styles.headerTitle}>Recents</Text>
             <TouchableOpacity onPress={clear}>
               <Text style={styles.clearText}>Clear</Text>
             </TouchableOpacity>
@@ -62,10 +63,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 16
   },
+  headerTitle: {
+    fontSize: FONT_SIZE['lg'],
+    ...globalStyles.textMedium
+  },
   clearText: {
     color: COLORS.primary,
     fontSize: FONT_SIZE.lg,
-    fontWeight: '500'
+    ...globalStyles.textMedium
   },
   addressContainer: {
     flexDirection: 'row',
@@ -73,6 +78,7 @@ const styles = StyleSheet.create({
     marginBottom: 16
   },
   address: {
-    marginLeft: 16
+    marginLeft: 16,
+    ...globalStyles.text
   }
 });

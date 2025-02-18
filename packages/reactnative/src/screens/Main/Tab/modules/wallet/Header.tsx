@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Linking, StyleSheet, View } from 'react-native';
 import { useModal } from 'react-native-modalfy';
 import { IconButton, Text } from 'react-native-paper';
@@ -13,20 +13,18 @@ import { useToast } from 'react-native-toast-notifications';
 // @ts-ignore
 import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 import Blockie from '../../../../../components/Blockie';
-import AccountDetailsModal from '../../../../../components/modals/AccountDetailsModal';
-import SeedPhraseModal from '../../../../../components/modals/SeedPhraseModal';
+import Logo from '../../../../../components/Logo';
 import useAccount from '../../../../../hooks/scaffold-eth/useAccount';
 import useNetwork from '../../../../../hooks/scaffold-eth/useNetwork';
 import { Account } from '../../../../../store/reducers/Accounts';
 import { Network } from '../../../../../store/reducers/Networks';
+import globalStyles from '../../../../../styles/globalStyles';
+import { COLORS } from '../../../../../utils/constants';
 import { FONT_SIZE, WINDOW_WIDTH } from '../../../../../utils/styles';
 
 type Props = {};
 
 export default function Header({}: Props) {
-  const [showAccountDetailsModal, setShowAccountDetailsModal] = useState(false);
-  const [showSeedPhraseModal, setShowSeedPhraseModal] = useState(false);
-
   const { openModal } = useModal();
 
   const connectedNetwork: Network = useNetwork();
@@ -59,10 +57,7 @@ export default function Header({}: Props) {
 
   return (
     <View style={styles.container}>
-      <IconButton
-        icon={require('../../../../../assets/images/logo.png')}
-        size={WINDOW_WIDTH * 0.08}
-      />
+      <Logo size={WINDOW_WIDTH * 0.08} />
 
       <Menu>
         <MenuTrigger>
@@ -86,10 +81,10 @@ export default function Header({}: Props) {
               )}
               size={1.2 * FONT_SIZE['xl']}
             />
-            <Text variant="bodyLarge">Accounts</Text>
+            <Text style={styles.menuTitle}>Accounts</Text>
           </MenuOption>
           <MenuOption
-            onSelect={() => setShowAccountDetailsModal(true)}
+            onSelect={() => openModal('AccountDetailsModal')}
             style={styles.menuOption}
           >
             <IconButton
@@ -102,10 +97,10 @@ export default function Header({}: Props) {
               )}
               size={1.2 * FONT_SIZE['xl']}
             />
-            <Text variant="bodyLarge">Account details</Text>
+            <Text style={styles.menuTitle}>Account details</Text>
           </MenuOption>
           <MenuOption
-            onSelect={() => setShowSeedPhraseModal(true)}
+            onSelect={() => openModal('SeedPhraseModal')}
             style={styles.menuOption}
           >
             <IconButton
@@ -118,7 +113,7 @@ export default function Header({}: Props) {
               )}
               size={1.2 * FONT_SIZE['xl']}
             />
-            <Text variant="bodyLarge">Show seed phrase</Text>
+            <Text style={styles.menuTitle}>Show seed phrase</Text>
           </MenuOption>
           <MenuOption onSelect={shareAddress} style={styles.menuOption}>
             <IconButton
@@ -131,7 +126,7 @@ export default function Header({}: Props) {
               )}
               size={1.2 * FONT_SIZE['xl']}
             />
-            <Text variant="bodyLarge">Share address</Text>
+            <Text style={styles.menuTitle}>Share address</Text>
           </MenuOption>
           {connectedNetwork.blockExplorer && (
             <MenuOption
@@ -148,24 +143,11 @@ export default function Header({}: Props) {
                 )}
                 size={1.2 * FONT_SIZE['xl']}
               />
-              <Text variant="bodyLarge">View on block explorer</Text>
+              <Text style={styles.menuTitle}>View on block explorer</Text>
             </MenuOption>
           )}
         </MenuOptions>
       </Menu>
-
-      {showSeedPhraseModal && (
-        <SeedPhraseModal
-          isVisible={showSeedPhraseModal}
-          onClose={() => setShowSeedPhraseModal(false)}
-        />
-      )}
-      {showAccountDetailsModal && (
-        <AccountDetailsModal
-          isVisible={showAccountDetailsModal}
-          onClose={() => setShowAccountDetailsModal(false)}
-        />
-      )}
     </View>
   );
 }
@@ -176,7 +158,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingVertical: 16,
-    borderBottomColor: '#ccc',
+    paddingHorizontal: 5,
+    borderBottomColor: COLORS.gray,
     borderBottomWidth: 1
   },
   logo: {
@@ -186,6 +169,12 @@ const styles = StyleSheet.create({
   menuOption: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 10
+    paddingVertical: 10,
+    paddingHorizontal: 2
+  },
+  menuTitle: {
+    fontSize: FONT_SIZE['lg'],
+    ...globalStyles.text,
+    width: WINDOW_WIDTH * 0.4
   }
 });

@@ -1,10 +1,11 @@
 import React from 'react';
-import { ScrollView, TouchableOpacity, View } from 'react-native';
-import { Divider, IconButton, Text } from 'react-native-paper';
+import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Divider, Text } from 'react-native-paper';
 // @ts-ignore
 import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 import { useSelector } from 'react-redux';
 import { Account } from '../../store/reducers/Accounts';
+import globalStyles from '../../styles/globalStyles';
 import { COLORS } from '../../utils/constants';
 import { truncateAddress } from '../../utils/helperFunctions';
 import { FONT_SIZE, WINDOW_HEIGHT, WINDOW_WIDTH } from '../../utils/styles';
@@ -33,36 +34,21 @@ export default function AccountsSelectionModal({
     onSelect(account);
   };
   return (
-    <View
-      style={{
-        backgroundColor: 'white',
-        borderRadius: 30,
-        padding: 20,
-        width: WINDOW_WIDTH * 0.9,
-        maxHeight: WINDOW_HEIGHT * 0.5
-      }}
-    >
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between'
-        }}
-      >
-        <Text variant="headlineMedium" style={{ fontWeight: 'bold' }}>
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Text variant="titleLarge" style={globalStyles.textMedium}>
           Accounts
         </Text>
-        <IconButton
-          icon={() => (
-            <Ionicons name="close-outline" size={1.5 * FONT_SIZE['xl']} />
-          )}
+        <Ionicons
+          name="close-outline"
+          size={FONT_SIZE['xl'] * 1.7}
           onPress={closeModal}
         />
       </View>
 
       <Divider style={{ marginTop: 8 }} />
 
-      <ScrollView>
+      <ScrollView style={styles.scrollView}>
         {accounts.map((account, index) => (
           <TouchableOpacity
             key={account.address}
@@ -85,10 +71,10 @@ export default function AccountsSelectionModal({
                   size={1.7 * FONT_SIZE['xl']}
                 />
                 <View style={{ marginLeft: 16 }}>
-                  <Text variant="bodyLarge" style={{ fontWeight: '500' }}>
+                  <Text variant="titleMedium" style={globalStyles.textMedium}>
                     {account.name}
                   </Text>
-                  <Text variant="bodyMedium">
+                  <Text variant="bodyMedium" style={globalStyles.text}>
                     {truncateAddress(account.address)}
                   </Text>
                 </View>
@@ -107,3 +93,21 @@ export default function AccountsSelectionModal({
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: 'white',
+    borderRadius: 30,
+    padding: 20,
+    width: WINDOW_WIDTH * 0.9,
+    maxHeight: WINDOW_HEIGHT * 0.5
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between'
+  },
+  scrollView: {
+    maxHeight: WINDOW_HEIGHT / 4.8
+  }
+});

@@ -1,10 +1,7 @@
-import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { Dimensions, View } from 'react-native';
-import { IconButton } from 'react-native-paper';
-// @ts-ignore
-import Ionicons from 'react-native-vector-icons/dist/Ionicons';
-import { FONT_SIZE } from '../../utils/styles';
+import { StyleSheet, View } from 'react-native';
+import { WINDOW_WIDTH } from '../../utils/styles';
+import BackButton from '../buttons/BackButton';
 import ProgressStepIndicator from '../ProgressStepIndicator';
 
 type Props = {
@@ -12,36 +9,32 @@ type Props = {
 };
 
 const ProgressIndicatorHeader = ({ progress }: Props) => {
-  const navigation = useNavigation();
-
   return (
-    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-      <IconButton
-        icon={() => (
-          <Ionicons
-            name="arrow-back-outline"
-            size={1.3 * FONT_SIZE['xl']}
-            color="black"
-          />
-        )}
-        onPress={() => navigation.goBack()}
-      />
+    <View style={styles.container}>
+      <BackButton />
       <View
         style={{
           position: 'absolute',
           top: 3.5,
-          left: Dimensions.get('window').width * 0.19
+          left: WINDOW_WIDTH * 0.23
         }}
       >
         <ProgressStepIndicator
-          steps={3}
+          steps={2}
           progress={progress}
-          width={Dimensions.get('window').width * 0.5}
-          size={Dimensions.get('window').width * 0.04}
+          width={WINDOW_WIDTH * 0.5}
+          size={WINDOW_WIDTH * 0.04}
         />
       </View>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  }
+});
 
 export default ProgressIndicatorHeader;

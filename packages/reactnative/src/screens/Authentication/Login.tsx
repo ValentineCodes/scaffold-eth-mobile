@@ -1,23 +1,21 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import {
-  Image,
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-  View
-} from 'react-native';
+import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import ReactNativeBiometrics from 'react-native-biometrics';
-import { Button, Text, TextInput } from 'react-native-paper';
+import { useModal } from 'react-native-modalfy';
+import { Button, Text } from 'react-native-paper';
 import { useToast } from 'react-native-toast-notifications';
-import MaterialIcons from 'react-native-vector-icons/dist/MaterialIcons';
 import { useDispatch, useSelector } from 'react-redux';
-import ConsentModal from '../../components/modals/ConsentModal';
+import PasswordInput from '../../components/forms/PasswordInput';
+import Logo from '../../components/Logo';
+import { ConsentModalParams } from '../../components/modals/ConsentModal';
 import { useSecureStorage } from '../../hooks/useSecureStorage';
 import { loginUser, logoutUser } from '../../store/reducers/Auth';
 import { clearRecipients } from '../../store/reducers/Recipients';
+import globalStyles from '../../styles/globalStyles';
+import { Security } from '../../types/security';
 import { COLORS } from '../../utils/constants';
-import { FONT_SIZE, WINDOW_WIDTH } from '../../utils/styles';
+import { FONT_SIZE } from '../../utils/styles';
 
 type Props = {};
 
@@ -27,35 +25,24 @@ export default function Login({}: Props) {
   const dispatch = useDispatch();
   const { getItem, removeItem } = useSecureStorage();
 
-  const auth = useSelector(state => state.auth);
+  const auth = useSelector((state: any) => state.auth);
 
   const [password, setPassword] = useState('');
-  const [isInitializing, setIsInitializing] = useState(false);
   const [isBiometricsEnabled, setIsBiometricsEnabled] = useState(false);
-  const [showResetWalletConsentModal, setShowResetWalletConsentModal] =
-    useState(false);
 
-  const initWallet = async () => {
-    try {
-      setIsInitializing(true);
-      // await createWeb3Wallet()
+  const { openModal } = useModal();
 
-      if (!auth.isLoggedIn) {
-        dispatch(loginUser());
-      }
-
-      if (password) {
-        setPassword('');
-      }
-
-      navigation.navigate('Main');
-    } catch (error) {
-      toast.show('Failed to initialize wallet', {
-        type: 'danger'
-      });
-    } finally {
-      setIsInitializing(false);
+  const initWallet = () => {
+    if (!auth.isLoggedIn) {
+      dispatch(loginUser());
     }
+
+    if (password) {
+      setPassword('');
+    }
+
+    // @ts-ignore
+    navigation.navigate('Main');
   };
 
   const unlockWithPassword = async () => {
@@ -66,7 +53,7 @@ export default function Login({}: Props) {
       return;
     }
 
-    const security = await getItem('security');
+    const security = (await getItem('security')) as Security;
     if (password !== security.password) {
       toast.show('Incorrect password!', {
         type: 'danger'
@@ -74,7 +61,7 @@ export default function Login({}: Props) {
       return;
     }
 
-    await initWallet();
+    initWallet();
   };
 
   const unlockWithBiometrics = async () => {
@@ -94,7 +81,7 @@ export default function Login({}: Props) {
           });
 
           if (response.success) {
-            await initWallet();
+            initWallet();
           }
         } catch (error) {
           return;
@@ -126,61 +113,56 @@ export default function Login({}: Props) {
     dispatch(clearRecipients());
     dispatch(logoutUser());
     setTimeout(() => {
+      // @ts-ignore
       navigation.navigate('Onboarding');
     }, 100);
   };
 
   useEffect(() => {
     (async () => {
-      const security = await getItem('security');
+      const security = (await getItem('security')) as Security;
       setIsBiometricsEnabled(security.isBiometricsEnabled);
       if (security.isBiometricsEnabled) {
         unlockWithBiometrics();
       }
     })();
   }, []);
+
+  const handleResetWallet = () => {
+    const params: ConsentModalParams = {
+      title: 'Reset Wallet',
+      subTitle:
+        'This will erase all your current wallet data. Are you sure you want to go through with this?',
+      iconColor: COLORS.error,
+      titleStyle: { color: COLORS.error },
+      subTitleStyle: { color: COLORS.error },
+      onAccept: resetWallet
+    };
+    openModal('ConsentModal', params);
+  };
   return (
     <ScrollView
-      contentContainerStyle={{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
-      }}
+      contentContainerStyle={styles.scrollViewContentContainer}
       style={styles.container}
     >
-      <Image
-        source={require('../../assets/images/logo.png')}
-        style={{
-          width: WINDOW_WIDTH * 0.3,
-          height: WINDOW_WIDTH * 0.3,
-          marginBottom: 40
-        }}
-      />
+      <Logo />
       <Text
         variant="headlineLarge"
         style={{
           color: COLORS.primary,
-          fontWeight: 'bold'
+          marginTop: 40,
+          ...globalStyles.textBold
         }}
       >
         Welcome Back!
       </Text>
 
       <View style={styles.inputContainer}>
-        <Text variant="titleLarge" style={{ fontWeight: 'bold' }}>
-          Password
-        </Text>
-        <TextInput
+        <PasswordInput
+          label="Password"
           value={password}
-          mode="outlined"
-          style={styles.input}
-          outlineColor={COLORS.primary}
-          activeOutlineColor={COLORS.primary}
-          left={<TextInput.Icon icon="lock" />}
-          secureTextEntry
-          placeholder="Password"
-          onChangeText={setPassword}
-          onSubmitEditing={unlockWithPassword}
+          onChange={setPassword}
+          onSubmit={unlockWithPassword}
         />
       </View>
 
@@ -191,8 +173,8 @@ export default function Login({}: Props) {
             ? unlockWithBiometrics
             : unlockWithPassword
         }
-        loading={isInitializing}
         style={styles.button}
+        labelStyle={styles.buttonText}
       >
         {isBiometricsEnabled && !password
           ? 'SIGN IN WITH BIOMETRICS'
@@ -204,48 +186,46 @@ export default function Login({}: Props) {
         one
       </Text>
 
-      <TouchableOpacity
-        onPress={() => setShowResetWalletConsentModal(true)}
-        style={{ opacity: 0.8 }}
-      >
-        <Text variant="titleLarge" style={{ color: COLORS.primary }}>
+      <TouchableOpacity onPress={handleResetWallet} style={{ opacity: 0.8 }}>
+        <Text
+          variant="titleLarge"
+          style={{ color: COLORS.primary, ...globalStyles.text }}
+        >
           Reset Wallet
         </Text>
       </TouchableOpacity>
-
-      <ConsentModal
-        isVisible={showResetWalletConsentModal}
-        title="Reset Wallet!"
-        subTitle="This will erase all your current wallet data. Are you sure you want to go through with this?"
-        onClose={() => setShowResetWalletConsentModal(false)}
-        onAccept={() => {
-          setShowResetWalletConsentModal(false);
-          resetWallet();
-        }}
-      />
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
+  scrollViewContentContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
   container: {
-    padding: 15,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
     backgroundColor: 'white'
   },
   inputContainer: {
     width: '100%',
-    marginTop: 20,
-    gap: 8
-  },
-  input: {
-    backgroundColor: '#f5f5f5'
+    marginTop: 20
   },
   button: {
     marginTop: 20,
-    width: '100%'
+    width: '100%',
+    paddingVertical: 5
+  },
+  buttonText: {
+    fontSize: FONT_SIZE['lg'],
+    color: 'white',
+    ...globalStyles.text
   },
   resetText: {
     textAlign: 'center',
-    marginVertical: 16
+    marginVertical: 16,
+    ...globalStyles.text
   }
 });

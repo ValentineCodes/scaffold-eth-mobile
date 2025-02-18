@@ -1,13 +1,15 @@
 import { StyleSheet } from 'react-native';
 import { COLORS } from '../../utils/constants';
 import { FONT_SIZE } from '../../utils/styles';
+import globalStyles from '../globalStyles';
 
 export default StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
-    padding: 15
+    paddingVertical: 15
   },
+  contentContainer: { flex: 1, paddingHorizontal: 10, marginTop: 20 },
   logo: {
     position: 'absolute',
     top: 15,
@@ -20,12 +22,13 @@ export default StyleSheet.create({
   title: {
     textAlign: 'center',
     color: COLORS.primary,
-    fontSize: 1.7 * FONT_SIZE['xl'],
-    fontWeight: 'bold'
+    fontSize: 1.5 * FONT_SIZE['xl'],
+    ...globalStyles.textSemiBold
   },
   subtitle: {
     textAlign: 'center',
-    marginVertical: 8
+    marginVertical: 8,
+    ...globalStyles.text
   },
   formContainer: {
     marginTop: 16,
@@ -36,5 +39,13 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between'
+  },
+  button: {
+    paddingVertical: 5
+  },
+  buttonText: {
+    fontSize: FONT_SIZE['lg'],
+    color: 'white',
+    ...globalStyles.text
   }
 });

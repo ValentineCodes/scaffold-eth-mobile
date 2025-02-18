@@ -2,12 +2,17 @@ import { Address } from 'abitype';
 import { ethers } from 'ethers';
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { IconButton, Modal, Portal, Text, TextInput } from 'react-native-paper';
+import { Text, TextInput } from 'react-native-paper';
+import { useToast } from 'react-native-toast-notifications';
+//@ts-ignore
+import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 import { useDispatch } from 'react-redux';
 import useAccount from '../../hooks/scaffold-eth/useAccount';
 import useNetwork from '../../hooks/scaffold-eth/useNetwork';
 import { useNFTMetadata } from '../../hooks/useNFTMetadata';
+import { useNFTs } from '../../hooks/useNFTs';
 import { addNFT } from '../../store/reducers/NFTs';
+import globalStyles from '../../styles/globalStyles';
 import { COLORS } from '../../utils/constants';
 import { FONT_SIZE, WINDOW_WIDTH } from '../../utils/styles';
 import Button from '../Button';
@@ -32,6 +37,10 @@ export default function ImportNFTModal({ modal: { closeModal } }: Props) {
 
   const { getNFTMetadata } = useNFTMetadata();
 
+  const { nftExists } = useNFTs();
+
+  const toast = useToast();
+
   const importNFT = async () => {
     try {
       if (!ethers.isAddress(address)) {
@@ -41,6 +50,11 @@ export default function ImportNFTModal({ modal: { closeModal } }: Props) {
 
       if (!tokenId) {
         setTokenIdError('Invalid token id');
+        return;
+      }
+
+      if (nftExists(address, Number(tokenId))) {
+        toast.show('Token already exists!', { type: 'danger' });
         return;
       }
 
@@ -78,70 +92,86 @@ export default function ImportNFTModal({ modal: { closeModal } }: Props) {
   };
 
   return (
-    <Portal>
-      <Modal
-        visible={true}
-        onDismiss={closeModal}
-        contentContainerStyle={styles.container}
-      >
-        <View style={styles.header}>
-          <Text variant="titleLarge">Import NFT</Text>
-          <IconButton icon="close" onPress={closeModal} />
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={{ fontSize: FONT_SIZE['xl'], ...globalStyles.text }}>
+          Import NFT
+        </Text>
+        <Ionicons
+          name="close-outline"
+          size={FONT_SIZE['xl'] * 1.7}
+          onPress={closeModal}
+        />
+      </View>
+
+      <View style={styles.content}>
+        <View style={{ gap: 8 }}>
+          <Text variant="titleMedium" style={globalStyles.textMedium}>
+            Address
+          </Text>
+          <TextInput
+            value={address}
+            mode="outlined"
+            outlineColor={COLORS.primary}
+            activeOutlineColor={COLORS.primary}
+            outlineStyle={{ borderRadius: 12, borderColor: COLORS.gray }}
+            contentStyle={globalStyles.text}
+            placeholder={'0x...'}
+            onChangeText={setAddress}
+            onSubmitEditing={importNFT}
+          />
+          {addressError ? (
+            <Text
+              variant="bodySmall"
+              style={{ color: COLORS.error, ...globalStyles.text }}
+            >
+              {addressError}
+            </Text>
+          ) : null}
         </View>
 
-        <View style={styles.content}>
-          <View style={{ gap: 8 }}>
-            <Text variant="titleSmall" style={{ fontWeight: 'bold' }}>
-              Address
+        <View style={{ gap: 8 }}>
+          <Text variant="titleMedium" style={globalStyles.textMedium}>
+            Token ID
+          </Text>
+          <TextInput
+            value={tokenId}
+            mode="outlined"
+            outlineColor={COLORS.primary}
+            activeOutlineColor={COLORS.primary}
+            outlineStyle={{ borderRadius: 12, borderColor: COLORS.gray }}
+            contentStyle={globalStyles.text}
+            placeholder={'Enter the token id'}
+            onChangeText={setTokenId}
+            onSubmitEditing={importNFT}
+          />
+          {tokenIdError ? (
+            <Text
+              variant="bodySmall"
+              style={{ color: COLORS.error, ...globalStyles.text }}
+            >
+              {tokenIdError}
             </Text>
-            <TextInput
-              value={address}
-              mode="outlined"
-              outlineColor={COLORS.primary}
-              activeOutlineColor={COLORS.primary}
-              style={{ fontSize: FONT_SIZE.md }}
-              placeholder={'0x...'}
-              onChangeText={setAddress}
-            />
-            {addressError ? (
-              <Text variant="bodySmall" style={{ color: '#ef4444' }}>
-                {addressError}
-              </Text>
-            ) : null}
-          </View>
-
-          <View style={{ gap: 8 }}>
-            <Text variant="titleSmall" style={{ fontWeight: 'bold' }}>
-              Token ID
-            </Text>
-            <TextInput
-              value={tokenId}
-              mode="outlined"
-              outlineColor={COLORS.primary}
-              activeOutlineColor={COLORS.primary}
-              style={{ fontSize: FONT_SIZE.md }}
-              placeholder={'Enter the token id'}
-              onChangeText={setTokenId}
-            />
-            {tokenIdError ? (
-              <Text variant="bodySmall" style={{ color: '#ef4444' }}>
-                {tokenIdError}
-              </Text>
-            ) : null}
-          </View>
-
-          <View style={styles.buttonContainer}>
-            <Button
-              type="outline"
-              text="Cancel"
-              onPress={closeModal}
-              style={styles.button}
-            />
-            <Button text="Import" onPress={importNFT} style={styles.button} />
-          </View>
+          ) : null}
         </View>
-      </Modal>
-    </Portal>
+
+        <View style={styles.buttonContainer}>
+          <Button
+            type="outline"
+            text="Cancel"
+            onPress={closeModal}
+            style={styles.button}
+          />
+          <Button
+            text="Import"
+            onPress={importNFT}
+            loading={isImporting}
+            disabled={isImporting}
+            style={styles.button}
+          />
+        </View>
+      </View>
+    </View>
   );
 }
 

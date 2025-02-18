@@ -1,14 +1,18 @@
 import { ethers } from 'ethers';
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { IconButton, Modal, Portal, Text, TextInput } from 'react-native-paper';
+import { Text, TextInput } from 'react-native-paper';
+//@ts-ignore
+import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 import { useDispatch } from 'react-redux';
 import { Address } from 'viem';
 import useAccount from '../../hooks/scaffold-eth/useAccount';
 import useNetwork from '../../hooks/scaffold-eth/useNetwork';
 import { useTokenBalance } from '../../hooks/useTokenBalance';
 import { useTokenMetadata } from '../../hooks/useTokenMetadata';
+import { useTokens } from '../../hooks/useTokens';
 import { addToken, Token } from '../../store/reducers/Tokens';
+import globalStyles from '../../styles/globalStyles';
 import { COLORS } from '../../utils/constants';
 import { FONT_SIZE, WINDOW_WIDTH } from '../../utils/styles';
 import Blockie from '../Blockie';
@@ -36,10 +40,23 @@ export default function ImportTokenModal({ modal: { closeModal } }: Props) {
   const { getTokenMetadata } = useTokenMetadata();
   const { getTokenBalance } = useTokenBalance();
 
+  const { tokens } = useTokens();
+
   const getTokenData = async () => {
     try {
       if (!ethers.isAddress(address)) {
         setAddressError('Invalid address');
+        return;
+      }
+
+      if (
+        tokens &&
+        tokens.some(
+          existingToken =>
+            existingToken.address.toLowerCase() === address.toLowerCase()
+        )
+      ) {
+        setAddressError('Token already exists.');
         return;
       }
 
@@ -81,78 +98,84 @@ export default function ImportTokenModal({ modal: { closeModal } }: Props) {
     closeModal();
   };
   return (
-    <Portal>
-      <Modal
-        visible={true}
-        onDismiss={closeModal}
-        contentContainerStyle={styles.container}
-      >
-        <View style={styles.header}>
-          <Text variant="titleLarge">Import Token</Text>
-          <IconButton icon="close" onPress={closeModal} />
-        </View>
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={{ fontSize: FONT_SIZE['xl'], ...globalStyles.text }}>
+          Import Token
+        </Text>
+        <Ionicons
+          name="close-outline"
+          size={FONT_SIZE['xl'] * 1.7}
+          onPress={closeModal}
+        />
+      </View>
 
-        <View style={styles.content}>
-          {!token ? (
-            <View style={{ gap: 8 }}>
-              <Text variant="titleSmall" style={{ fontWeight: 'bold' }}>
-                Address
+      <View style={styles.content}>
+        {!token ? (
+          <View style={{ gap: 8 }}>
+            <Text variant="titleMedium" style={globalStyles.textMedium}>
+              Address
+            </Text>
+            <TextInput
+              value={address}
+              mode="outlined"
+              outlineColor={COLORS.primary}
+              activeOutlineColor={COLORS.primary}
+              outlineStyle={{ borderRadius: 12, borderColor: COLORS.gray }}
+              contentStyle={globalStyles.text}
+              placeholder={'0x...'}
+              onChangeText={value => setAddress(value.trim())}
+              onSubmitEditing={getTokenData}
+            />
+            {addressError ? (
+              <Text
+                variant="bodySmall"
+                style={{ color: COLORS.error, ...globalStyles.text }}
+              >
+                {addressError}
               </Text>
-              <TextInput
-                value={address}
-                mode="outlined"
-                outlineColor={COLORS.primary}
-                activeOutlineColor={COLORS.primary}
-                style={{ fontSize: FONT_SIZE.md }}
-                placeholder={'0x...'}
-                onChangeText={value => setAddress(value.trim())}
-              />
-              {addressError ? (
-                <Text variant="bodySmall" style={{ color: '#ef4444' }}>
-                  {addressError}
-                </Text>
-              ) : null}
-            </View>
-          ) : (
-            <>
-              <View style={styles.tokenHeader}>
-                <Text>Token</Text>
-                <Text>Balance</Text>
-              </View>
-
-              <View style={styles.tokenContainer}>
-                <View style={[styles.tokenTitle, { width: '70%' }]}>
-                  <Blockie
-                    address={token.address}
-                    size={2.5 * FONT_SIZE['xl']}
-                  />
-                  <Text style={styles.tokenName}>{token.name}</Text>
-                </View>
-
-                <Text style={styles.tokenBalance}>
-                  {balance} {token.symbol}
-                </Text>
-              </View>
-            </>
-          )}
-
-          <View style={styles.buttonContainer}>
-            <Button
-              type="outline"
-              text="Cancel"
-              onPress={closeModal}
-              style={styles.button}
-            />
-            <Button
-              text={token ? 'Import' : 'Continue'}
-              onPress={token ? importToken : getTokenData}
-              style={styles.button}
-              loading={isImporting}
-            />
+            ) : null}
           </View>
+        ) : (
+          <>
+            <View style={styles.tokenHeader}>
+              <Text style={{ fontSize: FONT_SIZE['md'], ...globalStyles.text }}>
+                Token
+              </Text>
+              <Text style={{ fontSize: FONT_SIZE['md'], ...globalStyles.text }}>
+                Balance
+              </Text>
+            </View>
+
+            <View style={styles.tokenContainer}>
+              <View style={[styles.tokenTitle, { width: '70%' }]}>
+                <Blockie address={token.address} size={2.5 * FONT_SIZE['xl']} />
+                <Text style={styles.tokenName}>{token.name}</Text>
+              </View>
+
+              <Text style={styles.tokenBalance}>
+                {balance} {token.symbol}
+              </Text>
+            </View>
+          </>
+        )}
+
+        <View style={styles.buttonContainer}>
+          <Button
+            type="outline"
+            text="Cancel"
+            onPress={closeModal}
+            style={styles.button}
+          />
+          <Button
+            text={token ? 'Import' : 'Continue'}
+            onPress={token ? importToken : getTokenData}
+            style={styles.button}
+            loading={isImporting}
+          />
         </View>
-      </Modal>
-    </Portal>
+      </View>
+    </View>
   );
 }
 
@@ -188,10 +211,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   tokenName: {
-    marginLeft: 12
+    marginLeft: 12,
+    fontSize: FONT_SIZE['lg'],
+    ...globalStyles.text
   },
   tokenBalance: {
-    marginLeft: 12
+    marginLeft: 12,
+    fontSize: FONT_SIZE['md'],
+    ...globalStyles.text
   },
   buttonContainer: {
     flexDirection: 'row',

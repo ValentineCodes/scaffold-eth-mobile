@@ -1,14 +1,17 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, TextStyle, ViewStyle } from 'react-native';
 import { Button as PaperButton } from 'react-native-paper';
+import globalStyles from '../styles/globalStyles';
 import { COLORS } from '../utils/constants';
+import { FONT_SIZE } from '../utils/styles';
 
 type Props = {
   text: string;
   type?: 'normal' | 'outline';
   loading?: boolean;
   disabled?: boolean;
-  style?: any;
+  style?: ViewStyle;
+  labelStyle?: TextStyle;
   onPress: () => void;
 };
 
@@ -18,6 +21,7 @@ export default function Button({
   loading,
   disabled,
   style,
+  labelStyle,
   onPress
 }: Props) {
   return (
@@ -33,7 +37,11 @@ export default function Button({
         style
       ]}
       contentStyle={styles.content}
-      labelStyle={[styles.label, type === 'outline' && styles.outlineLabel]}
+      labelStyle={[
+        styles.label,
+        type === 'outline' && styles.outlineLabel,
+        labelStyle
+      ]}
     >
       {text}
     </PaperButton>
@@ -46,7 +54,8 @@ const styles = StyleSheet.create({
     width: '100%'
   },
   outlineButton: {
-    backgroundColor: '#E8F7ED'
+    backgroundColor: '#E8F7ED',
+    borderColor: COLORS.gray
   },
   disabledButton: {
     backgroundColor: '#2A974D'
@@ -55,9 +64,9 @@ const styles = StyleSheet.create({
     paddingVertical: 8
   },
   label: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: 'white'
+    fontSize: FONT_SIZE['lg'],
+    color: 'white',
+    ...globalStyles.text
   },
   outlineLabel: {
     color: COLORS.primary

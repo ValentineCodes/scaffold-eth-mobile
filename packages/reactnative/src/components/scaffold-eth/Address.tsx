@@ -1,14 +1,9 @@
 import Clipboard from '@react-native-clipboard/clipboard';
 import React from 'react';
-import {
-  Pressable,
-  StyleSheet,
-  TextStyle,
-  View,
-  ViewStyle
-} from 'react-native';
+import { StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
 import { IconButton, Text } from 'react-native-paper';
 import { useToast } from 'react-native-toast-notifications';
+import globalStyles from '../../styles/globalStyles';
 import { COLORS } from '../../utils/constants';
 import { truncateAddress } from '../../utils/helperFunctions';
 import { FONT_SIZE } from '../../utils/styles';
@@ -62,7 +57,7 @@ const styles = StyleSheet.create({
   },
   text: {
     textAlign: 'center',
-    fontWeight: '500'
+    ...globalStyles.text
   },
   icon: {
     margin: 0

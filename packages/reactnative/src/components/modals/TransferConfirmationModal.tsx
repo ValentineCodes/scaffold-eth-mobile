@@ -5,10 +5,10 @@ import { Button, Divider, Text } from 'react-native-paper';
 import { useToast } from 'react-native-toast-notifications';
 import useNetwork from '../../hooks/scaffold-eth/useNetwork';
 import { Account } from '../../store/reducers/Accounts';
+import globalStyles from '../../styles/globalStyles';
 import { parseFloat, truncateAddress } from '../../utils/helperFunctions';
-import { FONT_SIZE } from '../../utils/styles';
+import { FONT_SIZE, WINDOW_WIDTH } from '../../utils/styles';
 import Blockie from '../Blockie';
-import CustomButton from '../Button';
 import Fail from './modules/Fail';
 import Success from './modules/Success';
 
@@ -55,13 +55,12 @@ export default function TransferConfirmationModal({
   };
 
   const calcTotal = () => {
-    return String(
-      estimateGasCost &&
-        parseFloat(
+    return estimateGasCost
+      ? parseFloat(
           (txData.amount + Number(formatEther(estimateGasCost))).toString(),
           8
         )
-    );
+      : null;
   };
 
   const transfer = async () => {
@@ -111,10 +110,12 @@ export default function TransferConfirmationModal({
               />
 
               <View style={styles.accountDetails}>
-                <Text variant="titleLarge" style={styles.accountName}>
+                <Text
+                  style={{ fontSize: FONT_SIZE['lg'], ...globalStyles.text }}
+                >
                   {txData.from.name}
                 </Text>
-                <Text variant="bodyMedium">
+                <Text variant="bodyMedium" style={globalStyles.text}>
                   Balance: {formatBalance()} {token}
                 </Text>
               </View>
@@ -129,7 +130,7 @@ export default function TransferConfirmationModal({
 
           <View style={styles.recipientContainer}>
             <Blockie address={txData.to} size={1.8 * FONT_SIZE['xl']} />
-            <Text variant="titleLarge" style={styles.accountName}>
+            <Text style={{ fontSize: FONT_SIZE['lg'], ...globalStyles.text }}>
               {truncateAddress(txData.to)}
             </Text>
           </View>
@@ -145,16 +146,20 @@ export default function TransferConfirmationModal({
         <View style={styles.detailsContainer}>
           <View style={styles.detailsRow}>
             <View>
-              <Text variant="titleMedium">Estimated gas fee</Text>
-              <Text variant="bodySmall" style={styles.gasEstimate}>
+              <Text variant="titleMedium" style={globalStyles.textMedium}>
+                Estimated gas fee
+              </Text>
+              <Text
+                variant="bodySmall"
+                style={{ color: 'green', ...globalStyles.text }}
+              >
                 Likely in &lt; 30 second
               </Text>
             </View>
             <Text variant="titleMedium" style={styles.detailsValue}>
-              {String(
-                estimateGasCost &&
-                  parseFloat(ethers.formatEther(estimateGasCost), 8)
-              )}{' '}
+              {estimateGasCost
+                ? parseFloat(ethers.formatEther(estimateGasCost), 8).toString()
+                : null}{' '}
               {network.currencySymbol}
             </Text>
           </View>
@@ -164,7 +169,9 @@ export default function TransferConfirmationModal({
               <Divider />
 
               <View style={styles.detailsRow}>
-                <Text variant="titleMedium">Total</Text>
+                <Text variant="titleMedium" style={globalStyles.textMedium}>
+                  Total
+                </Text>
                 <Text variant="titleMedium" style={styles.detailsValue}>
                   {calcTotal()} {network.currencySymbol}
                 </Text>
@@ -176,18 +183,28 @@ export default function TransferConfirmationModal({
         <View style={styles.buttonContainer}>
           <Button
             mode="contained"
-            buttonColor="#ffebee"
-            style={styles.cancelButton}
             onPress={() => closeModal()}
+            disabled={isTransferring}
+            buttonColor="#FFCDD2"
+            style={{ flex: 1, paddingVertical: 4, borderRadius: 30 }}
+            labelStyle={{ fontSize: FONT_SIZE['lg'], ...globalStyles.text }}
           >
-            <Text style={styles.cancelButtonText}>Cancel</Text>
+            Cancel
           </Button>
-          <CustomButton
-            text="Confirm"
-            loading={isTransferring}
+          <Button
+            mode="contained"
             onPress={transfer}
-            style={styles.confirmButton}
-          />
+            loading={isTransferring}
+            disabled={isTransferring}
+            style={{ flex: 1, paddingVertical: 4, borderRadius: 30 }}
+            labelStyle={{
+              fontSize: FONT_SIZE['lg'],
+              ...globalStyles.text,
+              color: 'white'
+            }}
+          >
+            Confirm
+          </Button>
         </View>
       </View>
 
@@ -217,13 +234,15 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 30,
     padding: 20,
+    width: WINDOW_WIDTH * 0.9,
     gap: 16
   },
   section: {
     gap: 8
   },
   sectionTitle: {
-    fontWeight: '500'
+    fontSize: FONT_SIZE['lg'],
+    ...globalStyles.text
   },
   accountContainer: {
     backgroundColor: '#F5F5F5',
@@ -238,9 +257,6 @@ const styles = StyleSheet.create({
   accountDetails: {
     width: '75%'
   },
-  accountName: {
-    fontWeight: '500'
-  },
   recipientContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -251,12 +267,12 @@ const styles = StyleSheet.create({
   },
   amountLabel: {
     textAlign: 'center',
-    fontWeight: '500',
-    marginBottom: -16
+    marginBottom: -16,
+    ...globalStyles.textMedium
   },
   amount: {
     textAlign: 'center',
-    fontWeight: 'bold'
+    ...globalStyles.textSemiBold
   },
   detailsContainer: {
     borderWidth: 1,
@@ -269,28 +285,13 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     justifyContent: 'space-between'
   },
-  gasEstimate: {
-    color: '#27B858'
-  },
   detailsValue: {
     width: '50%',
-    textAlign: 'right'
+    textAlign: 'right',
+    ...globalStyles.textMedium
   },
   buttonContainer: {
-    width: '100%',
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between'
-  },
-  cancelButton: {
-    width: '50%',
-    borderRadius: 0
-  },
-  cancelButtonText: {
-    color: '#ef5350'
-  },
-  confirmButton: {
-    width: '50%',
-    borderRadius: 0
+    gap: 12
   }
 });

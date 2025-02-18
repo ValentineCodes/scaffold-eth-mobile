@@ -8,10 +8,12 @@ import CreateWallet from './Authentication/CreateWallet';
 import ImportWallet from './Authentication/ImportWallet';
 import Login from './Authentication/Login';
 import Onboarding from './Authentication/Onboarding';
-import SecureWallet from './Authentication/SecureWallet';
 import WalletSetup from './Authentication/WalletSetup';
 import Main from './Main';
+import NFTs from './NFTs';
 import TokenDetails from './TokenDetails';
+import Tokens from './Tokens';
+import Transactions from './Transactions';
 import ERC20TokenTransfer from './Transfer/ERC20TokenTransfer';
 import NetworkTokenTransfer from './Transfer/NetworkTokenTransfer';
 import NFTTokenTransfer from './Transfer/NFTTokenTransfer';
@@ -23,7 +25,6 @@ type AppStackParamsList = {
   WalletSetup: undefined;
   ImportWallet: undefined;
   CreateWallet: undefined;
-  SecureWallet: undefined;
   CreatePassword: undefined;
   Login: undefined;
   Main: undefined;
@@ -41,6 +42,9 @@ type AppStackParamsList = {
   TokenDetails: {
     token: Token;
   };
+  Tokens: undefined;
+  NFTs: undefined;
+  Transactions: undefined;
 };
 
 const AppStack = createNativeStackNavigator<AppStackParamsList>();
@@ -61,7 +65,6 @@ export default function Navigation({}: Props) {
             <AppStack.Screen name="Onboarding" component={Onboarding} />
             <AppStack.Screen name="WalletSetup" component={WalletSetup} />
             <AppStack.Screen name="ImportWallet" component={ImportWallet} />
-            <AppStack.Screen name="SecureWallet" component={SecureWallet} />
             <AppStack.Screen name="CreateWallet" component={CreateWallet} />
             <AppStack.Screen name="CreatePassword" component={CreatePassword} />
           </>
@@ -78,6 +81,9 @@ export default function Navigation({}: Props) {
         />
         <AppStack.Screen name="NFTTokenTransfer" component={NFTTokenTransfer} />
         <AppStack.Screen name="TokenDetails" component={TokenDetails} />
+        <AppStack.Screen name="Tokens" component={Tokens} />
+        <AppStack.Screen name="NFTs" component={NFTs} />
+        <AppStack.Screen name="Transactions" component={Transactions} />
       </AppStack.Navigator>
     </NavigationContainer>
   );

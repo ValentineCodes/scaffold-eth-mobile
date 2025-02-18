@@ -1,5 +1,6 @@
 import { Abi, AbiFunction } from 'abitype';
 import { InterfaceAbi } from 'ethers';
+import { View } from 'react-native';
 import { Text } from 'react-native-paper';
 import {
   Contract,
@@ -53,7 +54,7 @@ export default function ContractVariables({
   }
 
   return (
-    <>
+    <View style={{ gap: 16 }}>
       {functionsToDisplay.map(({ fn, inheritedFrom }) => (
         <DisplayVariable
           abi={deployedContractData.abi as InterfaceAbi}
@@ -63,6 +64,6 @@ export default function ContractVariables({
           refreshDisplayVariables={refreshDisplayVariables}
         />
       ))}
-    </>
+    </View>
   );
 }

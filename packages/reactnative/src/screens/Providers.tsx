@@ -10,15 +10,20 @@ import { MenuProvider } from 'react-native-popup-menu';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ToastProvider } from 'react-native-toast-notifications';
 import { Provider as ReduxProvider } from 'react-redux';
+import AccountDetailsModal from '../components/modals/AccountDetailsModal';
 import AccountsModal from '../components/modals/AccountsModal';
 import AccountsSelectionModal from '../components/modals/AccountsSelectionModal';
 import ChangePasswordModal from '../components/modals/ChangePasswordModal';
+import ConsentModal from '../components/modals/ConsentModal';
 import ImportAccountModal from '../components/modals/ImportAccountModal';
 import ImportNFTModal from '../components/modals/ImportNFTModal';
 import ImportTokenModal from '../components/modals/ImportTokenModal';
 import NFTDetailsModal from '../components/modals/NFTDetailsModal';
 import NFTTransferConfirmationModal from '../components/modals/NFTTransferConfirmationModal';
+import PrivateKeyModal from '../components/modals/PrivateKeyModal';
 import QRCodeScanner from '../components/modals/QRCodeScanner';
+import ReceiveModal from '../components/modals/ReceiveModal';
+import SeedPhraseModal from '../components/modals/SeedPhraseModal';
 import SignMessageModal from '../components/modals/SignMessageModal';
 import SignTransactionModal from '../components/modals/SignTransactionModal';
 import SignTransferModal from '../components/modals/SignTransferModal';
@@ -56,7 +61,12 @@ const modalConfig = {
   NFTTransferConfirmationModal,
   SwitchNetworkModal,
   ImportAccountModal,
-  AccountsModal
+  AccountsModal,
+  ConsentModal,
+  ReceiveModal,
+  AccountDetailsModal,
+  PrivateKeyModal,
+  SeedPhraseModal
 };
 const defaultOptions: ModalOptions = {
   backdropOpacity: 0.6,

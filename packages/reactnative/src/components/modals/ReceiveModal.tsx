@@ -1,35 +1,32 @@
 import Clipboard from '@react-native-clipboard/clipboard';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import {
-  Button,
-  IconButton,
-  Modal,
-  Portal,
-  Surface,
-  Text
-} from 'react-native-paper';
+import { IconButton, Surface, Text } from 'react-native-paper';
 import QRCode from 'react-native-qrcode-svg';
 import Share from 'react-native-share';
 import { useToast } from 'react-native-toast-notifications';
-import { useSelector } from 'react-redux';
+//@ts-ignore
+import Ionicons from 'react-native-vector-icons/dist/Ionicons';
+import useAccount from '../../hooks/scaffold-eth/useAccount';
+import useNetwork from '../../hooks/scaffold-eth/useNetwork';
 import { Account } from '../../store/reducers/Accounts';
 import { Network } from '../../store/reducers/Networks';
+import globalStyles from '../../styles/globalStyles';
 import { COLORS } from '../../utils/constants';
-import { FONT_SIZE } from '../../utils/styles';
+import { FONT_SIZE, WINDOW_WIDTH } from '../../utils/styles';
 
 type Props = {
-  isVisible: boolean;
-  onClose: () => void;
+  modal: {
+    closeModal: () => void;
+    params: {
+      tokenSymbol?: string;
+    };
+  };
 };
 
-export default function ReceiveModal({ isVisible, onClose }: Props) {
-  const connectedAccount: Account = useSelector(state =>
-    state.accounts.find((account: Account) => account.isConnected)
-  );
-  const connectedNetwork: Network = useSelector((state: any) =>
-    state.networks.find((network: Network) => network.isConnected)
-  );
+export default function ReceiveModal({ modal: { closeModal, params } }: Props) {
+  const connectedAccount: Account = useAccount();
+  const connectedNetwork: Network = useNetwork();
 
   const toast = useToast();
 
@@ -47,55 +44,69 @@ export default function ReceiveModal({ isVisible, onClose }: Props) {
   };
 
   return (
-    <Portal>
-      <Modal
-        visible={isVisible}
-        onDismiss={onClose}
-        contentContainerStyle={styles.container}
-      >
-        <View style={styles.header}>
-          <Text variant="headlineMedium">
-            Receive {connectedNetwork.currencySymbol}
-          </Text>
-          <IconButton icon="close" onPress={onClose} />
-        </View>
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Text variant="headlineMedium" style={styles.headerTitle}>
+          Receive {params?.tokenSymbol || connectedNetwork.currencySymbol}
+        </Text>
+        <Ionicons
+          name="close-outline"
+          size={FONT_SIZE['xl'] * 1.7}
+          onPress={closeModal}
+        />
+      </View>
 
-        <View style={styles.content}>
-          <QRCode value={connectedAccount.address} size={240} />
-          <Text variant="titleLarge" style={styles.address}>
-            {connectedAccount.address}
-          </Text>
-        </View>
+      <View style={styles.content}>
+        <QRCode value={connectedAccount.address} size={240} />
+        <Text variant="titleLarge" style={styles.address}>
+          {connectedAccount.address}
+        </Text>
+      </View>
 
-        <Surface style={styles.warning} elevation={0}>
-          <Text variant="bodyMedium" style={styles.warningText}>
-            Send only {connectedNetwork.name} ({connectedNetwork.currencySymbol}
-            ) to this address. Sending any other coins may result in permanent
-            loss.
-          </Text>
-        </Surface>
+      <Surface style={styles.warning} elevation={0}>
+        <Text variant="bodyMedium" style={styles.warningText}>
+          Send only {connectedNetwork.name} (
+          {params?.tokenSymbol || connectedNetwork.currencySymbol}) to this
+          address. Sending any other coins may result in permanent loss.
+        </Text>
+      </Surface>
 
-        <View style={styles.buttonContainer}>
-          <Button
-            mode="contained-tonal"
+      <View style={styles.buttonContainer}>
+        <View style={styles.actionButton}>
+          <IconButton
+            icon={() => (
+              <Ionicons name="copy-outline" size={24} color={COLORS.primary} />
+            )}
+            mode="contained"
+            containerColor={COLORS.primaryLight}
+            size={48}
             onPress={copyAddress}
-            icon="content-copy"
-            contentStyle={styles.buttonContent}
-          >
+          />
+          <Text variant="titleMedium" style={styles.actionText}>
             Copy
-          </Button>
-
-          <Button
-            mode="contained-tonal"
-            onPress={shareAddress}
-            icon="share"
-            contentStyle={styles.buttonContent}
-          >
-            Share
-          </Button>
+          </Text>
         </View>
-      </Modal>
-    </Portal>
+
+        <View style={styles.actionButton}>
+          <IconButton
+            icon={() => (
+              <Ionicons
+                name="paper-plane-outline"
+                size={24}
+                color={COLORS.primary}
+              />
+            )}
+            mode="contained"
+            containerColor={COLORS.primaryLight}
+            size={48}
+            onPress={shareAddress}
+          />
+          <Text variant="titleMedium" style={styles.actionText}>
+            Share
+          </Text>
+        </View>
+      </View>
+    </View>
   );
 }
 
@@ -104,7 +115,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 30,
     padding: 20,
-    margin: 20
+    margin: 20,
+    width: WINDOW_WIDTH * 0.9
   },
   header: {
     flexDirection: 'row',
@@ -112,13 +124,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 20
   },
+  headerTitle: {
+    fontSize: FONT_SIZE['xl'],
+    ...globalStyles.textMedium
+  },
   content: {
     alignItems: 'center',
     gap: 16,
     marginBottom: 20
   },
   address: {
-    textAlign: 'center'
+    textAlign: 'center',
+    ...globalStyles.text
   },
   warning: {
     backgroundColor: COLORS.primaryLight,
@@ -127,7 +144,9 @@ const styles = StyleSheet.create({
     marginBottom: 20
   },
   warningText: {
-    textAlign: 'center'
+    textAlign: 'center',
+    fontSize: FONT_SIZE['md'],
+    ...globalStyles.text
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -137,5 +156,12 @@ const styles = StyleSheet.create({
   buttonContent: {
     flexDirection: 'column',
     height: 80
+  },
+  actionButton: {
+    alignItems: 'center'
+  },
+  actionText: {
+    marginTop: 8,
+    ...globalStyles.textMedium
   }
 });

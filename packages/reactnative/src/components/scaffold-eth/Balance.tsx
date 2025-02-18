@@ -3,6 +3,7 @@ import { StyleSheet, TextStyle, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import useBalance from '../../hooks/scaffold-eth/useBalance';
 import useNetwork from '../../hooks/scaffold-eth/useNetwork';
+import globalStyles from '../../styles/globalStyles';
 import { parseBalance } from '../../utils/helperFunctions';
 
 type Props = {
@@ -18,7 +19,7 @@ export default function Balance({ address, style }: Props) {
 
   return (
     <View style={styles.container}>
-      <Text style={style}>
+      <Text style={[globalStyles.text, style]}>
         {balance !== null
           ? `${parseBalance(balance)} ${network.currencySymbol}`
           : null}

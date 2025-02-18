@@ -1,8 +1,12 @@
 import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 import React, { useEffect } from 'react';
-import { BackHandler, NativeEventSubscription } from 'react-native';
-import { Surface } from 'react-native-paper';
-import Assets from './modules/wallet/Assets';
+import {
+  BackHandler,
+  NativeEventSubscription,
+  ScrollView,
+  StyleSheet
+} from 'react-native';
+import Footer from './modules/wallet/Footer';
 import Header from './modules/wallet/Header';
 import MainBalance from './modules/wallet/MainBalance';
 
@@ -10,7 +14,7 @@ let backHandler: NativeEventSubscription;
 
 type Props = {};
 
-function Wallet({}: Props) {
+export default function Wallet({}: Props) {
   const isFocused = useIsFocused();
 
   useFocusEffect(() => {
@@ -30,19 +34,19 @@ function Wallet({}: Props) {
   if (!isFocused) return;
 
   return (
-    <Surface
-      style={{
-        flex: 1,
-        backgroundColor: 'white',
-        paddingHorizontal: 16,
-        paddingVertical: 4
-      }}
-    >
+    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <Header />
       <MainBalance backHandler={backHandler} />
-      <Assets />
-    </Surface>
+      <Footer />
+    </ScrollView>
   );
 }
 
-export default Wallet;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+    paddingHorizontal: 10,
+    paddingVertical: 4
+  }
+});

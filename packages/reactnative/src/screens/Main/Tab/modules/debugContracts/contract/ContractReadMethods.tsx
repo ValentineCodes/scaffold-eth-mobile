@@ -1,10 +1,13 @@
 import { Abi, AbiFunction } from 'abitype';
 import React from 'react';
+import { View } from 'react-native';
 import { Text } from 'react-native-paper';
 import {
   GenericContract,
   InheritedFunctions
 } from '../../../../../../../utils/scaffold-eth/contract';
+import globalStyles from '../../../../../../styles/globalStyles';
+import { FONT_SIZE } from '../../../../../../utils/styles';
 import ReadOnlyFunctionForm from './ReadOnlyFunctionForm';
 
 type Props = {
@@ -42,13 +45,13 @@ export default function ContractReadMethods({ deployedContractData }: Props) {
 
   if (!functionsToDisplay.length) {
     return (
-      <Text variant="headlineSmall" style={{ fontWeight: '300' }}>
+      <Text style={{ fontSize: FONT_SIZE['xl'], ...globalStyles.text }}>
         No read methods
       </Text>
     );
   }
   return (
-    <>
+    <View style={{ gap: 16 }}>
       {functionsToDisplay.map(({ fn, inheritedFrom }) => (
         <ReadOnlyFunctionForm
           key={fn.name}
@@ -57,6 +60,6 @@ export default function ContractReadMethods({ deployedContractData }: Props) {
           abiFunction={fn}
         />
       ))}
-    </>
+    </View>
   );
 }

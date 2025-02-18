@@ -9,7 +9,9 @@ import IntegerInput from '../../../../../../components/scaffold-eth/input/Intege
 import useContractWrite from '../../../../../../hooks/scaffold-eth/useContractWrite';
 import useNetwork from '../../../../../../hooks/scaffold-eth/useNetwork';
 import useTargetNetwork from '../../../../../../hooks/scaffold-eth/useTargetNetwork';
+import globalStyles from '../../../../../../styles/globalStyles';
 import { COLORS } from '../../../../../../utils/constants';
+import { FONT_SIZE } from '../../../../../../utils/styles';
 import ContractInput from './ContractInput';
 import {
   getFunctionInputKey,
@@ -73,18 +75,18 @@ export default function WriteOnlyFunctionForm({
       />
     );
   });
-  const zeroInputs =
-    inputElements.length === 0 && abiFunction.stateMutability !== 'payable';
 
   const showReceipt = () => {
     openModal('TxReceiptModal', { txReceipt });
   };
   return (
     <View>
-      <Text variant="titleMedium" style={{ marginVertical: 8 }}>
+      <Text style={{ fontSize: FONT_SIZE['md'], ...globalStyles.textMedium }}>
         {abiFunction.name}
       </Text>
-      {inputElements}
+
+      <View style={{ gap: 4, marginTop: 10 }}>{inputElements}</View>
+
       {abiFunction.stateMutability === 'payable' ? (
         <View style={{ marginTop: 8 }}>
           <IntegerInput
@@ -112,6 +114,7 @@ export default function WriteOnlyFunctionForm({
               borderRadius: 24,
               backgroundColor: COLORS.primaryLight
             }}
+            labelStyle={{ fontSize: FONT_SIZE['md'], ...globalStyles.text }}
             onPress={showReceipt}
           >
             Show Receipt
@@ -126,7 +129,12 @@ export default function WriteOnlyFunctionForm({
             marginVertical: 8,
             borderRadius: 24,
             backgroundColor:
-              writeDisabled || isLoading ? COLORS.primaryLight : COLORS.primary
+              writeDisabled || isLoading ? COLORS.primary : COLORS.primaryLight
+          }}
+          labelStyle={{
+            fontSize: FONT_SIZE['md'],
+            ...globalStyles.text,
+            color: writeDisabled || isLoading ? 'white' : 'black'
           }}
           loading={isLoading}
           disabled={writeDisabled || isLoading}

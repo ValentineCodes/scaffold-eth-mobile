@@ -1,4 +1,5 @@
 import { Abi, AbiFunction } from 'abitype';
+import { View } from 'react-native';
 import { Text } from 'react-native-paper';
 import {
   Contract,
@@ -51,7 +52,7 @@ export default function ContractWriteMethods({
   }
 
   return (
-    <>
+    <View style={{ gap: 16 }}>
       {functionsToDisplay.map(({ fn, inheritedFrom }, idx) => (
         <WriteOnlyFunctionForm
           abi={deployedContractData.abi as Abi}
@@ -61,6 +62,6 @@ export default function ContractWriteMethods({
           onChange={onChange}
         />
       ))}
-    </>
+    </View>
   );
 }

@@ -1,16 +1,17 @@
 import Clipboard from '@react-native-clipboard/clipboard';
-import { BlurView } from '@react-native-community/blur';
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, ScrollView, StyleSheet, View } from 'react-native';
 import { Button, Divider, Text } from 'react-native-paper';
 import { useToast } from 'react-native-toast-notifications';
 import { useDispatch } from 'react-redux';
-import ProgressIndicatorHeader from '../../components/headers/ProgressIndicatorHeader';
+import BackButton from '../../components/buttons/BackButton';
+import SeedPhrase from '../../components/SeedPhrase';
 import { useSecureStorage } from '../../hooks/useSecureStorage';
 import useWallet from '../../hooks/useWallet';
 import { initAccounts } from '../../store/reducers/Accounts';
 import { loginUser } from '../../store/reducers/Auth';
+import globalStyles from '../../styles/globalStyles';
 import { COLORS } from '../../utils/constants';
 import { FONT_SIZE } from '../../utils/styles';
 
@@ -27,7 +28,7 @@ export default function CreateWallet({}: Props) {
   const toast = useToast();
   const { createWallet } = useWallet();
   const [wallet, setWallet] = useState<Wallet>();
-  const [showSeedPhrase, setShowSeedPhrase] = useState(false);
+  const [hasSeenSeedPhrase, setHasSeenSeedPhrase] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const { saveItem } = useSecureStorage();
   const dispatch = useDispatch();
@@ -45,7 +46,7 @@ export default function CreateWallet({}: Props) {
   };
 
   const saveWallet = async () => {
-    if (!wallet || !showSeedPhrase) {
+    if (!wallet || !hasSeenSeedPhrase) {
       toast.show(
         "You haven't even seen your seed phrase. Do you want to lose your funds?🤨",
         {
@@ -87,11 +88,9 @@ export default function CreateWallet({}: Props) {
 
   return (
     <View style={styles.container}>
-      <ProgressIndicatorHeader progress={2} />
+      <BackButton />
 
-      <Divider style={{ marginTop: 32, marginBottom: 16 }} />
-
-      <ScrollView style={{ flex: 1 }}>
+      <ScrollView style={styles.contentContainer}>
         <Text variant="headlineMedium" style={styles.title}>
           Write Down Your Seed Phrase
         </Text>
@@ -107,48 +106,10 @@ export default function CreateWallet({}: Props) {
             <ActivityIndicator size="large" color={COLORS.primary} />
           </View>
         ) : (
-          <View style={styles.seedPhraseContainer}>
-            <View style={styles.seedPhraseWrapper}>
-              {wallet?.mnemonic.split(' ').map((word, index) => (
-                <Text key={word} style={styles.word}>
-                  {index + 1}. {word}
-                </Text>
-              ))}
-            </View>
-
-            {!showSeedPhrase && (
-              <>
-                <BlurView
-                  style={styles.blurView}
-                  blurType="light"
-                  blurAmount={6}
-                  reducedTransparencyFallbackColor="white"
-                />
-                <View style={styles.seedPhraseMask}>
-                  <Text
-                    variant="titleLarge"
-                    style={{ textAlign: 'center', fontWeight: 'bold' }}
-                  >
-                    Tap to reveal your seed phrase
-                  </Text>
-                  <Text
-                    variant="bodyMedium"
-                    style={{ textAlign: 'center', marginTop: 8 }}
-                  >
-                    Make sure no one is watching your screen
-                  </Text>
-                  <Button
-                    mode="contained"
-                    icon="eye"
-                    onPress={() => setShowSeedPhrase(true)}
-                    style={styles.viewButton}
-                  >
-                    View
-                  </Button>
-                </View>
-              </>
-            )}
-          </View>
+          <SeedPhrase
+            seedPhrase={wallet?.mnemonic}
+            onReveal={() => setHasSeenSeedPhrase(true)}
+          />
         )}
 
         <Divider style={{ marginVertical: 16 }} />
@@ -158,6 +119,7 @@ export default function CreateWallet({}: Props) {
           onPress={copySeedPhrase}
           disabled={isLoading}
           style={styles.copyButton}
+          labelStyle={styles.buttonText}
         >
           Copy To Clipboard
         </Button>
@@ -166,6 +128,7 @@ export default function CreateWallet({}: Props) {
           onPress={saveWallet}
           disabled={isLoading}
           style={styles.nextButton}
+          labelStyle={[styles.buttonText, { color: 'white' }]}
         >
           Next
         </Button>
@@ -178,69 +141,37 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
-    padding: 15
+    paddingVertical: 15
   },
+  contentContainer: { flex: 1, paddingHorizontal: 10, marginTop: 20 },
   title: {
     textAlign: 'center',
     color: COLORS.primary,
-    fontSize: 1.7 * FONT_SIZE['xl'],
-    fontWeight: 'bold',
-    lineHeight: 40
+    fontSize: 1.5 * FONT_SIZE['xl'],
+    lineHeight: 40,
+    ...globalStyles.textSemiBold
   },
   subtitle: {
     textAlign: 'center',
-    marginVertical: 8
+    marginVertical: 8,
+    ...globalStyles.text
   },
   loader: {
     height: 280,
     justifyContent: 'center',
     alignItems: 'center'
   },
-  seedPhraseContainer: {
-    width: '100%',
-    borderWidth: 2,
-    borderColor: COLORS.primary,
-    borderRadius: 40,
-    padding: 15
-  },
-  seedPhraseWrapper: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '100%'
-  },
-  word: {
-    width: '45%',
-    padding: 10,
-    backgroundColor: '#F5F5F5',
-    borderRadius: 25,
-    textAlign: 'center',
-    fontWeight: 'bold',
-    marginBottom: 10
-  },
-  blurView: {
-    position: 'absolute',
-    top: -20,
-    left: -20,
-    bottom: -20,
-    right: -20
-  },
-  seedPhraseMask: {
-    ...StyleSheet.absoluteFillObject,
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 8
-  },
-  viewButton: {
-    marginTop: 8,
-    borderRadius: 25,
-    backgroundColor: '#2AB858'
-  },
   copyButton: {
-    marginBottom: 20
+    marginTop: 20,
+    paddingVertical: 5,
+    borderColor: COLORS.primary
   },
   nextButton: {
-    marginBottom: 50
+    marginTop: 20,
+    paddingVertical: 5
+  },
+  buttonText: {
+    fontSize: FONT_SIZE['lg'],
+    ...globalStyles.text
   }
 });

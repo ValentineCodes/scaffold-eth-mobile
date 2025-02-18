@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import {
   Image,
   RefreshControl,
@@ -7,15 +7,16 @@ import {
   StyleSheet,
   View
 } from 'react-native';
-import { Divider, IconButton, Text } from 'react-native-paper';
+import { useModal } from 'react-native-modalfy';
+import { IconButton, Text } from 'react-native-paper';
 // @ts-ignore
 import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 import CopyableText from '../../../../../components/CopyableText';
-import ReceiveModal from '../../../../../components/modals/ReceiveModal';
 import useAccount from '../../../../../hooks/scaffold-eth/useAccount';
 import useBalance from '../../../../../hooks/scaffold-eth/useBalance';
 import useNetwork from '../../../../../hooks/scaffold-eth/useNetwork';
 import { useCryptoPrice } from '../../../../../hooks/useCryptoPrice';
+import globalStyles from '../../../../../styles/globalStyles';
 import { COLORS } from '../../../../../utils/constants';
 import {
   parseBalance,
@@ -35,9 +36,9 @@ function MainBalance({ backHandler }: Props) {
   });
   const { price, fetchPrice } = useCryptoPrice({ enabled: false });
 
-  const [showReceiveModal, setShowReceiveModal] = useState(false);
-
   const navigation = useNavigation();
+
+  const { openModal } = useModal();
 
   const logo = useMemo(() => {
     let _logo = require('../../../../../assets/images/eth-icon.png');
@@ -68,13 +69,18 @@ function MainBalance({ backHandler }: Props) {
     fetchPrice();
   }, [balance, network]);
 
+  const refresh = () => {
+    refetch();
+    fetchPrice();
+  };
+
   return (
     <ScrollView
       style={{ flexGrow: 0 }}
       refreshControl={
         <RefreshControl
           refreshing={isRefetching}
-          onRefresh={refetch}
+          onRefresh={refresh}
           colors={[COLORS.primary]}
           tintColor={COLORS.primary}
         />
@@ -102,7 +108,13 @@ function MainBalance({ backHandler }: Props) {
               : null}
           </Text>
 
-          <Text style={{ color: 'grey', fontSize: FONT_SIZE['lg'] }}>
+          <Text
+            style={{
+              color: 'grey',
+              fontSize: FONT_SIZE['lg'],
+              ...globalStyles.text
+            }}
+          >
             {price &&
               balance !== null &&
               parseBalance(balance).length > 0 &&
@@ -110,13 +122,15 @@ function MainBalance({ backHandler }: Props) {
           </Text>
         </View>
 
-        <Divider style={styles.divider} />
-
         <View style={styles.actionContainer}>
           <View style={styles.actionButton}>
             <IconButton
               icon={() => (
-                <Ionicons name="paper-plane" size={24} color={COLORS.primary} />
+                <Ionicons
+                  name="paper-plane-outline"
+                  size={24}
+                  color={COLORS.primary}
+                />
               )}
               mode="contained"
               containerColor={COLORS.primaryLight}
@@ -131,25 +145,22 @@ function MainBalance({ backHandler }: Props) {
           <View style={styles.actionButton}>
             <IconButton
               icon={() => (
-                <Ionicons name="download" size={24} color={COLORS.primary} />
+                <Ionicons
+                  name="download-outline"
+                  size={24}
+                  color={COLORS.primary}
+                />
               )}
               mode="contained"
               containerColor={COLORS.primaryLight}
               size={48}
-              onPress={() => setShowReceiveModal(true)}
+              onPress={() => openModal('ReceiveModal')}
             />
             <Text variant="titleMedium" style={styles.actionText}>
               Receive
             </Text>
           </View>
         </View>
-
-        <Divider style={styles.divider} />
-
-        <ReceiveModal
-          isVisible={showReceiveModal}
-          onClose={() => setShowReceiveModal(false)}
-        />
       </View>
     </ScrollView>
   );
@@ -162,8 +173,8 @@ const styles = StyleSheet.create({
     gap: 8
   },
   nameText: {
-    fontWeight: 'bold',
-    textAlign: 'center'
+    textAlign: 'center',
+    ...globalStyles.textMedium
   },
   logoContainer: {
     marginVertical: 8
@@ -174,37 +185,35 @@ const styles = StyleSheet.create({
   },
   addressContainer: {
     paddingHorizontal: 15,
-    paddingVertical: 5,
+    paddingVertical: 2,
     backgroundColor: COLORS.primaryLight,
-    borderRadius: 15
+    borderRadius: 24
   },
   addressText: {
-    fontWeight: '700',
     fontSize: FONT_SIZE['md'],
+    ...globalStyles.textMedium,
+    marginBottom: -2,
     color: COLORS.primary
   },
   balanceContainer: {
     alignItems: 'center'
   },
   balanceText: {
-    fontWeight: 'bold',
-    textAlign: 'center'
-  },
-  divider: {
-    width: '100%',
-    marginVertical: 8
+    textAlign: 'center',
+    ...globalStyles.textMedium
   },
   actionContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 40
+    gap: 40,
+    marginVertical: 8
   },
   actionButton: {
     alignItems: 'center'
   },
   actionText: {
     marginTop: 8,
-    fontWeight: 'bold'
+    ...globalStyles.textMedium
   }
 });
 

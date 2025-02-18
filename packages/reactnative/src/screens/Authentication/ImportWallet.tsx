@@ -2,22 +2,18 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useEffect, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import ReactNativeBiometrics from 'react-native-biometrics';
-import { useModal } from 'react-native-modalfy';
 import {
   ActivityIndicator,
   Button,
   Divider,
-  IconButton,
   Switch,
   Text
 } from 'react-native-paper';
 import { useToast } from 'react-native-toast-notifications';
-// @ts-ignore
-import Ionicons from 'react-native-vector-icons/dist/Ionicons';
-// @ts-ignore
-import MaterialCommunityIcons from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 import { useDispatch } from 'react-redux';
 import { ethers } from '../../../patches/ethers';
+import BackButton from '../../components/buttons/BackButton';
+import ScanButton from '../../components/buttons/ScanButton';
 import PasswordInput from '../../components/forms/PasswordInput';
 import SeedPhraseInput from '../../components/forms/SeedPhraseInput';
 import { useSecureStorage } from '../../hooks/useSecureStorage';
@@ -26,7 +22,6 @@ import { initAccounts } from '../../store/reducers/Accounts';
 import { loginUser } from '../../store/reducers/Auth';
 import styles from '../../styles/authentication/importWallet';
 import { COLORS } from '../../utils/constants';
-import { FONT_SIZE } from '../../utils/styles';
 
 function ImportWallet() {
   const navigation = useNavigation();
@@ -34,8 +29,6 @@ function ImportWallet() {
   const toast = useToast();
   const { saveItem } = useSecureStorage();
   const { importWallet } = useWallet();
-
-  const { openModal } = useModal();
 
   const [seedPhrase, setSeedPhrase] = useState('');
   const [password, setPassword] = useState('');
@@ -125,12 +118,6 @@ function ImportWallet() {
     }
   };
 
-  const scanSeedPhrase = () => {
-    openModal('QRCodeScanner', {
-      onScan: setSeedPhrase
-    });
-  };
-
   useEffect(() => {
     (async () => {
       // check biometrics availability
@@ -148,31 +135,13 @@ function ImportWallet() {
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.headerLeft}>
-          <IconButton
-            icon={() => (
-              <Ionicons
-                name="arrow-back-outline"
-                size={1.3 * FONT_SIZE['xl']}
-                color="black"
-              />
-            )}
-            onPress={() => navigation.goBack()}
-          />
-          <Text variant="titleLarge" style={{ fontWeight: 'bold' }}>
+          <BackButton />
+          <Text variant="titleLarge" style={styles.headerTitle}>
             Import From Seed
           </Text>
         </View>
 
-        <IconButton
-          icon={() => (
-            <MaterialCommunityIcons
-              name="qrcode-scan"
-              size={1.3 * FONT_SIZE['xl']}
-              color="black"
-            />
-          )}
-          onPress={scanSeedPhrase}
-        />
+        <ScanButton onScan={setSeedPhrase} />
       </View>
 
       <ScrollView style={{ flex: 1 }}>
@@ -180,6 +149,7 @@ function ImportWallet() {
           <SeedPhraseInput
             value={seedPhrase}
             onChange={setSeedPhrase}
+            onSubmit={importAccount}
             errorText={renderSeedPhraseError()}
           />
           <PasswordInput
@@ -187,6 +157,7 @@ function ImportWallet() {
             value={password}
             infoText={password.length < 8 && 'Must be at least 8 characters'}
             onChange={setPassword}
+            onSubmit={importAccount}
           />
           <PasswordInput
             label="Confirm New Password"
@@ -198,14 +169,17 @@ function ImportWallet() {
               'Password must match'
             }
             onChange={setConfirmPassword}
+            onSubmit={importAccount}
           />
 
           {isBiometricsAvailable && (
             <>
-              <Divider style={{ marginVertical: 16 }} />
+              <Divider style={{ backgroundColor: COLORS.gray }} />
 
               <View style={styles.biometricsContainer}>
-                <Text variant="bodyLarge">Sign in with Biometrics</Text>
+                <Text variant="bodyLarge" style={styles.biometricsTitle}>
+                  Sign in with Biometrics
+                </Text>
                 <Switch
                   value={isBiometricsEnabled}
                   onValueChange={setIsBiometricsEnabled}
@@ -215,9 +189,14 @@ function ImportWallet() {
             </>
           )}
 
-          <Divider style={{ marginVertical: 16 }} />
+          <Divider style={{ backgroundColor: COLORS.gray }} />
 
-          <Button mode="contained" onPress={importAccount}>
+          <Button
+            mode="contained"
+            onPress={importAccount}
+            style={styles.button}
+            labelStyle={styles.buttonText}
+          >
             {isImporting ? <ActivityIndicator color="white" /> : 'Import'}
           </Button>
         </View>

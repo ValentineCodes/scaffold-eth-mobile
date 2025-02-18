@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import Blockie from '../../../components/Blockie';
 import useAccount from '../../../hooks/scaffold-eth/useAccount';
 import { Account } from '../../../store/reducers/Accounts';
+import globalStyles from '../../../styles/globalStyles';
 import { ALCHEMY_KEY, COLORS } from '../../../utils/constants';
 import { isENS } from '../../../utils/helperFunctions';
 import { FONT_SIZE } from '../../../utils/styles';
@@ -81,7 +82,9 @@ export default function Recipient({ recipient, onChange, onSubmit }: Props) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text variant="titleMedium">To:</Text>
+        <Text variant="titleMedium" style={globalStyles.text}>
+          To:
+        </Text>
         <TouchableOpacity onPress={selectAccount}>
           <Text style={styles.myAccountText}>
             My account
@@ -108,6 +111,8 @@ export default function Recipient({ recipient, onChange, onSubmit }: Props) {
         }
         right={<TextInput.Icon icon="qrcode-scan" onPress={scanQRCode} />}
         error={!!error}
+        outlineStyle={{ borderRadius: 12, borderColor: COLORS.gray }}
+        contentStyle={globalStyles.text}
       />
       {error && (
         <Text variant="bodySmall" style={styles.errorText}>
@@ -130,17 +135,21 @@ const styles = StyleSheet.create({
   myAccountText: {
     color: COLORS.primary,
     fontSize: FONT_SIZE.lg,
-    fontWeight: '500',
-    marginLeft: 8
+    ...globalStyles.textMedium,
+    marginLeft: 8,
+    marginBottom: -2
   },
   accountName: {
-    color: 'black'
+    color: 'black',
+    ...globalStyles.text,
+    fontSize: FONT_SIZE['md']
   },
   input: {
     backgroundColor: '#f5f5f5'
   },
   errorText: {
     color: 'red',
-    marginTop: 4
+    marginTop: 4,
+    ...globalStyles.text
   }
 });

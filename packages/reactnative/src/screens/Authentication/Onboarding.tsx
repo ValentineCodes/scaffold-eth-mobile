@@ -2,15 +2,16 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import React, { useEffect } from 'react';
 import {
   BackHandler,
-  Image,
   NativeEventSubscription,
   ScrollView,
   StyleSheet,
   View
 } from 'react-native';
 import { Button, Text } from 'react-native-paper';
+import Logo from '../../components/Logo';
+import globalStyles from '../../styles/globalStyles';
 import { COLORS } from '../../utils/constants';
-import { FONT_SIZE, WINDOW_WIDTH } from '../../utils/styles';
+import { FONT_SIZE } from '../../utils/styles';
 
 let backHandler: NativeEventSubscription;
 
@@ -48,23 +49,22 @@ export default function Onboarding({}: Props) {
       }}
       style={styles.container}
     >
-      <Image
-        source={require('../../assets/images/logo.png')}
-        style={{
-          width: WINDOW_WIDTH * 0.3,
-          height: WINDOW_WIDTH * 0.3
-        }}
-      />
+      <Logo />
       <View style={styles.content}>
         <Text variant="headlineLarge" style={styles.title}>
-          Welcome to Scaffold-ETH
+          Happy Coding!
         </Text>
         <Text variant="bodyLarge" style={styles.subtitle}>
           First, we'll need to setup a wallet. This will be unique to you and
           will be used to sign transactions, messages, and manage funds
         </Text>
 
-        <Button mode="contained" onPress={handleNav} style={styles.button}>
+        <Button
+          mode="contained"
+          onPress={handleNav}
+          style={styles.button}
+          labelStyle={styles.buttonText}
+        >
           Get Started
         </Button>
       </View>
@@ -74,26 +74,33 @@ export default function Onboarding({}: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 15,
     backgroundColor: 'white'
   },
   content: {
     width: '100%',
-    marginTop: 40
+    marginTop: 40,
+    paddingHorizontal: 10
   },
   title: {
     textAlign: 'center',
     color: COLORS.primary,
-    fontSize: 2 * FONT_SIZE['xl'],
-    fontWeight: 'bold'
+    fontSize: FONT_SIZE['xl'] * 1.8,
+    ...globalStyles.textBold
   },
   subtitle: {
     textAlign: 'center',
-    fontSize: FONT_SIZE['lg'],
-    marginVertical: 16
+    fontSize: FONT_SIZE['md'],
+    marginVertical: 16,
+    ...globalStyles.text
   },
   button: {
-    marginTop: 40,
-    marginBottom: 50
+    marginTop: 20,
+    marginBottom: 50,
+    paddingVertical: 5
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: FONT_SIZE['lg'],
+    ...globalStyles.text
   }
 });

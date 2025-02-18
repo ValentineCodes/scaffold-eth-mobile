@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
+import globalStyles from '../styles/globalStyles';
 
 type Props = {
   text: string;
@@ -27,9 +28,11 @@ const styles = StyleSheet.create({
     gap: 8
   },
   bullet: {
-    fontSize: 18
+    fontSize: 18,
+    ...globalStyles.text
   },
   text: {
-    flex: 1
+    flex: 1,
+    ...globalStyles.text
   }
 });

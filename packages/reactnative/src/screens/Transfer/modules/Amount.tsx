@@ -4,6 +4,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import { Text, TextInput } from 'react-native-paper';
 import { useToast } from 'react-native-toast-notifications';
 import { useCryptoPrice } from '../../../hooks/useCryptoPrice';
+import globalStyles from '../../../styles/globalStyles';
 import { COLORS } from '../../../utils/constants';
 import { FONT_SIZE } from '../../../utils/styles';
 
@@ -106,7 +107,9 @@ export default function Amount({
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text variant="titleMedium">Amount:</Text>
+        <Text variant="titleMedium" style={globalStyles.text}>
+          Amount:
+        </Text>
         {isNativeToken && (
           <Pressable onPress={switchCurrency}>
             <Text style={styles.conversionText}>
@@ -125,10 +128,12 @@ export default function Amount({
         onSubmitEditing={onConfirm}
         keyboardType="number-pad"
         error={!!error}
+        outlineStyle={{ borderRadius: 12, borderColor: COLORS.gray }}
+        contentStyle={globalStyles.text}
       />
 
       {isNativeToken && (
-        <Text variant="bodySmall">
+        <Text variant="bodySmall" style={globalStyles.text}>
           ~{!isDollar && '$'}
           {displayConversion} {isDollar && token}
         </Text>
@@ -155,14 +160,17 @@ const styles = StyleSheet.create({
   },
   conversionText: {
     color: COLORS.primary,
-    fontSize: FONT_SIZE['lg'],
-    fontWeight: 'bold'
+    fontSize: FONT_SIZE.lg,
+    ...globalStyles.textMedium,
+    marginLeft: 2,
+    marginBottom: -2
   },
   input: {
     backgroundColor: '#f5f5f5'
   },
   errorText: {
     color: 'red',
-    marginTop: 4
+    marginTop: 4,
+    ...globalStyles.text
   }
 });

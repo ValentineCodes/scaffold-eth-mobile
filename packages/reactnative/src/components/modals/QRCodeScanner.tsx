@@ -4,7 +4,7 @@ import { Camera } from 'react-native-camera-kit';
 import { IconButton } from 'react-native-paper';
 import { useToast } from 'react-native-toast-notifications';
 import { Camera as VCamera } from 'react-native-vision-camera';
-import { WINDOW_HEIGHT, WINDOW_WIDTH } from '../../utils/styles';
+import { FONT_SIZE, WINDOW_HEIGHT, WINDOW_WIDTH } from '../../utils/styles';
 
 type Props = {
   modal: {
@@ -82,7 +82,7 @@ export default function QRCodeScanner({
         />
         <IconButton
           icon="close"
-          size={24}
+          size={FONT_SIZE['xl'] * 1.8}
           iconColor="white"
           onPress={closeModal}
           style={styles.closeIcon}
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
   },
   closeIcon: {
     position: 'absolute',
-    top: 45,
-    right: 15
+    top: 20,
+    right: 5
   }
 });

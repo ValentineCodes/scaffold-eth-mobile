@@ -1,14 +1,10 @@
 import React from 'react';
-import {
-  Dimensions,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  View
-} from 'react-native';
+import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { useModal } from 'react-native-modalfy';
-import { Divider, IconButton, Text } from 'react-native-paper';
+import { Text } from 'react-native-paper';
 import { useToast } from 'react-native-toast-notifications';
+//@ts-ignore
+import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 import { useDispatch, useSelector } from 'react-redux';
 import useAccount from '../../hooks/scaffold-eth/useAccount';
 import { useSecureStorage } from '../../hooks/useSecureStorage';
@@ -18,10 +14,11 @@ import {
   addAccount,
   switchAccount
 } from '../../store/reducers/Accounts';
+import globalStyles from '../../styles/globalStyles';
 import { Wallet } from '../../types/wallet';
 import { COLORS } from '../../utils/constants';
 import { truncateAddress } from '../../utils/helperFunctions';
-import { FONT_SIZE, WINDOW_WIDTH } from '../../utils/styles';
+import { FONT_SIZE, WINDOW_HEIGHT, WINDOW_WIDTH } from '../../utils/styles';
 import Blockie from '../Blockie';
 import Button from '../Button';
 
@@ -87,11 +84,15 @@ export default function AccountsModal({ modal: { closeModal } }: Props) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text variant="titleLarge">Accounts</Text>
-        <IconButton icon="close" onPress={closeModal} />
+        <Text variant="titleLarge" style={globalStyles.textMedium}>
+          Accounts
+        </Text>
+        <Ionicons
+          name="close-outline"
+          size={FONT_SIZE['xl'] * 1.7}
+          onPress={closeModal}
+        />
       </View>
-
-      <Divider />
 
       <ScrollView style={styles.scrollView}>
         {accounts.map((account, index) => (
@@ -106,17 +107,19 @@ export default function AccountsModal({ modal: { closeModal } }: Props) {
             <View style={styles.accountInfo}>
               <Blockie address={account.address} size={1.7 * FONT_SIZE.xl} />
               <View style={styles.accountDetails}>
-                <Text variant="titleMedium">{account.name}</Text>
-                <Text variant="bodyMedium">
+                <Text variant="titleMedium" style={globalStyles.textMedium}>
+                  {account.name}
+                </Text>
+                <Text variant="bodyMedium" style={globalStyles.text}>
                   {truncateAddress(account.address)}
                 </Text>
               </View>
             </View>
             {account.isConnected && (
-              <IconButton
-                icon="check-circle"
-                iconColor={COLORS.primary}
-                size={24}
+              <Ionicons
+                name="checkmark-done"
+                color={COLORS.primary}
+                size={1.2 * FONT_SIZE['xl']}
               />
             )}
           </Pressable>
@@ -153,7 +156,7 @@ const styles = StyleSheet.create({
     marginBottom: 16
   },
   scrollView: {
-    maxHeight: Dimensions.get('window').height / 4.8
+    maxHeight: WINDOW_HEIGHT / 4.8
   },
   accountItem: {
     flexDirection: 'row',
