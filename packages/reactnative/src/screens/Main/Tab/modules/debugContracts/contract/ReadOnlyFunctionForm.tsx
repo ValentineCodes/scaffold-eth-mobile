@@ -85,7 +85,7 @@ export default function ReadOnlyFunctionForm({
               >
                 {typeof data == 'object' && isNaN(data)
                   ? JSON.stringify(data)
-                  : data.toString()}
+                  : data?.toString()}
               </Text>
             ))}
           </Card.Content>
@@ -99,10 +99,15 @@ export default function ReadOnlyFunctionForm({
           alignSelf: 'flex-end',
           backgroundColor: isFetching ? COLORS.primary : COLORS.primaryLight
         }}
-        labelStyle={{ fontSize: FONT_SIZE['md'], ...globalStyles.text }}
+        labelStyle={{
+          fontSize: FONT_SIZE['md'],
+          ...globalStyles.text,
+          color: isFetching ? 'white' : 'black'
+        }}
         loading={isFetching}
         onPress={async () => {
           const data = await refetch();
+          if (data === undefined) return;
           setResult(Array.isArray(data) ? data : [data]);
         }}
       >

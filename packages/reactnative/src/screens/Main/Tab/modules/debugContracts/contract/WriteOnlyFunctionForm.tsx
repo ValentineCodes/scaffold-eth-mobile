@@ -131,7 +131,11 @@ export default function WriteOnlyFunctionForm({
             backgroundColor:
               writeDisabled || isLoading ? COLORS.primary : COLORS.primaryLight
           }}
-          labelStyle={{ fontSize: FONT_SIZE['md'], ...globalStyles.text }}
+          labelStyle={{
+            fontSize: FONT_SIZE['md'],
+            ...globalStyles.text,
+            color: writeDisabled || isLoading ? 'white' : 'black'
+          }}
           loading={isLoading}
           disabled={writeDisabled || isLoading}
           onPress={handleWrite}
