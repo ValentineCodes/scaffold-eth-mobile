@@ -3,10 +3,10 @@ import React, { useEffect } from 'react';
 import {
   BackHandler,
   NativeEventSubscription,
-  StyleSheet,
-  View
+  ScrollView,
+  StyleSheet
 } from 'react-native';
-import Assets from './modules/wallet/Assets';
+import Footer from './modules/wallet/Footer';
 import Header from './modules/wallet/Header';
 import MainBalance from './modules/wallet/MainBalance';
 
@@ -34,11 +34,11 @@ export default function Wallet({}: Props) {
   if (!isFocused) return;
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <Header />
       <MainBalance backHandler={backHandler} />
-      <Assets />
-    </View>
+      <Footer />
+    </ScrollView>
   );
 }
 
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
-    paddingHorizontal: 16,
+    paddingHorizontal: 10,
     paddingVertical: 4
   }
 });
