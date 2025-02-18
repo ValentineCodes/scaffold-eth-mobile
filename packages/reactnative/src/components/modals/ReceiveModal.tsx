@@ -13,7 +13,7 @@ import { Account } from '../../store/reducers/Accounts';
 import { Network } from '../../store/reducers/Networks';
 import globalStyles from '../../styles/globalStyles';
 import { COLORS } from '../../utils/constants';
-import { FONT_SIZE } from '../../utils/styles';
+import { FONT_SIZE, WINDOW_WIDTH } from '../../utils/styles';
 
 type Props = {
   modal: {
@@ -111,7 +111,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 30,
     padding: 20,
-    margin: 20
+    margin: 20,
+    width: WINDOW_WIDTH * 0.9
   },
   header: {
     flexDirection: 'row',

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, TextStyle, ViewStyle } from 'react-native';
 import { Button as PaperButton } from 'react-native-paper';
 import globalStyles from '../styles/globalStyles';
 import { COLORS } from '../utils/constants';
@@ -10,7 +10,8 @@ type Props = {
   type?: 'normal' | 'outline';
   loading?: boolean;
   disabled?: boolean;
-  style?: any;
+  style?: ViewStyle;
+  labelStyle?: TextStyle;
   onPress: () => void;
 };
 
@@ -20,6 +21,7 @@ export default function Button({
   loading,
   disabled,
   style,
+  labelStyle,
   onPress
 }: Props) {
   return (
@@ -35,7 +37,11 @@ export default function Button({
         style
       ]}
       contentStyle={styles.content}
-      labelStyle={[styles.label, type === 'outline' && styles.outlineLabel]}
+      labelStyle={[
+        styles.label,
+        type === 'outline' && styles.outlineLabel,
+        labelStyle
+      ]}
     >
       {text}
     </PaperButton>

@@ -1,28 +1,24 @@
 import Clipboard from '@react-native-clipboard/clipboard';
 import React, { useState } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
-import Modal from 'react-native-modal';
-import {
-  IconButton,
-  Portal,
-  Surface,
-  Text,
-  TextInput
-} from 'react-native-paper';
+import { StyleSheet, View } from 'react-native';
+import { Surface, Text, TextInput } from 'react-native-paper';
 import { useToast } from 'react-native-toast-notifications';
 // @ts-ignore
 import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 import { useSecureStorage } from '../../hooks/useSecureStorage';
+import globalStyles from '../../styles/globalStyles';
+import { Security } from '../../types/security';
 import { COLORS } from '../../utils/constants';
-import { FONT_SIZE } from '../../utils/styles';
+import { FONT_SIZE, WINDOW_WIDTH } from '../../utils/styles';
 import Button from '../Button';
 
 type Props = {
-  isVisible: boolean;
-  onClose: () => void;
+  modal: {
+    closeModal: () => void;
+  };
 };
 
-export default function SeedPhraseModal({ isVisible, onClose }: Props) {
+export default function SeedPhraseModal({ modal: { closeModal } }: Props) {
   const toast = useToast();
   const { getItem } = useSecureStorage();
 
@@ -37,7 +33,7 @@ export default function SeedPhraseModal({ isVisible, onClose }: Props) {
     }
 
     // verify password
-    const security = await getItem('security');
+    const security = (await getItem('security')) as Security;
 
     if (password !== security.password) {
       setError('Incorrect password!');
@@ -45,7 +41,7 @@ export default function SeedPhraseModal({ isVisible, onClose }: Props) {
     }
 
     // retrieve seed phrase
-    const seedPhrase = await getItem('seedPhrase');
+    const seedPhrase = (await getItem('seedPhrase')) as string;
     if (seedPhrase) {
       setSeedPhrase(seedPhrase);
     }
@@ -66,94 +62,96 @@ export default function SeedPhraseModal({ isVisible, onClose }: Props) {
   };
 
   const handleOnClose = () => {
-    onClose();
+    closeModal();
     setSeedPhrase('');
     setPassword('');
   };
 
   return (
-    <Modal
-      isVisible={isVisible}
-      animationIn="slideInRight"
-      animationOut="slideOutLeft"
-      onBackButtonPress={handleOnClose}
-      onBackdropPress={handleOnClose}
-    >
-      <Surface style={styles.container}>
-        <View style={styles.header}>
-          <Text variant="headlineMedium">Show seed phrase</Text>
-          <IconButton icon="close" size={24} onPress={handleOnClose} />
-        </View>
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Text variant="headlineMedium" style={styles.headerTitle}>
+          Show seed phrase
+        </Text>
+        <Ionicons
+          name="close-outline"
+          size={FONT_SIZE['xl'] * 1.7}
+          onPress={handleOnClose}
+        />
+      </View>
 
-        {seedPhrase ? (
-          <Surface style={styles.seedPhraseContainer}>
-            <Text style={styles.seedPhraseText}>{seedPhrase}</Text>
-            <IconButton
-              icon="content-copy"
-              size={20}
-              onPress={copySeedPhrase}
-              iconColor={COLORS.primary}
-            />
-          </Surface>
-        ) : (
-          <View style={styles.passwordContainer}>
-            <Text variant="titleLarge">Enter your password</Text>
-            <TextInput
-              value={password}
-              mode="outlined"
-              secureTextEntry
-              placeholder="Password"
-              onChangeText={handleInputChange}
-              onSubmitEditing={showSeedPhrase}
-              style={styles.input}
-              activeOutlineColor={COLORS.primary}
-            />
-            {error && (
-              <Text style={styles.errorText} variant="bodySmall">
-                {error}
-              </Text>
-            )}
-          </View>
-        )}
-
-        <Surface style={styles.warningContainer}>
-          <IconButton
-            icon="eye-off"
-            size={24}
-            iconColor="#ef4444"
-            style={styles.warningIcon}
+      {seedPhrase ? (
+        <Surface style={styles.seedPhraseContainer}>
+          <Text style={styles.seedPhraseText}>{seedPhrase}</Text>
+          <Ionicons
+            name="copy-outline"
+            size={FONT_SIZE['xl']}
+            onPress={copySeedPhrase}
+            color={COLORS.primary}
           />
-          <Text style={styles.warningText}>
-            Never disclose this seed phrase. Anyone with your seed phrase can
-            fully control all your accounts created with this seed phrase,
-            including transferring away any of your funds.
-          </Text>
         </Surface>
+      ) : (
+        <View style={styles.passwordContainer}>
+          <Text variant="titleMedium" style={globalStyles.textMedium}>
+            Enter your password
+          </Text>
+          <TextInput
+            value={password}
+            mode="outlined"
+            secureTextEntry
+            placeholder="Password"
+            onChangeText={handleInputChange}
+            onSubmitEditing={showSeedPhrase}
+            style={styles.input}
+            activeOutlineColor={COLORS.primary}
+            outlineStyle={{ borderRadius: 12, borderColor: COLORS.gray }}
+            contentStyle={globalStyles.text}
+          />
+          {error && (
+            <Text style={styles.errorText} variant="bodySmall">
+              {error}
+            </Text>
+          )}
+        </View>
+      )}
 
-        {seedPhrase ? (
-          <Button text="Done" onPress={handleOnClose} />
-        ) : (
-          <View style={styles.buttonContainer}>
-            <Pressable style={styles.cancelButton} onPress={handleOnClose}>
-              <Text style={styles.cancelButtonText}>Cancel</Text>
-            </Pressable>
-            <Button
-              text="Reveal"
-              onPress={showSeedPhrase}
-              style={styles.revealButton}
-            />
-          </View>
-        )}
+      <Surface style={styles.warningContainer}>
+        <Ionicons name="eye-off" size={24} color={COLORS.error} />
+        <Text style={styles.warningText}>
+          Never disclose this seed phrase. Anyone with your seed phrase can
+          fully control all your accounts created with this seed phrase,
+          including transferring away any of your funds.
+        </Text>
       </Surface>
-    </Modal>
+
+      {seedPhrase ? (
+        <Button text="Done" onPress={handleOnClose} />
+      ) : (
+        <View style={styles.buttonContainer}>
+          <Button
+            type="outline"
+            text="Cancel"
+            onPress={handleOnClose}
+            style={styles.cancelButton}
+          />
+          <Button
+            text="Reveal"
+            onPress={showSeedPhrase}
+            style={styles.revealButton}
+          />
+        </View>
+      )}
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
+    backgroundColor: 'white',
     borderRadius: 30,
-    elevation: 4
+    padding: 20,
+    margin: 20,
+    width: WINDOW_WIDTH * 0.9
   },
   header: {
     flexDirection: 'row',
@@ -161,19 +159,23 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginBottom: 16
   },
+  headerTitle: {
+    fontSize: FONT_SIZE['xl'],
+    ...globalStyles.textMedium
+  },
   seedPhraseContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderWidth: 1,
-    borderColor: COLORS.primary,
     borderRadius: 10,
     padding: 16,
-    marginBottom: 16
+    marginBottom: 20,
+    backgroundColor: 'white'
   },
   seedPhraseText: {
     flex: 1,
-    marginRight: 8,
-    fontSize: FONT_SIZE.lg
+    marginRight: 10,
+    ...globalStyles.text,
+    fontSize: FONT_SIZE['lg']
   },
   passwordContainer: {
     marginBottom: 16
@@ -183,17 +185,15 @@ const styles = StyleSheet.create({
     marginBottom: 4
   },
   errorText: {
-    color: '#ef4444'
+    color: '#ef4444',
+    ...globalStyles.text
   },
   warningContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#ef4444',
     borderRadius: 10,
-    padding: 16,
-    backgroundColor: '#fee2e2',
-    marginBottom: 16
+    padding: 15,
+    backgroundColor: COLORS.lightRed,
+    marginBottom: 20
   },
   warningIcon: {
     margin: 0
@@ -201,27 +201,17 @@ const styles = StyleSheet.create({
   warningText: {
     flex: 1,
     marginLeft: 16,
-    fontSize: FONT_SIZE.md
+    ...globalStyles.text
   },
   buttonContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between'
+    gap: 16
   },
   cancelButton: {
-    width: '50%',
-    padding: 16,
-    backgroundColor: '#fee2e2'
-  },
-  cancelButtonText: {
-    color: '#ef4444',
-    fontWeight: 'bold',
-    textAlign: 'center',
-    fontSize: FONT_SIZE.md
+    flex: 1
   },
   revealButton: {
-    width: '50%',
-    borderRadius: 0
+    flex: 1
   },
   addressContainer: {
     paddingHorizontal: 15,
