@@ -56,11 +56,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     borderRadius: 24,
-    backgroundColor: COLORS.lightGray
+    backgroundColor: '#efefef'
   },
   input: {
     flex: 1,
     borderRadius: 24,
-    backgroundColor: COLORS.lightGray
+    backgroundColor: '#efefef'
   }
 });
