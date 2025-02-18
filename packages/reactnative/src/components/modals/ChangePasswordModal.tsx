@@ -1,9 +1,8 @@
-import { generate } from 'random-words';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Modal, Portal } from 'react-native-paper';
 import { useToast } from 'react-native-toast-notifications';
 import { useSecureStorage } from '../../hooks/useSecureStorage';
+import { Security } from '../../types/security';
 import { WINDOW_WIDTH } from '../../utils/styles';
 import Button from '../Button';
 import PasswordInput from '../forms/PasswordInput';
@@ -23,36 +22,35 @@ export default function ChangePasswordModal({ modal: { closeModal } }: Props) {
     new: '',
     confirm: ''
   });
-  const [suggestion, setSuggestion] = useState('');
 
   const change = async () => {
     try {
-      const security = await getItem('security');
+      const security = (await getItem('security')) as Security;
 
       if (!password.current || !password.new || !password.confirm) {
-        toast.show('Password cannot be empty!', { type: 'danger' });
+        toast.show('Password cannot be empty!', { type: 'warning' });
         return;
       }
 
       if (password.new.length < 8) {
         toast.show('Password must be at least 8 characters', {
-          type: 'danger'
+          type: 'warning'
         });
         return;
       }
 
       if (password.current.trim() !== security.password) {
-        toast.show('Incorrect password!', { type: 'danger' });
+        toast.show('Incorrect password!', { type: 'warning' });
         return;
       }
 
       if (password.current.trim() === password.new.trim()) {
-        toast.show('Cannot use current password');
+        toast.show('Cannot use current password', { type: 'warning' });
         return;
       }
 
       if (password.new.trim() !== password.confirm.trim()) {
-        toast.show('Passwords do not match!', { type: 'danger' });
+        toast.show('Passwords do not match!', { type: 'warning' });
         return;
       }
 
@@ -68,59 +66,38 @@ export default function ChangePasswordModal({ modal: { closeModal } }: Props) {
     }
   };
 
-  useEffect(() => {
-    setSuggestion(
-      generate({ exactly: 2, join: '', minLength: 4, maxLength: 5 })
-    );
-  }, []);
-
   return (
-    <Portal>
-      <Modal
-        visible={true}
-        onDismiss={closeModal}
-        contentContainerStyle={styles.container}
-      >
-        <View style={styles.content}>
-          <PasswordInput
-            label="Current Password"
-            value={password.current}
-            infoText={
-              password.current.length < 8 && 'Must be at least 8 characters'
-            }
-            onChange={value =>
-              setPassword(prev => ({ ...prev, current: value }))
-            }
-          />
-          <PasswordInput
-            label="New Password"
-            value={password.new}
-            suggestion={suggestion}
-            infoText={
-              password.new.length < 8 && 'Must be at least 8 characters'
-            }
-            onChange={value => setPassword(prev => ({ ...prev, new: value }))}
-          />
-          <PasswordInput
-            label="Confirm Password"
-            value={password.confirm}
-            suggestion={suggestion}
-            infoText={
-              password.confirm.length < 8 && 'Must be at least 8 characters'
-            }
-            onChange={value =>
-              setPassword(prev => ({ ...prev, confirm: value }))
-            }
-          />
+    <View style={styles.container}>
+      <View style={styles.content}>
+        <PasswordInput
+          label="Current Password"
+          value={password.current}
+          infoText={
+            password.current.length < 8 && 'Must be at least 8 characters'
+          }
+          onChange={value => setPassword(prev => ({ ...prev, current: value }))}
+          onSubmit={change}
+        />
+        <PasswordInput
+          label="New Password"
+          value={password.new}
+          infoText={password.new.length < 8 && 'Must be at least 8 characters'}
+          onChange={value => setPassword(prev => ({ ...prev, new: value }))}
+          onSubmit={change}
+        />
+        <PasswordInput
+          label="Confirm Password"
+          value={password.confirm}
+          infoText={
+            password.confirm.length < 8 && 'Must be at least 8 characters'
+          }
+          onChange={value => setPassword(prev => ({ ...prev, confirm: value }))}
+          onSubmit={change}
+        />
 
-          <Button
-            text="Change Password"
-            onPress={change}
-            style={styles.button}
-          />
-        </View>
-      </Modal>
-    </Portal>
+        <Button text="Change Password" onPress={change} style={styles.button} />
+      </View>
+    </View>
   );
 }
 
@@ -129,7 +106,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 30,
     padding: 20,
-    margin: 20,
     width: WINDOW_WIDTH * 0.9
   },
   content: {

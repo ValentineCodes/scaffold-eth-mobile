@@ -1,9 +1,11 @@
 import React from 'react';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
-import { IconButton, Text } from 'react-native-paper';
+import { Text } from 'react-native-paper';
+//@ts-ignore
+import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 import { useDispatch, useSelector } from 'react-redux';
-import useNetwork from '../../hooks/scaffold-eth/useNetwork';
 import { Network, switchNetwork } from '../../store/reducers/Networks';
+import globalStyles from '../../styles/globalStyles';
 import { COLORS } from '../../utils/constants';
 import { FONT_SIZE, WINDOW_HEIGHT, WINDOW_WIDTH } from '../../utils/styles';
 
@@ -15,7 +17,6 @@ type Props = {
 
 export default function SwitchNetworkModal({ modal: { closeModal } }: Props) {
   const networks: Network[] = useSelector((state: any) => state.networks);
-  const network = useNetwork();
 
   const dispatch = useDispatch();
 
@@ -27,18 +28,14 @@ export default function SwitchNetworkModal({ modal: { closeModal } }: Props) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <View>
-          <Text variant="titleLarge">Switch Network</Text>
-          <Text variant="bodyMedium" style={styles.subtitle}>
-            You are currently connected to {network.name}
-          </Text>
-        </View>
+        <Text variant="titleLarge" style={globalStyles.text}>
+          Switch Network
+        </Text>
 
-        <IconButton
-          icon="close"
-          size={FONT_SIZE['xl'] * 1.5}
+        <Ionicons
+          name="close-outline"
+          size={FONT_SIZE['xl'] * 1.7}
           onPress={closeModal}
-          style={{ alignSelf: 'center' }}
         />
       </View>
 
@@ -72,7 +69,11 @@ export default function SwitchNetworkModal({ modal: { closeModal } }: Props) {
               </Text>
             </View>
             {_network.isConnected && (
-              <IconButton icon="check" size={24} iconColor={COLORS.primary} />
+              <Ionicons
+                name="checkmark-outline"
+                size={24}
+                color={COLORS.primary}
+              />
             )}
           </Pressable>
         ))}
@@ -95,9 +96,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 20
   },
-  subtitle: {
-    color: '#666'
-  },
   networkContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -119,13 +117,15 @@ const styles = StyleSheet.create({
     gap: 4
   },
   networkName: {
-    fontSize: FONT_SIZE.lg
+    fontSize: FONT_SIZE.lg,
+    ...globalStyles.textMedium
   },
   networkNameActive: {
     color: COLORS.primary
   },
   networkChainId: {
-    color: '#666'
+    color: '#666',
+    ...globalStyles.text
   },
   networkChainIdActive: {
     color: COLORS.primary
