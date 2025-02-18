@@ -1,24 +1,28 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
 import { IconButton, Text } from 'react-native-paper';
 import globalStyles from '../../styles/globalStyles';
 import { COLORS } from '../../utils/constants';
 import { WINDOW_WIDTH } from '../../utils/styles';
 import Button from '../Button';
 
+export interface ConsentModalParams {
+  icon?: JSX.Element;
+  title: string;
+  subTitle: string;
+  okText?: string;
+  cancelText?: string;
+  isOkLoading?: boolean;
+  isCancelLoading?: boolean;
+  iconColor?: string;
+  titleStyle?: TextStyle;
+  subTitleStyle?: TextStyle;
+  onAccept: () => void;
+}
 type Props = {
   modal: {
     closeModal: () => void;
-    params: {
-      icon?: JSX.Element;
-      title: string;
-      subTitle: string;
-      okText?: string;
-      cancelText?: string;
-      isOkLoading?: boolean;
-      isCancelLoading?: boolean;
-      onAccept: () => void;
-    };
+    params: ConsentModalParams;
   };
 };
 
@@ -33,6 +37,9 @@ export default function ConsentModal({
       cancelText,
       isOkLoading,
       isCancelLoading,
+      iconColor,
+      titleStyle,
+      subTitleStyle,
       onAccept
     }
   }
@@ -47,13 +54,13 @@ export default function ConsentModal({
         <IconButton
           icon="alert"
           size={WINDOW_WIDTH * 0.17}
-          iconColor={COLORS.primary}
+          iconColor={iconColor || COLORS.primary}
         />
       )}
-      <Text variant="headlineMedium" style={styles.title}>
+      <Text variant="headlineMedium" style={[styles.title, titleStyle]}>
         {title}
       </Text>
-      <Text variant="bodyLarge" style={styles.subtitle}>
+      <Text variant="bodyLarge" style={[styles.subtitle, subTitleStyle]}>
         {subTitle}
       </Text>
 

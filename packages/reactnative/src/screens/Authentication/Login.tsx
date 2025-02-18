@@ -8,6 +8,7 @@ import { useToast } from 'react-native-toast-notifications';
 import { useDispatch, useSelector } from 'react-redux';
 import PasswordInput from '../../components/forms/PasswordInput';
 import Logo from '../../components/Logo';
+import { ConsentModalParams } from '../../components/modals/ConsentModal';
 import { useSecureStorage } from '../../hooks/useSecureStorage';
 import { loginUser, logoutUser } from '../../store/reducers/Auth';
 import { clearRecipients } from '../../store/reducers/Recipients';
@@ -126,6 +127,19 @@ export default function Login({}: Props) {
       }
     })();
   }, []);
+
+  const handleResetWallet = () => {
+    const params: ConsentModalParams = {
+      title: 'Reset Wallet',
+      subTitle:
+        'This will erase all your current wallet data. Are you sure you want to go through with this?',
+      iconColor: COLORS.error,
+      titleStyle: { color: COLORS.error },
+      subTitleStyle: { color: COLORS.error },
+      onAccept: resetWallet
+    };
+    openModal('ConsentModal', params);
+  };
   return (
     <ScrollView
       contentContainerStyle={styles.scrollViewContentContainer}
@@ -172,17 +186,7 @@ export default function Login({}: Props) {
         one
       </Text>
 
-      <TouchableOpacity
-        onPress={() =>
-          openModal('ConsentModal', {
-            title: 'Reset Wallet',
-            subTitle:
-              'This will erase all your current wallet data. Are you sure you want to go through with this?',
-            onAccept: resetWallet
-          })
-        }
-        style={{ opacity: 0.8 }}
-      >
+      <TouchableOpacity onPress={handleResetWallet} style={{ opacity: 0.8 }}>
         <Text
           variant="titleLarge"
           style={{ color: COLORS.primary, ...globalStyles.text }}
