@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Text, TouchableRipple } from 'react-native-paper';
+import globalStyles from '../../../styles/globalStyles';
+import { FONT_SIZE } from '../../../utils/styles';
 import InputBase from './InputBase';
 import { CommonInputProps, IntegerVariant, isValidInteger } from './utils';
 
@@ -45,17 +47,21 @@ export default function IntegerInput({
       onChange={onChange}
       disabled={disabled}
       suffix={
-        // !inputError &&
-        // !disableMultiplyBy1e18 &&
-        <TouchableRipple
-          onPress={multiplyBy1e18}
-          disabled={disabled}
-          style={{ paddingHorizontal: 16, marginTop: 4 }}
-        >
-          <Text variant="headlineSmall" style={{ fontWeight: '600' }}>
-            *
-          </Text>
-        </TouchableRipple>
+        !inputError &&
+        !disableMultiplyBy1e18 && (
+          <TouchableRipple
+            onPress={multiplyBy1e18}
+            disabled={disabled}
+            style={{ paddingHorizontal: 16, marginTop: 15 }}
+          >
+            <Text
+              variant="headlineSmall"
+              style={{ fontSize: FONT_SIZE['xl'], ...globalStyles.textMedium }}
+            >
+              *
+            </Text>
+          </TouchableRipple>
+        )
       }
     />
   );

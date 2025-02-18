@@ -21,6 +21,9 @@ export default StyleSheet.create({
   textBlack: {
     fontFamily: 'Poppins-Black'
   },
+  textMedium: {
+    fontFamily: 'Poppins-Medium'
+  },
   textSemiBold: {
     fontFamily: 'Poppins-SemiBold'
   }

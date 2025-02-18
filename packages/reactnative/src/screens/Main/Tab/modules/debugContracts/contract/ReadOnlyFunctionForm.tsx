@@ -1,4 +1,4 @@
-import { Abi, AbiFunction } from 'abitype';
+import { AbiFunction } from 'abitype';
 import { InterfaceAbi } from 'ethers';
 import React, { useState } from 'react';
 import { View } from 'react-native';
@@ -6,7 +6,9 @@ import { Button, Card, Text } from 'react-native-paper';
 import { useToast } from 'react-native-toast-notifications';
 import { Address } from 'viem';
 import useContractRead from '../../../../../../hooks/scaffold-eth/useContractRead';
+import globalStyles from '../../../../../../styles/globalStyles';
 import { COLORS } from '../../../../../../utils/constants';
+import { FONT_SIZE } from '../../../../../../utils/styles';
 import ContractInput from './ContractInput';
 import {
   getFunctionInputKey,
@@ -60,37 +62,27 @@ export default function ReadOnlyFunctionForm({
     );
   });
 
-  function renderResult() {
-    if (result.map)
-      return result.map((data: any) => (
-        <Text key={Math.random().toString()} variant="bodyMedium">
-          {typeof data == 'object' && isNaN(data)
-            ? JSON.stringify(data)
-            : data.toString()}
-        </Text>
-      ));
-
-    return (
-      <Text variant="bodyMedium">
-        {typeof result == 'object' && isNaN(result)
-          ? JSON.stringify(result)
-          : result.toString()}
-      </Text>
-    );
-  }
-
   return (
     <View>
-      <Text variant="titleMedium" style={{ marginVertical: 8 }}>
+      <Text style={{ fontSize: FONT_SIZE['md'], ...globalStyles.textMedium }}>
         {abiFunction.name}
       </Text>
-      {inputElements}
+
+      <View style={{ gap: 4, marginTop: 10 }}>{inputElements}</View>
+
       {result !== null && result !== undefined && (
         <Card style={{ backgroundColor: COLORS.primaryLight, marginTop: 8 }}>
           <Card.Content>
-            <Text variant="titleMedium">Result:</Text>
+            <Text
+              style={{ fontSize: FONT_SIZE['md'], ...globalStyles.textMedium }}
+            >
+              Result:
+            </Text>
             {result.map((data: any) => (
-              <Text key={Math.random().toString()} variant="bodyMedium">
+              <Text
+                key={Math.random().toString()}
+                style={{ fontSize: FONT_SIZE['md'], ...globalStyles.text }}
+              >
                 {typeof data == 'object' && isNaN(data)
                   ? JSON.stringify(data)
                   : data.toString()}
@@ -107,6 +99,7 @@ export default function ReadOnlyFunctionForm({
           alignSelf: 'flex-end',
           backgroundColor: isFetching ? COLORS.primary : COLORS.primaryLight
         }}
+        labelStyle={{ fontSize: FONT_SIZE['md'], ...globalStyles.text }}
         loading={isFetching}
         onPress={async () => {
           const data = await refetch();

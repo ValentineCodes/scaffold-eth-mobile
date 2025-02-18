@@ -1,7 +1,7 @@
 import { AbiFunction } from 'abitype';
 import { InterfaceAbi } from 'ethers';
 import React, { useEffect } from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { ActivityIndicator, Text } from 'react-native-paper';
 import { useToast } from 'react-native-toast-notifications';
 // @ts-ignore
@@ -9,6 +9,7 @@ import MaterialIcons from 'react-native-vector-icons/dist/MaterialIcons';
 import { Address, isAddress } from 'viem';
 import AddressComp from '../../../../../../components/scaffold-eth/Address';
 import useContractRead from '../../../../../../hooks/scaffold-eth/useContractRead';
+import globalStyles from '../../../../../../styles/globalStyles';
 import { COLORS } from '../../../../../../utils/constants';
 import { FONT_SIZE } from '../../../../../../utils/styles';
 
@@ -50,22 +51,22 @@ export default function DisplayVariable({
     if (result === null || result === undefined) return;
 
     if (typeof result == 'object' && isNaN(result)) {
-      return <Text variant="titleMedium">{JSON.stringify(result)}</Text>;
+      return <Text style={styles.result}>{JSON.stringify(result)}</Text>;
     }
     if (typeof result == 'object' && isNaN(result)) {
-      return <Text variant="titleMedium">{JSON.stringify(result)}</Text>;
+      return <Text style={styles.result}>{JSON.stringify(result)}</Text>;
     }
     if (isAddress(result.toString())) {
       return <AddressComp address={result.toString()} />;
     }
 
-    return <Text variant="titleMedium">{result.toString()}</Text>;
+    return <Text style={styles.result}>{result.toString()}</Text>;
   };
 
   return (
-    <View style={{ marginBottom: 16 }}>
+    <View>
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-        <Text variant="titleMedium">{abiFunction.name}</Text>
+        <Text style={styles.functionName}>{abiFunction.name}</Text>
         <TouchableOpacity onPress={async () => await refetch()}>
           {isFetching ? (
             <ActivityIndicator
@@ -85,3 +86,14 @@ export default function DisplayVariable({
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  functionName: {
+    fontSize: FONT_SIZE['md'],
+    ...globalStyles.textMedium
+  },
+  result: {
+    fontSize: FONT_SIZE['md'],
+    ...globalStyles.text
+  }
+});

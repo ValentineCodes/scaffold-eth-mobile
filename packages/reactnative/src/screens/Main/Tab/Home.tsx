@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { Text } from 'react-native-paper';
+import { Card, Text } from 'react-native-paper';
 // @ts-ignore
 import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 import globalStyles from '../../../styles/globalStyles';
@@ -79,45 +79,59 @@ export default function Home({}: Props) {
 
       <View style={styles.featuresContainer}>
         {/* Contract Debugger */}
-        <View style={styles.feature}>
-          <Ionicons
-            name="bug-outline"
-            color={'grey'}
-            size={WINDOW_WIDTH * 0.09}
-          />
+        <Card style={styles.feature}>
+          <Card.Content
+            style={{
+              alignItems: 'center',
+              gap: 10
+            }}
+          >
+            <Ionicons
+              name="bug-outline"
+              color={'grey'}
+              size={WINDOW_WIDTH * 0.09}
+            />
 
-          <Text style={styles.featureCaption}>
-            Tinker with your smart contracts using the
-            <Text
-              style={styles.featureLink}
-              onPress={() => navigation.navigate('DebugContracts')}
-            >
-              {' '}
-              DebugContracts{' '}
+            <Text style={styles.featureCaption}>
+              Tinker with your smart contracts using the
+              <Text
+                style={styles.featureLink}
+                onPress={() => navigation.navigate('DebugContracts')}
+              >
+                {' '}
+                DebugContracts{' '}
+              </Text>
+              tab
             </Text>
-            tab
-          </Text>
-        </View>
+          </Card.Content>
+        </Card>
 
         {/* Wallet */}
-        <View style={styles.feature}>
-          <Ionicons
-            name="wallet-outline"
-            color={'grey'}
-            size={WINDOW_WIDTH * 0.09}
-          />
+        <Card style={styles.feature}>
+          <Card.Content
+            style={{
+              alignItems: 'center',
+              gap: 10
+            }}
+          >
+            <Ionicons
+              name="wallet-outline"
+              color={'grey'}
+              size={WINDOW_WIDTH * 0.09}
+            />
 
-          <Text style={styles.featureCaption}>
-            Manage your accounts, funds, and tokens in your
-            <Text
-              style={styles.featureLink}
-              onPress={() => navigation.navigate('Wallet')}
-            >
-              {' '}
-              Wallet
+            <Text style={styles.featureCaption}>
+              Manage your accounts, funds, and tokens in your
+              <Text
+                style={styles.featureLink}
+                onPress={() => navigation.navigate('Wallet')}
+              >
+                {' '}
+                Wallet
+              </Text>
             </Text>
-          </Text>
-        </View>
+          </Card.Content>
+        </Card>
       </View>
     </ScrollView>
   );
@@ -129,7 +143,7 @@ const styles = StyleSheet.create({
     padding: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    gap: 10
+    gap: 20
   },
   feature: {
     paddingVertical: 32,
@@ -137,13 +151,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.gray,
     borderRadius: 24,
-    alignItems: 'center',
+    backgroundColor: 'white',
     gap: 24
   },
   featureCaption: {
     textAlign: 'center',
+    width: WINDOW_WIDTH * 0.6,
     fontSize: FONT_SIZE['lg'],
-    width: '80%',
     ...globalStyles.text
   },
   featureLink: {

@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native';
 import { Button as PaperButton } from 'react-native-paper';
 import globalStyles from '../styles/globalStyles';
 import { COLORS } from '../utils/constants';
+import { FONT_SIZE } from '../utils/styles';
 
 type Props = {
   text: string;
@@ -57,7 +58,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8
   },
   label: {
-    fontSize: 16,
+    fontSize: FONT_SIZE['lg'],
     color: 'white',
     ...globalStyles.text
   },

@@ -4,6 +4,7 @@ import React from 'react';
 import { View } from 'react-native';
 import { Text } from 'react-native-paper';
 import { getAllContracts } from '../../../../utils/scaffold-eth/contractsData';
+import globalStyles from '../../../styles/globalStyles';
 import { COLORS } from '../../../utils/constants';
 import { FONT_SIZE } from '../../../utils/styles';
 import ContractUI from './modules/debugContracts/contract/ContractUI';
@@ -25,7 +26,9 @@ export default function ({}: Props) {
         <View
           style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
         >
-          <Text variant="headlineSmall">No contracts found!</Text>
+          <Text style={{ fontSize: FONT_SIZE['xl'], ...globalStyles.text }}>
+            No contracts found!
+          </Text>
         </View>
       ) : (
         <>
@@ -37,7 +40,8 @@ export default function ({}: Props) {
               },
               tabBarLabelStyle: {
                 textTransform: 'none',
-                fontSize: FONT_SIZE['lg']
+                fontSize: FONT_SIZE['lg'],
+                ...globalStyles.text
               },
               tabBarActiveTintColor: COLORS.primary,
               tabBarInactiveTintColor: '#C7C6C7'

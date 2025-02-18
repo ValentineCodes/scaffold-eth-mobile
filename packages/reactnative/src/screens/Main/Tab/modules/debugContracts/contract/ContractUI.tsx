@@ -6,7 +6,9 @@ import Address from '../../../../../../components/scaffold-eth/Address';
 import Balance from '../../../../../../components/scaffold-eth/Balance';
 import { useDeployedContractInfo } from '../../../../../../hooks/scaffold-eth/useDeployedContractInfo';
 import useTargetNetwork from '../../../../../../hooks/scaffold-eth/useTargetNetwork';
+import globalStyles from '../../../../../../styles/globalStyles';
 import { COLORS } from '../../../../../../utils/constants';
+import { FONT_SIZE } from '../../../../../../utils/styles';
 import ContractReadMethods from './ContractReadMethods';
 import ContractVariables from './ContractVariables';
 import ContractWriteMethods from './ContractWriteMethods';
@@ -39,8 +41,11 @@ export default function ContractUI() {
   if (!deployedContractData) {
     return (
       <Text
-        variant="headlineSmall"
-        style={{ marginTop: 48, fontWeight: '300' }}
+        style={{
+          marginTop: 48,
+          fontSize: FONT_SIZE['xl'],
+          ...globalStyles.text
+        }}
       >
         {`No contract found by the name of "${contractName}" on chain "${targetNetwork.name}"!`}
       </Text>
@@ -49,16 +54,27 @@ export default function ContractUI() {
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: 'white', padding: 16 }}>
-      <Card style={{ marginBottom: 24 }}>
+      <Card
+        style={{
+          backgroundColor: 'white',
+          marginBottom: 24,
+          borderWidth: 1,
+          borderRadius: 12,
+          borderColor: COLORS.gray
+        }}
+      >
         <Card.Content>
-          <Text variant="titleLarge" style={{ marginBottom: 8 }}>
+          <Text
+            variant="titleLarge"
+            style={{ marginBottom: 8, ...globalStyles.text }}
+          >
             {contractName}
           </Text>
           <Address address={deployedContractData.address} />
           <View
             style={{ flexDirection: 'row', alignItems: 'center', marginTop: 4 }}
           >
-            <Text variant="bodyMedium" style={{ fontWeight: '600' }}>
+            <Text style={[globalStyles.text, { fontSize: FONT_SIZE['md'] }]}>
               Balance:{' '}
             </Text>
             <Balance address={deployedContractData.address} />
@@ -71,12 +87,12 @@ export default function ContractUI() {
                 marginTop: 4
               }}
             >
-              <Text variant="bodyMedium" style={{ fontWeight: '600' }}>
+              <Text style={[globalStyles.text, { fontSize: FONT_SIZE['md'] }]}>
                 Network:{' '}
               </Text>
               <Text
                 variant="bodyMedium"
-                style={{ color: theme.colors.primary }}
+                style={{ color: theme.colors.primary, ...globalStyles.text }}
               >
                 {targetNetwork.name}
               </Text>
@@ -99,15 +115,19 @@ export default function ContractUI() {
           style={{
             backgroundColor: COLORS.primaryLight,
             alignSelf: 'flex-start',
-            marginBottom: -32,
-            zIndex: 1
+            marginBottom: -15
           }}
+          contentStyle={{ marginTop: -8 }}
         >
           <Card.Content>
-            <Text variant="titleLarge">Read</Text>
+            <Text
+              style={{ fontSize: FONT_SIZE['md'], ...globalStyles.textMedium }}
+            >
+              Read
+            </Text>
           </Card.Content>
         </Card>
-        <Card style={{ paddingTop: 32 }}>
+        <Card style={{ backgroundColor: 'white' }}>
           <Card.Content>
             <ContractReadMethods deployedContractData={deployedContractData} />
           </Card.Content>
@@ -119,15 +139,19 @@ export default function ContractUI() {
           style={{
             backgroundColor: COLORS.primaryLight,
             alignSelf: 'flex-start',
-            marginBottom: -32,
-            zIndex: 1
+            marginBottom: -15
           }}
+          contentStyle={{ marginTop: -8 }}
         >
           <Card.Content>
-            <Text variant="titleLarge">Write</Text>
+            <Text
+              style={{ fontSize: FONT_SIZE['md'], ...globalStyles.textMedium }}
+            >
+              Write
+            </Text>
           </Card.Content>
         </Card>
-        <Card style={{ paddingTop: 32 }}>
+        <Card style={{ backgroundColor: 'white' }}>
           <Card.Content>
             <ContractWriteMethods
               deployedContractData={deployedContractData}
