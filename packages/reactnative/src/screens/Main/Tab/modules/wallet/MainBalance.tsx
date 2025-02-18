@@ -69,13 +69,18 @@ function MainBalance({ backHandler }: Props) {
     fetchPrice();
   }, [balance, network]);
 
+  const refresh = () => {
+    refetch();
+    fetchPrice();
+  };
+
   return (
     <ScrollView
       style={{ flexGrow: 0 }}
       refreshControl={
         <RefreshControl
           refreshing={isRefetching}
-          onRefresh={refetch}
+          onRefresh={refresh}
           colors={[COLORS.primary]}
           tintColor={COLORS.primary}
         />
