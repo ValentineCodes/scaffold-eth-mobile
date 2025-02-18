@@ -1,14 +1,17 @@
 import { Address } from 'abitype';
 import React, { useEffect, useState } from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
-import { IconButton, Text } from 'react-native-paper';
+import { Text } from 'react-native-paper';
+// @ts-ignore
+import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 import { useDispatch } from 'react-redux';
 import useAccount from '../../hooks/scaffold-eth/useAccount';
 import useNetwork from '../../hooks/scaffold-eth/useNetwork';
 import { removeNFT } from '../../store/reducers/NFTs';
+import globalStyles from '../../styles/globalStyles';
 import { COLORS } from '../../utils/constants';
 import { parseIPFS } from '../../utils/helperFunctions';
-import { WINDOW_WIDTH } from '../../utils/styles';
+import { FONT_SIZE, WINDOW_WIDTH } from '../../utils/styles';
 import Button from '../Button';
 
 type Props = {
@@ -101,10 +104,10 @@ export default function NFTDetailsModal({
             onPress={send}
             style={styles.sendBtn}
           />
-          <IconButton
-            icon="trash-can-outline"
+          <Ionicons
+            name="trash-outline"
             size={WINDOW_WIDTH * 0.07}
-            iconColor={COLORS.primary}
+            color={COLORS.primary}
             onPress={remove}
           />
         </View>
@@ -125,7 +128,7 @@ const styles = StyleSheet.create({
     width: '97%',
     height: WINDOW_WIDTH,
     backgroundColor: 'cyan',
-    marginTop: 50
+    marginTop: 10
   },
   nftImage: {
     width: '100%',
@@ -138,8 +141,8 @@ const styles = StyleSheet.create({
     paddingVertical: 20
   },
   nftTitle: {
-    fontSize: 18,
-    fontWeight: 'bold'
+    fontSize: FONT_SIZE['xl'],
+    ...globalStyles.textMedium
   },
   actionButtonsContainer: {
     flexDirection: 'row',

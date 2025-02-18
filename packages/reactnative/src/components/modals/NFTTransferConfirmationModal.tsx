@@ -5,10 +5,10 @@ import { Button, Text } from 'react-native-paper';
 import { useToast } from 'react-native-toast-notifications';
 import useNetwork from '../../hooks/scaffold-eth/useNetwork';
 import { Account } from '../../store/reducers/Accounts';
+import globalStyles from '../../styles/globalStyles';
 import { parseFloat, truncateAddress } from '../../utils/helperFunctions';
 import { FONT_SIZE } from '../../utils/styles';
 import Blockie from '../Blockie';
-import CustomButton from '../Button';
 import Fail from './modules/Fail';
 import Success from './modules/Success';
 
@@ -123,7 +123,9 @@ export default function NFTTransferConfirmationModal({
         <View style={styles.detailsContainer}>
           <View style={styles.detailsRow}>
             <View>
-              <Text variant="titleMedium">Estimated gas fee</Text>
+              <Text variant="titleMedium" style={globalStyles.textMedium}>
+                Estimated gas fee
+              </Text>
               <Text variant="bodySmall" style={styles.gasEstimate}>
                 Likely in &lt; 30 second
               </Text>
@@ -141,18 +143,28 @@ export default function NFTTransferConfirmationModal({
         <View style={styles.buttonContainer}>
           <Button
             mode="contained"
-            buttonColor="#ffebee"
-            style={styles.cancelButton}
             onPress={() => closeModal()}
+            disabled={isTransferring}
+            buttonColor="#FFCDD2"
+            style={{ flex: 1, paddingVertical: 4, borderRadius: 30 }}
+            labelStyle={{ fontSize: FONT_SIZE['lg'], ...globalStyles.text }}
           >
-            <Text style={styles.cancelButtonText}>Cancel</Text>
+            Cancel
           </Button>
-          <CustomButton
-            text="Confirm"
-            loading={isTransferring}
+          <Button
+            mode="contained"
             onPress={transfer}
-            style={styles.confirmButton}
-          />
+            loading={isTransferring}
+            disabled={isTransferring}
+            style={{ flex: 1, paddingVertical: 4, borderRadius: 30 }}
+            labelStyle={{
+              fontSize: FONT_SIZE['lg'],
+              ...globalStyles.text,
+              color: 'white'
+            }}
+          >
+            Confirm
+          </Button>
         </View>
       </View>
 
@@ -188,7 +200,8 @@ const styles = StyleSheet.create({
     gap: 8
   },
   sectionTitle: {
-    fontWeight: '500'
+    fontSize: FONT_SIZE['lg'],
+    ...globalStyles.text
   },
   accountContainer: {
     backgroundColor: '#F5F5F5',
@@ -203,9 +216,7 @@ const styles = StyleSheet.create({
   accountDetails: {
     width: '75%'
   },
-  accountName: {
-    fontWeight: '500'
-  },
+  accountName: { fontSize: FONT_SIZE['lg'], ...globalStyles.text },
   recipientContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -216,12 +227,13 @@ const styles = StyleSheet.create({
   },
   amountLabel: {
     textAlign: 'center',
-    fontWeight: '500',
-    marginBottom: -16
+    marginBottom: -16,
+    fontSize: FONT_SIZE['xl'],
+    ...globalStyles.textMedium
   },
   amount: {
     textAlign: 'center',
-    fontWeight: 'bold'
+    ...globalStyles.textSemiBold
   },
   detailsContainer: {
     borderWidth: 1,
@@ -234,28 +246,14 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     justifyContent: 'space-between'
   },
-  gasEstimate: {
-    color: '#27B858'
-  },
+  gasEstimate: { color: 'green', ...globalStyles.text },
   detailsValue: {
     width: '50%',
-    textAlign: 'right'
+    textAlign: 'right',
+    ...globalStyles.textMedium
   },
   buttonContainer: {
-    width: '100%',
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between'
-  },
-  cancelButton: {
-    width: '50%',
-    borderRadius: 0
-  },
-  cancelButtonText: {
-    color: '#ef5350'
-  },
-  confirmButton: {
-    width: '50%',
-    borderRadius: 0
+    gap: 12
   }
 });

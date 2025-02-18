@@ -1,28 +1,39 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { FlatList, Pressable, StyleSheet } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 import { useModal } from 'react-native-modalfy';
-import { Surface, Text } from 'react-native-paper';
-import Token from '../../components/asset/Token';
+import { IconButton, Text } from 'react-native-paper';
+import BackButton from '../../components/buttons/BackButton';
 import { useTokens } from '../../hooks/useTokens';
+import globalStyles from '../../styles/globalStyles';
 import { COLORS } from '../../utils/constants';
 import { FONT_SIZE } from '../../utils/styles';
+import Token from './modules/Token';
 
 type Props = {};
 
-function Tokens({}: Props) {
+export default function Tokens({}: Props) {
   const { openModal } = useModal();
   const { tokens } = useTokens();
   const navigation = useNavigation();
 
   return (
-    <Surface style={{ paddingTop: 75, padding: 2 }}>
-      <Pressable
-        onPress={() => openModal('ImportTokenModal')}
-        style={styles.importTokenBtnContainer}
-      >
-        <Text style={styles.importTokenBtn}>Import Token</Text>
-      </Pressable>
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <View style={styles.headerLeft}>
+          <BackButton />
+          <Text variant="titleLarge" style={globalStyles.textSemiBold}>
+            Tokens
+          </Text>
+        </View>
+
+        <IconButton
+          icon="cloud-download"
+          size={FONT_SIZE.xl * 1.7}
+          iconColor={COLORS.primary}
+          onPress={() => openModal('ImportTokenModal')}
+        />
+      </View>
 
       <FlatList
         data={tokens}
@@ -38,22 +49,26 @@ function Tokens({}: Props) {
             }}
           />
         )}
+        style={{ paddingHorizontal: 10 }}
       />
-    </Surface>
+    </View>
   );
 }
 
-export default Tokens;
-
 const styles = StyleSheet.create({
-  importTokenBtnContainer: {
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    marginBottom: 10
+  container: {
+    flex: 1,
+    paddingVertical: 10,
+    backgroundColor: 'white'
   },
-  importTokenBtn: {
-    fontSize: FONT_SIZE['lg'],
-    fontWeight: 'bold',
-    color: COLORS.primary
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between'
+  },
+  headerLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8
   }
 });

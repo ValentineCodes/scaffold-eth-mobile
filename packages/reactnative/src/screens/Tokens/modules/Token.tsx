@@ -3,11 +3,12 @@ import { ethers } from 'ethers';
 import React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
-import { useTokenBalance } from '../../hooks/useTokenBalance';
-import { useTokenMetadata } from '../../hooks/useTokenMetadata';
-import { parseFloat } from '../../utils/helperFunctions';
-import { FONT_SIZE } from '../../utils/styles';
-import Blockie from '../Blockie';
+import Blockie from '../../../components/Blockie';
+import { useTokenBalance } from '../../../hooks/useTokenBalance';
+import { useTokenMetadata } from '../../../hooks/useTokenMetadata';
+import globalStyles from '../../../styles/globalStyles';
+import { parseFloat } from '../../../utils/helperFunctions';
+import { FONT_SIZE } from '../../../utils/styles';
 
 type Props = {
   address: Address;
@@ -27,7 +28,7 @@ export default function Token({ address, name, symbol, onPress }: Props) {
         <Text style={styles.name}>{name}</Text>
       </View>
 
-      <Text>
+      <Text style={styles.balance}>
         {tokenMetadata && balance
           ? parseFloat(ethers.formatUnits(balance, tokenMetadata.decimals), 4)
           : null}{' '}
@@ -41,13 +42,20 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    paddingVertical: 10
   },
   tokenTitle: {
     flexDirection: 'row',
     alignItems: 'center'
   },
   name: {
-    marginLeft: 12
+    marginLeft: 12,
+    fontSize: FONT_SIZE['lg'],
+    ...globalStyles.text
+  },
+  balance: {
+    fontSize: FONT_SIZE['md'],
+    ...globalStyles.text
   }
 });

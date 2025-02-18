@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import {
   Image,
   RefreshControl,
@@ -8,11 +8,10 @@ import {
   View
 } from 'react-native';
 import { useModal } from 'react-native-modalfy';
-import { Divider, IconButton, Text } from 'react-native-paper';
+import { IconButton, Text } from 'react-native-paper';
 // @ts-ignore
 import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 import CopyableText from '../../../../../components/CopyableText';
-import ReceiveModal from '../../../../../components/modals/ReceiveModal';
 import useAccount from '../../../../../hooks/scaffold-eth/useAccount';
 import useBalance from '../../../../../hooks/scaffold-eth/useBalance';
 import useNetwork from '../../../../../hooks/scaffold-eth/useNetwork';
@@ -118,13 +117,15 @@ function MainBalance({ backHandler }: Props) {
           </Text>
         </View>
 
-        <Divider style={styles.divider} />
-
         <View style={styles.actionContainer}>
           <View style={styles.actionButton}>
             <IconButton
               icon={() => (
-                <Ionicons name="paper-plane" size={24} color={COLORS.primary} />
+                <Ionicons
+                  name="paper-plane-outline"
+                  size={24}
+                  color={COLORS.primary}
+                />
               )}
               mode="contained"
               containerColor={COLORS.primaryLight}
@@ -139,7 +140,11 @@ function MainBalance({ backHandler }: Props) {
           <View style={styles.actionButton}>
             <IconButton
               icon={() => (
-                <Ionicons name="download" size={24} color={COLORS.primary} />
+                <Ionicons
+                  name="download-outline"
+                  size={24}
+                  color={COLORS.primary}
+                />
               )}
               mode="contained"
               containerColor={COLORS.primaryLight}
@@ -151,8 +156,6 @@ function MainBalance({ backHandler }: Props) {
             </Text>
           </View>
         </View>
-
-        <Divider style={styles.divider} />
       </View>
     </ScrollView>
   );
@@ -194,15 +197,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     ...globalStyles.textMedium
   },
-  divider: {
-    width: '100%',
-    marginVertical: 8,
-    backgroundColor: '#bcbcbc'
-  },
   actionContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 40
+    gap: 40,
+    marginVertical: 8
   },
   actionButton: {
     alignItems: 'center'

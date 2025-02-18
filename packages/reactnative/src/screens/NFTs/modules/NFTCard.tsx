@@ -1,10 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
 import { Address } from 'abitype';
 import React, { useEffect, useState } from 'react';
-import { Image, Pressable, StyleSheet, View } from 'react-native';
+import { Image, Pressable, StyleSheet } from 'react-native';
 import { useModal } from 'react-native-modalfy';
-import { parseIPFS } from '../../../../../../utils/helperFunctions';
-import { WINDOW_WIDTH } from '../../../../../../utils/styles';
+import { parseIPFS } from '../../../utils/helperFunctions';
+import { WINDOW_WIDTH } from '../../../utils/styles';
 
 type Props = {
   token: {

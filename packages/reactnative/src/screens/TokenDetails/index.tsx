@@ -2,17 +2,20 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { ethers } from 'ethers';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+import { useModal } from 'react-native-modalfy';
 import { IconButton, Text } from 'react-native-paper';
 // @ts-ignore
 import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 import { useDispatch } from 'react-redux';
 import Blockie from '../../components/Blockie';
+import BackButton from '../../components/buttons/BackButton';
 import CopyableText from '../../components/CopyableText';
 import useAccount from '../../hooks/scaffold-eth/useAccount';
 import useNetwork from '../../hooks/scaffold-eth/useNetwork';
 import { useTokenBalance } from '../../hooks/useTokenBalance';
 import { useTokenMetadata } from '../../hooks/useTokenMetadata';
 import { removeToken } from '../../store/reducers/Tokens';
+import globalStyles from '../../styles/globalStyles';
 import { COLORS } from '../../utils/constants';
 import { truncateAddress } from '../../utils/helperFunctions';
 import { FONT_SIZE } from '../../utils/styles';
@@ -23,6 +26,7 @@ export default function TokenDetails({}: Props) {
   const navigation = useNavigation();
   const route = useRoute();
   const dispatch = useDispatch();
+  const { openModal } = useModal();
 
   const network = useNetwork();
   const account = useAccount();
@@ -36,7 +40,7 @@ export default function TokenDetails({}: Props) {
   const remove = () => {
     dispatch(
       removeToken({
-        networkId: network.id,
+        networkId: network.id.toString(),
         accountAddress: account.address,
         tokenAddress: token.address
       })
@@ -46,19 +50,20 @@ export default function TokenDetails({}: Props) {
 
   return (
     <View style={styles.container}>
-      <View style={styles.headerContainer}>
-        <View style={styles.headerTitleContainer}>
-          <IconButton
-            icon="arrow-left"
-            size={24}
-            onPress={() => navigation.goBack()}
-          />
-          <Text variant="headlineSmall" style={styles.headerText}>
+      <View style={styles.header}>
+        <View style={styles.headerTitle}>
+          <BackButton />
+          <Text variant="titleLarge" style={globalStyles.textSemiBold}>
             {token.name} ({token.symbol})
           </Text>
         </View>
 
-        <IconButton icon="trash-can-outline" size={24} onPress={remove} />
+        <Ionicons
+          name="trash-outline"
+          size={FONT_SIZE['xl'] * 1.2}
+          color={COLORS.error}
+          onPress={remove}
+        />
       </View>
 
       <View style={styles.tokenInfoContainer}>
@@ -75,7 +80,11 @@ export default function TokenDetails({}: Props) {
           <View style={styles.actionButton}>
             <IconButton
               icon={() => (
-                <Ionicons name="paper-plane" size={24} color={COLORS.primary} />
+                <Ionicons
+                  name="paper-plane-outline"
+                  size={24}
+                  color={COLORS.primary}
+                />
               )}
               mode="contained"
               containerColor={COLORS.primaryLight}
@@ -93,12 +102,20 @@ export default function TokenDetails({}: Props) {
           <View style={styles.actionButton}>
             <IconButton
               icon={() => (
-                <Ionicons name="download" size={24} color={COLORS.primary} />
+                <Ionicons
+                  name="download-outline"
+                  size={24}
+                  color={COLORS.primary}
+                />
               )}
               mode="contained"
               containerColor={COLORS.primaryLight}
               size={48}
-              onPress={() => null}
+              onPress={() =>
+                openModal('ReceiveModal', {
+                  tokenSymbol: token.symbol
+                })
+              }
             />
             <Text variant="titleMedium" style={styles.actionText}>
               Receive
@@ -132,20 +149,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
-    padding: 8
+    padding: 10
   },
-  headerContainer: {
+  header: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: 24
+    justifyContent: 'space-between'
   },
-  headerTitleContainer: {
+  headerTitle: {
     flexDirection: 'row',
-    alignItems: 'center'
-  },
-  headerText: {
-    marginLeft: 8
+    alignItems: 'center',
+    gap: 8
   },
   tokenInfoContainer: {
     alignItems: 'center',
@@ -153,27 +167,27 @@ const styles = StyleSheet.create({
     gap: 8
   },
   balanceText: {
-    fontWeight: 'bold',
     textAlign: 'center',
-    marginTop: 8
+    marginTop: 8,
+    ...globalStyles.textMedium
   },
   actionContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 40,
-    marginTop: 12
+    marginVertical: 8
   },
   actionButton: {
     alignItems: 'center'
   },
   actionText: {
     marginTop: 8,
-    fontWeight: 'bold'
+    ...globalStyles.textMedium
   },
   tokenDetailsText: {
     marginTop: 24,
-    fontWeight: 'bold',
-    fontSize: FONT_SIZE['xl']
+    fontSize: FONT_SIZE['xl'],
+    ...globalStyles.textMedium
   },
   tokenDetailContainer: {
     flexDirection: 'row',
@@ -182,22 +196,23 @@ const styles = StyleSheet.create({
     marginBottom: 8
   },
   tokenDetailTitle: {
-    fontWeight: 'bold',
-    fontSize: FONT_SIZE['md']
+    fontSize: FONT_SIZE['md'],
+    ...globalStyles.textMedium
   },
   tokenDetailDecimals: {
-    fontWeight: 'bold',
-    fontSize: FONT_SIZE['md']
+    fontSize: FONT_SIZE['md'],
+    ...globalStyles.textMedium
   },
   addressContainer: {
     paddingHorizontal: 15,
-    paddingVertical: 5,
+    paddingVertical: 2,
     backgroundColor: COLORS.primaryLight,
-    borderRadius: 15
+    borderRadius: 24
   },
   addressText: {
-    fontWeight: '700',
     fontSize: FONT_SIZE['md'],
+    ...globalStyles.textMedium,
+    marginBottom: -2,
     color: COLORS.primary
   }
 });

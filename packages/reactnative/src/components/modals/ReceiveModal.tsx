@@ -18,10 +18,13 @@ import { FONT_SIZE, WINDOW_WIDTH } from '../../utils/styles';
 type Props = {
   modal: {
     closeModal: () => void;
+    params: {
+      tokenSymbol?: string;
+    };
   };
 };
 
-export default function ReceiveModal({ modal: { closeModal } }: Props) {
+export default function ReceiveModal({ modal: { closeModal, params } }: Props) {
   const connectedAccount: Account = useAccount();
   const connectedNetwork: Network = useNetwork();
 
@@ -44,7 +47,7 @@ export default function ReceiveModal({ modal: { closeModal } }: Props) {
     <View style={styles.container}>
       <View style={styles.header}>
         <Text variant="headlineMedium" style={styles.headerTitle}>
-          Receive {connectedNetwork.currencySymbol}
+          Receive {params?.tokenSymbol || connectedNetwork.currencySymbol}
         </Text>
         <Ionicons
           name="close-outline"
@@ -62,8 +65,9 @@ export default function ReceiveModal({ modal: { closeModal } }: Props) {
 
       <Surface style={styles.warning} elevation={0}>
         <Text variant="bodyMedium" style={styles.warningText}>
-          Send only {connectedNetwork.name} ({connectedNetwork.currencySymbol})
-          to this address. Sending any other coins may result in permanent loss.
+          Send only {connectedNetwork.name} (
+          {params?.tokenSymbol || connectedNetwork.currencySymbol}) to this
+          address. Sending any other coins may result in permanent loss.
         </Text>
       </Surface>
 

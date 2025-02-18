@@ -189,7 +189,7 @@ export default function TransferConfirmationModal({
             style={{ flex: 1, paddingVertical: 4, borderRadius: 30 }}
             labelStyle={{ fontSize: FONT_SIZE['lg'], ...globalStyles.text }}
           >
-            Reject
+            Cancel
           </Button>
           <Button
             mode="contained"

@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-import { Image, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { List } from 'react-native-paper';
-import {
-  NFTToken,
-  NFT as NFTType
-} from '../../../../../../store/reducers/NFTs';
-import { WINDOW_WIDTH } from '../../../../../../utils/styles';
+import { NFTToken, NFT as NFTType } from '../../../store/reducers/NFTs';
+import globalStyles from '../../../styles/globalStyles';
+import { COLORS } from '../../../utils/constants';
 import NFTCard from './NFTCard';
 
 type Props = {
@@ -17,6 +15,8 @@ export default function NFT({ nft }: Props) {
   return (
     <List.Accordion
       title={`${nft.name} (${nft.symbol})`}
+      titleStyle={globalStyles.textMedium}
+      style={{ backgroundColor: COLORS.lightGray }}
       expanded={expanded}
       onPress={() => setExpanded(!expanded)}
     >
@@ -41,6 +41,8 @@ const styles = StyleSheet.create({
   nftContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 10
+    gap: 10,
+    marginHorizontal: 10,
+    marginTop: 10
   }
 });
