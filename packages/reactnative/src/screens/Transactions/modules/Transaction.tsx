@@ -1,5 +1,6 @@
 import React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
+import { useModal } from 'react-native-modalfy';
 import { Text } from 'react-native-paper';
 // @ts-ignore
 import Ionicons from 'react-native-vector-icons/dist/Ionicons';
@@ -10,8 +11,12 @@ import { FONT_SIZE, WINDOW_WIDTH } from '../../../utils/styles';
 type Props = {};
 
 export default function Transaction({}: Props) {
+  const { openModal } = useModal();
   return (
-    <Pressable style={styles.container}>
+    <Pressable
+      style={styles.container}
+      onPress={() => openModal('TransactionDetailsModal')}
+    >
       <View style={styles.leftSide}>
         <Ionicons
           name="swap-horizontal-outline"
@@ -46,7 +51,7 @@ const styles = StyleSheet.create({
   leftSide: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4
+    gap: 10
   },
   rightSide: {
     alignItems: 'flex-end'

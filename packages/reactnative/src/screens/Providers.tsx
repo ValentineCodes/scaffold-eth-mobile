@@ -28,6 +28,7 @@ import SignMessageModal from '../components/modals/SignMessageModal';
 import SignTransactionModal from '../components/modals/SignTransactionModal';
 import SignTransferModal from '../components/modals/SignTransferModal';
 import SwitchNetworkModal from '../components/modals/SwitchNetworkModal';
+import TransactionDetailsModal from '../components/modals/TransactionDetailsModal';
 import TransferConfirmationModal from '../components/modals/TransferConfirmationModal';
 import TxReceiptModal from '../components/modals/TxReceiptModal';
 import { store } from '../store';
@@ -66,7 +67,8 @@ const modalConfig = {
   ReceiveModal,
   AccountDetailsModal,
   PrivateKeyModal,
-  SeedPhraseModal
+  SeedPhraseModal,
+  TransactionDetailsModal
 };
 const defaultOptions: ModalOptions = {
   backdropOpacity: 0.6,
