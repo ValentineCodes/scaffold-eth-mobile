@@ -5,6 +5,7 @@ import {
 } from '@react-navigation/native';
 import {
   Contract,
+  formatEther,
   formatUnits,
   isAddress,
   JsonRpcProvider,
@@ -18,10 +19,11 @@ import { useModal } from 'react-native-modalfy';
 import { Divider } from 'react-native-paper';
 import { useToast } from 'react-native-toast-notifications';
 import { useDispatch } from 'react-redux';
-import { erc20Abi } from 'viem';
+import { Address, erc20Abi } from 'viem';
 import Button from '../../components/Button';
 import useAccount from '../../hooks/scaffold-eth/useAccount';
 import useNetwork from '../../hooks/scaffold-eth/useNetwork';
+import { useTransactions } from '../../hooks/store/useTransactions';
 import { useSecureStorage } from '../../hooks/useSecureStorage';
 import { useTokenBalance } from '../../hooks/useTokenBalance';
 import { useTokenMetadata } from '../../hooks/useTokenMetadata';
@@ -92,6 +94,8 @@ export default function ERC20TokenTransfer() {
     }
   };
 
+  const { addTx } = useTransactions();
+
   const transfer = async (): Promise<TransactionReceipt | null> => {
     // @ts-ignore
     const accounts: any[] = await getItem('accounts');
@@ -112,6 +116,26 @@ export default function ERC20TokenTransfer() {
     const txReceipt = await tx.wait(1);
 
     dispatch(addRecipient(recipient));
+
+    // Add transaction to Redux store
+    const gasFee = txReceipt?.gasUsed
+      ? txReceipt.gasUsed * txReceipt.gasPrice
+      : 0n;
+    const transaction = {
+      type: 'transfer',
+      title: `${token.symbol} Transfer`,
+      hash: tx.hash,
+      value: parseFloat(formatEther(tx.value), 8).toString(),
+      timestamp: Date.now(),
+      from: tx.from as Address,
+      to: tx.to as Address,
+      nonce: tx.nonce,
+      gasFee: parseFloat(formatEther(gasFee), 8).toString(),
+      total: parseFloat(formatEther(tx.value + gasFee), 8).toString()
+    };
+
+    // @ts-ignore
+    addTx(transaction);
 
     return txReceipt;
   };

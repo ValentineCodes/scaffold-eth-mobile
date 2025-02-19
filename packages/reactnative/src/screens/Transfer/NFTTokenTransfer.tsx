@@ -5,6 +5,7 @@ import {
 } from '@react-navigation/native';
 import {
   Contract,
+  formatEther,
   isAddress,
   JsonRpcProvider,
   TransactionReceipt,
@@ -16,14 +17,16 @@ import { useModal } from 'react-native-modalfy';
 import { Divider, Text } from 'react-native-paper';
 import { useToast } from 'react-native-toast-notifications';
 import { useDispatch } from 'react-redux';
-import { erc721Abi } from 'viem';
+import { Address, erc721Abi } from 'viem';
 import Button from '../../components/Button';
 import useAccount from '../../hooks/scaffold-eth/useAccount';
 import useNetwork from '../../hooks/scaffold-eth/useNetwork';
+import { useTransactions } from '../../hooks/store/useTransactions';
 import { useSecureStorage } from '../../hooks/useSecureStorage';
 import { Account } from '../../store/reducers/Accounts';
 import { addRecipient } from '../../store/reducers/Recipients';
 import globalStyles from '../../styles/globalStyles';
+import { parseFloat } from '../../utils/helperFunctions';
 import { FONT_SIZE } from '../../utils/styles';
 import Header from './modules/Header';
 import PastRecipients from './modules/PastRecipients';
@@ -85,6 +88,8 @@ export default function NFTTokenTransfer() {
     }
   };
 
+  const { addTx } = useTransactions();
+
   const transfer = async (): Promise<TransactionReceipt | null> => {
     // @ts-ignore
     const accounts: any[] = await getItem('accounts');
@@ -106,6 +111,26 @@ export default function NFTTokenTransfer() {
     const txReceipt = await tx.wait(1);
 
     dispatch(addRecipient(recipient));
+
+    // Add transaction to Redux store
+    const gasFee = txReceipt?.gasUsed
+      ? txReceipt.gasUsed * txReceipt.gasPrice
+      : 0n;
+    const transaction = {
+      type: 'transfer',
+      title: `${token.symbol} Transfer`,
+      hash: tx.hash,
+      value: parseFloat(formatEther(tx.value), 8).toString(),
+      timestamp: Date.now(),
+      from: tx.from as Address,
+      to: tx.to as Address,
+      nonce: tx.nonce,
+      gasFee: parseFloat(formatEther(gasFee), 8).toString(),
+      total: parseFloat(formatEther(tx.value + gasFee), 8).toString()
+    };
+
+    // @ts-ignore
+    addTx(transaction);
 
     return txReceipt;
   };

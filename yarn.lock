@@ -4217,6 +4217,7 @@ __metadata:
     fast-text-encoding: ^1.0.6
     jest: ^29.6.3
     metro-react-native-babel-preset: 0.73.10
+    moment: ^2.30.1
     prettier: 3.3.3
     random-words: ^2.0.1
     react: 18.3.1
@@ -12932,6 +12933,13 @@ __metadata:
     _mocha: bin/_mocha
     mocha: bin/mocha.js
   checksum: 68cb519503f1e8ffd9b0651e1aef75dfe4754425186756b21e53169da44b5bcb1889e2b743711205082763d3f9a42eb8eb2c13bb1a718a08cb3a5f563bfcacdc
+  languageName: node
+  linkType: hard
+
+"moment@npm:^2.30.1":
+  version: 2.30.1
+  resolution: "moment@npm:2.30.1"
+  checksum: 859236bab1e88c3e5802afcf797fc801acdbd0ee509d34ea3df6eea21eb6bcc2abd4ae4e4e64aa7c986aa6cba563c6e62806218e6412a765010712e5fa121ba6
   languageName: node
   linkType: hard
 

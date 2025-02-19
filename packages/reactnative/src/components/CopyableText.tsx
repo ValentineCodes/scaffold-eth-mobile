@@ -6,8 +6,10 @@ import {
   TouchableOpacity,
   ViewStyle
 } from 'react-native';
-import { IconButton, Text } from 'react-native-paper';
+import { Text } from 'react-native-paper';
 import { useToast } from 'react-native-toast-notifications';
+// @ts-ignore
+import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 
 type Props = {
   value: string;
@@ -36,8 +38,8 @@ export default function CopyableText({
   return (
     <TouchableOpacity onPress={copy} style={[styles.container, containerStyle]}>
       <Text style={[styles.text, textStyle]}>{displayText || value}</Text>
-      <IconButton
-        icon="content-copy"
+      <Ionicons
+        name="copy-outline"
         size={20}
         style={[styles.icon, iconStyle]}
       />
@@ -55,6 +57,6 @@ const styles = StyleSheet.create({
     fontWeight: '500'
   },
   icon: {
-    margin: 0
+    marginLeft: 4
   }
 });

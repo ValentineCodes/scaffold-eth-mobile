@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
   },
   addressContainer: {
     paddingHorizontal: 15,
-    paddingVertical: 2,
+    paddingVertical: 4,
     backgroundColor: COLORS.primaryLight,
     borderRadius: 24
   },
