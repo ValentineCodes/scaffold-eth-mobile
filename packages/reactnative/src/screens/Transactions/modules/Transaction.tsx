@@ -66,7 +66,7 @@ export default function Transaction({ transaction: tx }: Props) {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
-    paddingVertical: 4,
+    paddingVertical: 16,
     paddingHorizontal: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
