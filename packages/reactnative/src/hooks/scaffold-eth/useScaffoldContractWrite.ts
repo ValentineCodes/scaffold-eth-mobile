@@ -1,7 +1,9 @@
-import { Contract, JsonRpcProvider, Wallet } from 'ethers';
+import { Contract, formatEther, JsonRpcProvider, Wallet } from 'ethers';
 import { useModal } from 'react-native-modalfy';
 import { useToast } from 'react-native-toast-notifications';
-import { TransactionReceipt } from 'viem';
+import { Address, TransactionReceipt } from 'viem';
+import { parseFloat } from '../../utils/helperFunctions';
+import { useTransactions } from '../store/useTransactions';
 import { useSecureStorage } from '../useSecureStorage';
 import useAccount from './useAccount';
 import { useDeployedContractInfo } from './useDeployedContractInfo';
@@ -52,6 +54,7 @@ export default function useScaffoldContractWrite({
   const connectedAccount = useAccount();
   const { getItem } = useSecureStorage();
 
+  const { addTx } = useTransactions();
   /**
    *
    * @param config Optional param settings
@@ -136,6 +139,27 @@ export default function useScaffoldContractWrite({
             gasLimit: _gasLimit
           });
           const receipt = await tx.wait(blockConfirmations || 1);
+
+          // Add transaction to Redux store
+          const gasFee = receipt?.gasUsed
+            ? receipt.gasUsed * receipt.gasPrice
+            : 0n;
+          const transaction = {
+            type: 'contract',
+            title: `${functionName}`,
+            hash: tx.hash,
+            value: parseFloat(formatEther(tx.value), 8).toString(),
+            timestamp: Date.now(),
+            from: tx.from as Address,
+            to: tx.to as Address,
+            nonce: tx.nonce,
+            gasFee: parseFloat(formatEther(gasFee), 8).toString(),
+            total: parseFloat(formatEther(tx.value + gasFee), 8).toString()
+          };
+
+          // @ts-ignore
+          addTx(transaction);
+
           toast.show('Transaction Successful!', {
             type: 'success'
           });
