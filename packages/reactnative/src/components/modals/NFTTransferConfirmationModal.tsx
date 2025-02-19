@@ -46,6 +46,7 @@ export default function NFTTransferConfirmationModal({
   );
 
   const transfer = async () => {
+    if (isTransferring) return;
     try {
       setIsTransferring(true);
 
@@ -143,8 +144,7 @@ export default function NFTTransferConfirmationModal({
         <View style={styles.buttonContainer}>
           <Button
             mode="contained"
-            onPress={() => closeModal()}
-            disabled={isTransferring}
+            onPress={() => (isTransferring ? null : closeModal())}
             buttonColor="#FFCDD2"
             style={{ flex: 1, paddingVertical: 4, borderRadius: 30 }}
             labelStyle={{ fontSize: FONT_SIZE['lg'], ...globalStyles.text }}
@@ -155,7 +155,6 @@ export default function NFTTransferConfirmationModal({
             mode="contained"
             onPress={transfer}
             loading={isTransferring}
-            disabled={isTransferring}
             style={{ flex: 1, paddingVertical: 4, borderRadius: 30 }}
             labelStyle={{
               fontSize: FONT_SIZE['lg'],

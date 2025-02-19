@@ -96,7 +96,7 @@ export default function NetworkTokenTransfer() {
       : 0n;
     const transaction = {
       type: 'transfer',
-      title: 'Transfer',
+      title: `${network.currencySymbol} Transfer`,
       hash: tx.hash,
       value: parseFloat(formatEther(tx.value), 8).toString(),
       timestamp: Date.now(),
