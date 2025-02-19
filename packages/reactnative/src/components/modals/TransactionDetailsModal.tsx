@@ -1,27 +1,41 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Linking, StyleSheet, View } from 'react-native';
 import { Divider, Text } from 'react-native-paper';
 //@ts-ignore
 import Ionicons from 'react-native-vector-icons/dist/Ionicons';
+import useNetwork from '../../hooks/scaffold-eth/useNetwork';
+import { Transaction } from '../../store/reducers/Transactions';
 import globalStyles from '../../styles/globalStyles';
 import { COLORS } from '../../utils/constants';
+import { parseTimestamp, truncateAddress } from '../../utils/helperFunctions';
 import { FONT_SIZE, WINDOW_WIDTH } from '../../utils/styles';
 import CopyableText from '../CopyableText';
 
 type Props = {
   modal: {
     closeModal: () => void;
+    params: {
+      transaction: Transaction;
+    };
   };
 };
 
 export default function TransactionDetailsModal({
-  modal: { closeModal }
+  modal: {
+    closeModal,
+    params: { transaction: tx }
+  }
 }: Props) {
+  const network = useNetwork();
+
+  const viewOnExplorer = () => {
+    Linking.openURL(`${network.blockExplorer}/tx/${tx.hash}`);
+  };
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={{ fontSize: FONT_SIZE['xl'], ...globalStyles.text }}>
-          Transfer
+          {tx.title}
         </Text>
         <Ionicons
           name="close-outline"
@@ -35,8 +49,8 @@ export default function TransactionDetailsModal({
           <View style={styles.rowLeft}>
             <Text style={styles.title}>Tx Hash</Text>
             <CopyableText
-              displayText="0x123...abc"
-              value="0x123...abc"
+              displayText={truncateAddress(tx.hash)}
+              value={tx.hash}
               containerStyle={styles.addressContainer}
               textStyle={styles.addressText}
               iconStyle={{ color: COLORS.primary }}
@@ -44,7 +58,7 @@ export default function TransactionDetailsModal({
           </View>
           <View style={styles.rowRight}>
             <Text style={styles.title}>Date</Text>
-            <Text style={styles.info}>Feb 19, 2025</Text>
+            <Text style={styles.info}>{parseTimestamp(tx.timestamp)}</Text>
           </View>
         </View>
 
@@ -54,8 +68,8 @@ export default function TransactionDetailsModal({
           <View style={styles.rowLeft}>
             <Text style={styles.title}>From</Text>
             <CopyableText
-              displayText="0x123...abc"
-              value="0x123...abc"
+              displayText={truncateAddress(tx.from)}
+              value={tx.from}
               containerStyle={styles.addressContainer}
               textStyle={styles.addressText}
               iconStyle={{ color: COLORS.primary }}
@@ -64,8 +78,8 @@ export default function TransactionDetailsModal({
           <View style={styles.rowRight}>
             <Text style={styles.title}>To</Text>
             <CopyableText
-              displayText="0x123...abc"
-              value="0x123...abc"
+              displayText={truncateAddress(tx.to)}
+              value={tx.to}
               containerStyle={styles.addressContainer}
               textStyle={styles.addressText}
               iconStyle={{ color: COLORS.primary }}
@@ -77,7 +91,7 @@ export default function TransactionDetailsModal({
 
         <View style={styles.rowLeft}>
           <Text style={styles.title}>NONCE</Text>
-          <Text style={styles.info}>#68</Text>
+          <Text style={styles.info}>#{tx.nonce}</Text>
         </View>
 
         <View style={styles.amountContainer}>
@@ -87,8 +101,12 @@ export default function TransactionDetailsModal({
               <Text style={styles.title}>Estimated gas fee</Text>
             </View>
             <View style={styles.rowRight}>
-              <Text style={styles.info}>0.9998 ETH</Text>
-              <Text style={styles.info}>0.0001 ETH</Text>
+              <Text style={styles.info}>
+                {tx.value} {network.currencySymbol}
+              </Text>
+              <Text style={styles.info}>
+                {tx.gasFee} {network.currencySymbol}
+              </Text>
             </View>
           </View>
 
@@ -96,14 +114,17 @@ export default function TransactionDetailsModal({
 
           <View style={[styles.row, { alignItems: 'flex-start' }]}>
             <Text style={styles.title}>Total</Text>
-            <View style={styles.rowRight}>
-              <Text style={styles.info}>0.9999 ETH</Text>
-              <Text style={styles.info}>$12.58</Text>
-            </View>
+            <Text style={styles.info}>
+              {tx.total} {network.currencySymbol}
+            </Text>
           </View>
         </View>
 
-        <Text style={styles.footerText}>View on Explorer</Text>
+        {network.blockExplorer && (
+          <Text style={styles.footerText} onPress={viewOnExplorer}>
+            View on Explorer
+          </Text>
+        )}
       </View>
     </View>
   );

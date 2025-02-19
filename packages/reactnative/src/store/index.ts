@@ -23,7 +23,7 @@ const persistConfig = {
   key: 'root',
   version: 1,
   storage: AsyncStorage,
-  blacklist: ['balance', 'networks']
+  blacklist: ['balance', 'networks', 'transactions']
 };
 
 const reducers = combineReducers({

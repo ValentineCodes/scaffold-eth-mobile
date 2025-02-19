@@ -133,7 +133,13 @@ export default function Amount({
       />
 
       {isNativeToken && (
-        <Text variant="bodySmall" style={globalStyles.text}>
+        <Text
+          variant="bodySmall"
+          style={[
+            globalStyles.text,
+            { marginTop: 4, opacity: displayConversion !== '' ? 1 : 0 }
+          ]}
+        >
           ~{!isDollar && '$'}
           {displayConversion} {isDollar && token}
         </Text>

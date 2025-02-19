@@ -1,4 +1,5 @@
 import { ethers } from 'ethers';
+import moment from 'moment';
 import { EIP155_CHAINS, TEIP155Chain } from '../data/EIP155';
 
 export const shuffleArray = (array: any[]) => {
@@ -138,3 +139,14 @@ export const parseBalance = (value: bigint, decimals: number = 18): string => {
 
   return balance.toString();
 };
+
+/**
+ * Converts a blockchain timestamp (BigInt) to a human-readable relative time format.
+ *
+ * @param timestamp - The UNIX timestamp in milliseconds (BigInt or number).
+ * @returns A human-readable time string (e.g., "5 minutes ago").
+ */
+export function parseTimestamp(timestamp: bigint | number): string {
+  const timestampInMs = Number(timestamp);
+  return moment(timestampInMs).fromNow();
+}
