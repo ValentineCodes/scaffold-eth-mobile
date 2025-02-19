@@ -4,6 +4,7 @@ import { Text } from 'react-native-paper';
 import BackButton from '../../components/buttons/BackButton';
 import globalStyles from '../../styles/globalStyles';
 import { FONT_SIZE } from '../../utils/styles';
+import Transaction from './modules/Transaction';
 
 type Props = {};
 
@@ -14,6 +15,8 @@ export default function index({}: Props) {
         <BackButton />
         <Text style={styles.headerTitle}>Transactions</Text>
       </View>
+
+      <Transaction />
     </View>
   );
 }
@@ -22,7 +25,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
-    padding: 10
+    paddingVertical: 10
   },
   header: {
     flexDirection: 'row',
