@@ -26,7 +26,6 @@ import ReceiveModal from '../components/modals/ReceiveModal';
 import SeedPhraseModal from '../components/modals/SeedPhraseModal';
 import SignMessageModal from '../components/modals/SignMessageModal';
 import SignTransactionModal from '../components/modals/SignTransactionModal';
-import SignTransferModal from '../components/modals/SignTransferModal';
 import SwitchNetworkModal from '../components/modals/SwitchNetworkModal';
 import TransactionDetailsModal from '../components/modals/TransactionDetailsModal';
 import TransferConfirmationModal from '../components/modals/TransferConfirmationModal';
@@ -54,7 +53,6 @@ const modalConfig = {
   SignTransactionModal,
   SignMessageModal,
   TxReceiptModal,
-  SignTransferModal,
   NFTDetailsModal,
   QRCodeScanner,
   TransferConfirmationModal,

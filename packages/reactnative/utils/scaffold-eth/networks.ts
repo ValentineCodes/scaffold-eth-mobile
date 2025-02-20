@@ -1,4 +1,9 @@
-import { ALCHEMY_KEY, LOCAL_PROVIDER } from '../../src/utils/constants';
+// This is our default Alchemy API key.
+// You can get your own at https://dashboard.alchemyapi.io
+export const ALCHEMY_KEY = 'K18rs5rCTi1A-RDyPUw92tvL7I2cGVUB';
+
+// The local IP address via WIFI-HOTSPOT
+export const LOCAL_PROVIDER = 'http://192.168.0.124:8545';
 
 export interface Network {
   name: string;
