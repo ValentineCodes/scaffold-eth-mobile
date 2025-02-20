@@ -1,9 +1,9 @@
 import { useSelector } from 'react-redux';
-import { Network } from '../../store/reducers/Networks';
+import { Network } from '../../../utils/scaffold-eth/networks';
 
 export default function useNetwork() {
-  const connectedNetwork: Network = useSelector((state: any) =>
-    state.networks.find((network: Network) => network.isConnected)
+  const connectedNetwork: Network = useSelector(
+    (state: any) => state.connectedNetwork
   );
 
   return connectedNetwork;

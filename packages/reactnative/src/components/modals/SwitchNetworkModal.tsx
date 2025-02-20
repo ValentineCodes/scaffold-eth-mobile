@@ -3,8 +3,11 @@ import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
 //@ts-ignore
 import Ionicons from 'react-native-vector-icons/dist/Ionicons';
-import { useDispatch, useSelector } from 'react-redux';
-import { Network, switchNetwork } from '../../store/reducers/Networks';
+import { useDispatch } from 'react-redux';
+import scaffoldConfig from '../../../scaffold.config';
+import { Network } from '../../../utils/scaffold-eth/networks';
+import useNetwork from '../../hooks/scaffold-eth/useNetwork';
+import { switchNetwork } from '../../store/reducers/ConnectedNetwork';
 import globalStyles from '../../styles/globalStyles';
 import { COLORS } from '../../utils/constants';
 import { FONT_SIZE, WINDOW_HEIGHT, WINDOW_WIDTH } from '../../utils/styles';
@@ -16,9 +19,9 @@ type Props = {
 };
 
 export default function SwitchNetworkModal({ modal: { closeModal } }: Props) {
-  const networks: Network[] = useSelector((state: any) => state.networks);
-
   const dispatch = useDispatch();
+
+  const connectedNetwork = useNetwork();
 
   const handleNetworkSelecttion = (id: number) => {
     closeModal();
@@ -40,11 +43,12 @@ export default function SwitchNetworkModal({ modal: { closeModal } }: Props) {
       </View>
 
       <ScrollView>
-        {networks.map((_network: Network) => (
+        {scaffoldConfig.targetNetworks.map((_network: Network) => (
           <Pressable
             key={_network.id}
             onPress={() =>
-              !_network.isConnected && handleNetworkSelecttion(_network.id)
+              !(_network.id === connectedNetwork.id) &&
+              handleNetworkSelecttion(_network.id)
             }
             style={styles.networkContainer}
           >
@@ -53,7 +57,8 @@ export default function SwitchNetworkModal({ modal: { closeModal } }: Props) {
                 variant="titleMedium"
                 style={[
                   styles.networkName,
-                  _network.isConnected && styles.networkNameActive
+                  _network.id === connectedNetwork.id &&
+                    styles.networkNameActive
                 ]}
               >
                 {_network.name}
@@ -62,13 +67,14 @@ export default function SwitchNetworkModal({ modal: { closeModal } }: Props) {
                 variant="bodyMedium"
                 style={[
                   styles.networkChainId,
-                  _network.isConnected && styles.networkChainIdActive
+                  _network.id === connectedNetwork.id &&
+                    styles.networkChainIdActive
                 ]}
               >
                 Chain ID: {_network.id.toString()}
               </Text>
             </View>
-            {_network.isConnected && (
+            {_network.id === connectedNetwork.id && (
               <Ionicons
                 name="checkmark-done"
                 color={COLORS.primary}

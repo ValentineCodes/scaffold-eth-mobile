@@ -7,8 +7,6 @@ import { useToast } from 'react-native-toast-notifications';
 import { TransactionReceipt } from 'viem';
 import IntegerInput from '../../../../../../components/scaffold-eth/input/IntegerInput';
 import useContractWrite from '../../../../../../hooks/scaffold-eth/useContractWrite';
-import useNetwork from '../../../../../../hooks/scaffold-eth/useNetwork';
-import useTargetNetwork from '../../../../../../hooks/scaffold-eth/useTargetNetwork';
 import globalStyles from '../../../../../../styles/globalStyles';
 import { COLORS } from '../../../../../../utils/constants';
 import { FONT_SIZE } from '../../../../../../utils/styles';
@@ -36,12 +34,9 @@ export default function WriteOnlyFunctionForm({
     getInitialFormState(abiFunction)
   );
   const [txValue, setTxValue] = useState<string | bigint>('');
-  const network = useNetwork();
-  const targetNetwork = useTargetNetwork();
   const toast = useToast();
   const [txReceipt, setTxReceipt] = useState<TransactionReceipt | undefined>();
   const { openModal } = useModal();
-  const writeDisabled = !network || network?.id !== targetNetwork.id;
 
   const { isLoading, write } = useContractWrite({
     address: contractAddress,
@@ -128,16 +123,15 @@ export default function WriteOnlyFunctionForm({
           style={{
             marginVertical: 8,
             borderRadius: 24,
-            backgroundColor:
-              writeDisabled || isLoading ? COLORS.primary : COLORS.primaryLight
+            backgroundColor: isLoading ? COLORS.primary : COLORS.primaryLight
           }}
           labelStyle={{
             fontSize: FONT_SIZE['md'],
             ...globalStyles.text,
-            color: writeDisabled || isLoading ? 'white' : 'black'
+            color: isLoading ? 'white' : 'black'
           }}
           loading={isLoading}
-          disabled={writeDisabled || isLoading}
+          disabled={isLoading}
           onPress={handleWrite}
         >
           Send

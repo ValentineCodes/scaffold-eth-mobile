@@ -13,7 +13,7 @@ import {
 import Accounts from './reducers/Accounts';
 import Auth from './reducers/Auth';
 import Balance from './reducers/Balance';
-import Networks from './reducers/Networks';
+import ConnectedNetwork from './reducers/ConnectedNetwork';
 import NFTs from './reducers/NFTs';
 import Recipients from './reducers/Recipients';
 import Tokens from './reducers/Tokens';
@@ -28,7 +28,7 @@ const persistConfig = {
 
 const reducers = combineReducers({
   auth: Auth,
-  networks: Networks,
+  connectedNetwork: ConnectedNetwork,
   accounts: Accounts,
   transactions: Transactions,
   balance: Balance,

@@ -4,7 +4,7 @@ import { IconButton, Text } from 'react-native-paper';
 //@ts-ignore
 import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 import { useSelector } from 'react-redux';
-import { Network } from '../../store/reducers/Networks';
+import { Network } from '../../store/reducers/ConnectedNetwork';
 import globalStyles from '../../styles/globalStyles';
 import { COLORS } from '../../utils/constants';
 import { FONT_SIZE, WINDOW_WIDTH } from '../../utils/styles';

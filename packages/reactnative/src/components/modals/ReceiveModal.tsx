@@ -10,7 +10,7 @@ import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 import useAccount from '../../hooks/scaffold-eth/useAccount';
 import useNetwork from '../../hooks/scaffold-eth/useNetwork';
 import { Account } from '../../store/reducers/Accounts';
-import { Network } from '../../store/reducers/Networks';
+import { Network } from '../../store/reducers/ConnectedNetwork';
 import globalStyles from '../../styles/globalStyles';
 import { COLORS } from '../../utils/constants';
 import { FONT_SIZE, WINDOW_WIDTH } from '../../utils/styles';

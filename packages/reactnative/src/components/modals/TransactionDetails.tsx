@@ -8,7 +8,7 @@ import { useToast } from 'react-native-toast-notifications';
 import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 import { useSelector } from 'react-redux';
 import { Account } from '../../store/reducers/Accounts';
-import { Network } from '../../store/reducers/Networks';
+import { Network } from '../../store/reducers/ConnectedNetwork';
 import { COLORS } from '../../utils/constants';
 import { parseFloat, truncateAddress } from '../../utils/helperFunctions';
 import { FONT_SIZE } from '../../utils/styles';
