@@ -12,7 +12,6 @@ import {
 } from 'redux-persist';
 import Accounts from './reducers/Accounts';
 import Auth from './reducers/Auth';
-import Balance from './reducers/Balance';
 import ConnectedNetwork from './reducers/ConnectedNetwork';
 import NFTs from './reducers/NFTs';
 import Recipients from './reducers/Recipients';
@@ -31,7 +30,6 @@ const reducers = combineReducers({
   connectedNetwork: ConnectedNetwork,
   accounts: Accounts,
   transactions: Transactions,
-  balance: Balance,
   recipients: Recipients,
   tokens: Tokens,
   nfts: NFTs
