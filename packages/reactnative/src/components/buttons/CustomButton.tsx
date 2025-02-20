@@ -1,9 +1,9 @@
 import React from 'react';
 import { StyleSheet, TextStyle, ViewStyle } from 'react-native';
 import { Button as PaperButton } from 'react-native-paper';
-import globalStyles from '../styles/globalStyles';
-import { COLORS } from '../utils/constants';
-import { FONT_SIZE } from '../utils/styles';
+import globalStyles from '../../styles/globalStyles';
+import { COLORS } from '../../utils/constants';
+import { FONT_SIZE } from '../../utils/styles';
 
 type Props = {
   text: string;
@@ -15,7 +15,7 @@ type Props = {
   onPress: () => void;
 };
 
-export default function Button({
+export default function CustomButton({
   text,
   type,
   loading,

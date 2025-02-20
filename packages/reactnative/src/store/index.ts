@@ -12,8 +12,7 @@ import {
 } from 'redux-persist';
 import Accounts from './reducers/Accounts';
 import Auth from './reducers/Auth';
-import Balance from './reducers/Balance';
-import Networks from './reducers/Networks';
+import ConnectedNetwork from './reducers/ConnectedNetwork';
 import NFTs from './reducers/NFTs';
 import Recipients from './reducers/Recipients';
 import Tokens from './reducers/Tokens';
@@ -22,16 +21,14 @@ import Transactions from './reducers/Transactions';
 const persistConfig = {
   key: 'root',
   version: 1,
-  storage: AsyncStorage,
-  blacklist: ['balance', 'networks']
+  storage: AsyncStorage
 };
 
 const reducers = combineReducers({
   auth: Auth,
-  networks: Networks,
+  connectedNetwork: ConnectedNetwork,
   accounts: Accounts,
   transactions: Transactions,
-  balance: Balance,
   recipients: Recipients,
   tokens: Tokens,
   nfts: NFTs

@@ -8,15 +8,15 @@ import { useDispatch } from 'react-redux';
 import { Address } from 'viem';
 import useAccount from '../../hooks/scaffold-eth/useAccount';
 import useNetwork from '../../hooks/scaffold-eth/useNetwork';
+import { useTokens } from '../../hooks/store/useTokens';
 import { useTokenBalance } from '../../hooks/useTokenBalance';
 import { useTokenMetadata } from '../../hooks/useTokenMetadata';
-import { useTokens } from '../../hooks/useTokens';
 import { addToken, Token } from '../../store/reducers/Tokens';
 import globalStyles from '../../styles/globalStyles';
 import { COLORS } from '../../utils/constants';
 import { FONT_SIZE, WINDOW_WIDTH } from '../../utils/styles';
-import Blockie from '../Blockie';
-import Button from '../Button';
+import Button from '../buttons/CustomButton';
+import Blockie from '../scaffold-eth/Blockie';
 
 type Props = {
   modal: {

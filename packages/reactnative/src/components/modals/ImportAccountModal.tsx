@@ -14,7 +14,7 @@ import globalStyles from '../../styles/globalStyles';
 import { Wallet } from '../../types/wallet';
 import { COLORS } from '../../utils/constants';
 import { FONT_SIZE, WINDOW_WIDTH } from '../../utils/styles';
-import Button from '../Button';
+import Button from '../buttons/CustomButton';
 
 type Props = {
   modal: {
@@ -49,7 +49,7 @@ export default function ImportAccountModal({ modal: { closeModal } }: Props) {
         ])
       );
 
-      dispatch(addAccount({ address: wallet.address, isImported: true }));
+      dispatch(addAccount({ address: wallet.address }));
       dispatch(switchAccount(wallet.address));
 
       closeModal();

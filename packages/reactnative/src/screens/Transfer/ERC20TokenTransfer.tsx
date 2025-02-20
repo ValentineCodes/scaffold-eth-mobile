@@ -20,7 +20,7 @@ import { Divider } from 'react-native-paper';
 import { useToast } from 'react-native-toast-notifications';
 import { useDispatch } from 'react-redux';
 import { Address, erc20Abi } from 'viem';
-import Button from '../../components/Button';
+import CustomButton from '../../components/buttons/CustomButton';
 import useAccount from '../../hooks/scaffold-eth/useAccount';
 import useNetwork from '../../hooks/scaffold-eth/useNetwork';
 import { useTransactions } from '../../hooks/store/useTransactions';
@@ -197,16 +197,15 @@ export default function ERC20TokenTransfer() {
 
   return (
     <View style={styles.container}>
-      <Header token={tokenMetadata?.symbol} />
+      <Header token={token.symbol} />
 
       <Sender
         account={sender}
         balance={
           tokenMetadata && balance
-            ? parseFloat(
-                formatUnits(balance, tokenMetadata?.decimals),
-                4
-              ).toString()
+            ? `${Number(
+                formatUnits(balance, tokenMetadata?.decimals)
+              ).toLocaleString('en-US')} ${token.symbol}`
             : null
         }
         onChange={setSender}
@@ -220,7 +219,7 @@ export default function ERC20TokenTransfer() {
 
       <Amount
         amount={amount}
-        token={tokenMetadata?.symbol}
+        token={token.symbol}
         balance={balance}
         gasCost={gasCost}
         onChange={setAmount}
@@ -231,7 +230,7 @@ export default function ERC20TokenTransfer() {
 
       <PastRecipients onSelect={setRecipient} />
 
-      <Button text="Next" onPress={confirm} />
+      <CustomButton text="Next" onPress={confirm} />
     </View>
   );
 }

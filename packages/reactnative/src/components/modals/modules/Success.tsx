@@ -4,7 +4,7 @@ import { Modal, Portal, Text } from 'react-native-paper';
 import globalStyles from '../../../styles/globalStyles';
 import { COLORS } from '../../../utils/constants';
 import { FONT_SIZE } from '../../../utils/styles';
-import Button from '../../Button';
+import Button from '../../buttons/CustomButton';
 
 type Props = {
   isVisible: boolean;

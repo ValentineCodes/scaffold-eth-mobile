@@ -1,13 +1,13 @@
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { Modal, Button as PaperButton, Portal, Text } from 'react-native-paper';
+import { Button, Text } from 'react-native-paper';
 import useAccount from '../../hooks/scaffold-eth/useAccount';
 import useBalance from '../../hooks/scaffold-eth/useBalance';
 import useNetwork from '../../hooks/scaffold-eth/useNetwork';
+import globalStyles from '../../styles/globalStyles';
 import { parseBalance } from '../../utils/helperFunctions';
-import { FONT_SIZE, WINDOW_HEIGHT } from '../../utils/styles';
-import Blockie from '../Blockie';
-import Button from '../Button';
+import { FONT_SIZE, WINDOW_HEIGHT, WINDOW_WIDTH } from '../../utils/styles';
+import Blockie from '../scaffold-eth/Blockie';
 
 type Props = {
   modal: {
@@ -37,72 +37,82 @@ export default function SignMessageModal({
   };
 
   return (
-    <Portal>
-      <Modal
-        visible={true}
-        onDismiss={closeModal}
-        contentContainerStyle={styles.container}
-      >
-        <View style={styles.header}>
-          <View style={styles.accountInfo}>
-            <Blockie address={account.address} size={1.8 * FONT_SIZE.xl} />
-            <View>
-              <Text variant="bodyMedium">{network.name} network</Text>
-              <Text variant="bodyMedium" style={styles.accountName}>
-                {account.name}
-              </Text>
-            </View>
-          </View>
-
-          <View style={styles.balanceInfo}>
-            <Text variant="bodyMedium">Balance</Text>
-            <Text variant="bodyMedium" style={styles.balance}>
-              {balance !== null
-                ? `${parseBalance(balance)} ${network.currencySymbol}`
-                : null}
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <View style={styles.accountInfo}>
+          <Blockie address={account.address} size={1.8 * FONT_SIZE.xl} />
+          <View>
+            <Text variant="bodyMedium" style={styles.networkName}>
+              {network.name} network
+            </Text>
+            <Text variant="bodyMedium" style={styles.accountName}>
+              {account.name}
             </Text>
           </View>
         </View>
 
-        <ScrollView style={styles.content}>
-          <View style={styles.titleContainer}>
-            <Text variant="headlineMedium" style={styles.title}>
-              Signature Request
-            </Text>
-
-            <Text variant="bodyMedium" style={styles.subtitle}>
-              Only sign this message if you fully understand the content and
-              trust this platform
-            </Text>
-
-            <Text variant="bodyMedium" style={styles.label}>
-              You are signing:
-            </Text>
-          </View>
-
-          <View style={styles.messageContainer}>
-            <Text variant="titleLarge" style={styles.messageLabel}>
-              Message:
-            </Text>
-            <Text variant="bodySmall" style={styles.message}>
-              {JSON.stringify(params.message)}
-            </Text>
-          </View>
-        </ScrollView>
-
-        <View style={styles.buttonContainer}>
-          <PaperButton
-            mode="contained"
-            onPress={reject}
-            buttonColor="#FFCDD2"
-            style={styles.rejectButton}
-          >
-            Reject
-          </PaperButton>
-          <Button text="Sign" onPress={sign} style={styles.signButton} />
+        <View style={styles.balanceInfo}>
+          <Text variant="bodyMedium" style={globalStyles.text}>
+            Balance
+          </Text>
+          <Text variant="bodyMedium" style={styles.balance}>
+            {balance !== null
+              ? `${Number(parseBalance(balance)).toLocaleString('en-US')} ${network.currencySymbol}`
+              : null}
+          </Text>
         </View>
-      </Modal>
-    </Portal>
+      </View>
+
+      <ScrollView style={styles.content}>
+        <View style={styles.titleContainer}>
+          <Text variant="headlineMedium" style={styles.title}>
+            Signature Request
+          </Text>
+
+          <Text variant="bodyMedium" style={styles.subtitle}>
+            Only sign this message if you fully understand the content and trust
+            this platform
+          </Text>
+
+          <Text variant="bodyMedium" style={styles.label}>
+            You are signing:
+          </Text>
+        </View>
+
+        <View style={styles.messageContainer}>
+          <Text variant="titleLarge" style={styles.messageLabel}>
+            Message:
+          </Text>
+          <Text variant="bodySmall" style={styles.message}>
+            {JSON.stringify(params.message)}
+          </Text>
+        </View>
+      </ScrollView>
+
+      <View style={styles.buttonContainer}>
+        <Button
+          mode="contained"
+          onPress={reject}
+          buttonColor="#FFCDD2"
+          style={{ flex: 1, paddingVertical: 4, borderRadius: 30 }}
+          labelStyle={{ fontSize: FONT_SIZE['lg'], ...globalStyles.text }}
+        >
+          Reject
+        </Button>
+        <Button
+          mode="contained"
+          onPress={sign}
+          style={{ flex: 1, paddingVertical: 4, borderRadius: 30 }}
+          labelStyle={{
+            fontSize: FONT_SIZE['lg'],
+            ...globalStyles.text,
+            color: 'white'
+          }}
+        >
+          Sign
+        </Button>
+      </View>
+    </View>
   );
 }
 
@@ -111,7 +121,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 30,
     padding: 20,
-    margin: 20
+    width: WINDOW_WIDTH * 0.9
   },
   header: {
     flexDirection: 'row',
@@ -126,33 +136,44 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 8
   },
+  networkName: {
+    fontSize: FONT_SIZE.md,
+    ...globalStyles.text
+  },
   accountName: {
-    fontWeight: '500'
+    fontSize: FONT_SIZE.md,
+    ...globalStyles.textMedium
   },
   balanceInfo: {
     alignItems: 'flex-end'
   },
   balance: {
-    fontWeight: '500'
+    ...globalStyles.textMedium
   },
   content: {
     maxHeight: WINDOW_HEIGHT * 0.5
   },
   titleContainer: {
     alignItems: 'center',
-    padding: 8,
+    paddingHorizontal: 8,
+    paddingVertical: 16,
     gap: 16
   },
   title: {
     textAlign: 'center',
-    fontWeight: '600'
+    fontSize: FONT_SIZE.xl * 1.2,
+    ...globalStyles.textMedium
   },
   subtitle: {
     textAlign: 'center',
-    color: 'gray'
+    color: 'gray',
+    fontSize: FONT_SIZE.md,
+    ...globalStyles.text
   },
   label: {
-    color: 'gray'
+    color: 'gray',
+    fontSize: FONT_SIZE.md,
+    ...globalStyles.text
   },
   messageContainer: {
     padding: 16,
@@ -162,15 +183,17 @@ const styles = StyleSheet.create({
     borderColor: '#E0E0E0'
   },
   messageLabel: {
-    color: 'gray'
+    fontSize: FONT_SIZE.lg,
+    ...globalStyles.textMedium
   },
   message: {
-    color: 'gray'
+    color: 'gray',
+    fontSize: FONT_SIZE.md,
+    ...globalStyles.text
   },
   buttonContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between'
+    gap: 12
   },
   rejectButton: {
     width: '50%'

@@ -34,7 +34,10 @@ function MainBalance({ backHandler }: Props) {
   const { balance, isRefetching, refetch } = useBalance({
     address: account.address
   });
-  const { price, fetchPrice } = useCryptoPrice({ enabled: false });
+  const { price, fetchPrice } = useCryptoPrice({
+    priceID: network.coingeckoPriceId,
+    enabled: false
+  });
 
   const navigation = useNavigation();
 
@@ -104,7 +107,7 @@ function MainBalance({ backHandler }: Props) {
         <View style={styles.balanceContainer}>
           <Text variant="headlineLarge" style={styles.balanceText}>
             {balance !== null
-              ? `${parseBalance(balance)} ${network.currencySymbol}`
+              ? `${Number(parseBalance(balance)).toLocaleString('en-US')} ${network.currencySymbol}`
               : null}
           </Text>
 
@@ -118,7 +121,7 @@ function MainBalance({ backHandler }: Props) {
             {price &&
               balance !== null &&
               parseBalance(balance).length > 0 &&
-              `$${(price * Number(parseBalance(balance))).toFixed(2)}`}
+              `$${(Number(parseBalance(balance)) * price).toLocaleString('en-US')}`}
           </Text>
         </View>
 

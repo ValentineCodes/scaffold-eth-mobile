@@ -4,11 +4,12 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useModal } from 'react-native-modalfy';
 import { Text, TextInput } from 'react-native-paper';
 import { useSelector } from 'react-redux';
-import Blockie from '../../../components/Blockie';
+import scaffoldConfig from '../../../../scaffold.config';
+import Blockie from '../../../components/scaffold-eth/Blockie';
 import useAccount from '../../../hooks/scaffold-eth/useAccount';
 import { Account } from '../../../store/reducers/Accounts';
 import globalStyles from '../../../styles/globalStyles';
-import { ALCHEMY_KEY, COLORS } from '../../../utils/constants';
+import { COLORS } from '../../../utils/constants';
 import { isENS } from '../../../utils/helperFunctions';
 import { FONT_SIZE } from '../../../utils/styles';
 
@@ -52,7 +53,7 @@ export default function Recipient({ recipient, onChange, onSubmit }: Props) {
     if (isENS(value)) {
       try {
         const provider = new JsonRpcProvider(
-          `https://eth-mainnet.alchemyapi.io/v2/${ALCHEMY_KEY}`
+          `https://eth-mainnet.alchemyapi.io/v2/${scaffoldConfig.alchemyKey}`
         );
 
         const address = await provider.resolveName(value);

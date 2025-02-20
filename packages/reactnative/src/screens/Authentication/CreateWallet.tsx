@@ -7,8 +7,8 @@ import { useToast } from 'react-native-toast-notifications';
 import { useDispatch } from 'react-redux';
 import BackButton from '../../components/buttons/BackButton';
 import SeedPhrase from '../../components/SeedPhrase';
+import useWallet from '../../hooks/scaffold-eth/useWallet';
 import { useSecureStorage } from '../../hooks/useSecureStorage';
-import useWallet from '../../hooks/useWallet';
 import { initAccounts } from '../../store/reducers/Accounts';
 import { loginUser } from '../../store/reducers/Auth';
 import globalStyles from '../../styles/globalStyles';
@@ -34,6 +34,7 @@ export default function CreateWallet({}: Props) {
   const dispatch = useDispatch();
 
   const copySeedPhrase = () => {
+    if (isLoading) return;
     if (!wallet) {
       toast.show('Still generating wallet');
       return;
@@ -65,7 +66,7 @@ export default function CreateWallet({}: Props) {
 
       await saveItem('accounts', [initWallet]);
 
-      dispatch(initAccounts([{ ...initWallet, isImported: false }]));
+      dispatch(initAccounts([{ ...initWallet }]));
       dispatch(loginUser());
       //@ts-ignore
       navigation.navigate('Main');
@@ -75,11 +76,13 @@ export default function CreateWallet({}: Props) {
   };
 
   const generateNewWallet = () => {
-    setTimeout(() => {
+    try {
       const wallet = createWallet();
       setWallet(wallet);
       setIsLoading(false);
-    }, 100);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {
@@ -117,7 +120,6 @@ export default function CreateWallet({}: Props) {
         <Button
           mode="outlined"
           onPress={copySeedPhrase}
-          disabled={isLoading}
           style={styles.copyButton}
           labelStyle={styles.buttonText}
         >
@@ -126,7 +128,6 @@ export default function CreateWallet({}: Props) {
         <Button
           mode="contained"
           onPress={saveWallet}
-          disabled={isLoading}
           style={styles.nextButton}
           labelStyle={[styles.buttonText, { color: 'white' }]}
         >

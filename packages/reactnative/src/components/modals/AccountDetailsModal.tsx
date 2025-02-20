@@ -11,10 +11,10 @@ import { Account, removeAccount } from '../../store/reducers/Accounts';
 import globalStyles from '../../styles/globalStyles';
 import { COLORS } from '../../utils/constants';
 import { FONT_SIZE, WINDOW_WIDTH } from '../../utils/styles';
-import Blockie from '../Blockie';
-import CustomButton from '../Button';
+import CustomButton from '../buttons/CustomButton';
 import CopyableText from '../CopyableText';
 import EditAccountNameForm from '../forms/EditAccountNameForm';
+import Blockie from '../scaffold-eth/Blockie';
 
 type Props = {
   modal: {

@@ -9,13 +9,13 @@ import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 import { useDispatch } from 'react-redux';
 import useAccount from '../../hooks/scaffold-eth/useAccount';
 import useNetwork from '../../hooks/scaffold-eth/useNetwork';
+import { useNFTs } from '../../hooks/store/useNFTs';
 import { useNFTMetadata } from '../../hooks/useNFTMetadata';
-import { useNFTs } from '../../hooks/useNFTs';
 import { addNFT } from '../../store/reducers/NFTs';
 import globalStyles from '../../styles/globalStyles';
 import { COLORS } from '../../utils/constants';
 import { FONT_SIZE, WINDOW_WIDTH } from '../../utils/styles';
-import Button from '../Button';
+import Button from '../buttons/CustomButton';
 
 type Props = {
   modal: {

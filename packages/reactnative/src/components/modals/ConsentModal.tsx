@@ -4,7 +4,7 @@ import { IconButton, Text } from 'react-native-paper';
 import globalStyles from '../../styles/globalStyles';
 import { COLORS } from '../../utils/constants';
 import { WINDOW_WIDTH } from '../../utils/styles';
-import Button from '../Button';
+import Button from '../buttons/CustomButton';
 
 export interface ConsentModalParams {
   icon?: JSX.Element;

@@ -16,8 +16,8 @@ import BackButton from '../../components/buttons/BackButton';
 import ScanButton from '../../components/buttons/ScanButton';
 import PasswordInput from '../../components/forms/PasswordInput';
 import SeedPhraseInput from '../../components/forms/SeedPhraseInput';
+import useWallet from '../../hooks/scaffold-eth/useWallet';
 import { useSecureStorage } from '../../hooks/useSecureStorage';
-import useWallet from '../../hooks/useWallet';
 import { initAccounts } from '../../store/reducers/Accounts';
 import { loginUser } from '../../store/reducers/Auth';
 import styles from '../../styles/authentication/importWallet';
@@ -101,7 +101,7 @@ function ImportWallet() {
       await saveItem('accounts', [initWallet]);
       await saveItem('security', { password, isBiometricsEnabled });
 
-      dispatch(initAccounts([{ ...initWallet, isImported: false }]));
+      dispatch(initAccounts([{ ...initWallet }]));
       dispatch(loginUser());
 
       // @ts-ignore

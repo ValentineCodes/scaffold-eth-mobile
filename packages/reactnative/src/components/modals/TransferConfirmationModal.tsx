@@ -8,7 +8,7 @@ import { Account } from '../../store/reducers/Accounts';
 import globalStyles from '../../styles/globalStyles';
 import { parseFloat, truncateAddress } from '../../utils/helperFunctions';
 import { FONT_SIZE, WINDOW_WIDTH } from '../../utils/styles';
-import Blockie from '../Blockie';
+import Blockie from '../scaffold-eth/Blockie';
 import Fail from './modules/Fail';
 import Success from './modules/Success';
 
@@ -50,7 +50,7 @@ export default function TransferConfirmationModal({
 
   const formatBalance = () => {
     return txData.balance && Number(formatEther(txData.balance))
-      ? parseFloat(Number(formatEther(txData.balance)).toString(), 4)
+      ? Number(formatEther(txData.balance)).toLocaleString('en-US')
       : 0;
   };
 

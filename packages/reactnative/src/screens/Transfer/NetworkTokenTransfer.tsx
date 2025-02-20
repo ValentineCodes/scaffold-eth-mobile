@@ -14,7 +14,7 @@ import { Divider } from 'react-native-paper';
 import { useToast } from 'react-native-toast-notifications';
 import { useDispatch } from 'react-redux';
 import { Address } from 'viem';
-import Button from '../../components/Button';
+import CustomButton from '../../components/buttons/CustomButton';
 import useAccount from '../../hooks/scaffold-eth/useAccount';
 import useBalance from '../../hooks/scaffold-eth/useBalance';
 import useNetwork from '../../hooks/scaffold-eth/useNetwork';
@@ -190,7 +190,7 @@ export default function NetworkTokenTransfer() {
         account={sender}
         balance={
           balance !== null
-            ? `${parseBalance(balance)} ${network.currencySymbol}`
+            ? `${Number(parseBalance(balance)).toLocaleString('en-US')} ${network.currencySymbol}`
             : null
         }
         onChange={setSender}
@@ -216,7 +216,7 @@ export default function NetworkTokenTransfer() {
 
       <PastRecipients onSelect={setRecipient} />
 
-      <Button text="Next" onPress={confirm} />
+      <CustomButton text="Next" onPress={confirm} />
     </View>
   );
 }

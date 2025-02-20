@@ -5,7 +5,7 @@ import { ActivityIndicator, Card, Text, useTheme } from 'react-native-paper';
 import Address from '../../../../../../components/scaffold-eth/Address';
 import Balance from '../../../../../../components/scaffold-eth/Balance';
 import { useDeployedContractInfo } from '../../../../../../hooks/scaffold-eth/useDeployedContractInfo';
-import useTargetNetwork from '../../../../../../hooks/scaffold-eth/useTargetNetwork';
+import useNetwork from '../../../../../../hooks/scaffold-eth/useNetwork';
 import globalStyles from '../../../../../../styles/globalStyles';
 import { COLORS } from '../../../../../../utils/constants';
 import { FONT_SIZE } from '../../../../../../utils/styles';
@@ -22,7 +22,7 @@ export default function ContractUI() {
     value => !value,
     false
   );
-  const targetNetwork = useTargetNetwork();
+  const network = useNetwork();
   const { data: deployedContractData, isLoading: isDeployedContractLoading } =
     useDeployedContractInfo(contractName);
 
@@ -47,7 +47,7 @@ export default function ContractUI() {
           ...globalStyles.text
         }}
       >
-        {`No contract found by the name of "${contractName}" on chain "${targetNetwork.name}"!`}
+        {`No contract found by the name of "${contractName}" on chain "${network.name}". Are you on the right network?`}
       </Text>
     );
   }
@@ -79,7 +79,7 @@ export default function ContractUI() {
             </Text>
             <Balance address={deployedContractData.address} />
           </View>
-          {targetNetwork && (
+          {network && (
             <View
               style={{
                 flexDirection: 'row',
@@ -94,7 +94,7 @@ export default function ContractUI() {
                 variant="bodyMedium"
                 style={{ color: theme.colors.primary, ...globalStyles.text }}
               >
-                {targetNetwork.name}
+                {network.name}
               </Text>
             </View>
           )}

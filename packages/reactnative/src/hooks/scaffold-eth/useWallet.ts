@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { ethers } from '../../patches/ethers';
-import { addAccount } from '../store/reducers/Accounts';
-import { useSecureStorage } from './useSecureStorage';
+import { ethers } from '../../../patches/ethers';
+import { addAccount } from '../../store/reducers/Accounts';
+import { useSecureStorage } from '../useSecureStorage';
 
 export interface Controller {
   address: string;
@@ -56,9 +56,8 @@ export default function useWallet() {
   /**
    * encrypts and stores account data in secure and redux storage
    * @param _controller address and private key of account
-   * @param _isImported `true` if account was imported using private key
    */
-  async function _storeAccount(_controller: Controller, _isImported: boolean) {
+  async function _storeAccount(_controller: Controller) {
     // read controller from secure storage
     const controller = (await getItem('controller')) as Controller;
 
@@ -69,9 +68,7 @@ export default function useWallet() {
 
     setAccounts(newAccounts);
 
-    dispatch(
-      addAccount({ address: _controller.address, isImported: _isImported })
-    );
+    dispatch(addAccount({ address: _controller.address }));
   }
 
   function createWallet() {

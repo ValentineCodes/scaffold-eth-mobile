@@ -9,7 +9,6 @@ import { useTransactions } from '../store/useTransactions';
 import { useSecureStorage } from '../useSecureStorage';
 import useAccount from './useAccount';
 import useNetwork from './useNetwork';
-import useTargetNetwork from './useTargetNetwork';
 
 interface UseWriteConfig {
   abi: Abi;
@@ -53,7 +52,6 @@ export default function useContractWrite({
   const { openModal } = useModal();
   const network = useNetwork();
   const toast = useToast();
-  const targetNetwork = useTargetNetwork();
   const connectedAccount = useAccount();
   const { getItem } = useSecureStorage();
   const [isLoading, setIsLoading] = useState(false);
@@ -75,10 +73,6 @@ export default function useContractWrite({
     const { args, value } = config;
     const _args = args || writeArgs || [];
     const _value = value || writeValue || BigInt(0);
-
-    if (network.id !== targetNetwork.id) {
-      throw new Error('You are on the wrong network');
-    }
 
     return new Promise(async (resolve, reject) => {
       try {

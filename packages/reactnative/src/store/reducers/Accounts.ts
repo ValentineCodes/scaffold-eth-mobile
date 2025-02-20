@@ -4,7 +4,6 @@ export interface Account {
   name: string;
   address: string;
   isConnected: boolean;
-  isImported: boolean;
 }
 
 export const accountsSlice = createSlice({
@@ -16,8 +15,7 @@ export const accountsSlice = createSlice({
       const accounts = wallets.map((wallet: any, index: number) => ({
         name: `Account ${index + 1}`,
         address: wallet.address,
-        isConnected: index === 0,
-        isImported: wallet.isImported
+        isConnected: index === 0
       }));
 
       return accounts;
@@ -32,8 +30,7 @@ export const accountsSlice = createSlice({
         {
           name: `Account ${state.length + 1}`,
           address: action.payload.address,
-          isConnected: true,
-          isImported: action.payload.isImported
+          isConnected: true
         }
       ];
     },

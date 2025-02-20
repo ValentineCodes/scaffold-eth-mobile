@@ -3,7 +3,7 @@ import { useIsFocused } from '@react-navigation/native';
 import React from 'react';
 import { View } from 'react-native';
 import { Text } from 'react-native-paper';
-import { getAllContracts } from '../../../../utils/scaffold-eth/contractsData';
+import { useAllContracts } from '../../../hooks/scaffold-eth/useAllContracts';
 import globalStyles from '../../../styles/globalStyles';
 import { COLORS } from '../../../utils/constants';
 import { FONT_SIZE } from '../../../utils/styles';
@@ -11,13 +11,13 @@ import ContractUI from './modules/debugContracts/contract/ContractUI';
 
 const Tab = createMaterialTopTabNavigator();
 
-const contractsData = getAllContracts();
-const contractNames = Object.keys(contractsData);
-
 type Props = {};
 
 export default function ({}: Props) {
   const isFocused = useIsFocused();
+
+  const contractsData = useAllContracts();
+  const contractNames = Object.keys(contractsData);
 
   if (!isFocused) return;
   return (

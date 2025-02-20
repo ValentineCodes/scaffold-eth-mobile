@@ -8,7 +8,6 @@ import { useSecureStorage } from '../useSecureStorage';
 import useAccount from './useAccount';
 import { useDeployedContractInfo } from './useDeployedContractInfo';
 import useNetwork from './useNetwork';
-import useTargetNetwork from './useTargetNetwork';
 
 interface UseScaffoldWriteConfig {
   contractName: string;
@@ -50,7 +49,6 @@ export default function useScaffoldContractWrite({
   const { data: deployedContractData } = useDeployedContractInfo(contractName);
   const network = useNetwork();
   const toast = useToast();
-  const targetNetwork = useTargetNetwork();
   const connectedAccount = useAccount();
   const { getItem } = useSecureStorage();
 
@@ -77,9 +75,6 @@ export default function useScaffoldContractWrite({
       throw new Error(
         'Target Contract is not deployed, did you forget to run `yarn deploy`?'
       );
-    }
-    if (network.id !== targetNetwork.id) {
-      throw new Error('You are on the wrong network');
     }
 
     return new Promise(async (resolve, reject) => {

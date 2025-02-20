@@ -3,12 +3,11 @@ import { Linking, StyleSheet, View } from 'react-native';
 import { IconButton, Text } from 'react-native-paper';
 //@ts-ignore
 import Ionicons from 'react-native-vector-icons/dist/Ionicons';
-import { useSelector } from 'react-redux';
-import { Network } from '../../store/reducers/Networks';
+import useNetwork from '../../hooks/scaffold-eth/useNetwork';
 import globalStyles from '../../styles/globalStyles';
 import { COLORS } from '../../utils/constants';
 import { FONT_SIZE, WINDOW_WIDTH } from '../../utils/styles';
-import Button from '../Button';
+import Button from '../buttons/CustomButton';
 
 type Props = {
   modal: {
@@ -26,9 +25,7 @@ export default function TxReceiptModal({
     params: { hash, isError }
   }
 }: Props) {
-  const connectedNetwork: Network = useSelector((state: any) =>
-    state.networks.find((network: Network) => network.isConnected)
-  );
+  const connectedNetwork = useNetwork();
 
   const openExplorer = () => {
     Linking.openURL(`${connectedNetwork.blockExplorer}/tx/${hash}`);
