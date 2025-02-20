@@ -6,6 +6,7 @@ export interface Network {
   provider: string;
   id: number;
   currencySymbol: string;
+  coingeckoPriceId: string;
   isConnected: boolean;
   blockExplorer: string | null;
   txApiDomain: string | null;
@@ -18,6 +19,7 @@ export const networks: Network[] = [
     provider: LOCAL_PROVIDER,
     id: 1337,
     currencySymbol: 'ETH',
+    coingeckoPriceId: 'ethereum',
     isConnected: true,
     blockExplorer: null,
     txApiDomain: null,
@@ -28,6 +30,7 @@ export const networks: Network[] = [
     provider: `https://eth-mainnet.alchemyapi.io/v2/${ALCHEMY_KEY}`,
     id: 1,
     currencySymbol: 'ETH',
+    coingeckoPriceId: 'ethereum',
     isConnected: false,
     blockExplorer: 'https://etherscan.io',
     txApiDomain: 'https://api.etherscan.io',
@@ -38,6 +41,7 @@ export const networks: Network[] = [
     provider: `https://eth-sepolia.g.alchemy.com/v2/${ALCHEMY_KEY}`,
     id: 11155111,
     currencySymbol: 'SepoliaETH',
+    coingeckoPriceId: 'ethereum',
     isConnected: false,
     blockExplorer: 'https://sepolia.etherscan.io',
     txApiDomain: 'https://api-sepolia.etherscan.io',
@@ -48,6 +52,7 @@ export const networks: Network[] = [
     provider: `https://arb-mainnet.g.alchemy.com/v2/${ALCHEMY_KEY}`,
     id: 42161,
     currencySymbol: 'ARB',
+    coingeckoPriceId: 'arbitrum',
     isConnected: false,
     blockExplorer: 'https://arbiscan.io',
     txApiDomain: 'https://api.arbiscan.io',
@@ -58,6 +63,7 @@ export const networks: Network[] = [
     provider: `https://arb-goerli.g.alchemy.com/v2/${ALCHEMY_KEY}`,
     id: 421613,
     currencySymbol: 'AGOR',
+    coingeckoPriceId: 'arbitrum',
     isConnected: false,
     blockExplorer: 'https://goerli.arbiscan.io',
     txApiDomain: 'https://api-goerli.arbiscan.io',
@@ -68,6 +74,7 @@ export const networks: Network[] = [
     provider: `https://opt-mainnet.g.alchemy.com/v2/${ALCHEMY_KEY}`,
     id: 10,
     currencySymbol: 'OP',
+    coingeckoPriceId: 'optimism',
     isConnected: false,
     blockExplorer: 'https://optimistic.etherscan.io',
     txApiDomain: null,
@@ -78,6 +85,7 @@ export const networks: Network[] = [
     provider: `https://opt-goerli.g.alchemy.com/v2/${ALCHEMY_KEY}`,
     id: 420,
     currencySymbol: 'ETH',
+    coingeckoPriceId: 'optimism',
     isConnected: false,
     blockExplorer: 'https://goerli-optimism.etherscan.io',
     txApiDomain: null,
@@ -88,6 +96,7 @@ export const networks: Network[] = [
     provider: `https://polygon-mainnet.g.alchemy.com/v2/${ALCHEMY_KEY}`,
     id: 137,
     currencySymbol: 'MATIC',
+    coingeckoPriceId: 'polygon-ecosystem-token',
     isConnected: false,
     blockExplorer: 'https://polygonscan.com',
     txApiDomain: 'https://api.polygonscan.com',
@@ -98,6 +107,7 @@ export const networks: Network[] = [
     provider: `https://polygon-mainnet.g.alchemy.com/v2/${ALCHEMY_KEY}`,
     id: 80001,
     currencySymbol: 'MATIC',
+    coingeckoPriceId: 'polygon-ecosystem-token',
     isConnected: false,
     blockExplorer: 'https://mumbai.polygonscan.com',
     txApiDomain: 'https://api-mumbai.polygonscan.com',

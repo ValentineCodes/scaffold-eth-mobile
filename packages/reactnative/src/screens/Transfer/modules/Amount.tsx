@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { Text, TextInput } from 'react-native-paper';
 import { useToast } from 'react-native-toast-notifications';
+import useNetwork from '../../../hooks/scaffold-eth/useNetwork';
 import { useCryptoPrice } from '../../../hooks/useCryptoPrice';
 import globalStyles from '../../../styles/globalStyles';
 import { COLORS } from '../../../utils/constants';
@@ -33,11 +34,15 @@ export default function Amount({
 
   const toast = useToast();
 
+  const network = useNetwork();
   const {
     price: dollarRate,
     loading: isFetchingDollarRate,
     fetchPrice: fetchDollarRate
-  } = useCryptoPrice({ enabled: isNativeToken });
+  } = useCryptoPrice({
+    priceID: network.coingeckoPriceId,
+    enabled: isNativeToken
+  });
 
   const switchCurrency = () => {
     if (!dollarRate) {

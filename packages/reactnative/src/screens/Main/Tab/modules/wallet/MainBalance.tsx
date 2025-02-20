@@ -34,7 +34,10 @@ function MainBalance({ backHandler }: Props) {
   const { balance, isRefetching, refetch } = useBalance({
     address: account.address
   });
-  const { price, fetchPrice } = useCryptoPrice({ enabled: false });
+  const { price, fetchPrice } = useCryptoPrice({
+    priceID: network.coingeckoPriceId,
+    enabled: false
+  });
 
   const navigation = useNavigation();
 

@@ -9,7 +9,7 @@ import Transaction from './modules/Transaction';
 
 type Props = {};
 
-export default function index({}: Props) {
+export default function Transactions({}: Props) {
   const { transactions } = useTransactions();
 
   return (

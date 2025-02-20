@@ -74,7 +74,6 @@ export default function useSignMessage({
 
           const wallet = new Wallet(activeAccount.privateKey, provider);
           const signature = await wallet.signMessage(messageToSign!);
-          console.log(signature);
           resolve(signature);
         } catch (error) {
           reject(error instanceof Error ? error : new Error(String(error)));
