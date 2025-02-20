@@ -76,7 +76,7 @@ export default function AccountsModal({ modal: { closeModal } }: Props) {
       ])
     );
 
-    dispatch(addAccount({ address: newAccount.address, isImported: false }));
+    dispatch(addAccount({ address: newAccount.address }));
     dispatch(switchAccount(newAccount.address));
     closeModal();
   };

@@ -49,7 +49,7 @@ export default function ImportAccountModal({ modal: { closeModal } }: Props) {
         ])
       );
 
-      dispatch(addAccount({ address: wallet.address, isImported: true }));
+      dispatch(addAccount({ address: wallet.address }));
       dispatch(switchAccount(wallet.address));
 
       closeModal();

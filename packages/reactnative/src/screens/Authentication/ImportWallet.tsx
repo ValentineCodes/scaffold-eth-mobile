@@ -101,7 +101,7 @@ function ImportWallet() {
       await saveItem('accounts', [initWallet]);
       await saveItem('security', { password, isBiometricsEnabled });
 
-      dispatch(initAccounts([{ ...initWallet, isImported: false }]));
+      dispatch(initAccounts([{ ...initWallet }]));
       dispatch(loginUser());
 
       // @ts-ignore
