@@ -21,8 +21,7 @@ import Transactions from './reducers/Transactions';
 const persistConfig = {
   key: 'root',
   version: 1,
-  storage: AsyncStorage,
-  blacklist: ['balance', 'networks']
+  storage: AsyncStorage
 };
 
 const reducers = combineReducers({
