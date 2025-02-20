@@ -146,7 +146,7 @@ export default function SignTransactionModal({
             <Text variant="bodyMedium" style={globalStyles.text}>
               Balance:{' '}
               {balance !== null
-                ? `${parseBalance(balance)} ${network.currencySymbol}`
+                ? `${Number(parseBalance(balance)).toLocaleString('en-US')} ${network.currencySymbol}`
                 : null}
             </Text>
           </View>

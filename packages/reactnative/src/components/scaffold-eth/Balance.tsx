@@ -21,7 +21,7 @@ export default function Balance({ address, style }: Props) {
     <View style={styles.container}>
       <Text style={[globalStyles.text, style]}>
         {balance !== null
-          ? `${parseBalance(balance)} ${network.currencySymbol}`
+          ? `${Number(parseBalance(balance)).toLocaleString('en-US')} ${network.currencySymbol}`
           : null}
       </Text>
     </View>

@@ -7,7 +7,6 @@ import Blockie from '../../../components/scaffold-eth/Blockie';
 import { useTokenBalance } from '../../../hooks/useTokenBalance';
 import { useTokenMetadata } from '../../../hooks/useTokenMetadata';
 import globalStyles from '../../../styles/globalStyles';
-import { parseFloat } from '../../../utils/helperFunctions';
 import { FONT_SIZE } from '../../../utils/styles';
 
 type Props = {
@@ -30,7 +29,9 @@ export default function Token({ address, name, symbol, onPress }: Props) {
 
       <Text style={styles.balance}>
         {tokenMetadata && balance
-          ? parseFloat(ethers.formatUnits(balance, tokenMetadata.decimals), 4)
+          ? Number(
+              ethers.formatUnits(balance, tokenMetadata.decimals)
+            ).toLocaleString('en-US')
           : null}{' '}
         {symbol}
       </Text>

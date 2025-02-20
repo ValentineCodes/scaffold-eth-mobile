@@ -196,7 +196,7 @@ export default function NFTTokenTransfer() {
         TOKEN ID
       </Text>
       <Text variant="headlineLarge" style={styles.tokenId}>
-        {token.id}
+        {Number(token.id).toLocaleString('en-US')}
       </Text>
 
       <Divider style={styles.divider} />

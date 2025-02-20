@@ -146,7 +146,8 @@ export default function Amount({
           ]}
         >
           ~{!isDollar && '$'}
-          {displayConversion} {isDollar && token}
+          {Number(displayConversion).toLocaleString('en-US')}{' '}
+          {isDollar && token}
         </Text>
       )}
 

@@ -72,7 +72,7 @@ export default function TokenDetails({}: Props) {
 
           <Text variant="headlineLarge" style={styles.balanceText}>
             {balance !== null &&
-              `${ethers.formatUnits(balance, token.decimals)} ${token.symbol}`}
+              `${Number(ethers.formatUnits(balance, token.decimals)).toLocaleString('en-US')} ${token.symbol}`}
           </Text>
         </View>
 

@@ -50,7 +50,7 @@ export default function TransferConfirmationModal({
 
   const formatBalance = () => {
     return txData.balance && Number(formatEther(txData.balance))
-      ? parseFloat(Number(formatEther(txData.balance)).toString(), 4)
+      ? Number(formatEther(txData.balance)).toLocaleString('en-US')
       : 0;
   };
 

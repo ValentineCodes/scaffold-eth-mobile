@@ -57,7 +57,7 @@ export default function SignMessageModal({
           </Text>
           <Text variant="bodyMedium" style={styles.balance}>
             {balance !== null
-              ? `${parseBalance(balance)} ${network.currencySymbol}`
+              ? `${Number(parseBalance(balance)).toLocaleString('en-US')} ${network.currencySymbol}`
               : null}
           </Text>
         </View>

@@ -197,16 +197,15 @@ export default function ERC20TokenTransfer() {
 
   return (
     <View style={styles.container}>
-      <Header token={tokenMetadata?.symbol} />
+      <Header token={token.symbol} />
 
       <Sender
         account={sender}
         balance={
           tokenMetadata && balance
-            ? parseFloat(
-                formatUnits(balance, tokenMetadata?.decimals),
-                4
-              ).toString()
+            ? `${Number(
+                formatUnits(balance, tokenMetadata?.decimals)
+              ).toLocaleString('en-US')} ${token.symbol}`
             : null
         }
         onChange={setSender}
@@ -220,7 +219,7 @@ export default function ERC20TokenTransfer() {
 
       <Amount
         amount={amount}
-        token={tokenMetadata?.symbol}
+        token={token.symbol}
         balance={balance}
         gasCost={gasCost}
         onChange={setAmount}

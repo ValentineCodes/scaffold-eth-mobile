@@ -94,7 +94,7 @@ export default function NFTDetailsModal({
 
       <View style={styles.nftInfoContainer}>
         <Text style={styles.nftTitle}>
-          {nft.name} #{nft.id}
+          {nft.name} #{Number(nft.id).toLocaleString('en-US')}
         </Text>
 
         <View style={styles.actionButtonsContainer}>
