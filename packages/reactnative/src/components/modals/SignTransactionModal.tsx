@@ -13,7 +13,7 @@ import {
   truncateAddress
 } from '../../utils/helperFunctions';
 import { FONT_SIZE, WINDOW_WIDTH } from '../../utils/styles';
-import Blockie from '../Blockie';
+import Blockie from '../scaffold-eth/Blockie';
 
 type Props = {
   modal: {

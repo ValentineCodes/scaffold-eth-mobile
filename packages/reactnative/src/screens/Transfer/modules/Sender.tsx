@@ -5,7 +5,7 @@ import { Text } from 'react-native-paper';
 //@ts-ignore
 import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 import { useSelector } from 'react-redux';
-import Blockie from '../../../components/Blockie';
+import Blockie from '../../../components/scaffold-eth/Blockie';
 import { Account } from '../../../store/reducers/Accounts';
 import globalStyles from '../../../styles/globalStyles';
 import { FONT_SIZE } from '../../../utils/styles';

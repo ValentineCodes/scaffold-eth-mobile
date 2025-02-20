@@ -4,7 +4,7 @@ import { useToast } from 'react-native-toast-notifications';
 import { useSecureStorage } from '../../hooks/useSecureStorage';
 import { Security } from '../../types/security';
 import { WINDOW_WIDTH } from '../../utils/styles';
-import Button from '../Button';
+import Button from '../buttons/CustomButton';
 import PasswordInput from '../forms/PasswordInput';
 
 type Props = {

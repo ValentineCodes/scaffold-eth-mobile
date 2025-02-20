@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { ethers } from '../../patches/ethers';
-import { addAccount } from '../store/reducers/Accounts';
-import { useSecureStorage } from './useSecureStorage';
+import { ethers } from '../../../patches/ethers';
+import { addAccount } from '../../store/reducers/Accounts';
+import { useSecureStorage } from '../useSecureStorage';
 
 export interface Controller {
   address: string;

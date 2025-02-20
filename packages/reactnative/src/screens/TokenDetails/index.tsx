@@ -7,9 +7,9 @@ import { IconButton, Text } from 'react-native-paper';
 // @ts-ignore
 import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 import { useDispatch } from 'react-redux';
-import Blockie from '../../components/Blockie';
 import BackButton from '../../components/buttons/BackButton';
 import CopyableText from '../../components/CopyableText';
+import Blockie from '../../components/scaffold-eth/Blockie';
 import useAccount from '../../hooks/scaffold-eth/useAccount';
 import useNetwork from '../../hooks/scaffold-eth/useNetwork';
 import { useTokenBalance } from '../../hooks/useTokenBalance';

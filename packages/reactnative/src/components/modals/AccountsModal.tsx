@@ -7,8 +7,8 @@ import { useToast } from 'react-native-toast-notifications';
 import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 import { useDispatch, useSelector } from 'react-redux';
 import useAccount from '../../hooks/scaffold-eth/useAccount';
+import useWallet from '../../hooks/scaffold-eth/useWallet';
 import { useSecureStorage } from '../../hooks/useSecureStorage';
-import useWallet from '../../hooks/useWallet';
 import {
   Account,
   addAccount,
@@ -19,8 +19,8 @@ import { Wallet } from '../../types/wallet';
 import { COLORS } from '../../utils/constants';
 import { truncateAddress } from '../../utils/helperFunctions';
 import { FONT_SIZE, WINDOW_HEIGHT, WINDOW_WIDTH } from '../../utils/styles';
-import Blockie from '../Blockie';
-import Button from '../Button';
+import Button from '../buttons/CustomButton';
+import Blockie from '../scaffold-eth/Blockie';
 
 type Props = {
   modal: {

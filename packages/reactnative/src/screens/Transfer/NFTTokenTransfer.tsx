@@ -18,7 +18,7 @@ import { Divider, Text } from 'react-native-paper';
 import { useToast } from 'react-native-toast-notifications';
 import { useDispatch } from 'react-redux';
 import { Address, erc721Abi } from 'viem';
-import Button from '../../components/Button';
+import CustomButton from '../../components/buttons/CustomButton';
 import useAccount from '../../hooks/scaffold-eth/useAccount';
 import useNetwork from '../../hooks/scaffold-eth/useNetwork';
 import { useTransactions } from '../../hooks/store/useTransactions';
@@ -203,7 +203,7 @@ export default function NFTTokenTransfer() {
 
       <PastRecipients onSelect={setRecipient} />
 
-      <Button text="Next" onPress={confirm} />
+      <CustomButton text="Next" onPress={confirm} />
     </View>
   );
 }

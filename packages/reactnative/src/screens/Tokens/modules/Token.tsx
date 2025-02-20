@@ -3,7 +3,7 @@ import { ethers } from 'ethers';
 import React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
-import Blockie from '../../../components/Blockie';
+import Blockie from '../../../components/scaffold-eth/Blockie';
 import { useTokenBalance } from '../../../hooks/useTokenBalance';
 import { useTokenMetadata } from '../../../hooks/useTokenMetadata';
 import globalStyles from '../../../styles/globalStyles';
