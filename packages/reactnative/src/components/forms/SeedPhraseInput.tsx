@@ -34,7 +34,7 @@ export default function SeedPhraseInput({
           mode="outlined"
           style={{ flex: 1, paddingRight: 55, paddingVertical: 5 }}
           contentStyle={styles.inputContent}
-          outlineColor={COLORS.primary}
+          outlineStyle={{ borderRadius: 12, borderColor: COLORS.gray }}
           activeOutlineColor={COLORS.primary}
           value={value}
           secureTextEntry={!show}

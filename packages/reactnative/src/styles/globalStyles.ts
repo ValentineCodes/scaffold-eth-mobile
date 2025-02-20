@@ -1,6 +1,5 @@
-import { Dimensions, StyleSheet } from 'react-native';
-
-const DEVICE_WIDTH = Dimensions.get('window').width;
+import { StyleSheet } from 'react-native';
+import { WINDOW_WIDTH } from '../utils/styles';
 
 export default StyleSheet.create({
   logo: {
@@ -9,7 +8,7 @@ export default StyleSheet.create({
     left: 10
   },
   scanIcon: {
-    width: DEVICE_WIDTH * 0.07,
+    width: WINDOW_WIDTH * 0.07,
     aspectRatio: 1
   },
   text: {
