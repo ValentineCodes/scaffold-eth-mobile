@@ -32,6 +32,8 @@
 		774DECB26E3449889AD8270A /* Poppins-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1F5BC51ECC4F42AFBA3314BA /* Poppins-Thin.ttf */; };
 		2AF52D54569848298EFE5E4B /* Poppins-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BC1B922962A8432B928D79A1 /* Poppins-ThinItalic.ttf */; };
 		4BBE186CF6B242E58ECFA98F /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2DB920BC5EC7413D94BBC159 /* Poppins-Regular.ttf */; };
+		081B5E0F32D24828B11E6F69 /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6A2C177E00E04794959D3E92 /* BootSplash.storyboard */; };
+		8F6D197DEEA04D1E9769C842 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A65EB7B5AD0A404486C3342C /* Colors.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,6 +83,8 @@
 		1F5BC51ECC4F42AFBA3314BA /* Poppins-Thin.ttf */ = {isa = PBXFileReference; name = "Poppins-Thin.ttf"; path = "../src/assets/fonts/Poppins-Thin.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		BC1B922962A8432B928D79A1 /* Poppins-ThinItalic.ttf */ = {isa = PBXFileReference; name = "Poppins-ThinItalic.ttf"; path = "../src/assets/fonts/Poppins-ThinItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		2DB920BC5EC7413D94BBC159 /* Poppins-Regular.ttf */ = {isa = PBXFileReference; name = "Poppins-Regular.ttf"; path = "../src/assets/fonts/Poppins-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		6A2C177E00E04794959D3E92 /* BootSplash.storyboard */ = {isa = PBXFileReference; name = "BootSplash.storyboard"; path = "ScaffoldETH/BootSplash.storyboard"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		A65EB7B5AD0A404486C3342C /* Colors.xcassets */ = {isa = PBXFileReference; name = "Colors.xcassets"; path = "ScaffoldETH/Colors.xcassets"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = folder.assetcatalog; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -130,6 +134,8 @@
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */,
+				6A2C177E00E04794959D3E92 /* BootSplash.storyboard */,
+				A65EB7B5AD0A404486C3342C /* Colors.xcassets */,
 			);
 			name = "ScaffoldETH";
 			sourceTree = "<group>";
@@ -326,6 +332,8 @@
 				774DECB26E3449889AD8270A /* Poppins-Thin.ttf in Resources */,
 				2AF52D54569848298EFE5E4B /* Poppins-ThinItalic.ttf in Resources */,
 				4BBE186CF6B242E58ECFA98F /* Poppins-Regular.ttf in Resources */,
+				081B5E0F32D24828B11E6F69 /* BootSplash.storyboard in Resources */,
+				8F6D197DEEA04D1E9769C842 /* Colors.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -551,7 +559,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = "ScaffoldETH/Info.plist";
-             INFOPLIST_KEY_CFBundleDisplayName = "Scaffold-ETH";
+				INFOPLIST_KEY_CFBundleDisplayName = "Scaffold-ETH";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -579,7 +587,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				INFOPLIST_FILE = "ScaffoldETH/Info.plist";
-             INFOPLIST_KEY_CFBundleDisplayName = "Scaffold-ETH";
+				INFOPLIST_KEY_CFBundleDisplayName = "Scaffold-ETH";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
