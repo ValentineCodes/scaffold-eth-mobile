@@ -8,7 +8,7 @@ import useNetwork from './useNetwork';
 
 /**
  * Gets the matching contract info for the provided contract name from the contracts present in deployedContracts.ts
- * and externalContracts.ts corresponding to targetNetworks configured in scaffold.config.ts
+ * and externalContracts.ts corresponding to networks configured in scaffold.config.ts
  */
 export const useDeployedContractInfo = (contractName: string) => {
   const isMounted = useIsMounted();

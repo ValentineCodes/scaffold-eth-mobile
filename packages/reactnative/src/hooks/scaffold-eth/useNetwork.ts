@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { Network } from '../../../utils/scaffold-eth/networks';
+import { Network } from '../../../scaffold.config';
 
 export default function useNetwork() {
   const connectedNetwork: Network = useSelector(
