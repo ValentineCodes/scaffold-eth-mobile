@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { Text } from 'react-native-paper';
 import { useToast } from 'react-native-toast-notifications';
+//@ts-ignore
+import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 import { useSecureStorage } from '../../hooks/useSecureStorage';
+import globalStyles from '../../styles/globalStyles';
 import { Security } from '../../types/security';
-import { WINDOW_WIDTH } from '../../utils/styles';
+import { FONT_SIZE, WINDOW_WIDTH } from '../../utils/styles';
 import Button from '../buttons/CustomButton';
 import PasswordInput from '../forms/PasswordInput';
 
@@ -68,6 +72,18 @@ export default function ChangePasswordModal({ modal: { closeModal } }: Props) {
 
   return (
     <View style={styles.container}>
+      <View style={styles.header}>
+        <Text variant="titleLarge" style={globalStyles.text}>
+          Change Password
+        </Text>
+
+        <Ionicons
+          name="close-outline"
+          size={FONT_SIZE['xl'] * 1.7}
+          onPress={closeModal}
+        />
+      </View>
+
       <View style={styles.content}>
         <PasswordInput
           label="Current Password"
@@ -77,6 +93,7 @@ export default function ChangePasswordModal({ modal: { closeModal } }: Props) {
           }
           onChange={value => setPassword(prev => ({ ...prev, current: value }))}
           onSubmit={change}
+          labelStyle={styles.label}
         />
         <PasswordInput
           label="New Password"
@@ -84,6 +101,7 @@ export default function ChangePasswordModal({ modal: { closeModal } }: Props) {
           infoText={password.new.length < 8 && 'Must be at least 8 characters'}
           onChange={value => setPassword(prev => ({ ...prev, new: value }))}
           onSubmit={change}
+          labelStyle={styles.label}
         />
         <PasswordInput
           label="Confirm Password"
@@ -93,6 +111,7 @@ export default function ChangePasswordModal({ modal: { closeModal } }: Props) {
           }
           onChange={value => setPassword(prev => ({ ...prev, confirm: value }))}
           onSubmit={change}
+          labelStyle={styles.label}
         />
 
         <Button text="Change Password" onPress={change} style={styles.button} />
@@ -108,9 +127,16 @@ const styles = StyleSheet.create({
     padding: 20,
     width: WINDOW_WIDTH * 0.9
   },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 20
+  },
   content: {
     gap: 16
   },
+  label: { fontSize: FONT_SIZE.lg, ...globalStyles.text },
   button: {
     marginTop: 10
   }

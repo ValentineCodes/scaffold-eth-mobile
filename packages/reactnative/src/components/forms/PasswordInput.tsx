@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, TextStyle, View } from 'react-native';
 import { Text, TextInput } from 'react-native-paper';
 // @ts-ignore
 import Ionicons from 'react-native-vector-icons/dist/Ionicons';
@@ -15,6 +15,7 @@ type Props = {
   errorText?: string | boolean | null;
   onChange: (value: string) => void;
   onSubmit?: () => void;
+  labelStyle?: TextStyle;
 };
 
 export default function PasswordInput({
@@ -24,13 +25,14 @@ export default function PasswordInput({
   infoText,
   errorText,
   onChange,
-  onSubmit
+  onSubmit,
+  labelStyle
 }: Props) {
   const [show, setShow] = useState(false);
 
   return (
     <View style={{ gap: 8 }}>
-      <Text variant="headlineSmall" style={styles.label}>
+      <Text variant="headlineSmall" style={[styles.label, labelStyle]}>
         {label}
       </Text>
 
