@@ -10,7 +10,8 @@
     "test": "jest",
     "patch-ethers": "npx patch-package",
     "format:write": "prettier src --write",
-    "format:check": "prettier src --check"
+    "format:check": "prettier src --check",
+    "rename": "npx react-native-rename@latest"
   },
   "dependencies": {
     "@ethersproject/shims": "5.7.0",
