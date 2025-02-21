@@ -7,7 +7,7 @@ import Share from 'react-native-share';
 import { useToast } from 'react-native-toast-notifications';
 //@ts-ignore
 import Ionicons from 'react-native-vector-icons/dist/Ionicons';
-import { Network } from '../../../utils/scaffold-eth/networks';
+import { Network } from '../../../scaffold.config';
 import useAccount from '../../hooks/scaffold-eth/useAccount';
 import useNetwork from '../../hooks/scaffold-eth/useNetwork';
 import { Account } from '../../store/reducers/Accounts';

@@ -53,7 +53,7 @@ export default function Recipient({ recipient, onChange, onSubmit }: Props) {
     if (isENS(value)) {
       try {
         const provider = new JsonRpcProvider(
-          `https://eth-mainnet.alchemyapi.io/v2/${scaffoldConfig.alchemyKey}`
+          `https://eth-mainnet.alchemyapi.io/v2/${scaffoldConfig.networks.ethereum}`
         );
 
         const address = await provider.resolveName(value);

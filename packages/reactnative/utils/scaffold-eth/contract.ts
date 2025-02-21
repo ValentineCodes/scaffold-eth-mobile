@@ -2,7 +2,6 @@ import { Abi } from 'abitype';
 import { Address } from 'viem';
 import deployedContractsData from '../../contracts/deployedContracts';
 import externalContractsData from '../../contracts/externalContracts';
-import scaffoldConfig from '../../scaffold.config';
 
 export enum ContractCodeStatus {
   'LOADING',
@@ -25,7 +24,7 @@ export type GenericContractsDeclaration = {
   };
 };
 
-type ConfiguredChainId = (typeof scaffoldConfig)['targetNetworks'][0]['id'];
+type ConfiguredChainId = number;
 
 type IsContractDeclarationMissing<TYes, TNo> = typeof contractsData extends {
   [key in ConfiguredChainId]: any;

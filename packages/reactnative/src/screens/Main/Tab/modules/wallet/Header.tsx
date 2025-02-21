@@ -12,7 +12,7 @@ import Share from 'react-native-share';
 import { useToast } from 'react-native-toast-notifications';
 // @ts-ignore
 import Ionicons from 'react-native-vector-icons/dist/Ionicons';
-import { Network } from '../../../../../../utils/scaffold-eth/networks';
+import { Network } from '../../../../../../scaffold.config';
 import Logo from '../../../../../components/Logo';
 import Blockie from '../../../../../components/scaffold-eth/Blockie';
 import useAccount from '../../../../../hooks/scaffold-eth/useAccount';

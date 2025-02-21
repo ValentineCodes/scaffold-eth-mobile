@@ -13,7 +13,7 @@ type Props = {
 
 /**
  * This automatically loads (by name) the contract ABI and address from
- * the contracts present in deployedContracts.ts & externalContracts.ts corresponding to targetNetworks configured in scaffold.config.ts
+ * the contracts present in deployedContracts.ts & externalContracts.ts corresponding to networks configured in scaffold.config.ts
  * @param config - The config settings
  * @param config.contractName - deployed contract name
  * @param config.functionName - name of the function to be called
