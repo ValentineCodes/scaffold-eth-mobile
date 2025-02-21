@@ -36,7 +36,8 @@
     "remove:contract": "yarn workspace @se-2/hardhat remove",
     "format:frontend": "yarn workspace @se-2/reactnative format:write",
     "format:backend": "yarn workspace @se-2/backend format:write",
-    "format:contract": "yarn workspace @se-2/hardhat format:write"
+    "format:contract": "yarn workspace @se-2/hardhat format:write",
+    "rename": "yarn workspace @se-2/reactnative rename"
   },
   "packageManager": "yarn@3.2.3",
   "devDependencies": {
