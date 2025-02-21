@@ -52,7 +52,7 @@ export default function ContractReadMethods({ deployedContractData }: Props) {
   }
   return (
     <View style={{ gap: 16 }}>
-      {functionsToDisplay.map(({ fn, inheritedFrom }) => (
+      {functionsToDisplay.map(({ fn }) => (
         <ReadOnlyFunctionForm
           key={fn.name}
           abi={deployedContractData.abi as Abi}

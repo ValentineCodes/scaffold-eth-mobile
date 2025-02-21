@@ -53,7 +53,7 @@ export default function ContractWriteMethods({
 
   return (
     <View style={{ gap: 16 }}>
-      {functionsToDisplay.map(({ fn, inheritedFrom }, idx) => (
+      {functionsToDisplay.map(({ fn }, idx) => (
         <WriteOnlyFunctionForm
           abi={deployedContractData.abi as Abi}
           key={`${fn.name}-${idx}}`}

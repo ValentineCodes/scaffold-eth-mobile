@@ -55,7 +55,7 @@ export default function ContractVariables({
 
   return (
     <View style={{ gap: 16 }}>
-      {functionsToDisplay.map(({ fn, inheritedFrom }) => (
+      {functionsToDisplay.map(({ fn }) => (
         <DisplayVariable
           abi={deployedContractData.abi as InterfaceAbi}
           abiFunction={fn}
