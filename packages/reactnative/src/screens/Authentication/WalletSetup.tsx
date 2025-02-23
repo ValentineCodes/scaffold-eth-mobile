@@ -5,7 +5,7 @@ import { Button, Text } from 'react-native-paper';
 import BackButton from '../../components/buttons/BackButton';
 import globalStyles from '../../styles/globalStyles';
 import { COLORS } from '../../utils/constants';
-import { FONT_SIZE, WINDOW_WIDTH } from '../../utils/styles';
+import { FONT_SIZE } from '../../utils/styles';
 
 type Props = {};
 
@@ -17,13 +17,24 @@ export default function WalletSetup({}: Props) {
       style={styles.container}
     >
       <BackButton style={styles.navBtn} />
-      <Image
-        source={require('../../assets/icons/wallet_icon.png')}
-        style={{
-          width: WINDOW_WIDTH * 0.5,
-          height: WINDOW_WIDTH * 0.5
-        }}
-      />
+
+      <View style={{ width: '100%', aspectRatio: 1 }}>
+        <Image
+          source={require('../../assets/images/work_bg.png')}
+          style={{
+            width: '100%',
+            height: '100%'
+          }}
+          resizeMode="cover"
+        />
+
+        <View style={{ position: 'absolute', bottom: 0, right: 0 }}>
+          <Image
+            source={require('../../assets/images/thumbs_up.png')}
+            resizeMode="contain"
+          />
+        </View>
+      </View>
 
       <View style={styles.content}>
         <Text variant="headlineLarge" style={styles.title}>
@@ -72,19 +83,18 @@ const styles = StyleSheet.create({
   content: {
     width: '100%',
     marginTop: 40,
-    paddingHorizontal: 10
+    paddingHorizontal: 20
   },
   title: {
-    textAlign: 'center',
     color: COLORS.primary,
     fontSize: FONT_SIZE['xl'] * 1.8,
     marginTop: 40,
     ...globalStyles.textBold
   },
   subtitle: {
-    textAlign: 'center',
     fontSize: FONT_SIZE['md'],
     marginVertical: 16,
+    color: '#7D94A0',
     ...globalStyles.text
   },
   createButton: {
