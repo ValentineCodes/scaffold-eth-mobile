@@ -1,6 +1,6 @@
 import { useIsFocused, useRoute } from '@react-navigation/native';
 import React, { useReducer } from 'react';
-import { ScrollView, View } from 'react-native';
+import { Platform, ScrollView, View } from 'react-native';
 import { ActivityIndicator, Card, Text, useTheme } from 'react-native-paper';
 import Address from '../../../../../../components/scaffold-eth/Address';
 import Balance from '../../../../../../components/scaffold-eth/Balance';
@@ -121,7 +121,11 @@ export default function ContractUI() {
         >
           <Card.Content>
             <Text
-              style={{ fontSize: FONT_SIZE['md'], ...globalStyles.textMedium }}
+              style={{
+                fontSize: FONT_SIZE['md'],
+                ...globalStyles.textMedium,
+                marginBottom: Platform.OS === 'ios' ? 4 : 0
+              }}
             >
               Read
             </Text>
@@ -145,7 +149,11 @@ export default function ContractUI() {
         >
           <Card.Content>
             <Text
-              style={{ fontSize: FONT_SIZE['md'], ...globalStyles.textMedium }}
+              style={{
+                fontSize: FONT_SIZE['md'],
+                ...globalStyles.textMedium,
+                marginBottom: Platform.OS === 'ios' ? 4 : 0
+              }}
             >
               Write
             </Text>

@@ -16,8 +16,6 @@ export default function WalletSetup({}: Props) {
       contentContainerStyle={styles.scrollViewContentContainer}
       style={styles.container}
     >
-      <BackButton style={styles.navBtn} />
-
       <View style={{ width: '100%', aspectRatio: 1 }}>
         <Image
           source={require('../../assets/images/work_bg.png')}
@@ -35,6 +33,8 @@ export default function WalletSetup({}: Props) {
           />
         </View>
       </View>
+
+      <BackButton style={styles.navBtn} />
 
       <View style={styles.content}>
         <Text variant="headlineLarge" style={styles.title}>
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
   },
   content: {
     width: '100%',
-    marginTop: 40,
+    marginTop: 20,
     paddingHorizontal: 20
   },
   title: {
