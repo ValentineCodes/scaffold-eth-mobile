@@ -109,10 +109,9 @@ function getContractDataFromDeployments() {
           .readFileSync(`${DEPLOYMENTS_DIR}/${chainName}/${contractName}.json`)
           .toString()
       );
-      const inheritedFunctions = getInheritedFunctions(
-        JSON.parse(metadata).sources,
-        contractName
-      );
+      const inheritedFunctions = metadata
+        ? getInheritedFunctions(JSON.parse(metadata).sources, contractName)
+        : {};
       contracts[contractName] = { address, abi, inheritedFunctions };
     }
     output[chainId] = contracts;
@@ -125,8 +124,7 @@ function getContractDataFromDeployments() {
  * This script should be run last.
  */
 const generateTsAbis: DeployFunction = async function () {
-  const REACTNATIVE_TARGET_DIR = '../reactnative/contracts/';
-
+  const TARGET_DIR = '../reactnative/contracts/';
   const allContractsData = getContractDataFromDeployments();
 
   const fileContent = Object.entries(allContractsData).reduce(
@@ -136,12 +134,11 @@ const generateTsAbis: DeployFunction = async function () {
     ''
   );
 
-  if (!fs.existsSync(REACTNATIVE_TARGET_DIR)) {
-    fs.mkdirSync(REACTNATIVE_TARGET_DIR);
+  if (!fs.existsSync(TARGET_DIR)) {
+    fs.mkdirSync(TARGET_DIR);
   }
-
   fs.writeFileSync(
-    `${REACTNATIVE_TARGET_DIR}deployedContracts.ts`,
+    `${TARGET_DIR}deployedContracts.ts`,
     await prettier.format(
       `${generatedContractComment} import { GenericContractsDeclaration } from "../utils/scaffold-eth/contract"; \n\n
  const deployedContracts = {${fileContent}} as const; \n\n export default deployedContracts satisfies GenericContractsDeclaration`,
@@ -152,14 +149,8 @@ const generateTsAbis: DeployFunction = async function () {
   );
 
   console.log(
-    `📝 Updated TypeScript contract definition file on ${REACTNATIVE_TARGET_DIR}deployedContracts.ts`
+    `📝 Updated TypeScript contract definition file on ${TARGET_DIR}deployedContracts.ts`
   );
 };
 
 export default generateTsAbis;
-
-// Tags are useful if you have multiple deploy files and only want to run one of them.
-// e.g. yarn deploy --tags generateTsAbis
-generateTsAbis.tags = ['generateTsAbis'];
-
-generateTsAbis.runAtTheEnd = true;
