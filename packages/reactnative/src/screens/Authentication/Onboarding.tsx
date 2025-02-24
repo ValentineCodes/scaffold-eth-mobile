@@ -1,19 +1,10 @@
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import React, { useEffect } from 'react';
-import {
-  BackHandler,
-  Image,
-  NativeEventSubscription,
-  ScrollView,
-  StyleSheet,
-  View
-} from 'react-native';
+import React, { useCallback } from 'react';
+import { BackHandler, Image, ScrollView, StyleSheet, View } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 import globalStyles from '../../styles/globalStyles';
 import { COLORS } from '../../utils/constants';
 import { FONT_SIZE } from '../../utils/styles';
-
-let backHandler: NativeEventSubscription;
 
 type Props = {};
 
@@ -23,22 +14,22 @@ export default function Onboarding({}: Props) {
   const handleNav = () => {
     // @ts-ignore
     navigation.navigate('WalletSetup');
-    backHandler?.remove();
   };
 
-  useFocusEffect(() => {
-    backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
-      BackHandler.exitApp();
+  useFocusEffect(
+    useCallback(() => {
+      const backhandler = BackHandler.addEventListener(
+        'hardwareBackPress',
+        () => {
+          BackHandler.exitApp();
 
-      return true;
-    });
-  });
+          return true;
+        }
+      );
 
-  useEffect(() => {
-    return () => {
-      backHandler?.remove();
-    };
-  }, []);
+      return () => backhandler.remove();
+    }, [])
+  );
 
   return (
     <ScrollView
