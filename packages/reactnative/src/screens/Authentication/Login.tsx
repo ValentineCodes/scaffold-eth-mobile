@@ -1,6 +1,12 @@
-import { useNavigation } from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import React, { useCallback, useEffect, useState } from 'react';
+import {
+  BackHandler,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  View
+} from 'react-native';
 import ReactNativeBiometrics from 'react-native-biometrics';
 import { useModal } from 'react-native-modalfy';
 import { Button, Text } from 'react-native-paper';
@@ -127,6 +133,21 @@ export default function Login({}: Props) {
       }
     })();
   }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      const backhandler = BackHandler.addEventListener(
+        'hardwareBackPress',
+        () => {
+          BackHandler.exitApp();
+
+          return true;
+        }
+      );
+
+      return () => backhandler.remove();
+    }, [])
+  );
 
   const handleResetWallet = () => {
     const params: ConsentModalParams = {
