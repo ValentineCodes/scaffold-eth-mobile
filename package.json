@@ -10,6 +10,8 @@
   },
   "scripts": {
     "account": "yarn workspace @se-2/hardhat account",
+    "account:generate": "yarn workspace @se-2/hardhat account:generate",
+    "account:import": "yarn workspace @se-2/hardhat account:import",
     "chain": "yarn workspace @se-2/hardhat chain",
     "clean": "yarn workspace @se-2/hardhat clean",
     "fork": "yarn workspace @se-2/hardhat fork",
