@@ -2277,6 +2277,62 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@inquirer/core@npm:^10.1.7":
+  version: 10.1.7
+  resolution: "@inquirer/core@npm:10.1.7"
+  dependencies:
+    "@inquirer/figures": ^1.0.10
+    "@inquirer/type": ^3.0.4
+    ansi-escapes: ^4.3.2
+    cli-width: ^4.1.0
+    mute-stream: ^2.0.0
+    signal-exit: ^4.1.0
+    wrap-ansi: ^6.2.0
+    yoctocolors-cjs: ^2.1.2
+  peerDependencies:
+    "@types/node": ">=18"
+  peerDependenciesMeta:
+    "@types/node":
+      optional: true
+  checksum: 2c65c367bd332b5c309fa52012bda230996afdf0996853f3ca816cd524016aad3dc89ed7f1db306d8f4f9a79b0e0e0c8a8931cc0a9c6f8b5bbeb8c30dc874929
+  languageName: node
+  linkType: hard
+
+"@inquirer/figures@npm:^1.0.10":
+  version: 1.0.10
+  resolution: "@inquirer/figures@npm:1.0.10"
+  checksum: bf3b86e55bce1d32f6ec0cb9413a10fe9a3aa2757071e45e46b26011bfb69b001b31da2b1e0c6b97be424df1f32047402a03e3234cda4c9a433ea122f1b0ad73
+  languageName: node
+  linkType: hard
+
+"@inquirer/password@npm:^4.0.9":
+  version: 4.0.9
+  resolution: "@inquirer/password@npm:4.0.9"
+  dependencies:
+    "@inquirer/core": ^10.1.7
+    "@inquirer/type": ^3.0.4
+    ansi-escapes: ^4.3.2
+  peerDependencies:
+    "@types/node": ">=18"
+  peerDependenciesMeta:
+    "@types/node":
+      optional: true
+  checksum: 3565f47b05260a7f6c17097b2590eeacfb14e7e47f92c06405ddcde69398bd227207c9d1a5af71babb47ece1398b273e870f7902db299a911f91b7024cc4a988
+  languageName: node
+  linkType: hard
+
+"@inquirer/type@npm:^3.0.4":
+  version: 3.0.4
+  resolution: "@inquirer/type@npm:3.0.4"
+  peerDependencies:
+    "@types/node": ">=18"
+  peerDependenciesMeta:
+    "@types/node":
+      optional: true
+  checksum: 64ec072d2725ee31586af65cf32f553f217978f7020011d049e663b45776ff8c72aefe18eb12ece46788eaef9b239fc3bd01edfbe1d07b9162cc97aae5c173fb
+  languageName: node
+  linkType: hard
+
 "@isaacs/cliui@npm:^8.0.2":
   version: 8.0.2
   resolution: "@isaacs/cliui@npm:8.0.2"
@@ -4140,6 +4196,7 @@ __metadata:
   dependencies:
     "@ethersproject/abi": ^5.7.0
     "@ethersproject/providers": ^5.7.1
+    "@inquirer/password": ^4.0.9
     "@nomicfoundation/hardhat-chai-matchers": ^2.0.3
     "@nomicfoundation/hardhat-ethers": ^3.0.5
     "@nomicfoundation/hardhat-network-helpers": ^1.0.6
@@ -5952,7 +6009,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ansi-escapes@npm:^4.2.1, ansi-escapes@npm:^4.3.0":
+"ansi-escapes@npm:^4.2.1, ansi-escapes@npm:^4.3.0, ansi-escapes@npm:^4.3.2":
   version: 4.3.2
   resolution: "ansi-escapes@npm:4.3.2"
   dependencies:
@@ -7271,6 +7328,13 @@ __metadata:
     slice-ansi: ^5.0.0
     string-width: ^5.0.0
   checksum: c3243e41974445691c63f8b405df1d5a24049dc33d324fe448dc572e561a7b772ae982692900b1a5960901cc4fc7def25a629b9c69a4208ee89d12ab3332617a
+  languageName: node
+  linkType: hard
+
+"cli-width@npm:^4.1.0":
+  version: 4.1.0
+  resolution: "cli-width@npm:4.1.0"
+  checksum: 0a79cff2dbf89ef530bcd54c713703ba94461457b11e5634bd024c78796ed21401e32349c004995954e06f442d82609287e7aabf6a5f02c919a1cf3b9b6854ff
   languageName: node
   linkType: hard
 
@@ -12993,6 +13057,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"mute-stream@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "mute-stream@npm:2.0.0"
+  checksum: d2e4fd2f5aa342b89b98134a8d899d8ef9b0a6d69274c4af9df46faa2d97aeb1f2ce83d867880d6de63643c52386579b99139801e24e7526c3b9b0a6d1e18d6c
+  languageName: node
+  linkType: hard
+
 "nanoid@npm:^3.1.23":
   version: 3.3.8
   resolution: "nanoid@npm:3.3.8"
@@ -15833,7 +15904,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"signal-exit@npm:^4.0.1":
+"signal-exit@npm:^4.0.1, signal-exit@npm:^4.1.0":
   version: 4.1.0
   resolution: "signal-exit@npm:4.1.0"
   checksum: 64c757b498cb8629ffa5f75485340594d2f8189e9b08700e69199069c8e3070fb3e255f7ab873c05dc0b3cec412aea7402e10a5990cb6a050bd33ba062a6c549
@@ -18182,6 +18253,13 @@ __metadata:
   version: 0.1.0
   resolution: "yocto-queue@npm:0.1.0"
   checksum: f77b3d8d00310def622123df93d4ee654fc6a0096182af8bd60679ddcdfb3474c56c6c7190817c84a2785648cdee9d721c0154eb45698c62176c322fb46fc700
+  languageName: node
+  linkType: hard
+
+"yoctocolors-cjs@npm:^2.1.2":
+  version: 2.1.2
+  resolution: "yoctocolors-cjs@npm:2.1.2"
+  checksum: 1c474d4b30a8c130e679279c5c2c33a0d48eba9684ffa0252cc64846c121fb56c3f25457fef902edbe1e2d7a7872130073a9fc8e795299d75e13fa3f5f548f1b
   languageName: node
   linkType: hard
 
