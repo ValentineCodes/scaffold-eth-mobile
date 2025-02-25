@@ -18,7 +18,7 @@ const providerApiKey =
   process.env.ALCHEMY_API_KEY || 'oKxs-03sij-U_N0iOlrSsZFr29-IqbuF';
 // If not set, it uses the hardhat account 0 private key.
 const deployerPrivateKey =
-  process.env.DEPLOYER_PRIVATE_KEY ??
+  process.env.__RUNTIME_DEPLOYER_PRIVATE_KEY ??
   '0x8e3286b6cdea11d85def05635464d1bb5e78ffe19cf9ba2877b9700e2ff8ae24';
 // If not set, it uses ours Etherscan default API key.
 const etherscanApiKey =
