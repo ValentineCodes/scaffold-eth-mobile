@@ -6,7 +6,7 @@ import {
   ContractName,
   GenericContract,
   InheritedFunctions
-} from '../../../../../../../utils/scaffold-eth/contract';
+} from '../../../../../../utils/scaffold-eth/contract';
 import WriteOnlyFunctionForm from './WriteOnlyFunctionForm';
 
 export default function ContractWriteMethods({

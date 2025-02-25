@@ -1,7 +1,4 @@
-import {
-  contracts,
-  GenericContract
-} from '../../../utils/scaffold-eth/contract';
+import { contracts, GenericContract } from '../../utils/scaffold-eth/contract';
 import useNetwork from './useNetwork';
 
 export function useAllContracts(): {

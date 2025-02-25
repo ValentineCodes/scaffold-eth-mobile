@@ -1,7 +1,7 @@
 import { Abi } from 'abitype';
 import { Address } from 'viem';
-import deployedContractsData from '../../contracts/deployedContracts';
-import externalContractsData from '../../contracts/externalContracts';
+import deployedContractsData from '../../../contracts/deployedContracts';
+import externalContractsData from '../../../contracts/externalContracts';
 
 export enum ContractCodeStatus {
   'LOADING',

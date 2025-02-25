@@ -3,7 +3,7 @@ import { useIsMounted } from 'usehooks-ts';
 import {
   ContractCodeStatus,
   contracts
-} from '../../../utils/scaffold-eth/contract';
+} from '../../utils/scaffold-eth/contract';
 import useNetwork from './useNetwork';
 
 /**

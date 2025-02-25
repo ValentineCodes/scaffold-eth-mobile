@@ -2,11 +2,11 @@ import { Abi, AbiFunction } from 'abitype';
 import React from 'react';
 import { View } from 'react-native';
 import { Text } from 'react-native-paper';
+import globalStyles from '../../../../../../styles/globalStyles';
 import {
   GenericContract,
   InheritedFunctions
-} from '../../../../../../../utils/scaffold-eth/contract';
-import globalStyles from '../../../../../../styles/globalStyles';
+} from '../../../../../../utils/scaffold-eth/contract';
 import { FONT_SIZE } from '../../../../../../utils/styles';
 import ReadOnlyFunctionForm from './ReadOnlyFunctionForm';
 
