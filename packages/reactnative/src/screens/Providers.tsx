@@ -10,6 +10,8 @@ import { MenuProvider } from 'react-native-popup-menu';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ToastProvider } from 'react-native-toast-notifications';
 import { Provider as ReduxProvider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+// modals
 import AccountDetailsModal from '../components/modals/AccountDetailsModal';
 import AccountsModal from '../components/modals/AccountsModal';
 import AccountsSelectionModal from '../components/modals/AccountsSelectionModal';
@@ -30,7 +32,7 @@ import SwitchNetworkModal from '../components/modals/SwitchNetworkModal';
 import TransactionDetailsModal from '../components/modals/TransactionDetailsModal';
 import TransferConfirmationModal from '../components/modals/TransferConfirmationModal';
 import TxReceiptModal from '../components/modals/TxReceiptModal';
-import { store } from '../store';
+import { persistor, store } from '../store';
 
 const theme = {
   colors: {
@@ -78,17 +80,19 @@ const modalStack = createModalStack(modalConfig, defaultOptions);
 export default function Providers({ children }: Props) {
   return (
     <ReduxProvider store={store}>
-      <PaperProvider theme={theme}>
-        <MenuProvider>
-          <ToastProvider>
-            <GestureHandlerRootView style={{ flex: 1 }}>
-              <SafeAreaProvider>
-                <ModalProvider stack={modalStack}>{children}</ModalProvider>
-              </SafeAreaProvider>
-            </GestureHandlerRootView>
-          </ToastProvider>
-        </MenuProvider>
-      </PaperProvider>
+      <PersistGate loading={null} persistor={persistor}>
+        <PaperProvider theme={theme}>
+          <MenuProvider>
+            <ToastProvider>
+              <GestureHandlerRootView style={{ flex: 1 }}>
+                <SafeAreaProvider>
+                  <ModalProvider stack={modalStack}>{children}</ModalProvider>
+                </SafeAreaProvider>
+              </GestureHandlerRootView>
+            </ToastProvider>
+          </MenuProvider>
+        </PaperProvider>
+      </PersistGate>
     </ReduxProvider>
   );
 }
