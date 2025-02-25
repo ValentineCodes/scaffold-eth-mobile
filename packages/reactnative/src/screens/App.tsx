@@ -3,7 +3,6 @@ import { SafeAreaView, StatusBar, StyleSheet } from 'react-native';
 import BootSplash from 'react-native-bootsplash';
 import changeNavigationBarColor from 'react-native-navigation-bar-color';
 import Navigation from './Navigation';
-import Providers from './Providers';
 
 function App(): JSX.Element {
   useEffect(() => {
@@ -18,12 +17,10 @@ function App(): JSX.Element {
   }, []);
 
   return (
-    <Providers>
-      <SafeAreaView style={styles.container}>
-        <StatusBar barStyle="dark-content" backgroundColor="white" />
-        <Navigation />
-      </SafeAreaView>
-    </Providers>
+    <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="dark-content" backgroundColor="white" />
+      <Navigation />
+    </SafeAreaView>
   );
 }
 
