@@ -23,7 +23,7 @@ const deployMocks: DeployFunction = async function (
   const { deployer } = await hre.getNamedAccounts();
   const { deploy, log } = hre.deployments;
 
-  await deploy('Disease', {
+  await deploy('MockERC20', {
     from: deployer,
     log: true,
     // autoMine: can be passed to the deploy function to make the deployment process faster on local networks by
@@ -31,7 +31,7 @@ const deployMocks: DeployFunction = async function (
     autoMine: true
   });
 
-  await deploy('Ogre', {
+  await deploy('MockNFT', {
     from: deployer,
     log: true,
     autoMine: true

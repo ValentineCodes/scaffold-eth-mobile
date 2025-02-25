@@ -3,8 +3,8 @@ pragma solidity 0.8.28;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
-contract Disease is ERC20 {
-    constructor() ERC20("Disease", "AIDS") {}
+contract MockERC20 is ERC20 {
+    constructor() ERC20("MockERC20", "MkERC20") {}
 
     function mint() public {
         _mint(msg.sender, 1 ether);
