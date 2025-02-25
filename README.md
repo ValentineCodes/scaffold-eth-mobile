@@ -1,10 +1,10 @@
-# 🏗 Scaffold-ETH-Mobile
+# 🧠 Think → 👨‍💻 Build → 🚀 Deploy
 
-🧪 **Scaffold-ETH-Mobile** is an open-source toolkit for building decentralized applications (dApps) on Ethereum and EVM-compatible blockchains. It simplifies the mobile dApp development process by providing tools to create, deploy, and interact with smart contracts.
+✍️ **Scaffold-ETH-Mobile** is an open-source toolkit for building decentralized applications (dApps) on Ethereum and other EVM-compatible blockchains. It simplifies mobile dApp development with fast, secure and customizable pre-built components to create, deploy and interact with smart contracts.
 
 [Watch me mint a Snowman NFT!☃️](https://youtu.be/CaJTnRtLOK8)
 
-⚙️ **Tech Stack**: Built with React Native, Hardhat, Wagmi, Viem, and TypeScript to streamline mobile dApp development.
+⚙️ **Tech Stack**: Built with React Native, Hardhat, Ethers, and TypeScript to streamline mobile dApp development.
 
 ### Key Features
 
@@ -27,10 +27,11 @@ Before you begin, you need to install the following tools:
 - Yarn ([v1](https://classic.yarnpkg.com/en/docs/install/) or [v2+](https://yarnpkg.com/getting-started/install))
 - [Git](https://git-scm.com/downloads)
 - [React Native](https://reactnative.dev/docs/environment-setup?guide=native&platform=android)
+- [Yeet CLI](https://npmjs.com/package/yeet-cli)
 
 ## Quickstart
 
-To get started with Scaffold-ETH 2, follow the steps below:
+To get started, follow the steps below:
 
 1. Clone this repo & install dependencies
 
@@ -56,6 +57,8 @@ yarn chain
 
 This command starts a local Ethereum network hosted on your local IP address. The network runs on your local machine and can be used for testing and development. You can customize the network configuration in `hardhat.config.ts`.
 
+Alternatively, you can use [Ganache](https://archive.trufflesuite.com/ganache/) to persist the blockchain state during development
+
 4. On a second terminal, deploy the test contract:
 
 ```
@@ -64,7 +67,7 @@ yarn deploy
 
 This command deploys a test smart contract to the local network. The contract is located in `packages/hardhat/contracts` and can be modified to suit your needs. The `yarn deploy` command uses the deploy script located in `packages/hardhat/deploy` to deploy the contract to the network. You can also customize the deploy script.
 
-5. Set the `ALCHEMY_KEY` and `LOCAL_PROVIDER`(port **8545**) variables in `packages/reactnative/utils/scaffold-eth/networks.ts`
+5. Set the `ALCHEMY_KEY` and `localhost.provider`(port **8545**) variables in `packages/reactnative/scaffold.config.ts`
 
 #### To determine your local IP address:
 
@@ -98,7 +101,7 @@ yarn ios
 
 8. Import one of the funded accounts in your local blockchain into your wallet to have funds for testing
 
-You can interact with your smart contract using the `Debug Contracts` tab. You can tweak the app config in `packages/reactnative/scaffold.config.ts`.
+You can interact with your smart contract using the `DebugContracts` tab. You can configure your supported networks in `packages/reactnative/scaffold.config.ts`.
 
 Run smart contract test with `yarn hardhat:test`
 
@@ -106,8 +109,8 @@ Run smart contract test with `yarn hardhat:test`
 - Edit your frontend in `packages/reactnative/src/screens`
 - Edit your deployment scripts in `packages/hardhat/deploy`
 
-## Contributing to Scaffold-ETH
+## Contributing to Scaffold-ETH-Mobile
 
-We welcome contributions to Scaffold-ETH!
+We welcome contributions to Scaffold-ETH-Mobile!
 
 Please see [CONTRIBUTING.MD](https://github.com/ValentineCodes/scaffold-eth-mobile/blob/main/CONTRIBUTING.md) for more information and guidelines for contributing to Scaffold-ETH.
