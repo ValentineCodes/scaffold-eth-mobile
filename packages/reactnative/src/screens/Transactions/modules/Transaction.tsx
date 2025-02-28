@@ -8,10 +8,7 @@ import { useNetwork } from '../../../hooks/scaffold-eth';
 import { Transaction as TransactionType } from '../../../store/reducers/Transactions';
 import globalStyles from '../../../styles/globalStyles';
 import { COLORS } from '../../../utils/constants';
-import {
-  parseTimestamp,
-  truncateAddress
-} from '../../../utils/helperFunctions';
+import { parseTimestamp, truncateAddress } from '../../../utils/scaffold-eth';
 import { FONT_SIZE, WINDOW_WIDTH } from '../../../utils/styles';
 
 type Props = {

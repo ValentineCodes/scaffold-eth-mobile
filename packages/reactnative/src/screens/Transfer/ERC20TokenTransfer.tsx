@@ -31,7 +31,7 @@ import {
 } from '../../hooks/scaffold-eth';
 import { Account } from '../../store/reducers/Accounts';
 import { addRecipient } from '../../store/reducers/Recipients';
-import { parseFloat } from '../../utils/helperFunctions';
+import { parseFloat } from '../../utils/scaffold-eth';
 import Amount from './modules/Amount';
 import Header from './modules/Header';
 import PastRecipients from './modules/PastRecipients';

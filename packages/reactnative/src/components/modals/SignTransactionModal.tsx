@@ -9,7 +9,7 @@ import {
   parseBalance,
   parseFloat,
   truncateAddress
-} from '../../utils/helperFunctions';
+} from '../../utils/scaffold-eth';
 import { FONT_SIZE, WINDOW_WIDTH } from '../../utils/styles';
 import Blockie from '../scaffold-eth/Blockie';
 

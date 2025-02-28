@@ -3,7 +3,7 @@ import { StyleSheet, TextStyle, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import { useBalance, useNetwork } from '../../hooks/scaffold-eth';
 import globalStyles from '../../styles/globalStyles';
-import { parseBalance } from '../../utils/helperFunctions';
+import { parseBalance } from '../../utils/scaffold-eth';
 
 type Props = {
   address: string;

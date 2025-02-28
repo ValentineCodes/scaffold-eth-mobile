@@ -9,7 +9,7 @@ import { useAccount, useNetwork } from '../../hooks/scaffold-eth';
 import { removeNFT } from '../../store/reducers/NFTs';
 import globalStyles from '../../styles/globalStyles';
 import { COLORS } from '../../utils/constants';
-import { parseIPFS } from '../../utils/helperFunctions';
+import { parseIPFS } from '../../utils/scaffold-eth';
 import { FONT_SIZE, WINDOW_WIDTH } from '../../utils/styles';
 import Button from '../buttons/CustomButton';
 

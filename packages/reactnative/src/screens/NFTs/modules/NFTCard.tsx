@@ -3,7 +3,7 @@ import { Address } from 'abitype';
 import React, { useEffect, useState } from 'react';
 import { Image, Pressable, StyleSheet } from 'react-native';
 import { useModal } from 'react-native-modalfy';
-import { parseIPFS } from '../../../utils/helperFunctions';
+import { parseIPFS } from '../../../utils/scaffold-eth';
 import { WINDOW_WIDTH } from '../../../utils/styles';
 
 type Props = {

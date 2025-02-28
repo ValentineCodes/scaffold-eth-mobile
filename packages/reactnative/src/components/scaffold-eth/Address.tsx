@@ -5,7 +5,7 @@ import { IconButton, Text } from 'react-native-paper';
 import { useToast } from 'react-native-toast-notifications';
 import globalStyles from '../../styles/globalStyles';
 import { COLORS } from '../../utils/constants';
-import { truncateAddress } from '../../utils/helperFunctions';
+import { truncateAddress } from '../../utils/scaffold-eth';
 import { FONT_SIZE } from '../../utils/styles';
 import Blockie from './Blockie';
 

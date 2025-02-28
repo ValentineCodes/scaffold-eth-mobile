@@ -19,7 +19,7 @@ import {
 import globalStyles from '../../styles/globalStyles';
 import { Wallet } from '../../types/wallet';
 import { COLORS } from '../../utils/constants';
-import { truncateAddress } from '../../utils/helperFunctions';
+import { truncateAddress } from '../../utils/scaffold-eth';
 import { FONT_SIZE, WINDOW_HEIGHT, WINDOW_WIDTH } from '../../utils/styles';
 import Button from '../buttons/CustomButton';
 import Blockie from '../scaffold-eth/Blockie';

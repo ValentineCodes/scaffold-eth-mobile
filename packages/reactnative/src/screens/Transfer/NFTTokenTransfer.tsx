@@ -28,7 +28,7 @@ import {
 import { Account } from '../../store/reducers/Accounts';
 import { addRecipient } from '../../store/reducers/Recipients';
 import globalStyles from '../../styles/globalStyles';
-import { parseFloat } from '../../utils/helperFunctions';
+import { parseFloat } from '../../utils/scaffold-eth';
 import { FONT_SIZE } from '../../utils/styles';
 import Header from './modules/Header';
 import PastRecipients from './modules/PastRecipients';

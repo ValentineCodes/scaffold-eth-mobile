@@ -3,7 +3,7 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 import { useAccount, useBalance, useNetwork } from '../../hooks/scaffold-eth';
 import globalStyles from '../../styles/globalStyles';
-import { parseBalance } from '../../utils/helperFunctions';
+import { parseBalance } from '../../utils/scaffold-eth';
 import { FONT_SIZE, WINDOW_HEIGHT, WINDOW_WIDTH } from '../../utils/styles';
 import Blockie from '../scaffold-eth/Blockie';
 

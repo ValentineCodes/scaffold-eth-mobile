@@ -10,7 +10,7 @@ import { useAccount } from '../../../hooks/scaffold-eth';
 import { Account } from '../../../store/reducers/Accounts';
 import globalStyles from '../../../styles/globalStyles';
 import { COLORS } from '../../../utils/constants';
-import { isENS } from '../../../utils/helperFunctions';
+import { isENS } from '../../../utils/scaffold-eth';
 import { FONT_SIZE } from '../../../utils/styles';
 
 type Props = {

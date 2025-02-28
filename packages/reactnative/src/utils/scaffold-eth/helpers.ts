@@ -1,20 +1,9 @@
 import { ethers } from 'ethers';
 import moment from 'moment';
 
-export const shuffleArray = (array: any[]) => {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    const temp = array[i];
-    array[i] = array[j];
-    array[j] = temp;
-  }
-
-  return array;
-};
-
-export const truncateAddress = (address: string) => {
+export function truncateAddress(address: string) {
   return `${address.slice(0, 5)}...${address.slice(address.length - 4, address.length)}`;
-};
+}
 
 /**
  * Truncates string (in the middle) via given lenght value
@@ -45,17 +34,16 @@ export function parseFloat(str: string, val: number) {
 export const isENS = (name = '') =>
   name.endsWith('.eth') || name.endsWith('.xyz');
 
-export const parseIPFS = (uri: string) => {
-  return uri.replace('ipfs://', 'https://api.universalprofile.cloud/ipfs/');
-};
+export const parseIPFS = (uri: string) =>
+  uri.replace('ipfs://', 'https://api.universalprofile.cloud/ipfs/');
 
-export const parseBalance = (value: bigint, decimals: number = 18): string => {
+export function parseBalance(value: bigint, decimals: number = 18): string {
   const balance = Number(ethers.formatUnits(value, decimals))
     ? parseFloat(Number(ethers.formatUnits(value, decimals)).toString(), 4)
     : 0;
 
   return balance.toString();
-};
+}
 
 /**
  * Converts a blockchain timestamp (BigInt) to a human-readable relative time format.

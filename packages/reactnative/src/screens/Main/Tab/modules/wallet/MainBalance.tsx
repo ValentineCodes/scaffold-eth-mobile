@@ -23,7 +23,7 @@ import { COLORS } from '../../../../../utils/constants';
 import {
   parseBalance,
   truncateAddress
-} from '../../../../../utils/helperFunctions';
+} from '../../../../../utils/scaffold-eth';
 import { FONT_SIZE } from '../../../../../utils/styles';
 
 type Props = {
