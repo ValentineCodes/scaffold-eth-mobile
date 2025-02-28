@@ -3,7 +3,7 @@ import { FlatList, StyleSheet, View } from 'react-native';
 import { useModal } from 'react-native-modalfy';
 import { IconButton, Text } from 'react-native-paper';
 import BackButton from '../../components/buttons/BackButton';
-import { useNFTs } from '../../hooks/store/useNFTs';
+import { useNFTs } from '../../hooks/scaffold-eth';
 import globalStyles from '../../styles/globalStyles';
 import { COLORS } from '../../utils/constants';
 import { FONT_SIZE } from '../../utils/styles';

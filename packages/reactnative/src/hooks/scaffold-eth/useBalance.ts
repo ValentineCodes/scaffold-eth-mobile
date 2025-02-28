@@ -1,6 +1,6 @@
 import { ethers } from 'ethers';
 import { useEffect, useState } from 'react';
-import useNetwork from './useNetwork';
+import { useNetwork } from '.';
 
 interface UseBalanceConfig {
   address: string;
@@ -11,7 +11,7 @@ interface UseBalanceConfig {
  * @param config - The config settings
  * @param config.address - account address
  */
-export default function useBalance({ address }: UseBalanceConfig) {
+export function useBalance({ address }: UseBalanceConfig) {
   const network = useNetwork();
 
   const [balance, setBalance] = useState<bigint | null>(null);

@@ -1,9 +1,7 @@
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { Button, Text } from 'react-native-paper';
-import useAccount from '../../hooks/scaffold-eth/useAccount';
-import useBalance from '../../hooks/scaffold-eth/useBalance';
-import useNetwork from '../../hooks/scaffold-eth/useNetwork';
+import { useAccount, useBalance, useNetwork } from '../../hooks/scaffold-eth';
 import globalStyles from '../../styles/globalStyles';
 import { parseBalance } from '../../utils/helperFunctions';
 import { FONT_SIZE, WINDOW_HEIGHT, WINDOW_WIDTH } from '../../utils/styles';

@@ -4,11 +4,8 @@ import { useState } from 'react';
 import { useModal } from 'react-native-modalfy';
 import { useToast } from 'react-native-toast-notifications';
 import { Address, TransactionReceipt } from 'viem';
+import { useAccount, useNetwork, useSecureStorage, useTransactions } from '.';
 import { parseFloat } from '../../utils/helperFunctions';
-import { useTransactions } from '../store/useTransactions';
-import { useSecureStorage } from '../useSecureStorage';
-import useAccount from './useAccount';
-import useNetwork from './useNetwork';
 
 interface UseWriteConfig {
   abi: Abi;
@@ -36,7 +33,7 @@ interface SendTxConfig {
  * @param config.blockConfirmations - number of block confirmations to wait for (default: 1)
  * @param config.gasLimit - transaction gas limit
  */
-export default function useContractWrite({
+export function useContractWrite({
   abi,
   address,
   functionName,

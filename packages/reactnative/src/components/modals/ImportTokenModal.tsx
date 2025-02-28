@@ -6,11 +6,13 @@ import { Text, TextInput } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 import { useDispatch } from 'react-redux';
 import { Address } from 'viem';
-import useAccount from '../../hooks/scaffold-eth/useAccount';
-import useNetwork from '../../hooks/scaffold-eth/useNetwork';
-import { useTokens } from '../../hooks/store/useTokens';
-import { useTokenBalance } from '../../hooks/useTokenBalance';
-import { useTokenMetadata } from '../../hooks/useTokenMetadata';
+import {
+  useAccount,
+  useERC20Balance,
+  useERC20Metadata,
+  useNetwork,
+  useTokens
+} from '../../hooks/scaffold-eth';
 import { addToken, Token } from '../../store/reducers/Tokens';
 import globalStyles from '../../styles/globalStyles';
 import { COLORS } from '../../utils/constants';
@@ -37,8 +39,8 @@ export default function ImportTokenModal({ modal: { closeModal } }: Props) {
   const account = useAccount();
   const network = useNetwork();
 
-  const { getTokenMetadata } = useTokenMetadata();
-  const { getTokenBalance } = useTokenBalance();
+  const { getERC20Metadata } = useERC20Metadata();
+  const { getERC20Balance } = useERC20Balance();
 
   const { tokens } = useTokens();
 
@@ -66,9 +68,9 @@ export default function ImportTokenModal({ modal: { closeModal } }: Props) {
 
       setIsImporting(true);
 
-      const tokenMetadata = await getTokenMetadata(address as Address);
+      const tokenMetadata = await getERC20Metadata(address as Address);
 
-      const tokenBalance = await getTokenBalance(
+      const tokenBalance = await getERC20Balance(
         address as Address,
         account.address as Address
       );

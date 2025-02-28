@@ -1,8 +1,6 @@
 import { Contract, InterfaceAbi, JsonRpcProvider, Wallet } from 'ethers';
 import { useEffect, useState } from 'react';
-import { useSecureStorage } from '../useSecureStorage';
-import useAccount from './useAccount';
-import useNetwork from './useNetwork';
+import { useAccount, useNetwork, useSecureStorage } from '.';
 
 interface UseContractReadConfig {
   abi?: InterfaceAbi;
@@ -20,7 +18,7 @@ interface ReadContractConfig {
   args?: any[];
 }
 
-export default function useContractRead({
+export function useContractRead({
   abi,
   address,
   functionName,

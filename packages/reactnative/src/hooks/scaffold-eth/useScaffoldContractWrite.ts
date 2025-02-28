@@ -2,12 +2,14 @@ import { Contract, formatEther, JsonRpcProvider, Wallet } from 'ethers';
 import { useModal } from 'react-native-modalfy';
 import { useToast } from 'react-native-toast-notifications';
 import { Address, TransactionReceipt } from 'viem';
+import {
+  useAccount,
+  useDeployedContractInfo,
+  useNetwork,
+  useSecureStorage,
+  useTransactions
+} from '.';
 import { parseFloat } from '../../utils/helperFunctions';
-import { useTransactions } from '../store/useTransactions';
-import { useSecureStorage } from '../useSecureStorage';
-import useAccount from './useAccount';
-import { useDeployedContractInfo } from './useDeployedContractInfo';
-import useNetwork from './useNetwork';
 
 interface UseScaffoldWriteConfig {
   contractName: string;
@@ -34,7 +36,7 @@ interface SendTxConfig {
  * @param config.gasLimit - transaction gas limit
  */
 
-export default function useScaffoldContractWrite({
+export function useScaffoldContractWrite({
   contractName,
   functionName,
   args,

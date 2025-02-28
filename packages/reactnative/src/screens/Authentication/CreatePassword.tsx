@@ -6,7 +6,7 @@ import { Button, Divider, Switch, Text } from 'react-native-paper';
 import { useToast } from 'react-native-toast-notifications';
 import BackButton from '../../components/buttons/BackButton';
 import PasswordInput from '../../components/forms/PasswordInput';
-import { useSecureStorage } from '../../hooks/useSecureStorage';
+import { useSecureStorage } from '../../hooks/scaffold-eth';
 import styles from '../../styles/authentication/createPassword';
 import { COLORS } from '../../utils/constants';
 
@@ -59,7 +59,7 @@ function CreatePassword({}: Props) {
       setPassword('');
       setConfirmPassword('');
       setIsBiometricsEnabled(false);
-
+      // @ts-ignore
       navigation.navigate('CreateWallet');
     } catch (error) {
       toast.show('Failed to create password. Please try again', {

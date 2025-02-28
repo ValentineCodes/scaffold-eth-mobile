@@ -4,7 +4,7 @@ import { useModal } from 'react-native-modalfy';
 import { Text } from 'react-native-paper';
 // @ts-ignore
 import Ionicons from 'react-native-vector-icons/dist/Ionicons';
-import useNetwork from '../../../hooks/scaffold-eth/useNetwork';
+import { useNetwork } from '../../../hooks/scaffold-eth';
 import { Transaction as TransactionType } from '../../../store/reducers/Transactions';
 import globalStyles from '../../../styles/globalStyles';
 import { COLORS } from '../../../utils/constants';

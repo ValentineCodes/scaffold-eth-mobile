@@ -12,10 +12,12 @@ import { IconButton, Text } from 'react-native-paper';
 // @ts-ignore
 import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 import CopyableText from '../../../../../components/CopyableText';
-import useAccount from '../../../../../hooks/scaffold-eth/useAccount';
-import useBalance from '../../../../../hooks/scaffold-eth/useBalance';
-import useNetwork from '../../../../../hooks/scaffold-eth/useNetwork';
-import { useCryptoPrice } from '../../../../../hooks/useCryptoPrice';
+import {
+  useAccount,
+  useBalance,
+  useCryptoPrice,
+  useNetwork
+} from '../../../../../hooks/scaffold-eth';
 import globalStyles from '../../../../../styles/globalStyles';
 import { COLORS } from '../../../../../utils/constants';
 import {

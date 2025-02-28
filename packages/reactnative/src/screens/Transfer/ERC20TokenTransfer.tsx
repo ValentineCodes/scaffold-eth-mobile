@@ -21,12 +21,14 @@ import { useToast } from 'react-native-toast-notifications';
 import { useDispatch } from 'react-redux';
 import { Address, erc20Abi } from 'viem';
 import CustomButton from '../../components/buttons/CustomButton';
-import useAccount from '../../hooks/scaffold-eth/useAccount';
-import useNetwork from '../../hooks/scaffold-eth/useNetwork';
-import { useTransactions } from '../../hooks/store/useTransactions';
-import { useSecureStorage } from '../../hooks/useSecureStorage';
-import { useTokenBalance } from '../../hooks/useTokenBalance';
-import { useTokenMetadata } from '../../hooks/useTokenMetadata';
+import {
+  useAccount,
+  useERC20Balance,
+  useERC20Metadata,
+  useNetwork,
+  useSecureStorage,
+  useTransactions
+} from '../../hooks/scaffold-eth';
 import { Account } from '../../store/reducers/Accounts';
 import { addRecipient } from '../../store/reducers/Recipients';
 import { parseFloat } from '../../utils/helperFunctions';
@@ -45,8 +47,8 @@ export default function ERC20TokenTransfer() {
   // @ts-ignore
   const token = route.params.token;
 
-  const { tokenMetadata } = useTokenMetadata({ token: token.address });
-  const { balance } = useTokenBalance({ token: token.address });
+  const { data: tokenMetadata } = useERC20Metadata({ token: token.address });
+  const { balance } = useERC20Balance({ token: token.address });
 
   const toast = useToast();
 

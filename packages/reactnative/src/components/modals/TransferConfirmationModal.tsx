@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Linking, StyleSheet, View } from 'react-native';
 import { Button, Divider, Text } from 'react-native-paper';
 import { useToast } from 'react-native-toast-notifications';
-import useNetwork from '../../hooks/scaffold-eth/useNetwork';
+import { useNetwork } from '../../hooks/scaffold-eth';
 import { Account } from '../../store/reducers/Accounts';
 import globalStyles from '../../styles/globalStyles';
 import { parseFloat, truncateAddress } from '../../utils/helperFunctions';

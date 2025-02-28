@@ -1,54 +1,52 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Address, erc20Abi } from 'viem';
-import useContractRead from './scaffold-eth/useContractRead';
+import { useContractRead } from '.';
 
 /**
- * Options for the `useTokenMetadata` hook.
+ * Options for the `useERC20Metadata` hook.
  */
-interface UseTokenMetadataOptions {
+interface UseERC20MetadataOptions {
   token?: Address;
 }
 
 /**
  * ERC20 token metadata.
  */
-export interface TokenMetadata {
+export interface ERC20Metadata {
   name: string;
   symbol: string;
   decimals: number;
 }
 
 /**
- * Result of the `useTokenMetadata` hook.
+ * Result of the `useERC20Metadata` hook.
  */
-interface UseTokenMetadataResult {
+interface UseERC20MetadataResult {
   isLoading: boolean;
   error: Error | null;
-  tokenMetadata: TokenMetadata | null;
-  getTokenMetadata: (token?: Address) => Promise<TokenMetadata | undefined>;
+  data: ERC20Metadata | null;
+  getERC20Metadata: (token?: Address) => Promise<ERC20Metadata | undefined>;
 }
 
 /**
  * Hook to retrieve metadata of a specified ERC20 token.
  *
- * @param {UseTokenMetadataOptions} [options] - Options including an optional ERC20 token contract address.
- * @returns {UseTokenMetadataResult} - Loading state, error, token metadata, and the `getTokenMetadata` function.
+ * @param {UseERC20MetadataOptions} [options] - Options including an optional ERC20 token contract address.
+ * @returns {UseERC20MetadataResult} - Loading state, error, token metadata, and the `getERC20Metadata` function.
  */
-export function useTokenMetadata({
+export function useERC20Metadata({
   token: defaultToken
-}: UseTokenMetadataOptions = {}): UseTokenMetadataResult {
+}: UseERC20MetadataOptions = {}): UseERC20MetadataResult {
   const { readContract } = useContractRead();
 
-  const [tokenMetadata, setTokenMetadata] = useState<TokenMetadata | null>(
-    null
-  );
+  const [data, setData] = useState<ERC20Metadata | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
 
   /**
    * Fetch and set metadata (name, symbol, decimals) for the given ERC20 token.
    */
-  const getTokenMetadata = useCallback(
+  const getERC20Metadata = useCallback(
     async (token: Address = defaultToken!) => {
       if (!token) {
         setError(new Error('Token address is required'));
@@ -77,16 +75,16 @@ export function useTokenMetadata({
           })
         ])) as [string, string, number];
 
-        const metadata: TokenMetadata = {
+        const metadata: ERC20Metadata = {
           name,
           symbol,
           decimals
         };
-        setTokenMetadata(metadata);
+        setData(metadata);
         return metadata;
       } catch (err) {
         setError(err as Error);
-        setTokenMetadata(null);
+        setData(null);
       } finally {
         setIsLoading(false);
       }
@@ -99,14 +97,14 @@ export function useTokenMetadata({
    */
   useEffect(() => {
     if (defaultToken) {
-      getTokenMetadata();
+      getERC20Metadata();
     }
-  }, [defaultToken, getTokenMetadata]);
+  }, [defaultToken, getERC20Metadata]);
 
   return {
     isLoading,
     error,
-    tokenMetadata,
-    getTokenMetadata
+    data,
+    getERC20Metadata
   };
 }

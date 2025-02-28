@@ -1,9 +1,11 @@
 import { Contract, JsonRpcProvider, Wallet } from 'ethers';
 import { useEffect, useState } from 'react';
-import { useSecureStorage } from '../useSecureStorage';
-import useAccount from './useAccount';
-import { useDeployedContractInfo } from './useDeployedContractInfo';
-import useNetwork from './useNetwork';
+import {
+  useAccount,
+  useDeployedContractInfo,
+  useNetwork,
+  useSecureStorage
+} from '.';
 
 type Props = {
   contractName: string;
@@ -19,7 +21,7 @@ type Props = {
  * @param config.functionName - name of the function to be called
  * @param config.args - args to be passed to the function call (Optional)
  */
-export default function useScaffoldContractRead({
+export function useScaffoldContractRead({
   contractName,
   functionName,
   args: _args

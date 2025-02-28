@@ -5,8 +5,7 @@ import { Text } from 'react-native-paper';
 // @ts-ignore
 import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 import { useDispatch } from 'react-redux';
-import useAccount from '../../hooks/scaffold-eth/useAccount';
-import useNetwork from '../../hooks/scaffold-eth/useNetwork';
+import { useAccount, useNetwork } from '../../hooks/scaffold-eth';
 import { removeNFT } from '../../store/reducers/NFTs';
 import globalStyles from '../../styles/globalStyles';
 import { COLORS } from '../../utils/constants';

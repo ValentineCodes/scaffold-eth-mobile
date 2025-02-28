@@ -4,8 +4,7 @@ import React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import Blockie from '../../../components/scaffold-eth/Blockie';
-import { useTokenBalance } from '../../../hooks/useTokenBalance';
-import { useTokenMetadata } from '../../../hooks/useTokenMetadata';
+import { useERC20Balance, useERC20Metadata } from '../../../hooks/scaffold-eth';
 import globalStyles from '../../../styles/globalStyles';
 import { FONT_SIZE } from '../../../utils/styles';
 
@@ -17,8 +16,8 @@ type Props = {
 };
 
 export default function Token({ address, name, symbol, onPress }: Props) {
-  const { tokenMetadata } = useTokenMetadata({ token: address });
-  const { balance } = useTokenBalance({ token: address });
+  const { data: tokenMetadata } = useERC20Metadata({ token: address });
+  const { balance } = useERC20Balance({ token: address });
 
   return (
     <Pressable onPress={onPress} style={styles.container}>

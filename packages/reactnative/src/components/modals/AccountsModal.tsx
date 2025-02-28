@@ -6,9 +6,11 @@ import { useToast } from 'react-native-toast-notifications';
 //@ts-ignore
 import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 import { useDispatch, useSelector } from 'react-redux';
-import useAccount from '../../hooks/scaffold-eth/useAccount';
-import useWallet from '../../hooks/scaffold-eth/useWallet';
-import { useSecureStorage } from '../../hooks/useSecureStorage';
+import {
+  useAccount,
+  useSecureStorage,
+  useWallet
+} from '../../hooks/scaffold-eth';
 import {
   Account,
   addAccount,

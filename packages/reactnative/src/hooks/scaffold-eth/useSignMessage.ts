@@ -1,8 +1,6 @@
 import { JsonRpcProvider, Wallet } from 'ethers';
 import { useModal } from 'react-native-modalfy';
-import { useSecureStorage } from '../useSecureStorage';
-import useAccount from './useAccount';
-import useNetwork from './useNetwork';
+import { useAccount, useNetwork, useSecureStorage } from '.';
 
 interface UseSignMessageConfig {
   message?: string | Uint8Array<ArrayBufferLike>;
@@ -19,7 +17,7 @@ interface UseSignMessageReturn {
  * @param {string} [config.message] - Default message to sign (can be overridden).
  * @returns {UseSignMessageReturn} An object containing the `signMessage` function.
  */
-export default function useSignMessage({
+export function useSignMessage({
   message
 }: UseSignMessageConfig = {}): UseSignMessageReturn {
   const { openModal } = useModal();

@@ -10,10 +10,12 @@ import { useDispatch } from 'react-redux';
 import BackButton from '../../components/buttons/BackButton';
 import CopyableText from '../../components/CopyableText';
 import Blockie from '../../components/scaffold-eth/Blockie';
-import useAccount from '../../hooks/scaffold-eth/useAccount';
-import useNetwork from '../../hooks/scaffold-eth/useNetwork';
-import { useTokenBalance } from '../../hooks/useTokenBalance';
-import { useTokenMetadata } from '../../hooks/useTokenMetadata';
+import {
+  useAccount,
+  useERC20Balance,
+  useERC20Metadata,
+  useNetwork
+} from '../../hooks/scaffold-eth';
 import { removeToken } from '../../store/reducers/Tokens';
 import globalStyles from '../../styles/globalStyles';
 import { COLORS } from '../../utils/constants';
@@ -33,9 +35,9 @@ export default function TokenDetails({}: Props) {
   // @ts-ignore
   const token = route.params.token;
 
-  const { tokenMetadata } = useTokenMetadata({ token: token.address });
+  const { data: tokenMetadata } = useERC20Metadata({ token: token.address });
 
-  const { balance } = useTokenBalance({ token: token.address });
+  const { balance } = useERC20Balance({ token: token.address });
 
   const remove = () => {
     dispatch(

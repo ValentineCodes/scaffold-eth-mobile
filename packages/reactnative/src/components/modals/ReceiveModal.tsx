@@ -8,8 +8,7 @@ import { useToast } from 'react-native-toast-notifications';
 //@ts-ignore
 import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 import { Network } from '../../../scaffold.config';
-import useAccount from '../../hooks/scaffold-eth/useAccount';
-import useNetwork from '../../hooks/scaffold-eth/useNetwork';
+import { useAccount, useNetwork } from '../../hooks/scaffold-eth';
 import { Account } from '../../store/reducers/Accounts';
 import globalStyles from '../../styles/globalStyles';
 import { COLORS } from '../../utils/constants';

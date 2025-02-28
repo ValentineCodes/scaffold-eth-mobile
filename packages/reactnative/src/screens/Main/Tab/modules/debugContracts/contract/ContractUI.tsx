@@ -4,8 +4,10 @@ import { Platform, ScrollView, View } from 'react-native';
 import { ActivityIndicator, Card, Text, useTheme } from 'react-native-paper';
 import Address from '../../../../../../components/scaffold-eth/Address';
 import Balance from '../../../../../../components/scaffold-eth/Balance';
-import { useDeployedContractInfo } from '../../../../../../hooks/scaffold-eth/useDeployedContractInfo';
-import useNetwork from '../../../../../../hooks/scaffold-eth/useNetwork';
+import {
+  useDeployedContractInfo,
+  useNetwork
+} from '../../../../../../hooks/scaffold-eth';
 import globalStyles from '../../../../../../styles/globalStyles';
 import { COLORS } from '../../../../../../utils/constants';
 import { FONT_SIZE } from '../../../../../../utils/styles';

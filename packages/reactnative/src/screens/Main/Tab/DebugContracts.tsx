@@ -3,7 +3,7 @@ import { useIsFocused } from '@react-navigation/native';
 import React from 'react';
 import { View } from 'react-native';
 import { Text } from 'react-native-paper';
-import { useAllContracts } from '../../../hooks/scaffold-eth/useAllContracts';
+import { useAllContracts } from '../../../hooks/scaffold-eth';
 import globalStyles from '../../../styles/globalStyles';
 import { COLORS } from '../../../utils/constants';
 import { FONT_SIZE } from '../../../utils/styles';

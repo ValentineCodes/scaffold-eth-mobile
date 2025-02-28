@@ -1,9 +1,8 @@
 import { keccak256, toUtf8Bytes } from 'ethers';
 import { useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useAccount, useNetwork } from '.';
 import { NFT } from '../../store/reducers/NFTs';
-import useAccount from '../scaffold-eth/useAccount';
-import useNetwork from '../scaffold-eth/useNetwork';
 
 /**
  * Checks if an NFT already exists in the store for the given address and token ID.

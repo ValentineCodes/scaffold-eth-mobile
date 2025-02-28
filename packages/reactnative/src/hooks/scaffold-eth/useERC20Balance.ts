@@ -1,9 +1,7 @@
 import { ethers } from 'ethers';
 import { useCallback, useEffect, useState } from 'react';
 import { Address, erc20Abi } from 'viem';
-import useAccount from './scaffold-eth/useAccount';
-import useContractRead from './scaffold-eth/useContractRead';
-import useNetwork from './scaffold-eth/useNetwork';
+import { useAccount, useContractRead, useNetwork } from '.';
 
 /**
  * Hook to retrieve the balance of a specified ERC20 token for a user.
@@ -11,27 +9,27 @@ import useNetwork from './scaffold-eth/useNetwork';
  * @param {Object} options - Optional parameters.
  * @param {Address} options.token - The ERC20 token contract address.
  * @param {Address} options.userAddress - The address of the user to fetch the token balance for.
- * @returns {Object} - An object containing loading state, error, balance, and the `getTokenBalance` function.
+ * @returns {Object} - An object containing loading state, error, balance, and the `getERC20Balance` function.
  */
-interface UseTokenBalanceOptions {
+interface UseERC20BalanceOptions {
   token?: Address;
   userAddress?: Address;
 }
 
-interface UseTokenBalanceResult {
+interface UseERC20BalanceResult {
   isLoading: boolean;
   error: Error | null;
   balance: bigint | null;
-  getTokenBalance: (
+  getERC20Balance: (
     token?: Address,
     userAddress?: Address
   ) => Promise<bigint | undefined>;
 }
 
-export function useTokenBalance({
+export function useERC20Balance({
   token: defaultToken,
   userAddress: defaultUserAddress
-}: UseTokenBalanceOptions = {}): UseTokenBalanceResult {
+}: UseERC20BalanceOptions = {}): UseERC20BalanceResult {
   const { address: connectedAddress } = useAccount();
   const network = useNetwork();
   const { readContract } = useContractRead();
@@ -47,10 +45,11 @@ export function useTokenBalance({
    * @param {Address} userAddress - The user's address. Defaults to the provided `userAddress` or the connected address.
    * @returns {Promise<bigint>} - The token balance of the user.
    */
-  const getTokenBalance = useCallback(
+  const getERC20Balance = useCallback(
     async (
       token: Address = defaultToken!,
-      userAddress: Address = defaultUserAddress || connectedAddress!
+      userAddress: Address = defaultUserAddress ||
+        (connectedAddress as `0x${string}`)
     ) => {
       try {
         if (!token) throw new Error('Token address is required');
@@ -91,24 +90,24 @@ export function useTokenBalance({
     provider.off('block');
 
     if (defaultToken) {
-      getTokenBalance();
+      getERC20Balance();
     }
 
     provider.on('block', blockNumber => {
       if (defaultToken) {
-        getTokenBalance();
+        getERC20Balance();
       }
     });
 
     return () => {
       provider.off('block');
     };
-  }, [defaultToken, defaultUserAddress, connectedAddress, getTokenBalance]);
+  }, [defaultToken, defaultUserAddress, connectedAddress, getERC20Balance]);
 
   return {
     isLoading,
     error,
     balance,
-    getTokenBalance
+    getERC20Balance
   };
 }

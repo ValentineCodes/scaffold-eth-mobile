@@ -5,7 +5,7 @@ import { Text } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 import { useDispatch } from 'react-redux';
 import scaffoldConfig, { Network } from '../../../scaffold.config';
-import useNetwork from '../../hooks/scaffold-eth/useNetwork';
+import { useNetwork } from '../../hooks/scaffold-eth';
 import { switchNetwork } from '../../store/reducers/ConnectedNetwork';
 import globalStyles from '../../styles/globalStyles';
 import { COLORS } from '../../utils/constants';

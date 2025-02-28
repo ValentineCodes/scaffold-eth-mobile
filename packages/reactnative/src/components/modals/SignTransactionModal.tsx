@@ -2,9 +2,7 @@ import { ethers } from 'ethers';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Divider, Text } from 'react-native-paper';
-import useAccount from '../../hooks/scaffold-eth/useAccount';
-import useBalance from '../../hooks/scaffold-eth/useBalance';
-import useNetwork from '../../hooks/scaffold-eth/useNetwork';
+import { useAccount, useBalance, useNetwork } from '../../hooks/scaffold-eth';
 import globalStyles from '../../styles/globalStyles';
 import { COLORS } from '../../utils/constants';
 import {

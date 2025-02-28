@@ -4,7 +4,7 @@ import { StyleSheet, View } from 'react-native';
 import { useModal } from 'react-native-modalfy';
 import { IconButton, Text, TextInput } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
-import { useSecureStorage } from '../../hooks/useSecureStorage';
+import { useSecureStorage } from '../../hooks/scaffold-eth';
 import {
   Account,
   addAccount,

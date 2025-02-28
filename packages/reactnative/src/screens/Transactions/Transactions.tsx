@@ -2,7 +2,7 @@ import React from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import BackButton from '../../components/buttons/BackButton';
-import { useTransactions } from '../../hooks/store/useTransactions';
+import { useTransactions } from '../../hooks/scaffold-eth';
 import globalStyles from '../../styles/globalStyles';
 import { FONT_SIZE } from '../../utils/styles';
 import Transaction from './modules/Transaction';

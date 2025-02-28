@@ -6,7 +6,7 @@ import { Button, Text } from 'react-native-paper';
 import { useToast } from 'react-native-toast-notifications';
 import { TransactionReceipt } from 'viem';
 import IntegerInput from '../../../../../../components/scaffold-eth/input/IntegerInput';
-import useContractWrite from '../../../../../../hooks/scaffold-eth/useContractWrite';
+import { useContractWrite } from '../../../../../../hooks/scaffold-eth';
 import globalStyles from '../../../../../../styles/globalStyles';
 import { COLORS } from '../../../../../../utils/constants';
 import { FONT_SIZE } from '../../../../../../utils/styles';

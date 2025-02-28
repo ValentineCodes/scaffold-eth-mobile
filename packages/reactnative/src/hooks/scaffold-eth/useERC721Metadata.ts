@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Address, erc721Abi } from 'viem';
-import useContractRead from './scaffold-eth/useContractRead';
+import { useContractRead } from '.';
 
 /**
- * Options for the `useNFTMetadata` hook.
+ * Options for the `useERC721Metadata` hook.
  */
-interface UseNFTMetadataOptions {
+interface UseERC721MetadataOptions {
   nft?: Address;
   tokenId?: string | number;
 }
@@ -13,45 +13,45 @@ interface UseNFTMetadataOptions {
 /**
  * NFT metadata.
  */
-export interface NFTMetadata {
+export interface ERC721Metadata {
   name: string;
   symbol: string;
   tokenURI: string;
 }
 
 /**
- * Result of the `useNFTMetadata` hook.
+ * Result of the `useERC721Metadata` hook.
  */
-interface UseNFTMetadataResult {
+interface UseERC721MetadataResult {
   isLoading: boolean;
   error: Error | null;
-  nftMetadata: NFTMetadata | null;
-  getNFTMetadata: (
+  data: ERC721Metadata | null;
+  getERC721Metadata: (
     nft?: Address,
     tokenId?: string | number
-  ) => Promise<NFTMetadata | undefined>;
+  ) => Promise<ERC721Metadata | undefined>;
 }
 
 /**
  * Hook to retrieve metadata of a specified NFT (ERC721).
  *
- * @param {UseNFTMetadataOptions} [options] - Options including an optional NFT contract address and token ID.
- * @returns {UseNFTMetadataResult} - Loading state, error, NFT metadata, and the `getNFTMetadata` function.
+ * @param {UseERC721MetadataOptions} [options] - Options including an optional NFT contract address and token ID.
+ * @returns {UseERC721MetadataResult} - Loading state, error, NFT metadata, and the `getERC721Metadata` function.
  */
-export function useNFTMetadata({
+export function useERC721Metadata({
   nft: defaultNFT,
   tokenId: defaultTokenId
-}: UseNFTMetadataOptions = {}): UseNFTMetadataResult {
+}: UseERC721MetadataOptions = {}): UseERC721MetadataResult {
   const { readContract } = useContractRead();
 
-  const [nftMetadata, setNftMetadata] = useState<NFTMetadata | null>(null);
+  const [data, setData] = useState<ERC721Metadata | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
 
   /**
    * Fetch and set metadata (name, symbol, tokenURI) for the given NFT.
    */
-  const getNFTMetadata = useCallback(
+  const getERC721Metadata = useCallback(
     async (
       nft: Address = defaultNFT!,
       tokenId: string | number = defaultTokenId!
@@ -84,16 +84,16 @@ export function useNFTMetadata({
           })
         ])) as [string, string, string];
 
-        const metadata: NFTMetadata = {
+        const metadata: ERC721Metadata = {
           name,
           symbol,
           tokenURI
         };
-        setNftMetadata(metadata);
+        setData(metadata);
         return metadata;
       } catch (err) {
         setError(err as Error);
-        setNftMetadata(null);
+        setData(null);
       } finally {
         setIsLoading(false);
       }
@@ -106,14 +106,14 @@ export function useNFTMetadata({
    */
   useEffect(() => {
     if (defaultNFT && defaultTokenId !== undefined) {
-      getNFTMetadata();
+      getERC721Metadata();
     }
-  }, [defaultNFT, defaultTokenId, getNFTMetadata]);
+  }, [defaultNFT, defaultTokenId, getERC721Metadata]);
 
   return {
     isLoading,
     error,
-    nftMetadata,
-    getNFTMetadata
+    data,
+    getERC721Metadata
   };
 }

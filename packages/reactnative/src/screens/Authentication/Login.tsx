@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import PasswordInput from '../../components/forms/PasswordInput';
 import Logo from '../../components/Logo';
 import { ConsentModalParams } from '../../components/modals/ConsentModal';
-import { useSecureStorage } from '../../hooks/useSecureStorage';
+import { useSecureStorage } from '../../hooks/scaffold-eth';
 import { loginUser, logoutUser } from '../../store/reducers/Auth';
 import { clearRecipients } from '../../store/reducers/Recipients';
 import globalStyles from '../../styles/globalStyles';

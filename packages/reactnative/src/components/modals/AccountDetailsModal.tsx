@@ -6,7 +6,7 @@ import QRCode from 'react-native-qrcode-svg';
 //@ts-ignore
 import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 import { useDispatch, useSelector } from 'react-redux';
-import useAccount from '../../hooks/scaffold-eth/useAccount';
+import { useAccount } from '../../hooks/scaffold-eth';
 import { Account, removeAccount } from '../../store/reducers/Accounts';
 import globalStyles from '../../styles/globalStyles';
 import { COLORS } from '../../utils/constants';

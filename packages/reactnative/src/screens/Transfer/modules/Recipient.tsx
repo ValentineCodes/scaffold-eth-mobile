@@ -6,7 +6,7 @@ import { Text, TextInput } from 'react-native-paper';
 import { useSelector } from 'react-redux';
 import scaffoldConfig from '../../../../scaffold.config';
 import Blockie from '../../../components/scaffold-eth/Blockie';
-import useAccount from '../../../hooks/scaffold-eth/useAccount';
+import { useAccount } from '../../../hooks/scaffold-eth';
 import { Account } from '../../../store/reducers/Accounts';
 import globalStyles from '../../../styles/globalStyles';
 import { COLORS } from '../../../utils/constants';

@@ -1,9 +1,8 @@
 import { keccak256, toUtf8Bytes } from 'ethers';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useAccount, useNetwork } from '.';
 import { Token } from '../../store/reducers/Tokens';
-import useAccount from '../scaffold-eth/useAccount';
-import useNetwork from '../scaffold-eth/useNetwork';
 
 export function useTokens() {
   // @ts-ignore

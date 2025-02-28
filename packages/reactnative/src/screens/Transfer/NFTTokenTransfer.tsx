@@ -19,10 +19,12 @@ import { useToast } from 'react-native-toast-notifications';
 import { useDispatch } from 'react-redux';
 import { Address, erc721Abi } from 'viem';
 import CustomButton from '../../components/buttons/CustomButton';
-import useAccount from '../../hooks/scaffold-eth/useAccount';
-import useNetwork from '../../hooks/scaffold-eth/useNetwork';
-import { useTransactions } from '../../hooks/store/useTransactions';
-import { useSecureStorage } from '../../hooks/useSecureStorage';
+import {
+  useAccount,
+  useNetwork,
+  useSecureStorage,
+  useTransactions
+} from '../../hooks/scaffold-eth';
 import { Account } from '../../store/reducers/Accounts';
 import { addRecipient } from '../../store/reducers/Recipients';
 import globalStyles from '../../styles/globalStyles';

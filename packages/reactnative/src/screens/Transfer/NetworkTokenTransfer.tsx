@@ -15,11 +15,13 @@ import { useToast } from 'react-native-toast-notifications';
 import { useDispatch } from 'react-redux';
 import { Address } from 'viem';
 import CustomButton from '../../components/buttons/CustomButton';
-import useAccount from '../../hooks/scaffold-eth/useAccount';
-import useBalance from '../../hooks/scaffold-eth/useBalance';
-import useNetwork from '../../hooks/scaffold-eth/useNetwork';
-import { useTransactions } from '../../hooks/store/useTransactions';
-import { useSecureStorage } from '../../hooks/useSecureStorage';
+import {
+  useAccount,
+  useBalance,
+  useNetwork,
+  useSecureStorage,
+  useTransactions
+} from '../../hooks/scaffold-eth';
 import { Account } from '../../store/reducers/Accounts';
 import { addRecipient } from '../../store/reducers/Recipients';
 import { parseBalance, parseFloat } from '../../utils/helperFunctions';

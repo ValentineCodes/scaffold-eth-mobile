@@ -5,7 +5,7 @@ import { View } from 'react-native';
 import { Button, Card, Text } from 'react-native-paper';
 import { useToast } from 'react-native-toast-notifications';
 import { Address } from 'viem';
-import useContractRead from '../../../../../../hooks/scaffold-eth/useContractRead';
+import { useContractRead } from '../../../../../../hooks/scaffold-eth';
 import globalStyles from '../../../../../../styles/globalStyles';
 import { COLORS } from '../../../../../../utils/constants';
 import { FONT_SIZE } from '../../../../../../utils/styles';

@@ -5,8 +5,8 @@ import { Account } from '../../store/reducers/Accounts';
  *
  * @returns The connected account
  */
-export default function useAccount() {
-  const connectedAccount: Account = useSelector(state =>
+export function useAccount() {
+  const connectedAccount: Account = useSelector((state: any) =>
     state.accounts.find((account: Account) => account.isConnected)
   );
   return connectedAccount;

@@ -5,8 +5,7 @@ import { Surface, Text, TextInput } from 'react-native-paper';
 import { useToast } from 'react-native-toast-notifications';
 //@ts-ignore
 import Ionicons from 'react-native-vector-icons/dist/Ionicons';
-import useAccount from '../../hooks/scaffold-eth/useAccount';
-import { useSecureStorage } from '../../hooks/useSecureStorage';
+import { useAccount, useSecureStorage } from '../../hooks/scaffold-eth';
 import { Account } from '../../store/reducers/Accounts';
 import globalStyles from '../../styles/globalStyles';
 import { Security } from '../../types/security';

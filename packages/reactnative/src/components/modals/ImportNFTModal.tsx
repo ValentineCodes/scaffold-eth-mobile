@@ -7,10 +7,12 @@ import { useToast } from 'react-native-toast-notifications';
 //@ts-ignore
 import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 import { useDispatch } from 'react-redux';
-import useAccount from '../../hooks/scaffold-eth/useAccount';
-import useNetwork from '../../hooks/scaffold-eth/useNetwork';
-import { useNFTs } from '../../hooks/store/useNFTs';
-import { useNFTMetadata } from '../../hooks/useNFTMetadata';
+import {
+  useAccount,
+  useERC721Metadata,
+  useNetwork,
+  useNFTs
+} from '../../hooks/scaffold-eth';
 import { addNFT } from '../../store/reducers/NFTs';
 import globalStyles from '../../styles/globalStyles';
 import { COLORS } from '../../utils/constants';
@@ -35,7 +37,7 @@ export default function ImportNFTModal({ modal: { closeModal } }: Props) {
 
   const dispatch = useDispatch();
 
-  const { getNFTMetadata } = useNFTMetadata();
+  const { getERC721Metadata } = useERC721Metadata();
 
   const { nftExists } = useNFTs();
 
@@ -65,7 +67,7 @@ export default function ImportNFTModal({ modal: { closeModal } }: Props) {
 
       setIsImporting(true);
 
-      const nftMetadata = await getNFTMetadata(
+      const nftMetadata = await getERC721Metadata(
         address as Address,
         tokenId as Address
       );

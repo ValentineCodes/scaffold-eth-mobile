@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useSecureStorage } from '.';
 import { ethers } from '../../../patches/ethers';
 import { addAccount } from '../../store/reducers/Accounts';
-import { useSecureStorage } from '../useSecureStorage';
 
-export interface Controller {
+export interface Wallet {
   address: string;
   privateKey: string;
 }
@@ -12,9 +12,9 @@ export interface Controller {
 /**
  * @notice hook to read and write mnemonic
  */
-export default function useWallet() {
+export const useWallet = () => {
   const [mnemonic, setMnemonic] = useState('');
-  const [controller, setAccounts] = useState<Controller[]>([]);
+  const [wallet, setAccounts] = useState<Wallet[]>([]);
 
   const { saveItem, getItem } = useSecureStorage();
 
@@ -26,20 +26,20 @@ export default function useWallet() {
    */
   async function _getMnemonic(): Promise<string> {
     // read mnemonic from secure storage
-    const _mnemonic = (await getItem('mnemonic')) as string;
+    const _mnemonic = (await getItem('seedPhrase')) as string;
 
     setMnemonic(_mnemonic);
 
     return _mnemonic;
   }
 
-  async function getController(): Promise<Controller> {
-    // read controller from secure storage
-    const controller = (await getItem('controller')) as Controller;
+  async function getWallet(): Promise<Wallet> {
+    // read wallet from secure storage
+    const wallet = (await getItem('wallet')) as Wallet;
 
-    setAccounts([controller]);
+    setAccounts([wallet]);
 
-    return controller;
+    return wallet;
   }
 
   /**
@@ -55,20 +55,20 @@ export default function useWallet() {
 
   /**
    * encrypts and stores account data in secure and redux storage
-   * @param _controller address and private key of account
+   * @param _wallet address and private key of account
    */
-  async function _storeAccount(_controller: Controller) {
-    // read controller from secure storage
-    const controller = (await getItem('controller')) as Controller;
+  async function _storeAccount(_wallet: Wallet) {
+    // read wallet from secure storage
+    const wallet = (await getItem('wallet')) as Wallet;
 
-    const newAccounts = [controller, _controller];
+    const newAccounts = [wallet, _wallet];
 
-    // encrypt and store controller
-    await saveItem('controller', JSON.stringify(newAccounts));
+    // encrypt and store wallet
+    await saveItem('wallet', JSON.stringify(newAccounts));
 
     setAccounts(newAccounts);
 
-    dispatch(addAccount({ address: _controller.address }));
+    dispatch(addAccount({ address: _wallet.address }));
   }
 
   function createWallet() {
@@ -106,17 +106,17 @@ export default function useWallet() {
 
   useEffect(() => {
     _getMnemonic();
-    getController();
+    getWallet();
   }, []);
 
   return {
     mnemonic,
-    controller,
+    wallet,
     getMnemonic: _getMnemonic,
-    getController: getController,
+    getWallet: getWallet,
     storeMnemonic: _storeMnemonic,
     storeAccount: _storeAccount,
     createWallet,
     importWallet
   };
-}
+};
