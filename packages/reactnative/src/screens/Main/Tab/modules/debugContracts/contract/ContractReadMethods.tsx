@@ -6,7 +6,7 @@ import globalStyles from '../../../../../../styles/globalStyles';
 import {
   GenericContract,
   InheritedFunctions
-} from '../../../../../../utils/scaffold-eth/contract';
+} from '../../../../../../utils/scaffold-eth';
 import { FONT_SIZE } from '../../../../../../utils/styles';
 import ReadOnlyFunctionForm from './ReadOnlyFunctionForm';
 

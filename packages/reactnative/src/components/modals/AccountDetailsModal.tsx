@@ -12,9 +12,8 @@ import globalStyles from '../../styles/globalStyles';
 import { COLORS } from '../../utils/constants';
 import { FONT_SIZE, WINDOW_WIDTH } from '../../utils/styles';
 import CustomButton from '../buttons/CustomButton';
-import CopyableText from '../CopyableText';
 import EditAccountNameForm from '../forms/EditAccountNameForm';
-import Blockie from '../scaffold-eth/Blockie';
+import { Blockie, CopyableText } from '../scaffold-eth';
 
 type Props = {
   modal: {

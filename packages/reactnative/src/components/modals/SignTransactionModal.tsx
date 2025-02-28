@@ -11,7 +11,7 @@ import {
   truncateAddress
 } from '../../utils/scaffold-eth';
 import { FONT_SIZE, WINDOW_WIDTH } from '../../utils/styles';
-import Blockie from '../scaffold-eth/Blockie';
+import { Blockie } from '../scaffold-eth';
 
 type Props = {
   modal: {

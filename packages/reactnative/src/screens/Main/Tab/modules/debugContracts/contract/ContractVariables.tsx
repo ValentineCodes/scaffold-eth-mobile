@@ -7,7 +7,7 @@ import {
   ContractName,
   GenericContract,
   InheritedFunctions
-} from '../../../../../../utils/scaffold-eth/contract';
+} from '../../../../../../utils/scaffold-eth';
 import DisplayVariable from './DisplayVariable';
 
 export default function ContractVariables({

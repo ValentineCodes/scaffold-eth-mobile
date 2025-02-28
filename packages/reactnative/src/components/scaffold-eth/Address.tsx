@@ -3,11 +3,11 @@ import React from 'react';
 import { StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
 import { IconButton, Text } from 'react-native-paper';
 import { useToast } from 'react-native-toast-notifications';
+import { Blockie } from '.';
 import globalStyles from '../../styles/globalStyles';
 import { COLORS } from '../../utils/constants';
 import { truncateAddress } from '../../utils/scaffold-eth';
 import { FONT_SIZE } from '../../utils/styles';
-import Blockie from './Blockie';
 
 type Props = {
   address: string;
@@ -16,7 +16,7 @@ type Props = {
   iconStyle?: TextStyle;
 };
 
-export default function Address({
+export function Address({
   address,
   containerStyle,
   textStyle,

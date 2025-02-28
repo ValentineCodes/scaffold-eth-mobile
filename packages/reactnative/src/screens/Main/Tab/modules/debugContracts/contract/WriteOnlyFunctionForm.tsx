@@ -5,7 +5,7 @@ import { useModal } from 'react-native-modalfy';
 import { Button, Text } from 'react-native-paper';
 import { useToast } from 'react-native-toast-notifications';
 import { TransactionReceipt } from 'viem';
-import IntegerInput from '../../../../../../components/scaffold-eth/input/IntegerInput';
+import { IntegerInput } from '../../../../../../components/scaffold-eth';
 import { useContractWrite } from '../../../../../../hooks/scaffold-eth';
 import globalStyles from '../../../../../../styles/globalStyles';
 import { COLORS } from '../../../../../../utils/constants';

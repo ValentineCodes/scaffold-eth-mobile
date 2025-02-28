@@ -10,7 +10,7 @@ type Props = {
   style?: TextStyle;
 };
 
-export default function Balance({ address, style }: Props) {
+export function Balance({ address, style }: Props) {
   const network = useNetwork();
   const { balance, isLoading } = useBalance({ address });
 

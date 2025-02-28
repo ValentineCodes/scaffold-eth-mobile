@@ -1,10 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useIsMounted } from 'usehooks-ts';
 import { useNetwork } from '.';
-import {
-  ContractCodeStatus,
-  contracts
-} from '../../utils/scaffold-eth/contract';
+import { ContractCodeStatus, contracts } from '../../utils/scaffold-eth';
 
 /**
  * Gets the matching contract info for the provided contract name from the contracts present in deployedContracts.ts

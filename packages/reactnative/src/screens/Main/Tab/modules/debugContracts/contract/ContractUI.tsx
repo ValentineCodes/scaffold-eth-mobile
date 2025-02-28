@@ -2,8 +2,7 @@ import { useIsFocused, useRoute } from '@react-navigation/native';
 import React, { useReducer } from 'react';
 import { Platform, ScrollView, View } from 'react-native';
 import { ActivityIndicator, Card, Text, useTheme } from 'react-native-paper';
-import Address from '../../../../../../components/scaffold-eth/Address';
-import Balance from '../../../../../../components/scaffold-eth/Balance';
+import { Address, Balance } from '../../../../../../components/scaffold-eth';
 import {
   useDeployedContractInfo,
   useNetwork

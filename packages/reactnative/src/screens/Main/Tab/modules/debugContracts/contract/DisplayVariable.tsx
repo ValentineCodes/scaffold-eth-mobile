@@ -7,7 +7,7 @@ import { useToast } from 'react-native-toast-notifications';
 // @ts-ignore
 import MaterialIcons from 'react-native-vector-icons/dist/MaterialIcons';
 import { Address, isAddress } from 'viem';
-import AddressComp from '../../../../../../components/scaffold-eth/Address';
+import { Address as AddressComp } from '../../../../../../components/scaffold-eth';
 import { useContractRead } from '../../../../../../hooks/scaffold-eth';
 import globalStyles from '../../../../../../styles/globalStyles';
 import { COLORS } from '../../../../../../utils/constants';

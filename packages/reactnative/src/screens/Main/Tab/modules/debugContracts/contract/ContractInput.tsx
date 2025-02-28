@@ -1,10 +1,12 @@
 import { AbiParameter } from 'abitype';
 import React, { Dispatch, SetStateAction } from 'react';
-import Bytes32Input from '../../../../../../components/scaffold-eth/input/Bytes32Input';
-import BytesInput from '../../../../../../components/scaffold-eth/input/BytesInput';
-import InputBase from '../../../../../../components/scaffold-eth/input/InputBase';
-import IntegerInput from '../../../../../../components/scaffold-eth/input/IntegerInput';
-import { IntegerVariant } from '../../../../../../components/scaffold-eth/input/utils';
+import {
+  Bytes32Input,
+  BytesInput,
+  InputBase,
+  IntegerInput,
+  IntegerVariant
+} from '../../../../../../components/scaffold-eth';
 
 type Props = {
   setForm: Dispatch<SetStateAction<Record<string, any>>>;

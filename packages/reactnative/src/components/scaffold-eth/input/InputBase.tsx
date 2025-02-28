@@ -11,7 +11,7 @@ type Props<T> = CommonInputProps<T> & {
   suffix?: JSX.Element | false;
 };
 
-export default function InputBase<
+export function InputBase<
   T extends { toString: () => string } | undefined = string
 >({
   name,

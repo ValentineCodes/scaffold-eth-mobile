@@ -1,10 +1,10 @@
 import { useCallback } from 'react';
 import { Text, TouchableRipple } from 'react-native-paper';
 import { hexToString, isHex, stringToHex } from 'viem';
-import InputBase from './InputBase';
+import { InputBase } from '.';
 import { CommonInputProps } from './utils';
 
-export default function Bytes32Input({
+export function Bytes32Input({
   value,
   onChange,
   name,

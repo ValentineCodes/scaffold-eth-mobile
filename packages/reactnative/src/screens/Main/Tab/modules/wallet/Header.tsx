@@ -14,7 +14,7 @@ import { useToast } from 'react-native-toast-notifications';
 import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 import { Network } from '../../../../../../scaffold.config';
 import Logo from '../../../../../components/Logo';
-import Blockie from '../../../../../components/scaffold-eth/Blockie';
+import { Blockie } from '../../../../../components/scaffold-eth';
 import { useAccount, useNetwork } from '../../../../../hooks/scaffold-eth';
 import { Account } from '../../../../../store/reducers/Accounts';
 import globalStyles from '../../../../../styles/globalStyles';

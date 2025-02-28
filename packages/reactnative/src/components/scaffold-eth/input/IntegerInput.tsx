@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Text, TouchableRipple } from 'react-native-paper';
+import { InputBase } from '.';
 import globalStyles from '../../../styles/globalStyles';
 import { FONT_SIZE } from '../../../utils/styles';
-import InputBase from './InputBase';
 import { CommonInputProps, IntegerVariant, isValidInteger } from './utils';
 
 type IntegerInputProps = CommonInputProps<string | bigint> & {
@@ -10,7 +10,7 @@ type IntegerInputProps = CommonInputProps<string | bigint> & {
   disableMultiplyBy1e18?: boolean;
 };
 
-export default function IntegerInput({
+export function IntegerInput({
   value,
   onChange,
   name,

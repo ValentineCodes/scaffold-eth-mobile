@@ -2,7 +2,7 @@ import React from 'react';
 import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
-import Blockie from '../../../components/scaffold-eth/Blockie';
+import { Blockie } from '../../../components/scaffold-eth';
 import { clearRecipients } from '../../../store/reducers/Recipients';
 import globalStyles from '../../../styles/globalStyles';
 import { COLORS } from '../../../utils/constants';

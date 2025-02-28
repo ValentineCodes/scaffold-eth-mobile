@@ -19,7 +19,7 @@ type Props = {
   displayText?: string;
 };
 
-export default function CopyableText({
+export function CopyableText({
   value,
   containerStyle,
   textStyle,

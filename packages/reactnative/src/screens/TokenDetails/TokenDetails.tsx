@@ -8,8 +8,7 @@ import { IconButton, Text } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 import { useDispatch } from 'react-redux';
 import BackButton from '../../components/buttons/BackButton';
-import CopyableText from '../../components/CopyableText';
-import Blockie from '../../components/scaffold-eth/Blockie';
+import { Blockie, CopyableText } from '../../components/scaffold-eth';
 import {
   useAccount,
   useERC20Balance,

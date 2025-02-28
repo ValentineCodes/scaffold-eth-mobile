@@ -6,7 +6,7 @@ type Props = {
   address: string;
   size: number;
 };
-const Blockie = ({ address, size }: Props) => {
+export const Blockie = ({ address, size }: Props) => {
   const iconScale = 0.4 * size;
   const iconSize = 10;
   return (
@@ -155,4 +155,3 @@ const Blockie = ({ address, size }: Props) => {
     </View>
   );
 };
-export default React.memo(Blockie);

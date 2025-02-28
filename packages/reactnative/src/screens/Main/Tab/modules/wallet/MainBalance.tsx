@@ -11,7 +11,7 @@ import { useModal } from 'react-native-modalfy';
 import { IconButton, Text } from 'react-native-paper';
 // @ts-ignore
 import Ionicons from 'react-native-vector-icons/dist/Ionicons';
-import CopyableText from '../../../../../components/CopyableText';
+import { CopyableText } from '../../../../../components/scaffold-eth';
 import {
   useAccount,
   useBalance,

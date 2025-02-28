@@ -9,7 +9,7 @@ import globalStyles from '../../styles/globalStyles';
 import { COLORS } from '../../utils/constants';
 import { parseTimestamp, truncateAddress } from '../../utils/scaffold-eth';
 import { FONT_SIZE, WINDOW_WIDTH } from '../../utils/styles';
-import CopyableText from '../CopyableText';
+import { CopyableText } from '../scaffold-eth';
 
 type Props = {
   modal: {

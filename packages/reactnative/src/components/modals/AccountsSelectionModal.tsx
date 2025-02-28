@@ -9,7 +9,7 @@ import globalStyles from '../../styles/globalStyles';
 import { COLORS } from '../../utils/constants';
 import { truncateAddress } from '../../utils/scaffold-eth';
 import { FONT_SIZE, WINDOW_HEIGHT, WINDOW_WIDTH } from '../../utils/styles';
-import Blockie from '../scaffold-eth/Blockie';
+import { Blockie } from '../scaffold-eth';
 
 type Props = {
   modal: {
