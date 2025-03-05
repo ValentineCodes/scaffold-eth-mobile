@@ -7,11 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		00E356F31AD99517003FC87E /* ScaffoldETHTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* ScaffoldETHTests.m */; };
+		00E356F31AD99517003FC87E /* ETHMobileTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* ETHMobileTests.m */; };
 		059D9A7A219C4A1CB5C923B7 /* Poppins-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C75E2C56AE0A41A7A1188359 /* Poppins-ExtraLightItalic.ttf */; };
 		05C639B09F8E48A28AA61D25 /* Poppins-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 40DCA48F3455452CAC2FFECE /* Poppins-Black.ttf */; };
 		081B5E0F32D24828B11E6F69 /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6A2C177E00E04794959D3E92 /* BootSplash.storyboard */; };
-		0C80B921A6F3F58F76C31292 /* libPods-ScaffoldETH.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-ScaffoldETH.a */; };
+		0C80B921A6F3F58F76C31292 /* libPods-ETHMobile.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-ETHMobile.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
@@ -23,7 +23,7 @@
 		5655D381F40B449E8C7FAF92 /* Poppins-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0BEDCB41307842F693A1251D /* Poppins-MediumItalic.ttf */; };
 		59442F0A971F438A9D90A219 /* Poppins-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E17E4C4CD1C24F288E25F533 /* Poppins-Light.ttf */; };
 		613A9ED87B234BF6AD536D9B /* Poppins-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C0EB42E5C8A74D9A900EF4AB /* Poppins-LightItalic.ttf */; };
-		7699B88040F8A987B510C191 /* libPods-ScaffoldETH-ScaffoldETHTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-ScaffoldETH-ScaffoldETHTests.a */; };
+		7699B88040F8A987B510C191 /* libPods-ETHMobile-ETHMobileTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-ETHMobile-ETHMobileTests.a */; };
 		774DECB26E3449889AD8270A /* Poppins-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1F5BC51ECC4F42AFBA3314BA /* Poppins-Thin.ttf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		865F4F87A5ED4357914DA361 /* Poppins-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 529326067B894287BDE6B73E /* Poppins-ExtraLight.ttf */; };
@@ -62,38 +62,38 @@
 			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
-			remoteInfo = ScaffoldETH;
+			remoteInfo = "ETHMobile";
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		00E356EE1AD99517003FC87E /* ScaffoldETHTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ScaffoldETHTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		00E356EE1AD99517003FC87E /* ETHMobileTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ETHMobileTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		00E356F21AD99517003FC87E /* ScaffoldETHTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ScaffoldETHTests.m; sourceTree = "<group>"; };
+		00E356F21AD99517003FC87E /* ETHMobileTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "ETHMobileTests.m"; sourceTree = "<group>"; };
 		0BEDCB41307842F693A1251D /* Poppins-MediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-MediumItalic.ttf"; path = "../src/assets/fonts/Poppins-MediumItalic.ttf"; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* ScaffoldETH.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScaffoldETH.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = ScaffoldETH/AppDelegate.h; sourceTree = "<group>"; };
-		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = ScaffoldETH/AppDelegate.mm; sourceTree = "<group>"; };
-		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = ScaffoldETH/Images.xcassets; sourceTree = "<group>"; };
-		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ScaffoldETH/Info.plist; sourceTree = "<group>"; };
-		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = ScaffoldETH/main.m; sourceTree = "<group>"; };
-		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = ScaffoldETH/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		13B07F961A680F5B00A75B9A /* ETHMobile.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ETHMobile.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = "ETHMobile/AppDelegate.h"; sourceTree = "<group>"; };
+		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = "ETHMobile/AppDelegate.mm"; sourceTree = "<group>"; };
+		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = "ETHMobile/Images.xcassets"; sourceTree = "<group>"; };
+		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = "ETHMobile/Info.plist"; sourceTree = "<group>"; };
+		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = "ETHMobile/main.m"; sourceTree = "<group>"; };
+		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = ETHMobile/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		15686A56B5A341359A0A794B /* Poppins-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ExtraBold.ttf"; path = "../src/assets/fonts/Poppins-ExtraBold.ttf"; sourceTree = "<group>"; };
-		19F6CBCC0A4E27FBF8BF4A61 /* libPods-ScaffoldETH-ScaffoldETHTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ScaffoldETH-ScaffoldETHTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		19F6CBCC0A4E27FBF8BF4A61 /* libPods-ETHMobile-ETHMobileTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ETHMobile-ETHMobileTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1F5BC51ECC4F42AFBA3314BA /* Poppins-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Thin.ttf"; path = "../src/assets/fonts/Poppins-Thin.ttf"; sourceTree = "<group>"; };
 		27C67F02C9F7408E9F145F5B /* Poppins-BlackItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-BlackItalic.ttf"; path = "../src/assets/fonts/Poppins-BlackItalic.ttf"; sourceTree = "<group>"; };
 		2DB920BC5EC7413D94BBC159 /* Poppins-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Regular.ttf"; path = "../src/assets/fonts/Poppins-Regular.ttf"; sourceTree = "<group>"; };
-		3B4392A12AC88292D35C810B /* Pods-ScaffoldETH.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ScaffoldETH.debug.xcconfig"; path = "Target Support Files/Pods-ScaffoldETH/Pods-ScaffoldETH.debug.xcconfig"; sourceTree = "<group>"; };
+		3B4392A12AC88292D35C810B /* Pods-ETHMobile.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ETHMobile.debug.xcconfig"; path = "Target Support Files/Pods-ETHMobile/Pods-ETHMobile.debug.xcconfig"; sourceTree = "<group>"; };
 		40DCA48F3455452CAC2FFECE /* Poppins-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Black.ttf"; path = "../src/assets/fonts/Poppins-Black.ttf"; sourceTree = "<group>"; };
 		43B22B8732DD4FCDA2AD78C8 /* Poppins-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-BoldItalic.ttf"; path = "../src/assets/fonts/Poppins-BoldItalic.ttf"; sourceTree = "<group>"; };
 		529326067B894287BDE6B73E /* Poppins-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ExtraLight.ttf"; path = "../src/assets/fonts/Poppins-ExtraLight.ttf"; sourceTree = "<group>"; };
-		5709B34CF0A7D63546082F79 /* Pods-ScaffoldETH.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ScaffoldETH.release.xcconfig"; path = "Target Support Files/Pods-ScaffoldETH/Pods-ScaffoldETH.release.xcconfig"; sourceTree = "<group>"; };
-		5B7EB9410499542E8C5724F5 /* Pods-ScaffoldETH-ScaffoldETHTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ScaffoldETH-ScaffoldETHTests.debug.xcconfig"; path = "Target Support Files/Pods-ScaffoldETH-ScaffoldETHTests/Pods-ScaffoldETH-ScaffoldETHTests.debug.xcconfig"; sourceTree = "<group>"; };
-		5DCACB8F33CDC322A6C60F78 /* libPods-ScaffoldETH.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ScaffoldETH.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		6A2C177E00E04794959D3E92 /* BootSplash.storyboard */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = BootSplash.storyboard; path = ScaffoldETH/BootSplash.storyboard; sourceTree = "<group>"; };
-		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = ScaffoldETH/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		5709B34CF0A7D63546082F79 /* Pods-ETHMobile.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ETHMobile.release.xcconfig"; path = "Target Support Files/Pods-ETHMobile/Pods-ETHMobile.release.xcconfig"; sourceTree = "<group>"; };
+		5B7EB9410499542E8C5724F5 /* Pods-ETHMobile-ETHMobileTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ETHMobile-ETHMobileTests.debug.xcconfig"; path = "Target Support Files/Pods-ETHMobile-ETHMobileTests/Pods-ETHMobile-ETHMobileTests.debug.xcconfig"; sourceTree = "<group>"; };
+		5DCACB8F33CDC322A6C60F78 /* libPods-ETHMobile.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ETHMobile.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6A2C177E00E04794959D3E92 /* BootSplash.storyboard */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = BootSplash.storyboard; path = ETHMobile/BootSplash.storyboard; sourceTree = "<group>"; };
+		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = "ETHMobile/LaunchScreen.storyboard"; sourceTree = "<group>"; };
 		81F500CB2C6E436083EE0E2B /* Poppins-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Bold.ttf"; path = "../src/assets/fonts/Poppins-Bold.ttf"; sourceTree = "<group>"; };
-		89C6BE57DB24E9ADA2F236DE /* Pods-ScaffoldETH-ScaffoldETHTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ScaffoldETH-ScaffoldETHTests.release.xcconfig"; path = "Target Support Files/Pods-ScaffoldETH-ScaffoldETHTests/Pods-ScaffoldETH-ScaffoldETHTests.release.xcconfig"; sourceTree = "<group>"; };
+		89C6BE57DB24E9ADA2F236DE /* Pods-ETHMobile-ETHMobileTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ETHMobile-ETHMobileTests.release.xcconfig"; path = "Target Support Files/Pods-ETHMobile-ETHMobileTests/Pods-ETHMobile-ETHMobileTests.release.xcconfig"; sourceTree = "<group>"; };
 		9360AB300F744E10B71E997E /* Poppins-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Italic.ttf"; path = "../src/assets/fonts/Poppins-Italic.ttf"; sourceTree = "<group>"; };
 		93D6BF082D6C8FFB0072E353 /* AntDesign.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = AntDesign.ttf; sourceTree = "<group>"; };
 		93D6BF092D6C8FFB0072E353 /* Entypo.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Entypo.ttf; sourceTree = "<group>"; };
@@ -115,7 +115,7 @@
 		93D6BF192D6C8FFB0072E353 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SimpleLineIcons.ttf; sourceTree = "<group>"; };
 		93D6BF1A2D6C8FFB0072E353 /* Zocial.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Zocial.ttf; sourceTree = "<group>"; };
 		9816A2460D1F4CEDA1F6E5CF /* Poppins-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Medium.ttf"; path = "../src/assets/fonts/Poppins-Medium.ttf"; sourceTree = "<group>"; };
-		A65EB7B5AD0A404486C3342C /* Colors.xcassets */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = folder.assetcatalog; name = Colors.xcassets; path = ScaffoldETH/Colors.xcassets; sourceTree = "<group>"; };
+		A65EB7B5AD0A404486C3342C /* Colors.xcassets */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = folder.assetcatalog; name = Colors.xcassets; path = ETHMobile/Colors.xcassets; sourceTree = "<group>"; };
 		BC1B922962A8432B928D79A1 /* Poppins-ThinItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ThinItalic.ttf"; path = "../src/assets/fonts/Poppins-ThinItalic.ttf"; sourceTree = "<group>"; };
 		C0EB42E5C8A74D9A900EF4AB /* Poppins-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-LightItalic.ttf"; path = "../src/assets/fonts/Poppins-LightItalic.ttf"; sourceTree = "<group>"; };
 		C75E2C56AE0A41A7A1188359 /* Poppins-ExtraLightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ExtraLightItalic.ttf"; path = "../src/assets/fonts/Poppins-ExtraLightItalic.ttf"; sourceTree = "<group>"; };
@@ -131,7 +131,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7699B88040F8A987B510C191 /* libPods-ScaffoldETH-ScaffoldETHTests.a in Frameworks */,
+				7699B88040F8A987B510C191 /* libPods-ETHMobile-ETHMobileTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -139,20 +139,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0C80B921A6F3F58F76C31292 /* libPods-ScaffoldETH.a in Frameworks */,
+				0C80B921A6F3F58F76C31292 /* libPods-ETHMobile.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		00E356EF1AD99517003FC87E /* ScaffoldETHTests */ = {
+		00E356EF1AD99517003FC87E /* ETHMobileTests */ = {
 			isa = PBXGroup;
 			children = (
-				00E356F21AD99517003FC87E /* ScaffoldETHTests.m */,
+				00E356F21AD99517003FC87E /* ETHMobileTests.m */,
 				00E356F01AD99517003FC87E /* Supporting Files */,
 			);
-			path = ScaffoldETHTests;
+			path = "ETHMobileTests";
 			sourceTree = "<group>";
 		};
 		00E356F01AD99517003FC87E /* Supporting Files */ = {
@@ -188,7 +188,7 @@
 			name = Resources;
 			sourceTree = "<group>";
 		};
-		13B07FAE1A68108700A75B9A /* ScaffoldETH */ = {
+		13B07FAE1A68108700A75B9A /* ETHMobile */ = {
 			isa = PBXGroup;
 			children = (
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -201,15 +201,15 @@
 				6A2C177E00E04794959D3E92 /* BootSplash.storyboard */,
 				A65EB7B5AD0A404486C3342C /* Colors.xcassets */,
 			);
-			name = ScaffoldETH;
+			name = "ETHMobile";
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				5DCACB8F33CDC322A6C60F78 /* libPods-ScaffoldETH.a */,
-				19F6CBCC0A4E27FBF8BF4A61 /* libPods-ScaffoldETH-ScaffoldETHTests.a */,
+				5DCACB8F33CDC322A6C60F78 /* libPods-ETHMobile.a */,
+				19F6CBCC0A4E27FBF8BF4A61 /* libPods-ETHMobile-ETHMobileTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -224,9 +224,9 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				13B07FAE1A68108700A75B9A /* ScaffoldETH */,
+				13B07FAE1A68108700A75B9A /* ETHMobile */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
-				00E356EF1AD99517003FC87E /* ScaffoldETHTests */,
+				00E356EF1AD99517003FC87E /* ETHMobileTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
@@ -241,8 +241,8 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* ScaffoldETH.app */,
-				00E356EE1AD99517003FC87E /* ScaffoldETHTests.xctest */,
+				13B07F961A680F5B00A75B9A /* ETHMobile.app */,
+				00E356EE1AD99517003FC87E /* ETHMobileTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -276,10 +276,10 @@
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				3B4392A12AC88292D35C810B /* Pods-ScaffoldETH.debug.xcconfig */,
-				5709B34CF0A7D63546082F79 /* Pods-ScaffoldETH.release.xcconfig */,
-				5B7EB9410499542E8C5724F5 /* Pods-ScaffoldETH-ScaffoldETHTests.debug.xcconfig */,
-				89C6BE57DB24E9ADA2F236DE /* Pods-ScaffoldETH-ScaffoldETHTests.release.xcconfig */,
+				3B4392A12AC88292D35C810B /* Pods-ETHMobile.debug.xcconfig */,
+				5709B34CF0A7D63546082F79 /* Pods-ETHMobile.release.xcconfig */,
+				5B7EB9410499542E8C5724F5 /* Pods-ETHMobile-ETHMobileTests.debug.xcconfig */,
+				89C6BE57DB24E9ADA2F236DE /* Pods-ETHMobile-ETHMobileTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -287,9 +287,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		00E356ED1AD99517003FC87E /* ScaffoldETHTests */ = {
+		00E356ED1AD99517003FC87E /* ETHMobileTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "ScaffoldETHTests" */;
+			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "ETHMobileTests" */;
 			buildPhases = (
 				A55EABD7B0C7F3A422A6CC61 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
@@ -303,14 +303,14 @@
 			dependencies = (
 				00E356F51AD99517003FC87E /* PBXTargetDependency */,
 			);
-			name = ScaffoldETHTests;
-			productName = ScaffoldETHTests;
-			productReference = 00E356EE1AD99517003FC87E /* ScaffoldETHTests.xctest */;
+			name = ETHMobileTests;
+			productName = ETHMobileTests;
+			productReference = 00E356EE1AD99517003FC87E /* ETHMobileTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		13B07F861A680F5B00A75B9A /* ScaffoldETH */ = {
+		13B07F861A680F5B00A75B9A /* ETHMobile */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "ScaffoldETH" */;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "ETHMobile" */;
 			buildPhases = (
 				C38B50BA6285516D6DCD4F65 /* [CP] Check Pods Manifest.lock */,
 				13B07F871A680F5B00A75B9A /* Sources */,
@@ -324,9 +324,9 @@
 			);
 			dependencies = (
 			);
-			name = ScaffoldETH;
-			productName = ScaffoldETH;
-			productReference = 13B07F961A680F5B00A75B9A /* ScaffoldETH.app */;
+			name = "ETHMobile";
+			productName = "ETHMobile";
+			productReference = 13B07F961A680F5B00A75B9A /* ETHMobile.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -346,7 +346,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "ScaffoldETH" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "ETHMobile" */;
 			compatibilityVersion = "Xcode 12.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -359,8 +359,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				13B07F861A680F5B00A75B9A /* ScaffoldETH */,
-				00E356ED1AD99517003FC87E /* ScaffoldETHTests */,
+				13B07F861A680F5B00A75B9A /* ETHMobile */,
+				00E356ED1AD99517003FC87E /* ETHMobileTests */,
 			);
 		};
 /* End PBXProject section */
@@ -447,15 +447,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ScaffoldETH/Pods-ScaffoldETH-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-ETHMobile/Pods-ETHMobile-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ScaffoldETH/Pods-ScaffoldETH-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-ETHMobile/Pods-ETHMobile-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ScaffoldETH/Pods-ScaffoldETH-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ETHMobile/Pods-ETHMobile-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		A55EABD7B0C7F3A422A6CC61 /* [CP] Check Pods Manifest.lock */ = {
@@ -473,7 +473,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-ScaffoldETH-ScaffoldETHTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-ETHMobile-ETHMobileTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -495,7 +495,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-ScaffoldETH-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-ETHMobile-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -508,15 +508,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ScaffoldETH-ScaffoldETHTests/Pods-ScaffoldETH-ScaffoldETHTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-ETHMobile-ETHMobileTests/Pods-ETHMobile-ETHMobileTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ScaffoldETH-ScaffoldETHTests/Pods-ScaffoldETH-ScaffoldETHTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-ETHMobile-ETHMobileTests/Pods-ETHMobile-ETHMobileTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ScaffoldETH-ScaffoldETHTests/Pods-ScaffoldETH-ScaffoldETHTests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ETHMobile-ETHMobileTests/Pods-ETHMobile-ETHMobileTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E235C05ADACE081382539298 /* [CP] Copy Pods Resources */ = {
@@ -525,15 +525,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ScaffoldETH/Pods-ScaffoldETH-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-ETHMobile/Pods-ETHMobile-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ScaffoldETH/Pods-ScaffoldETH-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-ETHMobile/Pods-ETHMobile-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ScaffoldETH/Pods-ScaffoldETH-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ETHMobile/Pods-ETHMobile-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F6A41C54EA430FDDC6A6ED99 /* [CP] Copy Pods Resources */ = {
@@ -542,15 +542,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ScaffoldETH-ScaffoldETHTests/Pods-ScaffoldETH-ScaffoldETHTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-ETHMobile-ETHMobileTests/Pods-ETHMobile-ETHMobileTests-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ScaffoldETH-ScaffoldETHTests/Pods-ScaffoldETH-ScaffoldETHTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-ETHMobile-ETHMobileTests/Pods-ETHMobile-ETHMobileTests-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ScaffoldETH-ScaffoldETHTests/Pods-ScaffoldETH-ScaffoldETHTests-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ETHMobile-ETHMobileTests/Pods-ETHMobile-ETHMobileTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -560,7 +560,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				00E356F31AD99517003FC87E /* ScaffoldETHTests.m in Sources */,
+				00E356F31AD99517003FC87E /* ETHMobileTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -578,7 +578,7 @@
 /* Begin PBXTargetDependency section */
 		00E356F51AD99517003FC87E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 13B07F861A680F5B00A75B9A /* ScaffoldETH */;
+			target = 13B07F861A680F5B00A75B9A /* ETHMobile */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -586,14 +586,14 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5B7EB9410499542E8C5724F5 /* Pods-ScaffoldETH-ScaffoldETHTests.debug.xcconfig */;
+			baseConfigurationReference = 5B7EB9410499542E8C5724F5 /* Pods-ETHMobile-ETHMobileTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = ScaffoldETHTests/Info.plist;
+				INFOPLIST_FILE = "ETHMobileTests/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -605,19 +605,19 @@
 					"-lc++",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ethmobile";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ScaffoldETH.app/ScaffoldETH";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ETHMobile.app/ETHMobile";
 			};
 			name = Debug;
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 89C6BE57DB24E9ADA2F236DE /* Pods-ScaffoldETH-ScaffoldETHTests.release.xcconfig */;
+			baseConfigurationReference = 89C6BE57DB24E9ADA2F236DE /* Pods-ETHMobile-ETHMobileTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
-				INFOPLIST_FILE = ScaffoldETHTests/Info.plist;
+				INFOPLIST_FILE = "ETHMobileTests/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -629,22 +629,22 @@
 					"-lc++",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ethmobile";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ScaffoldETH.app/ScaffoldETH";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ETHMobile.app/ETHMobile";
 			};
 			name = Release;
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3B4392A12AC88292D35C810B /* Pods-ScaffoldETH.debug.xcconfig */;
+			baseConfigurationReference = 3B4392A12AC88292D35C810B /* Pods-ETHMobile.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_BITCODE = NO;
-				INFOPLIST_FILE = ScaffoldETH/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Scaffold-ETH";
+				INFOPLIST_FILE = "ETHMobile/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "ETH Mobile";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -656,8 +656,8 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = ScaffoldETH;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ethmobile";
+				PRODUCT_NAME = "ETHMobile";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -666,13 +666,13 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5709B34CF0A7D63546082F79 /* Pods-ScaffoldETH.release.xcconfig */;
+			baseConfigurationReference = 5709B34CF0A7D63546082F79 /* Pods-ETHMobile.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				INFOPLIST_FILE = ScaffoldETH/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Scaffold-ETH";
+				INFOPLIST_FILE = "ETHMobile/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "ETH Mobile";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -684,8 +684,8 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = ScaffoldETH;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ethmobile";
+				PRODUCT_NAME = "ETHMobile";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -846,7 +846,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "ScaffoldETHTests" */ = {
+		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "ETHMobileTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				00E356F61AD99517003FC87E /* Debug */,
@@ -855,7 +855,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "ScaffoldETH" */ = {
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "ETHMobile" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
@@ -864,7 +864,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "ScaffoldETH" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "ETHMobile" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
